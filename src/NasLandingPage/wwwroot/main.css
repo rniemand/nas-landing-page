@@ -1,0 +1,33 @@
+.wrapper {
+  padding: 2px;
+  text-align: center;
+  display: block;
+}
+
+.wrapper .links-wrapper { 
+  display: inline-block;
+  max-width: 900px;
+  width: 90%;
+}
+
+.wrapper .links {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.links .link {
+  border: 2px solid #4d4b4b;
+  padding: 3px;
+  border-radius: 6px;
+  background-color: #e8eaec;
+  margin: 3px;
+}
+
+.links .link img {
+  max-width: 100px;
+  max-height: 100px;
+  cursor: pointer;
+}
