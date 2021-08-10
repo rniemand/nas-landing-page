@@ -1,11 +1,11 @@
-// import { NgModule } from '@angular/core';
-// import { MatSidenavModule } from '@angular/material/sidenav';
 import { NgModule } from '@angular/core';
+
+// import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-// import { MatIconModule } from '@angular/material/icon';
-// import { MatListModule } from '@angular/material/list';
-// import { MatMenuModule } from '@angular/material/menu';
-// import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatButtonModule } from '@angular/material/button';
 // import { MatToolbarModule } from '@angular/material/toolbar';
 // import { MatSnackBarModule } from '@angular/material/snack-bar';
 // import { MatCardModule } from '@angular/material/card';
@@ -31,10 +31,10 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 const modules = [
   // MatSidenavModule,
   MatProgressSpinnerModule,
-  // MatIconModule,
-  // MatListModule,
-  // MatMenuModule,
-  // MatButtonModule,
+  MatIconModule,
+  MatListModule,
+  MatMenuModule,
+  MatButtonModule,
   // MatToolbarModule,
   // MatSnackBarModule,
   // MatCardModule,

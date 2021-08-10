@@ -15,4 +15,8 @@ export class SideNavComponent implements OnInit {
 
   logout = () => { }
 
+  onClose = () => {
+    this.closeSidenav.emit();
+  }
+
 }
