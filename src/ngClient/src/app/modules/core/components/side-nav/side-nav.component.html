@@ -9,6 +9,11 @@
     <span class="nav-caption">Login</span>
   </a>
 
+  <a mat-list-item routerLink="/links" (click)="onClose()" routerLinkActive="active">
+    <mat-icon>link</mat-icon>
+    <span class="nav-caption">Links</span>
+  </a>
+
   <a mat-list-item (click)="logout()" *ngIf="loggedIn">
     <mat-icon>lock_open</mat-icon>
     <span class="nav-caption">Logout</span>

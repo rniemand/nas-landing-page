@@ -16,6 +16,7 @@ import { HeaderComponent } from './modules/core/components/header/header.compone
 // Custom views
 import { HomeComponent } from './modules/core/views/home/home.component';
 import { LoginComponent } from './modules/core/views/login/login.component';
+import { LinksComponent } from './modules/core/views/links/links.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { LoginComponent } from './modules/core/views/login/login.component';
     // Custom views
     HomeComponent,
     LoginComponent,
+    LinksComponent,
   ],
   imports: [
     BrowserModule,
