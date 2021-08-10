@@ -19,4 +19,6 @@ export class SideNavComponent implements OnInit {
     this.closeSidenav.emit();
   }
 
+  toggle = () => { }
+
 }
