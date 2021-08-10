@@ -7,10 +7,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 // Custom modules
 import { MaterialModule } from './modules/material.module';
+import { SideNavComponent } from './modules/core/components/side-nav/side-nav.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+
+    SideNavComponent,
   ],
   imports: [
     BrowserModule,
