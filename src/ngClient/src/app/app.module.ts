@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http'
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -18,6 +19,9 @@ import { HomeComponent } from './modules/core/views/home/home.component';
 import { LoginComponent } from './modules/core/views/login/login.component';
 import { LinksComponent } from './modules/core/views/links/links.component';
 
+// Custom Services
+import { LinkService } from './modules/core/services/link.service';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -35,11 +39,14 @@ import { LinksComponent } from './modules/core/views/links/links.component';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    HttpClientModule,
 
     MaterialModule,
     FlexLayoutModule,
   ],
-  providers: [],
+  providers: [
+    LinkService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
