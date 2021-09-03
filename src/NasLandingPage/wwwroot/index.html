@@ -2,25 +2,26 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title>Hello World</title>
+    <title>NAS</title>
     <link rel="stylesheet" href="./main.css">
 </head>
 <body>
   <div class="wrapper">
     <div class="links-wrapper">
+      <!-- Common -->
       <h1>Common</h1>
       <div class="links">
-        <div class="link">
-          <div class="title">Unraid</div>
-          <a href="http://192.168.0.60/" target="_blank">
-            <img src="./images/unraid.png" />
+        <div class="link personal">
+          <div class="title">My Home</div>
+          <a href="http://192.168.0.60:5002/" target="_blank">
+            <img src="./images/my-home.png" />
           </a>
         </div>
 
         <div class="link">
-          <div class="title">RabbitMQ</div>
-          <a href="http://192.168.0.60:15672/#/" target="_blank">
-            <img src="./images/rabbitmq.png" />
+          <div class="title">HASS</div>
+          <a href="https://niemandr.duckdns.org/" target="_blank">
+            <img src="./images/hass.png" />
           </a>
         </div>
 
@@ -39,6 +40,95 @@
         </div>
 
         <div class="link">
+          <div class="title">Alexa</div>
+          <a href="https://alexa.amazon.ca/spa/index.html#smart-home" target="_blank">
+            <img src="./images/alexa.jpg" />
+          </a>
+        </div>
+      </div>
+
+      <!-- Media -->
+      <h1>Media</h1>
+      <div class="links">
+        <div class="link">
+          <div class="title">Plex</div>
+          <a href="http://192.168.0.60:32400/web/" target="_blank">
+            <img src="./images/plex.png" />
+          </a>
+        </div>
+
+        <div class="link">
+          <div class="title">SabNZBD</div>
+          <a href="http://192.168.0.60:5080/login/" target="_blank">
+            <img src="./images/sabnzbd.png" />
+          </a>
+        </div>
+
+        <div class="link">
+          <div class="title">Sonarr</div>
+          <a href="http://192.168.0.60:5989/sonarr/" target="_blank">
+            <img src="./images/sonarr.png" />
+          </a>
+        </div>
+
+        <div class="link">
+          <div class="title">Radarr</div>
+          <a href="http://192.168.0.60:5878/radarr/" target="_blank">
+            <img src="./images/radarr.png" />
+          </a>
+        </div>
+
+        <div class="link">
+          <div class="title">Headphones</div>
+          <a href="http://192.168.0.60:5181/home" target="_blank">
+            <img src="./images/headphones.png" />
+          </a>
+        </div>
+      </div>
+
+      <!-- Docs and Logs -->
+      <h1>Docs and Logs</h1>
+      <div class="links">
+        <div class="link g-drive">
+          <div class="title">Budget</div>
+          <a href="https://docs.google.com/spreadsheets/d/15YMdinlNvI5UidsHg9t-mukEPrAiQEX3d6UxKrMKIYM/edit" target="_blank">
+            <img src="./images/doc-finance.jpg" />
+          </a>
+        </div>
+
+        <div class="link g-drive">
+          <div class="title">Network</div>
+          <a href="https://docs.google.com/spreadsheets/d/1PygApmIOPcuRPFn96RDi1LWr2CSgRegQZONzI1kcKf4/edit" target="_blank">
+            <img src="./images/doc-network.png" />
+          </a>
+        </div>
+
+        <div class="link g-drive">
+          <div class="title">NAS</div>
+          <a href="https://docs.google.com/spreadsheets/d/1fU71Sa38ZFCNXlxJ-ShePY0v9n1a6Se9M7Q0YtfEgKo/edit" target="_blank">
+            <img src="./images/doc-nas.png" />
+          </a>
+        </div>
+
+        <div class="link">
+          <div class="title">App Logs</div>
+          <a href="http://192.168.0.60:5601/app/discover#" target="_blank">
+            <img src="./images/app-logs.png" />
+          </a>
+        </div>
+      </div>
+
+      <!-- Apps -->
+      <h1>Apps</h1>
+      <div class="links">
+        <div class="link">
+          <div class="title">Krusader</div>
+          <a href="http://192.168.0.60:6080/vnc.html?resize=remote&host=192.168.0.60&port=6080&autoconnect=1" target="_blank">
+            <img src="./images/krusader.png" />
+          </a>
+        </div>
+
+        <div class="link">
           <div class="title">Kibana</div>
           <a href="http://192.168.0.60:5601/" target="_blank">
             <img src="./images/kibana.png" />
@@ -46,19 +136,51 @@
         </div>
 
         <div class="link">
-          <div class="title">SonoffRF</div>
-          <a href="http://192.168.0.201/" target="_blank">
-            <img src="./images/sonoff-rf.jpg" />
+          <div class="title">Crashplan</div>
+          <a href="http://192.168.0.60:7810/" target="_blank">
+            <img src="./images/crashplan.png" />
           </a>
         </div>
 
         <div class="link">
-          <div class="title">Octoprint</div>
-          <a href="http://192.168.0.241/" target="_blank">
-            <img src="./images/octoprint.png" />
+          <div class="title">jDownloader</div>
+            <a href="http://192.168.0.60:7807/" target="_blank">
+            <img src="./images/jdownloader.jpg" />
           </a>
         </div>
 
+        <div class="link">
+          <div class="title">Portainer</div>
+          <a href="http://192.168.0.60:9002/#/home" target="_blank">
+            <img src="./images/portainer.png" />
+          </a>
+        </div>
+
+        <div class="link">
+          <div class="title">Unraid</div>
+          <a href="http://192.168.0.60/" target="_blank">
+            <img src="./images/unraid.png" />
+          </a>
+        </div>
+
+        <div class="link">
+          <div class="title">RabbitMQ</div>
+          <a href="http://192.168.0.60:15672/#/" target="_blank">
+            <img src="./images/rabbitmq.png" />
+          </a>
+        </div>
+
+        <div class="link personal">
+          <div class="title">Time Tracker</div>
+          <a href="http://192.168.0.60:5001/" target="_blank">
+            <img src="./images/time-tracker.png" />
+          </a>
+        </div>
+      </div>
+
+      <!-- Network -->
+      <h1>Network</h1>
+      <div class="links">
         <div class="link">
           <div class="title">Unifi</div>
           <a href="https://192.168.0.169:8443/" target="_blank">
@@ -88,103 +210,21 @@
         </div>
 
         <div class="link">
-          <div class="title">Plex</div>
-          <a href="http://192.168.0.60:32400/web/" target="_blank">
-            <img src="./images/plex.png" />
+          <div class="title">Octoprint</div>
+          <a href="http://192.168.0.241/" target="_blank">
+            <img src="./images/octoprint.png" />
           </a>
         </div>
 
         <div class="link">
-          <div class="title">SabNZBD</div>
-          <a href="http://192.168.0.60:5080/login/" target="_blank">
-            <img src="./images/sabnzbd.png" />
-          </a>
-        </div>
-
-        <div class="link">
-          <div class="title">Sonarr</div>
-          <a href="http://192.168.0.60:5989/sonarr/" target="_blank">
-            <img src="./images/sonarr.png" />
-          </a>
-        </div>
-
-        <div class="link">
-          <div class="title">Radarr</div>
-          <a href="http://192.168.0.60:5878/radarr/" target="_blank">
-            <img src="./images/radarr.png" />
-          </a>
-        </div>
-      </div>
-
-      <h1>Apps</h1>
-      <div class="links">
-        <div class="link">
-          <div class="title">Krusader</div>
-          <a href="http://192.168.0.60:6080/vnc.html?resize=remote&host=192.168.0.60&port=6080&autoconnect=1" target="_blank">
-            <img src="./images/krusader.png" />
-          </a>
-        </div>
-
-        <div class="link">
-          <div class="title">Crashplan</div>
-          <a href="http://192.168.0.60:7810/" target="_blank">
-            <img src="./images/crashplan.png" />
-          </a>
-        </div>
-
-        <div class="link">
-          <div class="title">Home Assistant</div>
-          <a href="https://192.168.0.100:8123/" target="_blank">
-            <img src="./images/hass.png" />
-          </a>
-        </div>
-
-        <div class="link personal">
-          <div class="title">Time Tracker</div>
-          <a href="http://192.168.0.60:5001/" target="_blank">
-            <img src="./images/time-tracker.png" />
-          </a>
-        </div>
-
-        <div class="link personal">
-          <div class="title">My Home</div>
-          <a href="http://192.168.0.60:5002/" target="_blank">
-            <img src="./images/my-home.png" />
-          </a>
-        </div>
-      </div>
-
-      <h1>Docs and Logs</h1>
-      <div class="links">
-        <div class="link g-drive">
-          <div class="title">Budget</div>
-          <a href="https://docs.google.com/spreadsheets/d/15YMdinlNvI5UidsHg9t-mukEPrAiQEX3d6UxKrMKIYM/edit" target="_blank">
-            <img src="./images/doc-finance.jpg" />
-          </a>
-        </div>
-
-        <div class="link g-drive">
-          <div class="title">Network</div>
-          <a href="https://docs.google.com/spreadsheets/d/1PygApmIOPcuRPFn96RDi1LWr2CSgRegQZONzI1kcKf4/edit" target="_blank">
-            <img src="./images/doc-network.png" />
-          </a>
-        </div>
-
-        <div class="link g-drive">
-          <div class="title">NAS</div>
-          <a href="https://docs.google.com/spreadsheets/d/1fU71Sa38ZFCNXlxJ-ShePY0v9n1a6Se9M7Q0YtfEgKo/edit" target="_blank">
-            <img src="./images/doc-nas.png" />
-          </a>
-        </div>
-
-        <div class="link">
-          <div class="title">App Logs</div>
-          <a href="http://192.168.0.60:5601/app/discover#/view/a9de3140-d516-11eb-b8fa-af6ba6b0c7bd?_g=" target="_blank">
-            <img src="./images/app-logs.png" />
+          <div class="title">SonoffRF</div>
+          <a href="http://192.168.0.201/" target="_blank">
+            <img src="./images/sonoff-rf.jpg" />
           </a>
         </div>
       </div>
       
+      <!-- External -->
       <h1>External</h1>
       <div class="links">
         <div class="link">
