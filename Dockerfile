@@ -1,8 +1,11 @@
-FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
+# hub.docker.com/_/microsoft-dotnet-sdk
+# https://hub.docker.com/_/microsoft-dotnet-aspnet/
+
+FROM mcr.microsoft.com/dotnet/aspnet:6.0-bullseye-slim AS base
 WORKDIR /app
 EXPOSE 80
 
-FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:6.0-bullseye-slim AS build
 WORKDIR /src
 COPY ["/src/NasLandingPage/NasLandingPage.csproj", "NasLandingPage/"]
 RUN dotnet restore "NasLandingPage/NasLandingPage.csproj"
