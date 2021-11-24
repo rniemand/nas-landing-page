@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DocumentSink.ClientLib" Version="1.0.131" />
+    <PackageReference Include="DocumentSink.ClientLib" Version="6.0.100" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.14.0" />
   </ItemGroup>
 
