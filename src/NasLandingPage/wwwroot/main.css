@@ -11,18 +11,6 @@ body {
   ;
 }
 
-.wrapper {
-  padding: 2px;
-  text-align: center;
-  display: block;
-}
-
-.wrapper .links-wrapper {
-  display: inline-block;
-  max-width: 900px;
-  width: 90%;
-}
-
 .wrapper .links-wrapper h1 {
   color: #fff;
   border: 1px solid #5f5c5c;
@@ -88,12 +76,12 @@ body {
   border-radius: 6px;
 }
 
+/* ========================================================================================== */
 .wrapper .projects {
   display: inline-block;
   max-width: 900px;
   width: 90%;
 }
-
 .wrapper .projects table.overview {
   font-size: 12px;
   background-color: #fdfdfd;
@@ -103,7 +91,8 @@ body {
   margin-top: 8px;
 }
 .wrapper .projects table.overview td.name {
-  font-weight: 800;
+  font-weight: 400;
+  font-size: 14px;
 }
 .wrapper .projects table.overview td.code a {
   color: #413fdd;
@@ -119,4 +108,48 @@ body {
   color: #1db142;
   text-decoration: none;
   font-weight: 600;
+}
+
+/* ========================================================================================== */
+.wrapper {
+  padding: 2px;
+  text-align: center;
+  display: block;
+}
+
+.wrapper .links-wrapper {
+  display: inline-block;
+  max-width: 900px;
+  width: 90%;
+}
+
+.wrapper .links-wrapper .links-new {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.wrapper .links-wrapper .links-new .link {
+  border: 2px solid #060606;
+  padding: 3px;
+  border-radius: 6px;
+  background-color: #ffffff;
+  margin: 3px;
+  width: 80px;
+  height: 78px;
+  box-shadow: 1px 1px 3px 0px #000000;
+  cursor: pointer;
+}
+
+.wrapper .links-wrapper .links-new .link img {
+  max-width: 80px;
+  max-height: 70px;
+  border: 1px;
+  border-color: #8c8c8c;
+  box-shadow: 1px 1px 3px 0px #000000;
+  border-style: solid;
+  border-radius: 6px;
+  margin-top: 2px;
 }
