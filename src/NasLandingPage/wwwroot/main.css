@@ -82,7 +82,7 @@ body {
   max-width: 900px;
   width: 90%;
 }
-.wrapper .projects table.overview {
+table.overview {
   font-size: 12px;
   background-color: #fdfdfd;
   border: 2px solid #e3c4c4;
@@ -91,8 +91,9 @@ body {
   margin-top: 8px;
 }
 .wrapper .projects table.overview td.name {
-  font-weight: 400;
-  font-size: 14px;
+  font-weight: 600;
+  font-size: 12px;
+  text-align: left;
 }
 .wrapper .projects table.overview td.code a {
   color: #413fdd;
