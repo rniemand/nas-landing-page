@@ -110,6 +110,12 @@ table.overview {
   text-decoration: none;
   font-weight: 600;
 }
+.wrapper .projects table.overview td.status-badge {
+  text-align: left;
+}
+.wrapper .projects table.overview tr:hover td {
+  background-color:rgba(203, 207, 205, 0.9);
+}
 
 /* ========================================================================================== */
 .wrapper {
