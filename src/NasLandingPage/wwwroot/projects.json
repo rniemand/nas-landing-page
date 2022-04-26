@@ -8,7 +8,9 @@
     "isPublic": true,
     "badges": null,
     "sourceCodeMaturity": {
-      "readme": true
+      "readme": true,
+      "gitattributes": false,
+      "editorconfig": false
     }
   },
   {
@@ -20,7 +22,9 @@
     "isPublic": true,
     "badges": null,
     "sourceCodeMaturity": {
-      "readme": false
+      "readme": false,
+      "gitattributes": false,
+      "editorconfig": false
     }
   },
   {
@@ -32,7 +36,9 @@
     "isPublic": true,
     "badges": null,
     "sourceCodeMaturity": {
-      "readme": false
+      "readme": false,
+      "gitattributes": false,
+      "editorconfig": false
     }
   },
   {
@@ -44,7 +50,9 @@
     "isPublic": false,
     "badges": null,
     "sourceCodeMaturity": {
-      "readme": true
+      "readme": true,
+      "gitattributes": false,
+      "editorconfig": false
     }
   },
   {
@@ -56,7 +64,9 @@
     "isPublic": false,
     "badges": null,
     "sourceCodeMaturity": {
-      "readme": false
+      "readme": false,
+      "gitattributes": false,
+      "editorconfig": false
     }
   },
   {
@@ -68,7 +78,9 @@
     "isPublic": true,
     "badges": null,
     "sourceCodeMaturity": {
-      "readme": false
+      "readme": false,
+      "gitattributes": true,
+      "editorconfig": false
     }
   },
   {
@@ -87,7 +99,9 @@
       "coverage": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=coverage&token={sonarQubeToken}"
     },
     "sourceCodeMaturity": {
-      "readme": false
+      "readme": false,
+      "gitattributes": false,
+      "editorconfig": false
     }
   },
   {
@@ -106,7 +120,9 @@
       "coverage": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=coverage&token={sonarQubeToken}"
     },
     "sourceCodeMaturity": {
-      "readme": false
+      "readme": false,
+      "gitattributes": false,
+      "editorconfig": false
     }
   },
   {
@@ -125,7 +141,9 @@
       "coverage": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=coverage&token={sonarQubeToken}"
     },
     "sourceCodeMaturity": {
-      "readme": false
+      "readme": false,
+      "gitattributes": true,
+      "editorconfig": true
     }
   },
   {
@@ -137,7 +155,9 @@
     "isPublic": false,
     "badges": null,
     "sourceCodeMaturity": {
-      "readme": false
+      "readme": false,
+      "gitattributes": false,
+      "editorconfig": false
     }
   },
   {
@@ -149,7 +169,9 @@
     "isPublic": false,
     "badges": null,
     "sourceCodeMaturity": {
-      "readme": false
+      "readme": false,
+      "gitattributes": false,
+      "editorconfig": false
     }
   },
   {
@@ -168,7 +190,9 @@
       "coverage": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=coverage&token={sonarQubeToken}"
     },
     "sourceCodeMaturity": {
-      "readme": false
+      "readme": false,
+      "gitattributes": false,
+      "editorconfig": false
     }
   },
   {
@@ -180,7 +204,9 @@
     "isPublic": true,
     "badges": null,
     "sourceCodeMaturity": {
-      "readme": false
+      "readme": false,
+      "gitattributes": false,
+      "editorconfig": false
     }
   },
   {
@@ -192,7 +218,9 @@
     "isPublic": false,
     "badges": null,
     "sourceCodeMaturity": {
-      "readme": false
+      "readme": false,
+      "gitattributes": false,
+      "editorconfig": false
     }
   },
   {
@@ -211,7 +239,9 @@
       "coverage": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=coverage&token={sonarQubeToken}"
     },
     "sourceCodeMaturity": {
-      "readme": false
+      "readme": false,
+      "gitattributes": false,
+      "editorconfig": false
     }
   },
   {
@@ -223,19 +253,9 @@
     "isPublic": false,
     "badges": null,
     "sourceCodeMaturity": {
-      "readme": false
-    }
-  },
-  {
-    "name": "home-logs",
-    "repoType": "github",
-    "repoUrl": "https://github.com/rniemand/home-logs",
-    "actionsUrl": null,
-    "sonarQubeUrl": null,
-    "isPublic": false,
-    "badges": null,
-    "sourceCodeMaturity": {
-      "readme": false
+      "readme": false,
+      "gitattributes": false,
+      "editorconfig": false
     }
   },
   {
@@ -254,7 +274,9 @@
       "coverage": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=coverage&token={sonarQubeToken}"
     },
     "sourceCodeMaturity": {
-      "readme": true
+      "readme": true,
+      "gitattributes": false,
+      "editorconfig": false
     }
   },
   {
@@ -266,7 +288,9 @@
     "isPublic": true,
     "badges": null,
     "sourceCodeMaturity": {
-      "readme": false
+      "readme": false,
+      "gitattributes": false,
+      "editorconfig": false
     }
   },
   {
@@ -285,7 +309,9 @@
       "coverage": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=coverage&token={sonarQubeToken}"
     },
     "sourceCodeMaturity": {
-      "readme": false
+      "readme": false,
+      "gitattributes": false,
+      "editorconfig": false
     }
   },
   {
@@ -304,7 +330,9 @@
       "coverage": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=coverage&token={sonarQubeToken}"
     },
     "sourceCodeMaturity": {
-      "readme": true
+      "readme": true,
+      "gitattributes": false,
+      "editorconfig": false
     }
   },
   {
@@ -323,7 +351,9 @@
       "coverage": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=coverage&token={sonarQubeToken}"
     },
     "sourceCodeMaturity": {
-      "readme": false
+      "readme": false,
+      "gitattributes": true,
+      "editorconfig": true
     }
   },
   {
@@ -342,7 +372,9 @@
       "coverage": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=coverage&token={sonarQubeToken}"
     },
     "sourceCodeMaturity": {
-      "readme": false
+      "readme": false,
+      "gitattributes": true,
+      "editorconfig": true
     }
   },
   {
@@ -354,7 +386,9 @@
     "isPublic": true,
     "badges": null,
     "sourceCodeMaturity": {
-      "readme": false
+      "readme": false,
+      "gitattributes": false,
+      "editorconfig": false
     }
   },
   {
@@ -366,7 +400,9 @@
     "isPublic": true,
     "badges": null,
     "sourceCodeMaturity": {
-      "readme": true
+      "readme": true,
+      "gitattributes": false,
+      "editorconfig": true
     }
   },
   {
@@ -378,7 +414,9 @@
     "isPublic": true,
     "badges": null,
     "sourceCodeMaturity": {
-      "readme": false
+      "readme": false,
+      "gitattributes": false,
+      "editorconfig": false
     }
   },
   {
@@ -397,7 +435,9 @@
       "coverage": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=coverage&token={sonarQubeToken}"
     },
     "sourceCodeMaturity": {
-      "readme": false
+      "readme": false,
+      "gitattributes": false,
+      "editorconfig": false
     }
   },
   {
@@ -416,7 +456,9 @@
       "coverage": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=coverage&token={sonarQubeToken}"
     },
     "sourceCodeMaturity": {
-      "readme": false
+      "readme": false,
+      "gitattributes": false,
+      "editorconfig": false
     }
   },
   {
@@ -435,7 +477,9 @@
       "coverage": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=coverage&token={sonarQubeToken}"
     },
     "sourceCodeMaturity": {
-      "readme": false
+      "readme": false,
+      "gitattributes": false,
+      "editorconfig": false
     }
   },
   {
@@ -454,7 +498,9 @@
       "coverage": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=coverage&token={sonarQubeToken}"
     },
     "sourceCodeMaturity": {
-      "readme": false
+      "readme": false,
+      "gitattributes": false,
+      "editorconfig": false
     }
   },
   {
@@ -473,7 +519,9 @@
       "coverage": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=coverage&token={sonarQubeToken}"
     },
     "sourceCodeMaturity": {
-      "readme": false
+      "readme": false,
+      "gitattributes": false,
+      "editorconfig": false
     }
   },
   {
@@ -492,7 +540,9 @@
       "coverage": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=coverage&token={sonarQubeToken}"
     },
     "sourceCodeMaturity": {
-      "readme": false
+      "readme": false,
+      "gitattributes": false,
+      "editorconfig": false
     }
   },
   {
@@ -511,7 +561,9 @@
       "coverage": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=coverage&token={sonarQubeToken}"
     },
     "sourceCodeMaturity": {
-      "readme": false
+      "readme": false,
+      "gitattributes": false,
+      "editorconfig": false
     }
   },
   {
@@ -530,7 +582,9 @@
       "coverage": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=coverage&token={sonarQubeToken}"
     },
     "sourceCodeMaturity": {
-      "readme": false
+      "readme": false,
+      "gitattributes": false,
+      "editorconfig": false
     }
   },
   {
@@ -549,7 +603,9 @@
       "coverage": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=coverage&token={sonarQubeToken}"
     },
     "sourceCodeMaturity": {
-      "readme": false
+      "readme": false,
+      "gitattributes": false,
+      "editorconfig": false
     }
   },
   {
@@ -568,7 +624,9 @@
       "coverage": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=coverage&token={sonarQubeToken}"
     },
     "sourceCodeMaturity": {
-      "readme": false
+      "readme": false,
+      "gitattributes": false,
+      "editorconfig": false
     }
   },
   {
@@ -582,7 +640,9 @@
     "isPublic": true,
     "badges": null,
     "sourceCodeMaturity": {
-      "readme": true
+      "readme": true,
+      "gitattributes": false,
+      "editorconfig": false
     }
   },
   {
@@ -601,7 +661,9 @@
       "coverage": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=coverage&token={sonarQubeToken}"
     },
     "sourceCodeMaturity": {
-      "readme": false
+      "readme": false,
+      "gitattributes": false,
+      "editorconfig": false
     }
   },
   {
@@ -615,7 +677,9 @@
     "isPublic": true,
     "badges": null,
     "sourceCodeMaturity": {
-      "readme": true
+      "readme": true,
+      "gitattributes": false,
+      "editorconfig": false
     }
   },
   {
@@ -629,7 +693,9 @@
     "isPublic": false,
     "badges": null,
     "sourceCodeMaturity": {
-      "readme": false
+      "readme": false,
+      "gitattributes": false,
+      "editorconfig": false
     }
   },
   {
@@ -648,7 +714,9 @@
       "coverage": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=coverage&token={sonarQubeToken}"
     },
     "sourceCodeMaturity": {
-      "readme": false
+      "readme": false,
+      "gitattributes": false,
+      "editorconfig": false
     }
   },
   {
@@ -662,7 +730,9 @@
     "isPublic": false,
     "badges": null,
     "sourceCodeMaturity": {
-      "readme": true
+      "readme": true,
+      "gitattributes": false,
+      "editorconfig": false
     }
   },
   {
@@ -676,7 +746,9 @@
     "isPublic": false,
     "badges": null,
     "sourceCodeMaturity": {
-      "readme": false
+      "readme": false,
+      "gitattributes": false,
+      "editorconfig": false
     }
   },
   {
@@ -690,7 +762,9 @@
     "isPublic": false,
     "badges": null,
     "sourceCodeMaturity": {
-      "readme": true
+      "readme": true,
+      "gitattributes": false,
+      "editorconfig": false
     }
   },
   {
@@ -704,7 +778,9 @@
     "isPublic": true,
     "badges": null,
     "sourceCodeMaturity": {
-      "readme": false
+      "readme": false,
+      "gitattributes": false,
+      "editorconfig": false
     }
   },
   {
@@ -723,7 +799,9 @@
       "coverage": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=coverage&token={sonarQubeToken}"
     },
     "sourceCodeMaturity": {
-      "readme": false
+      "readme": false,
+      "gitattributes": false,
+      "editorconfig": false
     }
   },
   {
@@ -737,7 +815,9 @@
     "isPublic": true,
     "badges": null,
     "sourceCodeMaturity": {
-      "readme": false
+      "readme": false,
+      "gitattributes": false,
+      "editorconfig": false
     }
   }
 ]

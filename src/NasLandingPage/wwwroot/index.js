@@ -6,7 +6,9 @@ var rnEnum = {
     Action: 4,
     SonarQube: 5,
     Badges: 6,
-    Readme: 7
+    Readme: 7,
+    GitAttributes: 8,
+    EditorConfig: 9
   }
 };
 
@@ -28,7 +30,9 @@ var rnProjects = {
     rnEnum.tblCol.Code,
     rnEnum.tblCol.Action,
     rnEnum.tblCol.SonarQube,
-    rnEnum.tblCol.Readme,
+    //rnEnum.tblCol.Readme,
+    rnEnum.tblCol.GitAttributes,
+    rnEnum.tblCol.EditorConfig,
     rnEnum.tblCol.Badges,
   ],
   badges: [
@@ -38,6 +42,7 @@ var rnProjects = {
     //'coverage',
   ]
 };
+
 
 rnProjects.fn.appendTblHeadColumn = function(tr, name, colEnum) {
   if(rnProjects.columns.indexOf(colEnum) === -1) {
@@ -58,6 +63,8 @@ rnProjects.fn.generateTblHead = function() {
   rnProjects.fn.appendTblHeadColumn(tr, 'Action', rnEnum.tblCol.Action);
   rnProjects.fn.appendTblHeadColumn(tr, 'SonarQube', rnEnum.tblCol.SonarQube);
   rnProjects.fn.appendTblHeadColumn(tr, 'Readme', rnEnum.tblCol.Readme);
+  rnProjects.fn.appendTblHeadColumn(tr, '.gitattr', rnEnum.tblCol.GitAttributes);
+  rnProjects.fn.appendTblHeadColumn(tr, '.editcfg', rnEnum.tblCol.EditorConfig);
   rnProjects.fn.appendTblHeadColumn(tr, '', rnEnum.tblCol.Badges);
 
   return tr;
@@ -104,6 +111,18 @@ rnProjects.fn.generateTblRow = function(project) {
   if(rnProjects.columns.indexOf(rnEnum.tblCol.Readme) !== -1) {
     currentTd = document.createElement('td');
     currentTd.append(rnProjects.fn.scmCheckmark(project, 'readme'));
+    tr.append(currentTd);
+  }
+
+  if(rnProjects.columns.indexOf(rnEnum.tblCol.GitAttributes) !== -1) {
+    currentTd = document.createElement('td');
+    currentTd.append(rnProjects.fn.scmCheckmark(project, 'gitattributes'));
+    tr.append(currentTd);
+  }
+
+  if(rnProjects.columns.indexOf(rnEnum.tblCol.EditorConfig) !== -1) {
+    currentTd = document.createElement('td');
+    currentTd.append(rnProjects.fn.scmCheckmark(project, 'editorconfig'));
     tr.append(currentTd);
   }
 
