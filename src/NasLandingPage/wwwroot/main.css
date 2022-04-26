@@ -117,6 +117,20 @@ table.overview {
   background-color:rgba(203, 207, 205, 0.9);
 }
 
+.wrapper .projects table.overview td span.pill-true {
+  border: 1px solid #033409;
+  padding: 2px 4px;
+  border-radius: 8px;
+  background-color: #afffb4;
+  color: #033007;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.wrapper .projects table.loading td {
+  text-align: center;
+}
+
 /* ========================================================================================== */
 .wrapper {
   padding: 2px;

@@ -1,0 +1,18 @@
+[
+  {
+    "name": "100-Days-Of-Python",
+    "repoType": "github",
+    "repoUrl": "https://github.com/rniemand/100-Days-Of-Python",
+    "actionsUrl": null,
+    "sonarQubeUrl": null,
+    "isPublic": true
+  },
+  {
+    "name": "NasFileIndexer",
+    "repoType": "github",
+    "repoUrl": "https://github.com/rniemand/NasFileIndexer",
+    "actionsUrl": "https://github.com/rniemand/NasFileIndexer/actions",
+    "sonarQubeUrl": "{sonarQubeBaseUrl}/dashboard?id=nas-file-indexer",
+    "isPublic": true
+  }
+]
