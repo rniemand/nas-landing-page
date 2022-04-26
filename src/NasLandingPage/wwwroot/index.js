@@ -5,7 +5,8 @@ var rnEnum = {
     Code: 3,
     Action: 4,
     SonarQube: 5,
-    Badges: 6
+    Badges: 6,
+    Readme: 7
   }
 };
 
@@ -27,6 +28,7 @@ var rnProjects = {
     rnEnum.tblCol.Code,
     rnEnum.tblCol.Action,
     rnEnum.tblCol.SonarQube,
+    rnEnum.tblCol.Readme,
     rnEnum.tblCol.Badges,
   ],
   badges: [
@@ -55,9 +57,76 @@ rnProjects.fn.generateTblHead = function() {
   rnProjects.fn.appendTblHeadColumn(tr, 'Code', rnEnum.tblCol.Code);
   rnProjects.fn.appendTblHeadColumn(tr, 'Action', rnEnum.tblCol.Action);
   rnProjects.fn.appendTblHeadColumn(tr, 'SonarQube', rnEnum.tblCol.SonarQube);
+  rnProjects.fn.appendTblHeadColumn(tr, 'Readme', rnEnum.tblCol.Readme);
   rnProjects.fn.appendTblHeadColumn(tr, '', rnEnum.tblCol.Badges);
 
   return tr;
+}
+
+rnProjects.fn.generateTblRow = function(project) {
+  var tr = document.createElement('tr');
+  var currentTd = null;
+
+  if(rnProjects.columns.indexOf(rnEnum.tblCol.Name) !== -1) {
+    currentTd = document.createElement('td');
+    currentTd.innerHTML = project.name;
+    currentTd.className = 'name';
+    tr.append(currentTd);
+  }
+
+  if(rnProjects.columns.indexOf(rnEnum.tblCol.Visibility) !== -1) {
+    currentTd = document.createElement('td');
+    currentTd.append(rnProjects.fn.boolPill(project.isPublic, 'public', 'private'));
+    tr.append(currentTd);
+  }
+
+  if(rnProjects.columns.indexOf(rnEnum.tblCol.Code) !== -1) {
+    currentTd = document.createElement('td');
+    currentTd.className = 'code';
+    currentTd.append(rnProjects.fn.createLink(project.repoType, project.repoUrl));
+    tr.append(currentTd);
+  }
+
+  if(rnProjects.columns.indexOf(rnEnum.tblCol.Action) !== -1) {
+    currentTd = document.createElement('td');
+    currentTd.className = 'actions';
+    currentTd.append(rnProjects.fn.createLink('actions', project.actionsUrl));
+    tr.append(currentTd);
+  }
+
+  if(rnProjects.columns.indexOf(rnEnum.tblCol.SonarQube) !== -1) {
+    currentTd = document.createElement('td');
+    currentTd.className = 'sonarqube';
+    currentTd.append(rnProjects.fn.createLink('SonarQube', project.sonarQubeUrl));
+    tr.append(currentTd);
+  }
+
+  if(rnProjects.columns.indexOf(rnEnum.tblCol.Readme) !== -1) {
+    currentTd = document.createElement('td');
+    currentTd.append(rnProjects.fn.scmCheckmark(project, 'readme'));
+    tr.append(currentTd);
+  }
+
+  if(rnProjects.columns.indexOf(rnEnum.tblCol.Badges) !== -1) {
+    currentTd = document.createElement('td');
+    currentTd.append(rnProjects.fn.generateBadges(project));
+    tr.append(currentTd);
+  }
+  
+  return tr;
+}
+
+rnProjects.fn.scmCheckmark = function(project, property) {
+  var span = document.createElement('span');
+  var isTrue = false;
+
+  if(project.hasOwnProperty('sourceCodeMaturity') && project.sourceCodeMaturity.hasOwnProperty(property)) {
+    isTrue = project.sourceCodeMaturity[property];
+  }
+
+  span.innerHTML = isTrue ? "✔️" : "❌";
+
+  return span;
 }
 
 rnProjects.fn.processUrl = function(url) {
@@ -130,53 +199,6 @@ rnProjects.fn.generateBadges = function(project) {
   });
   
   return div;
-}
-
-rnProjects.fn.generateTblRow = function(project) {
-  var tr = document.createElement('tr');
-  var currentTd = null;
-
-  if(rnProjects.columns.indexOf(rnEnum.tblCol.Name) !== -1) {
-    currentTd = document.createElement('td');
-    currentTd.innerHTML = project.name;
-    currentTd.className = 'name';
-    tr.append(currentTd);
-  }
-
-  if(rnProjects.columns.indexOf(rnEnum.tblCol.Visibility) !== -1) {
-    currentTd = document.createElement('td');
-    currentTd.append(rnProjects.fn.boolPill(project.isPublic, 'public', 'private'));
-    tr.append(currentTd);
-  }
-
-  if(rnProjects.columns.indexOf(rnEnum.tblCol.Code) !== -1) {
-    currentTd = document.createElement('td');
-    currentTd.className = 'code';
-    currentTd.append(rnProjects.fn.createLink(project.repoType, project.repoUrl));
-    tr.append(currentTd);
-  }
-
-  if(rnProjects.columns.indexOf(rnEnum.tblCol.Action) !== -1) {
-    currentTd = document.createElement('td');
-    currentTd.className = 'actions';
-    currentTd.append(rnProjects.fn.createLink('actions', project.actionsUrl));
-    tr.append(currentTd);
-  }
-
-  if(rnProjects.columns.indexOf(rnEnum.tblCol.SonarQube) !== -1) {
-    currentTd = document.createElement('td');
-    currentTd.className = 'sonarqube';
-    currentTd.append(rnProjects.fn.createLink('SonarQube', project.sonarQubeUrl));
-    tr.append(currentTd);
-  }
-
-  if(rnProjects.columns.indexOf(rnEnum.tblCol.Badges) !== -1) {
-    currentTd = document.createElement('td');
-    currentTd.append(rnProjects.fn.generateBadges(project));
-    tr.append(currentTd);
-  }
-  
-  return tr;
 }
 
 rnProjects.fn.appendTblRows = function() {

@@ -6,7 +6,10 @@
     "actionsUrl": null,
     "sonarQubeUrl": null,
     "isPublic": true,
-    "badges": null
+    "badges": null,
+    "sourceCodeMaturity": {
+      "readme": true
+    }
   },
   {
     "name": "Alert-Maker",
@@ -15,7 +18,10 @@
     "actionsUrl": null,
     "sonarQubeUrl": null,
     "isPublic": true,
-    "badges": null
+    "badges": null,
+    "sourceCodeMaturity": {
+      "readme": false
+    }
   },
   {
     "name": "ArduinoProjects",
@@ -24,7 +30,10 @@
     "actionsUrl": null,
     "sonarQubeUrl": null,
     "isPublic": true,
-    "badges": null
+    "badges": null,
+    "sourceCodeMaturity": {
+      "readme": false
+    }
   },
   {
     "name": "BitMeterCollector",
@@ -33,7 +42,10 @@
     "actionsUrl": null,
     "sonarQubeUrl": null,
     "isPublic": false,
-    "badges": null
+    "badges": null,
+    "sourceCodeMaturity": {
+      "readme": true
+    }
   },
   {
     "name": "BuildScriptHelper",
@@ -42,7 +54,10 @@
     "actionsUrl": null,
     "sonarQubeUrl": null,
     "isPublic": false,
-    "badges": null
+    "badges": null,
+    "sourceCodeMaturity": {
+      "readme": false
+    }
   },
   {
     "name": "code-samples-richardn.ca",
@@ -51,7 +66,10 @@
     "actionsUrl": null,
     "sonarQubeUrl": null,
     "isPublic": true,
-    "badges": null
+    "badges": null,
+    "sourceCodeMaturity": {
+      "readme": false
+    }
   },
   {
     "name": "cron-tool",
@@ -67,6 +85,9 @@
       "bugs": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=bugs&token={sonarQubeToken}",
       "codeSmells": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=code_smells&token={sonarQubeToken}",
       "coverage": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=coverage&token={sonarQubeToken}"
+    },
+    "sourceCodeMaturity": {
+      "readme": false
     }
   },
   {
@@ -83,6 +104,9 @@
       "bugs": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=bugs&token={sonarQubeToken}",
       "codeSmells": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=code_smells&token={sonarQubeToken}",
       "coverage": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=coverage&token={sonarQubeToken}"
+    },
+    "sourceCodeMaturity": {
+      "readme": false
     }
   },
   {
@@ -99,6 +123,9 @@
       "bugs": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=bugs&token={sonarQubeToken}",
       "codeSmells": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=code_smells&token={sonarQubeToken}",
       "coverage": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=coverage&token={sonarQubeToken}"
+    },
+    "sourceCodeMaturity": {
+      "readme": false
     }
   },
   {
@@ -108,7 +135,10 @@
     "actionsUrl": null,
     "sonarQubeUrl": null,
     "isPublic": false,
-    "badges": null
+    "badges": null,
+    "sourceCodeMaturity": {
+      "readme": false
+    }
   },
   {
     "name": "FluentHoverfly",
@@ -117,7 +147,10 @@
     "actionsUrl": null,
     "sonarQubeUrl": null,
     "isPublic": false,
-    "badges": null
+    "badges": null,
+    "sourceCodeMaturity": {
+      "readme": false
+    }
   },
   {
     "name": "Grafana-CLI-Tools",
@@ -133,6 +166,9 @@
       "bugs": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=bugs&token={sonarQubeToken}",
       "codeSmells": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=code_smells&token={sonarQubeToken}",
       "coverage": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=coverage&token={sonarQubeToken}"
+    },
+    "sourceCodeMaturity": {
+      "readme": false
     }
   },
   {
@@ -142,7 +178,10 @@
     "actionsUrl": null,
     "sonarQubeUrl": null,
     "isPublic": true,
-    "badges": null
+    "badges": null,
+    "sourceCodeMaturity": {
+      "readme": false
+    }
   },
   {
     "name": "hass-mqtt-dumper",
@@ -151,7 +190,10 @@
     "actionsUrl": null,
     "sonarQubeUrl": null,
     "isPublic": false,
-    "badges": null
+    "badges": null,
+    "sourceCodeMaturity": {
+      "readme": false
+    }
   },
   {
     "name": "hass-utils",
@@ -167,6 +209,9 @@
       "bugs": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=bugs&token={sonarQubeToken}",
       "codeSmells": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=code_smells&token={sonarQubeToken}",
       "coverage": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=coverage&token={sonarQubeToken}"
+    },
+    "sourceCodeMaturity": {
+      "readme": false
     }
   },
   {
@@ -176,7 +221,10 @@
     "actionsUrl": null,
     "sonarQubeUrl": null,
     "isPublic": false,
-    "badges": null
+    "badges": null,
+    "sourceCodeMaturity": {
+      "readme": false
+    }
   },
   {
     "name": "home-logs",
@@ -185,7 +233,10 @@
     "actionsUrl": null,
     "sonarQubeUrl": null,
     "isPublic": false,
-    "badges": null
+    "badges": null,
+    "sourceCodeMaturity": {
+      "readme": false
+    }
   },
   {
     "name": "log-feeder",
@@ -201,6 +252,9 @@
       "bugs": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=bugs&token={sonarQubeToken}",
       "codeSmells": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=code_smells&token={sonarQubeToken}",
       "coverage": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=coverage&token={sonarQubeToken}"
+    },
+    "sourceCodeMaturity": {
+      "readme": true
     }
   },
   {
@@ -210,7 +264,10 @@
     "actionsUrl": null,
     "sonarQubeUrl": null,
     "isPublic": true,
-    "badges": null
+    "badges": null,
+    "sourceCodeMaturity": {
+      "readme": false
+    }
   },
   {
     "name": "mqtt-document-sink",
@@ -226,6 +283,9 @@
       "bugs": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=bugs&token={sonarQubeToken}",
       "codeSmells": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=code_smells&token={sonarQubeToken}",
       "coverage": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=coverage&token={sonarQubeToken}"
+    },
+    "sourceCodeMaturity": {
+      "readme": false
     }
   },
   {
@@ -242,6 +302,9 @@
       "bugs": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=bugs&token={sonarQubeToken}",
       "codeSmells": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=code_smells&token={sonarQubeToken}",
       "coverage": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=coverage&token={sonarQubeToken}"
+    },
+    "sourceCodeMaturity": {
+      "readme": true
     }
   },
   {
@@ -258,6 +321,9 @@
       "bugs": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=bugs&token={sonarQubeToken}",
       "codeSmells": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=code_smells&token={sonarQubeToken}",
       "coverage": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=coverage&token={sonarQubeToken}"
+    },
+    "sourceCodeMaturity": {
+      "readme": false
     }
   },
   {
@@ -274,6 +340,9 @@
       "bugs": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=bugs&token={sonarQubeToken}",
       "codeSmells": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=code_smells&token={sonarQubeToken}",
       "coverage": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=coverage&token={sonarQubeToken}"
+    },
+    "sourceCodeMaturity": {
+      "readme": false
     }
   },
   {
@@ -283,7 +352,10 @@
     "actionsUrl": null,
     "sonarQubeUrl": null,
     "isPublic": true,
-    "badges": null
+    "badges": null,
+    "sourceCodeMaturity": {
+      "readme": false
+    }
   },
   {
     "name": "rn-angular-core",
@@ -292,7 +364,10 @@
     "actionsUrl": null,
     "sonarQubeUrl": null,
     "isPublic": true,
-    "badges": null
+    "badges": null,
+    "sourceCodeMaturity": {
+      "readme": true
+    }
   },
   {
     "name": "Rn.Mountebank",
@@ -301,7 +376,10 @@
     "actionsUrl": null,
     "sonarQubeUrl": null,
     "isPublic": true,
-    "badges": null
+    "badges": null,
+    "sourceCodeMaturity": {
+      "readme": false
+    }
   },
   {
     "name": "Rn.NetCore.BasicHttp",
@@ -317,6 +395,9 @@
       "bugs": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=bugs&token={sonarQubeToken}",
       "codeSmells": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=code_smells&token={sonarQubeToken}",
       "coverage": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=coverage&token={sonarQubeToken}"
+    },
+    "sourceCodeMaturity": {
+      "readme": false
     }
   },
   {
@@ -333,6 +414,9 @@
       "bugs": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=bugs&token={sonarQubeToken}",
       "codeSmells": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=code_smells&token={sonarQubeToken}",
       "coverage": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=coverage&token={sonarQubeToken}"
+    },
+    "sourceCodeMaturity": {
+      "readme": false
     }
   },
   {
@@ -349,6 +433,9 @@
       "bugs": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=bugs&token={sonarQubeToken}",
       "codeSmells": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=code_smells&token={sonarQubeToken}",
       "coverage": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=coverage&token={sonarQubeToken}"
+    },
+    "sourceCodeMaturity": {
+      "readme": false
     }
   },
   {
@@ -365,6 +452,9 @@
       "bugs": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=bugs&token={sonarQubeToken}",
       "codeSmells": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=code_smells&token={sonarQubeToken}",
       "coverage": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=coverage&token={sonarQubeToken}"
+    },
+    "sourceCodeMaturity": {
+      "readme": false
     }
   },
   {
@@ -381,6 +471,9 @@
       "bugs": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=bugs&token={sonarQubeToken}",
       "codeSmells": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=code_smells&token={sonarQubeToken}",
       "coverage": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=coverage&token={sonarQubeToken}"
+    },
+    "sourceCodeMaturity": {
+      "readme": false
     }
   },
   {
@@ -397,6 +490,9 @@
       "bugs": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=bugs&token={sonarQubeToken}",
       "codeSmells": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=code_smells&token={sonarQubeToken}",
       "coverage": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=coverage&token={sonarQubeToken}"
+    },
+    "sourceCodeMaturity": {
+      "readme": false
     }
   },
   {
@@ -413,6 +509,9 @@
       "bugs": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=bugs&token={sonarQubeToken}",
       "codeSmells": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=code_smells&token={sonarQubeToken}",
       "coverage": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=coverage&token={sonarQubeToken}"
+    },
+    "sourceCodeMaturity": {
+      "readme": false
     }
   },
   {
@@ -429,6 +528,9 @@
       "bugs": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=bugs&token={sonarQubeToken}",
       "codeSmells": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=code_smells&token={sonarQubeToken}",
       "coverage": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=coverage&token={sonarQubeToken}"
+    },
+    "sourceCodeMaturity": {
+      "readme": false
     }
   },
   {
@@ -445,6 +547,9 @@
       "bugs": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=bugs&token={sonarQubeToken}",
       "codeSmells": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=code_smells&token={sonarQubeToken}",
       "coverage": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=coverage&token={sonarQubeToken}"
+    },
+    "sourceCodeMaturity": {
+      "readme": false
     }
   },
   {
@@ -461,6 +566,9 @@
       "bugs": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=bugs&token={sonarQubeToken}",
       "codeSmells": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=code_smells&token={sonarQubeToken}",
       "coverage": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=coverage&token={sonarQubeToken}"
+    },
+    "sourceCodeMaturity": {
+      "readme": false
     }
   },
   {
@@ -472,7 +580,10 @@
     "sonarQubeProjectId": null,
     "sonarQubeToken": null,
     "isPublic": true,
-    "badges": null
+    "badges": null,
+    "sourceCodeMaturity": {
+      "readme": true
+    }
   },
   {
     "name": "SatisfactoryHostAPI",
@@ -488,6 +599,9 @@
       "bugs": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=bugs&token={sonarQubeToken}",
       "codeSmells": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=code_smells&token={sonarQubeToken}",
       "coverage": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=coverage&token={sonarQubeToken}"
+    },
+    "sourceCodeMaturity": {
+      "readme": false
     }
   },
   {
@@ -499,7 +613,10 @@
     "sonarQubeProjectId": null,
     "sonarQubeToken": null,
     "isPublic": true,
-    "badges": null
+    "badges": null,
+    "sourceCodeMaturity": {
+      "readme": true
+    }
   },
   {
     "name": "ServerTools",
@@ -510,7 +627,10 @@
     "sonarQubeProjectId": null,
     "sonarQubeToken": null,
     "isPublic": false,
-    "badges": null
+    "badges": null,
+    "sourceCodeMaturity": {
+      "readme": false
+    }
   },
   {
     "name": "simple-dash",
@@ -526,6 +646,9 @@
       "bugs": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=bugs&token={sonarQubeToken}",
       "codeSmells": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=code_smells&token={sonarQubeToken}",
       "coverage": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=coverage&token={sonarQubeToken}"
+    },
+    "sourceCodeMaturity": {
+      "readme": false
     }
   },
   {
@@ -537,7 +660,10 @@
     "sonarQubeProjectId": null,
     "sonarQubeToken": null,
     "isPublic": false,
-    "badges": null
+    "badges": null,
+    "sourceCodeMaturity": {
+      "readme": true
+    }
   },
   {
     "name": "study-react",
@@ -548,7 +674,10 @@
     "sonarQubeProjectId": null,
     "sonarQubeToken": null,
     "isPublic": false,
-    "badges": null
+    "badges": null,
+    "sourceCodeMaturity": {
+      "readme": false
+    }
   },
   {
     "name": "studying",
@@ -559,7 +688,10 @@
     "sonarQubeProjectId": null,
     "sonarQubeToken": null,
     "isPublic": false,
-    "badges": null
+    "badges": null,
+    "sourceCodeMaturity": {
+      "readme": true
+    }
   },
   {
     "name": "TaskRunner",
@@ -570,7 +702,10 @@
     "sonarQubeProjectId": null,
     "sonarQubeToken": null,
     "isPublic": true,
-    "badges": null
+    "badges": null,
+    "sourceCodeMaturity": {
+      "readme": false
+    }
   },
   {
     "name": "time-tracker",
@@ -586,6 +721,9 @@
       "bugs": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=bugs&token={sonarQubeToken}",
       "codeSmells": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=code_smells&token={sonarQubeToken}",
       "coverage": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=coverage&token={sonarQubeToken}"
+    },
+    "sourceCodeMaturity": {
+      "readme": false
     }
   },
   {
@@ -597,6 +735,9 @@
     "sonarQubeProjectId": null,
     "sonarQubeToken": null,
     "isPublic": true,
-    "badges": null
+    "badges": null,
+    "sourceCodeMaturity": {
+      "readme": false
+    }
   }
 ]
