@@ -76,6 +76,7 @@ rnProjects.fn.boolPill = function(value, txtTrue, txtFalse) {
 rnProjects.fn.generateBadge = function(badgeUrl) {
   var img = document.createElement('img');
   img.src = rnProjects.fn.processUrl(badgeUrl);
+  img.className = 'badge';
   return img;
 }
 

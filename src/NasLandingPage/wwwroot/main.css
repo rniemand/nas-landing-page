@@ -127,6 +127,24 @@ table.overview {
   display: inline-block;
 }
 
+.wrapper .projects table.overview td span.pill-false {
+  border: 1px solid #340303;
+  padding: 2px 4px;
+  border-radius: 8px;
+  background-color: #ffafaf;
+  color: #300303;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.wrapper .projects table.overview td img.badge {
+  margin-right: 4px;
+}
+
+.wrapper .projects table.overview td img.badge:last-child {
+  margin-right: 0;
+}
+
 .wrapper .projects table.loading td {
   text-align: center;
 }
