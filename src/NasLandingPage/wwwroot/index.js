@@ -27,7 +27,13 @@ var rnProjects = {
     rnEnum.tblCol.Code,
     rnEnum.tblCol.Action,
     rnEnum.tblCol.SonarQube,
-    //rnEnum.tblCol.Badges,
+    rnEnum.tblCol.Badges,
+  ],
+  badges: [
+    'quality',
+    //'bugs',
+    'codeSmells',
+    //'coverage',
   ]
 };
 
@@ -112,6 +118,10 @@ rnProjects.fn.generateBadges = function(project) {
   }
 
   (Object.getOwnPropertyNames(project.badges)).forEach(badge => {
+    if(rnProjects.badges.indexOf(badge) === -1) {
+      return;
+    }
+
     var badgeUrl = project.badges[badge]
       .replace('{sonarQubeProjectId}', project.sonarQubeProjectId)
       .replace('{sonarQubeToken}', project.sonarQubeToken);
