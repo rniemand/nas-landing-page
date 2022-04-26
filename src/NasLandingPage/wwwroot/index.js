@@ -1,3 +1,14 @@
+var rnEnum = {
+  tblCol: {
+    Name: 1,
+    Visibility: 2,
+    Code: 3,
+    Action: 4,
+    SonarQube: 5,
+    Badges: 6
+  }
+};
+
 var rnProjects = {
   el: {
     tbl: document.getElementById('projects-table')
@@ -9,10 +20,22 @@ var rnProjects = {
   },
   urlKeys: [
     'sonarQubeBaseUrl'
+  ],
+  columns: [
+    rnEnum.tblCol.Name,
+    rnEnum.tblCol.Visibility,
+    rnEnum.tblCol.Code,
+    rnEnum.tblCol.Action,
+    rnEnum.tblCol.SonarQube,
+    //rnEnum.tblCol.Badges,
   ]
 };
 
-rnProjects.fn.appendTblHeadColumn = function(tr, name) {
+rnProjects.fn.appendTblHeadColumn = function(tr, name, colEnum) {
+  if(rnProjects.columns.indexOf(colEnum) === -1) {
+    return;
+  }
+
   var td = document.createElement('td');
   td.innerHTML = name;
   tr.append(td);
@@ -21,12 +44,12 @@ rnProjects.fn.appendTblHeadColumn = function(tr, name) {
 rnProjects.fn.generateTblHead = function() {
   var tr = document.createElement('tr');
   
-  rnProjects.fn.appendTblHeadColumn(tr, 'Name');
-  rnProjects.fn.appendTblHeadColumn(tr, '');
-  rnProjects.fn.appendTblHeadColumn(tr, 'Code');
-  rnProjects.fn.appendTblHeadColumn(tr, 'Action');
-  rnProjects.fn.appendTblHeadColumn(tr, 'SonarQube');
-  rnProjects.fn.appendTblHeadColumn(tr, '');
+  rnProjects.fn.appendTblHeadColumn(tr, 'Name', rnEnum.tblCol.Name);
+  rnProjects.fn.appendTblHeadColumn(tr, '', rnEnum.tblCol.Visibility);
+  rnProjects.fn.appendTblHeadColumn(tr, 'Code', rnEnum.tblCol.Code);
+  rnProjects.fn.appendTblHeadColumn(tr, 'Action', rnEnum.tblCol.Action);
+  rnProjects.fn.appendTblHeadColumn(tr, 'SonarQube', rnEnum.tblCol.SonarQube);
+  rnProjects.fn.appendTblHeadColumn(tr, '', rnEnum.tblCol.Badges);
 
   return tr;
 }
@@ -103,35 +126,46 @@ rnProjects.fn.generateTblRow = function(project) {
   var tr = document.createElement('tr');
   var currentTd = null;
 
-  currentTd = document.createElement('td');
-  currentTd.innerHTML = project.name;
-  currentTd.className = 'name';
-  tr.append(currentTd);
+  if(rnProjects.columns.indexOf(rnEnum.tblCol.Name) !== -1) {
+    currentTd = document.createElement('td');
+    currentTd.innerHTML = project.name;
+    currentTd.className = 'name';
+    tr.append(currentTd);
+  }
 
-  currentTd = document.createElement('td');
-  currentTd.append(rnProjects.fn.boolPill(project.isPublic, 'public', 'private'));
-  tr.append(currentTd);
+  if(rnProjects.columns.indexOf(rnEnum.tblCol.Visibility) !== -1) {
+    currentTd = document.createElement('td');
+    currentTd.append(rnProjects.fn.boolPill(project.isPublic, 'public', 'private'));
+    tr.append(currentTd);
+  }
 
-  currentTd = document.createElement('td');
-  currentTd.className = 'code';
-  currentTd.append(rnProjects.fn.createLink(project.repoType, project.repoUrl));
-  tr.append(currentTd);
+  if(rnProjects.columns.indexOf(rnEnum.tblCol.Code) !== -1) {
+    currentTd = document.createElement('td');
+    currentTd.className = 'code';
+    currentTd.append(rnProjects.fn.createLink(project.repoType, project.repoUrl));
+    tr.append(currentTd);
+  }
 
-  currentTd = document.createElement('td');
-  currentTd.className = 'actions';
-  currentTd.append(rnProjects.fn.createLink('actions', project.actionsUrl));
-  tr.append(currentTd);
+  if(rnProjects.columns.indexOf(rnEnum.tblCol.Action) !== -1) {
+    currentTd = document.createElement('td');
+    currentTd.className = 'actions';
+    currentTd.append(rnProjects.fn.createLink('actions', project.actionsUrl));
+    tr.append(currentTd);
+  }
 
-  currentTd = document.createElement('td');
-  currentTd.className = 'sonarqube';
-  currentTd.append(rnProjects.fn.createLink('SonarQube', project.sonarQubeUrl));
-  tr.append(currentTd);
+  if(rnProjects.columns.indexOf(rnEnum.tblCol.SonarQube) !== -1) {
+    currentTd = document.createElement('td');
+    currentTd.className = 'sonarqube';
+    currentTd.append(rnProjects.fn.createLink('SonarQube', project.sonarQubeUrl));
+    tr.append(currentTd);
+  }
 
-  currentTd = document.createElement('td');
-  currentTd.className = 'sonarqube';
-  currentTd.append(rnProjects.fn.generateBadges(project));
-  tr.append(currentTd);
-
+  if(rnProjects.columns.indexOf(rnEnum.tblCol.Badges) !== -1) {
+    currentTd = document.createElement('td');
+    currentTd.append(rnProjects.fn.generateBadges(project));
+    tr.append(currentTd);
+  }
+  
   return tr;
 }
 
