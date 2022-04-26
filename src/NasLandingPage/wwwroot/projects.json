@@ -5,7 +5,8 @@
     "repoUrl": "https://github.com/rniemand/100-Days-Of-Python",
     "actionsUrl": null,
     "sonarQubeUrl": null,
-    "isPublic": true
+    "isPublic": true,
+    "badges": null
   },
   {
     "name": "NasFileIndexer",
@@ -13,6 +14,14 @@
     "repoUrl": "https://github.com/rniemand/NasFileIndexer",
     "actionsUrl": "https://github.com/rniemand/NasFileIndexer/actions",
     "sonarQubeUrl": "{sonarQubeBaseUrl}/dashboard?id=nas-file-indexer",
-    "isPublic": true
+    "sonarQubeProjectId": "nas-file-indexer",
+    "sonarQubeToken": "7ace48866c6f653b47f4b0b97fde541d8ceea23b",
+    "isPublic": true,
+    "badges": {
+      "quality": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=alert_status&token={sonarQubeToken}",
+      "bugs": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=bugs&token={sonarQubeToken}",
+      "codeSmells": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=code_smells&token={sonarQubeToken}",
+      "coverage": "{sonarQubeBaseUrl}/api/project_badges/measure?project={sonarQubeProjectId}&metric=coverage&token={sonarQubeToken}"
+    }
   }
 ]

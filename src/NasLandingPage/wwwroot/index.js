@@ -22,6 +22,7 @@ rnProjects.fn.generateTblHead = function() {
   var tr = document.createElement('tr');
   
   rnProjects.fn.appendTblHeadColumn(tr, 'Name');
+  rnProjects.fn.appendTblHeadColumn(tr, '');
   rnProjects.fn.appendTblHeadColumn(tr, 'Code');
   rnProjects.fn.appendTblHeadColumn(tr, 'Action');
   rnProjects.fn.appendTblHeadColumn(tr, 'SonarQube');
@@ -72,6 +73,31 @@ rnProjects.fn.boolPill = function(value, txtTrue, txtFalse) {
   return span;
 }
 
+rnProjects.fn.generateBadge = function(badgeUrl) {
+  var img = document.createElement('img');
+  img.src = rnProjects.fn.processUrl(badgeUrl);
+  return img;
+}
+
+rnProjects.fn.generateBadges = function(project) {
+  var div = document.createElement('div');
+
+  if(!project.badges) {
+    div.innerHTML = '-';
+    return div;
+  }
+
+  (Object.getOwnPropertyNames(project.badges)).forEach(badge => {
+    var badgeUrl = project.badges[badge]
+      .replace('{sonarQubeProjectId}', project.sonarQubeProjectId)
+      .replace('{sonarQubeToken}', project.sonarQubeToken);
+
+    div.append(rnProjects.fn.generateBadge(badgeUrl));
+  });
+  
+  return div;
+}
+
 rnProjects.fn.generateTblRow = function(project) {
   var tr = document.createElement('tr');
   var currentTd = null;
@@ -79,6 +105,10 @@ rnProjects.fn.generateTblRow = function(project) {
   currentTd = document.createElement('td');
   currentTd.innerHTML = project.name;
   currentTd.className = 'name';
+  tr.append(currentTd);
+
+  currentTd = document.createElement('td');
+  currentTd.append(rnProjects.fn.boolPill(project.isPublic, 'public', 'private'));
   tr.append(currentTd);
 
   currentTd = document.createElement('td');
@@ -97,7 +127,8 @@ rnProjects.fn.generateTblRow = function(project) {
   tr.append(currentTd);
 
   currentTd = document.createElement('td');
-  currentTd.append(rnProjects.fn.boolPill(project.isPublic, 'public', 'private'));
+  currentTd.className = 'sonarqube';
+  currentTd.append(rnProjects.fn.generateBadges(project));
   tr.append(currentTd);
 
   return tr;
