@@ -1,5 +1,10 @@
-var rnEnum = {
-  tblCol: {
+(function(global) {
+  global.rn = global.rn || {};
+  global.rn.enums = global.rn.enums || {};
+
+  var enums = global.rn.enums;
+  
+  enums.TableColumn = {
     Name: 1,
     Visibility: 2,
     Code: 3,
@@ -14,5 +19,6 @@ var rnEnum = {
     HasBuildScripts: 12,
     BuildScriptsVersion: 13,
     ProjectType: 14
-  }
-};
+  };
+  
+}(window));
