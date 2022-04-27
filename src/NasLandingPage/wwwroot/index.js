@@ -12,19 +12,19 @@ var canDisplay = function(column) {
 rnProjects.fn.generateTblHead = function() {
   var tr = document.createElement('tr');
   
-  rnProjects.fn.appendTblHeadColumn(tr, 'Name', rnEnum.tblCol.Name);
-  rnProjects.fn.appendTblHeadColumn(tr, '', rnEnum.tblCol.Visibility);
-  rnProjects.fn.appendTblHeadColumn(tr, 'Code', rnEnum.tblCol.Code);
-  rnProjects.fn.appendTblHeadColumn(tr, 'Action', rnEnum.tblCol.Action);
-  rnProjects.fn.appendTblHeadColumn(tr, 'SonarQube', rnEnum.tblCol.SonarQube);
-  rnProjects.fn.appendTblHeadColumn(tr, 'Readme', rnEnum.tblCol.Readme);
-  rnProjects.fn.appendTblHeadColumn(tr, '.gitattr', rnEnum.tblCol.GitAttributes);
-  rnProjects.fn.appendTblHeadColumn(tr, '.editcfg', rnEnum.tblCol.EditorConfig);
-  rnProjects.fn.appendTblHeadColumn(tr, 'PR', rnEnum.tblCol.PrTemplate);
-  rnProjects.fn.appendTblHeadColumn(tr, 'License', rnEnum.tblCol.License);
-  rnProjects.fn.appendTblHeadColumn(tr, 'Build', rnEnum.tblCol.HasBuildScripts);
-  rnProjects.fn.appendTblHeadColumn(tr, '', rnEnum.tblCol.BuildScriptsVersion);
-  rnProjects.fn.appendTblHeadColumn(tr, '', rnEnum.tblCol.Badges);
+  rnProjects.fn.appendTblHeadColumn(tr, 'Name', rn.enums.TableColumn.Name);
+  rnProjects.fn.appendTblHeadColumn(tr, '', rn.enums.TableColumn.Visibility);
+  rnProjects.fn.appendTblHeadColumn(tr, 'Code', rn.enums.TableColumn.Code);
+  rnProjects.fn.appendTblHeadColumn(tr, 'Action', rn.enums.TableColumn.Action);
+  rnProjects.fn.appendTblHeadColumn(tr, 'SonarQube', rn.enums.TableColumn.SonarQube);
+  rnProjects.fn.appendTblHeadColumn(tr, 'Readme', rn.enums.TableColumn.Readme);
+  rnProjects.fn.appendTblHeadColumn(tr, '.gitattr', rn.enums.TableColumn.GitAttributes);
+  rnProjects.fn.appendTblHeadColumn(tr, '.editcfg', rn.enums.TableColumn.EditorConfig);
+  rnProjects.fn.appendTblHeadColumn(tr, 'PR', rn.enums.TableColumn.PrTemplate);
+  rnProjects.fn.appendTblHeadColumn(tr, 'License', rn.enums.TableColumn.License);
+  rnProjects.fn.appendTblHeadColumn(tr, 'Build', rn.enums.TableColumn.HasBuildScripts);
+  rnProjects.fn.appendTblHeadColumn(tr, '', rn.enums.TableColumn.BuildScriptsVersion);
+  rnProjects.fn.appendTblHeadColumn(tr, '', rn.enums.TableColumn.Badges);
 
   return tr;
 }
@@ -62,7 +62,7 @@ rnProjects.fn.appendTblHeadColumn = function(tr, name, colEnum) {
 }
 
 rnProjects.fn.appendName = function(tr, project) {
-  if(!canDisplay(rnEnum.tblCol.Name)) { return; }
+  if(!canDisplay(rn.enums.TableColumn.Name)) { return; }
   var td = document.createElement('td');
   td.innerHTML = project.name;
   td.className = 'name';
@@ -70,14 +70,14 @@ rnProjects.fn.appendName = function(tr, project) {
 }
 
 rnProjects.fn.appendVisibility = function(tr, project) {
-  if(!canDisplay(rnEnum.tblCol.Visibility)) { return; }
+  if(!canDisplay(rn.enums.TableColumn.Visibility)) { return; }
   var td = document.createElement('td');
   td.append(rnProjects.fn.boolPill(project.isPublic, 'public', 'private'));
   tr.append(td);
 }
 
 rnProjects.fn.appendSourceCode = function(tr, project) {
-  if(!canDisplay(rnEnum.tblCol.Code)) { return; }
+  if(!canDisplay(rn.enums.TableColumn.Code)) { return; }
   var td = document.createElement('td');
   td.className = 'code';
   td.append(rnProjects.fn.createLink(project.repoType, project.repoUrl));
@@ -85,7 +85,7 @@ rnProjects.fn.appendSourceCode = function(tr, project) {
 }
 
 rnProjects.fn.appendAction = function(tr, project) {
-  if(!canDisplay(rnEnum.tblCol.SonarQube)) { return; }
+  if(!canDisplay(rn.enums.TableColumn.SonarQube)) { return; }
   var td = document.createElement('td');
   td.className = 'actions';
   td.append(rnProjects.fn.createLink('actions', project.actionsUrl));
@@ -93,7 +93,7 @@ rnProjects.fn.appendAction = function(tr, project) {
 }
 
 rnProjects.fn.appendSonarQube = function(tr, project) {
-  if(!canDisplay(rnEnum.tblCol.SonarQube)) { return; }
+  if(!canDisplay(rn.enums.TableColumn.SonarQube)) { return; }
   var td = document.createElement('td');
   td.className = 'sonarqube';
   td.append(rnProjects.fn.createLink('SonarQube', project.sonarQubeUrl));
@@ -101,35 +101,35 @@ rnProjects.fn.appendSonarQube = function(tr, project) {
 }
 
 rnProjects.fn.appendReadme = function(tr, project) {
-  if(!canDisplay(rnEnum.tblCol.Readme)) { return; }
+  if(!canDisplay(rn.enums.TableColumn.Readme)) { return; }
   var td = document.createElement('td');
   td.append(rnProjects.fn.scmCheckmark(project, 'readme'));
   tr.append(td);
 }
 
 rnProjects.fn.appendGitAttributes = function(tr, project) {
-  if(!canDisplay(rnEnum.tblCol.GitAttributes)) { return; }
+  if(!canDisplay(rn.enums.TableColumn.GitAttributes)) { return; }
   var td = document.createElement('td');
   td.append(rnProjects.fn.scmCheckmark(project, 'gitattributes'));
   tr.append(td);
 }
 
 rnProjects.fn.appendEditorConfig = function(tr, project) {
-  if(!canDisplay(rnEnum.tblCol.EditorConfig)) { return; }
+  if(!canDisplay(rn.enums.TableColumn.EditorConfig)) { return; }
   var td = document.createElement('td');
   td.append(rnProjects.fn.scmCheckmark(project, 'editorconfig'));
   tr.append(td);
 }
 
 rnProjects.fn.appendPrTemplate = function(tr, project) {
-  if(!canDisplay(rnEnum.tblCol.PrTemplate)) { return; }
+  if(!canDisplay(rn.enums.TableColumn.PrTemplate)) { return; }
   var td = document.createElement('td');
   td.append(rnProjects.fn.scmCheckmark(project, 'pr_template'));
   tr.append(td);
 }
 
 rnProjects.fn.appendLicense = function(tr, project) {
-  if(!canDisplay(rnEnum.tblCol.License)) { return; }
+  if(!canDisplay(rn.enums.TableColumn.License)) { return; }
   var td = document.createElement('td');
   td.className = 'license';
 
@@ -143,7 +143,7 @@ rnProjects.fn.appendLicense = function(tr, project) {
 }
 
 rnProjects.fn.appendBadges = function(tr, project) {
-  if(!canDisplay(rnEnum.tblCol.Badges)) { return; }
+  if(!canDisplay(rn.enums.TableColumn.Badges)) { return; }
 
   var td = document.createElement('td');
   td.append(rnProjects.fn.generateBadges(project));
@@ -151,7 +151,7 @@ rnProjects.fn.appendBadges = function(tr, project) {
 }
 
 rnProjects.fn.appendHasBuildScripts = function(tr, project) {
-  if(!canDisplay(rnEnum.tblCol.HasBuildScripts)) { return; }
+  if(!canDisplay(rn.enums.TableColumn.HasBuildScripts)) { return; }
   var td = document.createElement('td');
 
   if(!project.hasOwnProperty('cicd')) {
@@ -164,7 +164,7 @@ rnProjects.fn.appendHasBuildScripts = function(tr, project) {
 }
 
 rnProjects.fn.appendBuildScriptVersion = function(tr, project) {
-  if(!canDisplay(rnEnum.tblCol.BuildScriptsVersion)) { return; }
+  if(!canDisplay(rn.enums.TableColumn.BuildScriptsVersion)) { return; }
   var td = document.createElement('td');
 
   if(!project.hasOwnProperty('cicd')) {
