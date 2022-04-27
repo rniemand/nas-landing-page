@@ -28,6 +28,8 @@ try
 
     .AddSingleton<IProjectsService, ProjectsService>();
 
+  builder.Services.AddSwaggerDocument();
+
   builder.Logging.ClearProviders();
   builder.Logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
   builder.Host.UseNLog();
@@ -35,6 +37,9 @@ try
   var app = builder.Build();
 
   app.UseStaticFiles();
+  //app.UseOpenApi();
+  //app.UseSwaggerUi3();
+
   app.UseRouting();
 
   app.MapControllerRoute(
