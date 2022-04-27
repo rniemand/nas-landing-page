@@ -266,13 +266,13 @@ rn.config.fn.generateBadges = function(project) {
 
 rn.config.fn.appendTblRows = function() {
   rn.config.data.forEach(project => {
-    rn.config.el.tbl.append(rn.config.fn.generateTblRow(project));
+    rn.plugins.projects.elTable.append(rn.config.fn.generateTblRow(project));
   });
 }
 
 rn.config.fn.populateTable = function() {
-  rn.config.el.tbl.removeChild(rn.config.el.tbl.children[0]);
-  rn.config.el.tbl.append(rn.config.fn.generateTblHead());
+  rn.plugins.projects.elTable.removeChild(rn.plugins.projects.elTable.children[0]);
+  rn.plugins.projects.elTable.append(rn.config.fn.generateTblHead());
   rn.config.fn.appendTblRows();
 };
 
@@ -281,4 +281,6 @@ fetch('projects.json')
   .then(data => {
     rn.config.data = data;
     rn.config.fn.populateTable();
+
+    rn.plugins.projects.populate(data);
   });

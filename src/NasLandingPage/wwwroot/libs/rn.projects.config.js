@@ -1,8 +1,5 @@
 var rn = rn || {};
 rn.config = rn.config || {
-  el: {
-    tbl: document.getElementById('projects-table')
-  },
   data: {},
   fn: {},
   config: {
