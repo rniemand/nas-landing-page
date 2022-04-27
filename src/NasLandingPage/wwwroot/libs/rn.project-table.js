@@ -1,27 +1,3 @@
-// var rn = rn || {};
-// rn.plugins = rn.plugins || {};
-
-// rn.plugins.projects = rn.plugins.projects || {
-//   data: {},
-//   elTable: document.getElementById('projects-table')
-// };
-
-// // rn.plugins.projects.elTable
-
-
-
-/*
-
-
-
-
-
-
-
-*/
-
-
-
 (function(global) {
   global.rn = global.rn || {};
   global.rn.plugins = global.rn.plugins || {};
@@ -50,6 +26,7 @@
     _fn.appendTblHeadColumn(tr, 'Name', _colEnum.Name);
     _fn.appendTblHeadColumn(tr, '', _colEnum.Visibility);
     _fn.appendTblHeadColumn(tr, 'Code', _colEnum.Code);
+    _fn.appendTblHeadColumn(tr, 'Languages', _colEnum.Languages);
     _fn.appendTblHeadColumn(tr, 'Action', _colEnum.Action);
     _fn.appendTblHeadColumn(tr, 'SonarQube', _colEnum.SonarQube);
     _fn.appendTblHeadColumn(tr, 'Readme', _colEnum.Readme);
@@ -90,6 +67,7 @@
     _rowFn.appendName(tr, project);
     _rowFn.appendVisibility(tr, project);
     _rowFn.appendSourceCode(tr, project);
+    _rowFn.appendLanguages(tr, project);
     _rowFn.appendAction(tr, project);
     _rowFn.appendSonarQube(tr, project);
     _rowFn.appendReadme(tr, project);
@@ -132,6 +110,19 @@
     var td = document.createElement('td');
     td.className = 'code';
     td.append(_html.createLink(project.repoType, project.repoUrl));
+    tr.append(td);
+  }
+
+  _rowFn.appendLanguages = function(tr, project) {
+    if(!canDisplay(_colEnum.Languages)) { return; }
+    var td = document.createElement('td');
+
+    if(project.hasOwnProperty('languages')) {
+      td.innerHTML = project.languages.join(', ');
+    } else {
+      td.innerHTML = '-';
+    }
+    
     tr.append(td);
   }
 

@@ -15,6 +15,7 @@
     rn.enums.TableColumn.ProjectType,
     rn.enums.TableColumn.Visibility,
     rn.enums.TableColumn.Code,
+    rn.enums.TableColumn.Languages,
     rn.enums.TableColumn.Action,
     rn.enums.TableColumn.SonarQube,
     rn.enums.TableColumn.Readme,

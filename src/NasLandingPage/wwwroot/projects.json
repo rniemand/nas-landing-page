@@ -24,14 +24,14 @@
     "tags": [],
     "docker": {},
     "nuget": {},
-    "mainLanguage": "",
     "links": {},
     "description": "",
     "folderStructure": {
       "src": false,
       "test": false,
       "docs": false
-    }
+    },
+    "languages": ["python"]
   },
   {
     "name": "Alert-Maker",
@@ -57,7 +57,8 @@
       "src": true,
       "test": false,
       "docs": false
-    }
+    },
+    "languages": ["C#"]
   },
   {
     "name": "ArduinoProjects",
@@ -87,7 +88,8 @@
       "src": false,
       "test": false,
       "docs": false
-    }
+    },
+    "languages": ["C++", "HTML", "JS"]
   },
   {
     "name": "BitMeterCollector",
@@ -113,7 +115,8 @@
       "src": true,
       "test": false,
       "docs": false
-    }
+    },
+    "languages": ["C#"]
   },
   {
     "name": "BuildScriptHelper",
@@ -139,7 +142,8 @@
       "src": true,
       "test": false,
       "docs": false
-    }
+    },
+    "languages": ["PowerShell"]
   },
   {
     "name": "code-samples-richardn.ca",
@@ -165,7 +169,8 @@
       "src": false,
       "test": false,
       "docs": false
-    }
+    },
+    "languages": ["HTML", "C++", "C#"]
   },
   {
     "name": "cron-tool",
@@ -199,7 +204,8 @@
       "src": true,
       "test": false,
       "docs": false
-    }
+    },
+    "languages": ["C#", "PowerShell"]
   },
   {
     "name": "document-sink",
@@ -233,7 +239,8 @@
       "src": true,
       "test": false,
       "docs": false
-    }
+    },
+    "languages": ["C#", "TypeScript"]
   },
   {
     "name": "DnsUpdater",
@@ -267,7 +274,8 @@
       "src": true,
       "test": false,
       "docs": false
-    }
+    },
+    "languages": ["C#"]
   },
   {
     "name": "feed-scraper",
@@ -293,7 +301,8 @@
       "src": true,
       "test": false,
       "docs": false
-    }
+    },
+    "languages": ["C#"]
   },
   {
     "name": "FluentHoverfly",
@@ -319,7 +328,8 @@
       "src": true,
       "test": false,
       "docs": false
-    }
+    },
+    "languages": ["C#"]
   },
   {
     "name": "Grafana-CLI-Tools",
@@ -353,7 +363,8 @@
       "src": true,
       "test": false,
       "docs": false
-    }
+    },
+    "languages": ["C#"]
   },
   {
     "name": "hass",
@@ -379,7 +390,8 @@
       "src": false,
       "test": false,
       "docs": false
-    }
+    },
+    "languages": ["YAML"]
   },
   {
     "name": "hass-mqtt-dumper",
@@ -405,7 +417,8 @@
       "src": true,
       "test": false,
       "docs": false
-    }
+    },
+    "languages": ["C#"]
   },
   {
     "name": "hass-utils",
@@ -439,33 +452,8 @@
       "src": true,
       "test": false,
       "docs": false
-    }
-  },
-  {
-    "name": "home-links",
-    "repoType": "github",
-    "repoUrl": "https://github.com/rniemand/home-links",
-    "actionsUrl": null,
-    "sonarQubeUrl": null,
-    "isPublic": false,
-    "badges": null,
-    "sourceCodeMaturity": {
-      "readme": false,
-      "gitattributes": false,
-      "pr_template": false,
-      "editorconfig": false
     },
-    "cicd": {
-      "hasBuildScripts": false,
-      "buildScriptsVersion": null,
-      "buildScripts": [],
-      "testScripts": []
-    },
-    "folderStructure": {
-      "src": false,
-      "test": false,
-      "docs": false
-    }
+    "languages": ["C#"]
   },
   {
     "name": "log-feeder",
@@ -499,7 +487,8 @@
       "src": true,
       "test": false,
       "docs": false
-    }
+    },
+    "languages": ["C#"]
   },
   {
     "name": "messin-about",
@@ -525,7 +514,8 @@
       "src": false,
       "test": false,
       "docs": false
-    }
+    },
+    "languages": ["TypeScript", "HTML"]
   },
   {
     "name": "mqtt-document-sink",
@@ -559,7 +549,8 @@
       "src": true,
       "test": false,
       "docs": false
-    }
+    },
+    "languages": ["C#"]
   },
   {
     "name": "my-home",
@@ -593,7 +584,8 @@
       "src": true,
       "test": true,
       "docs": false
-    }
+    },
+    "languages": ["C#", "TypeScript"]
   },
   {
     "name": "nas-landing-page",
@@ -626,7 +618,8 @@
       "src": true,
       "test": false,
       "docs": false
-    }
+    },
+    "languages": ["TypeScript", "JavaScript"]
   },
   {
     "name": "NasFileIndexer",
@@ -660,7 +653,8 @@
       "src": true,
       "test": true,
       "docs": false
-    }
+    },
+    "languages": ["C#"]
   },
   {
     "name": "PowLogger",
@@ -686,7 +680,8 @@
       "src": true,
       "test": false,
       "docs": false
-    }
+    },
+    "languages": ["C#"]
   },
   {
     "name": "rn-angular-core",
@@ -716,7 +711,8 @@
       "src": true,
       "test": false,
       "docs": false
-    }
+    },
+    "languages": ["TypeScript"]
   },
   {
     "name": "Rn.Mountebank",
@@ -742,7 +738,8 @@
       "src": true,
       "test": false,
       "docs": false
-    }
+    },
+    "languages": ["C#"]
   },
   {
     "name": "Rn.NetCore.BasicHttp",
@@ -776,7 +773,8 @@
       "src": true,
       "test": false,
       "docs": false
-    }
+    },
+    "languages": ["C#"]
   },
   {
     "name": "Rn.NetCore.Common",
@@ -810,7 +808,8 @@
       "src": true,
       "test": false,
       "docs": false
-    }
+    },
+    "languages": ["C#"]
   },
   {
     "name": "Rn.NetCore.Configuration",
@@ -844,7 +843,8 @@
       "src": true,
       "test": false,
       "docs": false
-    }
+    },
+    "languages": ["C#"]
   },
   {
     "name": "Rn.NetCore.DbCommon",
@@ -878,7 +878,8 @@
       "src": true,
       "test": false,
       "docs": false
-    }
+    },
+    "languages": ["C#"]
   },
   {
     "name": "Rn.NetCore.Encryption",
@@ -912,7 +913,8 @@
       "src": true,
       "test": false,
       "docs": false
-    }
+    },
+    "languages": ["C#"]
   },
   {
     "name": "Rn.NetCore.Metrics",
@@ -946,7 +948,8 @@
       "src": true,
       "test": false,
       "docs": false
-    }
+    },
+    "languages": ["C#"]
   },
   {
     "name": "Rn.NetCore.Metrics.Rabbit",
@@ -980,7 +983,8 @@
       "src": true,
       "test": false,
       "docs": false
-    }
+    },
+    "languages": ["C#"]
   },
   {
     "name": "Rn.NetCore.TestingCore",
@@ -1014,7 +1018,8 @@
       "src": true,
       "test": false,
       "docs": false
-    }
+    },
+    "languages": ["C#"]
   },
   {
     "name": "Rn.NetCore.WebCommon",
@@ -1048,7 +1053,8 @@
       "src": true,
       "test": false,
       "docs": false
-    }
+    },
+    "languages": ["C#"]
   },
   {
     "name": "RnGo",
@@ -1082,7 +1088,8 @@
       "src": true,
       "test": false,
       "docs": false
-    }
+    },
+    "languages": ["C#"]
   },
   {
     "name": "satisfactory-server",
@@ -1111,7 +1118,8 @@
       "src": false,
       "test": false,
       "docs": false
-    }
+    },
+    "languages": ["Dockerfile"]
   },
   {
     "name": "SatisfactoryHostAPI",
@@ -1145,7 +1153,8 @@
       "src": true,
       "test": false,
       "docs": false
-    }
+    },
+    "languages": ["C#"]
   },
   {
     "name": "SerialTester",
@@ -1177,35 +1186,8 @@
       "src": false,
       "test": false,
       "docs": false
-    }
-  },
-  {
-    "name": "ServerTools",
-    "repoType": "github",
-    "repoUrl": "https://github.com/rniemand/ServerTools",
-    "actionsUrl": null,
-    "sonarQubeUrl": null,
-    "sonarQubeProjectId": null,
-    "sonarQubeToken": null,
-    "isPublic": false,
-    "badges": null,
-    "sourceCodeMaturity": {
-      "readme": false,
-      "gitattributes": false,
-      "pr_template": false,
-      "editorconfig": false
     },
-    "cicd": {
-      "hasBuildScripts": false,
-      "buildScriptsVersion": null,
-      "buildScripts": [],
-      "testScripts": []
-    },
-    "folderStructure": {
-      "src": true,
-      "test": false,
-      "docs": false
-    }
+    "languages": ["C#"]
   },
   {
     "name": "simple-dash",
@@ -1239,7 +1221,8 @@
       "src": true,
       "test": false,
       "docs": false
-    }
+    },
+    "languages": ["C#", "TypeScript"]
   },
   {
     "name": "study-django",
@@ -1267,7 +1250,8 @@
       "src": false,
       "test": false,
       "docs": false
-    }
+    },
+    "languages": ["python"]
   },
   {
     "name": "study-react",
@@ -1295,7 +1279,8 @@
       "src": false,
       "test": false,
       "docs": false
-    }
+    },
+    "languages": ["TypeScript", "JavaScript"]
   },
   {
     "name": "studying",
@@ -1323,35 +1308,8 @@
       "src": false,
       "test": false,
       "docs": false
-    }
-  },
-  {
-    "name": "TaskRunner",
-    "repoType": "github",
-    "repoUrl": "https://github.com/rniemand/TaskRunner",
-    "actionsUrl": null,
-    "sonarQubeUrl": null,
-    "sonarQubeProjectId": null,
-    "sonarQubeToken": null,
-    "isPublic": true,
-    "badges": null,
-    "sourceCodeMaturity": {
-      "readme": false,
-      "gitattributes": false,
-      "pr_template": false,
-      "editorconfig": false
     },
-    "cicd": {
-      "hasBuildScripts": false,
-      "buildScriptsVersion": null,
-      "buildScripts": [],
-      "testScripts": []
-    },
-    "folderStructure": {
-      "src": false,
-      "test": false,
-      "docs": false
-    }
+    "languages": ["C#"]
   },
   {
     "name": "time-tracker",
@@ -1385,7 +1343,8 @@
       "src": true,
       "test": false,
       "docs": true
-    }
+    },
+    "languages": ["C#", "TypeScript"]
   },
   {
     "name": "TimeClicker",
@@ -1413,6 +1372,7 @@
       "src": true,
       "test": false,
       "docs": false
-    }
+    },
+    "languages": ["JavaScript"]
   }
 ]

@@ -22,7 +22,8 @@
     GithubActions: 15,
     DirSrc: 16,
     DirTest: 17,
-    DirDocs: 18
+    DirDocs: 18,
+    Languages: 19
   };
   
 }(window));
