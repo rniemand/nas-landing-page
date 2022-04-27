@@ -10,7 +10,9 @@ var rnEnum = {
     GitAttributes: 8,
     EditorConfig: 9,
     PrTemplate: 10,
-    License: 11
+    License: 11,
+    HasBuildScripts: 12,
+    BuildScriptsVersion: 13
   }
 };
 
@@ -32,17 +34,19 @@ var rnProjects = {
     rnEnum.tblCol.Code,
     rnEnum.tblCol.Action,
     rnEnum.tblCol.SonarQube,
-    //rnEnum.tblCol.Readme,
-    //rnEnum.tblCol.GitAttributes,
+    rnEnum.tblCol.Readme,
+    rnEnum.tblCol.GitAttributes,
     rnEnum.tblCol.EditorConfig,
     rnEnum.tblCol.PrTemplate,
     rnEnum.tblCol.License,
+    rnEnum.tblCol.HasBuildScripts,
+    rnEnum.tblCol.BuildScriptsVersion,
     rnEnum.tblCol.Badges,
   ],
   badges: [
     'quality',
     //'bugs',
-    'codeSmells',
+    //'codeSmells',
     //'coverage',
   ]
 };
@@ -77,15 +81,7 @@ rnHtml.createLink = function(title, url) {
   return link;
 }
 
-rnProjects.fn.appendTblHeadColumn = function(tr, name, colEnum) {
-  if(rnProjects.columns.indexOf(colEnum) === -1) {
-    return;
-  }
 
-  var td = document.createElement('td');
-  td.innerHTML = name;
-  tr.append(td);
-}
 
 rnProjects.fn.generateTblHead = function() {
   var tr = document.createElement('tr');
@@ -100,6 +96,8 @@ rnProjects.fn.generateTblHead = function() {
   rnProjects.fn.appendTblHeadColumn(tr, '.editcfg', rnEnum.tblCol.EditorConfig);
   rnProjects.fn.appendTblHeadColumn(tr, 'PR', rnEnum.tblCol.PrTemplate);
   rnProjects.fn.appendTblHeadColumn(tr, 'License', rnEnum.tblCol.License);
+  rnProjects.fn.appendTblHeadColumn(tr, 'Build', rnEnum.tblCol.HasBuildScripts);
+  rnProjects.fn.appendTblHeadColumn(tr, '', rnEnum.tblCol.BuildScriptsVersion);
   rnProjects.fn.appendTblHeadColumn(tr, '', rnEnum.tblCol.Badges);
 
   return tr;
@@ -107,83 +105,101 @@ rnProjects.fn.generateTblHead = function() {
 
 rnProjects.fn.generateTblRow = function(project) {
   var tr = document.createElement('tr');
-  var currentTd = null;
-
-  if(rnProjects.columns.indexOf(rnEnum.tblCol.Name) !== -1) {
-    currentTd = document.createElement('td');
-    currentTd.innerHTML = project.name;
-    currentTd.className = 'name';
-    tr.append(currentTd);
-  }
-
-  if(rnProjects.columns.indexOf(rnEnum.tblCol.Visibility) !== -1) {
-    currentTd = document.createElement('td');
-    currentTd.append(rnProjects.fn.boolPill(project.isPublic, 'public', 'private'));
-    tr.append(currentTd);
-  }
-
-  if(rnProjects.columns.indexOf(rnEnum.tblCol.Code) !== -1) {
-    currentTd = document.createElement('td');
-    currentTd.className = 'code';
-    currentTd.append(rnProjects.fn.createLink(project.repoType, project.repoUrl));
-    tr.append(currentTd);
-  }
-
-  if(rnProjects.columns.indexOf(rnEnum.tblCol.Action) !== -1) {
-    currentTd = document.createElement('td');
-    currentTd.className = 'actions';
-    currentTd.append(rnProjects.fn.createLink('actions', project.actionsUrl));
-    tr.append(currentTd);
-  }
-
-  if(rnProjects.columns.indexOf(rnEnum.tblCol.SonarQube) !== -1) {
-    currentTd = document.createElement('td');
-    currentTd.className = 'sonarqube';
-    currentTd.append(rnProjects.fn.createLink('SonarQube', project.sonarQubeUrl));
-    tr.append(currentTd);
-  }
-
-  if(rnProjects.columns.indexOf(rnEnum.tblCol.Readme) !== -1) {
-    currentTd = document.createElement('td');
-    currentTd.append(rnProjects.fn.scmCheckmark(project, 'readme'));
-    tr.append(currentTd);
-  }
-
-  if(rnProjects.columns.indexOf(rnEnum.tblCol.GitAttributes) !== -1) {
-    currentTd = document.createElement('td');
-    currentTd.append(rnProjects.fn.scmCheckmark(project, 'gitattributes'));
-    tr.append(currentTd);
-  }
-
-  if(rnProjects.columns.indexOf(rnEnum.tblCol.EditorConfig) !== -1) {
-    currentTd = document.createElement('td');
-    currentTd.append(rnProjects.fn.scmCheckmark(project, 'editorconfig'));
-    tr.append(currentTd);
-  }
-
-  if(rnProjects.columns.indexOf(rnEnum.tblCol.PrTemplate) !== -1) {
-    currentTd = document.createElement('td');
-    currentTd.append(rnProjects.fn.scmCheckmark(project, 'pr_template'));
-    tr.append(currentTd);
-  }
-
-  rnProjects.fn.appendLicense(tr, project);
-
-  if(rnProjects.columns.indexOf(rnEnum.tblCol.Badges) !== -1) {
-    currentTd = document.createElement('td');
-    currentTd.append(rnProjects.fn.generateBadges(project));
-    tr.append(currentTd);
-  }
   
+  rnProjects.fn.appendName(tr, project);
+  rnProjects.fn.appendVisibility(tr, project);
+  rnProjects.fn.appendSourceCode(tr, project);
+  rnProjects.fn.appendAction(tr, project);
+  rnProjects.fn.appendSonarQube(tr, project);
+  rnProjects.fn.appendReadme(tr, project);
+  rnProjects.fn.appendGitAttributes(tr, project);
+  rnProjects.fn.appendEditorConfig(tr, project);
+  rnProjects.fn.appendPrTemplate(tr, project);
+  rnProjects.fn.appendLicense(tr, project);
+  rnProjects.fn.appendHasBuildScripts(tr, project);
+  rnProjects.fn.appendBuildScriptVersion(tr, project);
+  rnProjects.fn.appendBadges(tr, project);
+
   return tr;
 }
 
 
 
-rnProjects.fn.createSpan = function(innerHtml) {
-  var span = document.createElement('span');
-  span.innerHTML = innerHtml;
-  return span;
+rnProjects.fn.appendTblHeadColumn = function(tr, name, colEnum) {
+  if(rnProjects.columns.indexOf(colEnum) === -1) {
+    return;
+  }
+
+  var td = document.createElement('td');
+  td.innerHTML = name;
+  tr.append(td);
+}
+
+rnProjects.fn.appendName = function(tr, project) {
+  if(!canDisplay(rnEnum.tblCol.Name)) { return; }
+  var td = document.createElement('td');
+  td.innerHTML = project.name;
+  td.className = 'name';
+  tr.append(td);
+}
+
+rnProjects.fn.appendVisibility = function(tr, project) {
+  if(!canDisplay(rnEnum.tblCol.Visibility)) { return; }
+  var td = document.createElement('td');
+  td.append(rnProjects.fn.boolPill(project.isPublic, 'public', 'private'));
+  tr.append(td);
+}
+
+rnProjects.fn.appendSourceCode = function(tr, project) {
+  if(!canDisplay(rnEnum.tblCol.Code)) { return; }
+  var td = document.createElement('td');
+  td.className = 'code';
+  td.append(rnProjects.fn.createLink(project.repoType, project.repoUrl));
+  tr.append(td);
+}
+
+rnProjects.fn.appendAction = function(tr, project) {
+  if(!canDisplay(rnEnum.tblCol.SonarQube)) { return; }
+  var td = document.createElement('td');
+  td.className = 'actions';
+  td.append(rnProjects.fn.createLink('actions', project.actionsUrl));
+  tr.append(td);
+}
+
+rnProjects.fn.appendSonarQube = function(tr, project) {
+  if(!canDisplay(rnEnum.tblCol.SonarQube)) { return; }
+  var td = document.createElement('td');
+  td.className = 'sonarqube';
+  td.append(rnProjects.fn.createLink('SonarQube', project.sonarQubeUrl));
+  tr.append(td);
+}
+
+rnProjects.fn.appendReadme = function(tr, project) {
+  if(!canDisplay(rnEnum.tblCol.Readme)) { return; }
+  var td = document.createElement('td');
+  td.append(rnProjects.fn.scmCheckmark(project, 'readme'));
+  tr.append(td);
+}
+
+rnProjects.fn.appendGitAttributes = function(tr, project) {
+  if(!canDisplay(rnEnum.tblCol.GitAttributes)) { return; }
+  var td = document.createElement('td');
+  td.append(rnProjects.fn.scmCheckmark(project, 'gitattributes'));
+  tr.append(td);
+}
+
+rnProjects.fn.appendEditorConfig = function(tr, project) {
+  if(!canDisplay(rnEnum.tblCol.EditorConfig)) { return; }
+  var td = document.createElement('td');
+  td.append(rnProjects.fn.scmCheckmark(project, 'editorconfig'));
+  tr.append(td);
+}
+
+rnProjects.fn.appendPrTemplate = function(tr, project) {
+  if(!canDisplay(rnEnum.tblCol.PrTemplate)) { return; }
+  var td = document.createElement('td');
+  td.append(rnProjects.fn.scmCheckmark(project, 'pr_template'));
+  tr.append(td);
 }
 
 rnProjects.fn.appendLicense = function(tr, project) {
@@ -199,6 +215,43 @@ rnProjects.fn.appendLicense = function(tr, project) {
   
   tr.append(td);
 }
+
+rnProjects.fn.appendBadges = function(tr, project) {
+  if(!canDisplay(rnEnum.tblCol.Badges)) { return; }
+
+  var td = document.createElement('td');
+  td.append(rnProjects.fn.generateBadges(project));
+  tr.append(td);
+}
+
+rnProjects.fn.appendHasBuildScripts = function(tr, project) {
+  if(!canDisplay(rnEnum.tblCol.HasBuildScripts)) { return; }
+  var td = document.createElement('td');
+
+  if(!project.hasOwnProperty('cicd')) {
+    td.innerHTML = '❓';
+  } else {
+    td.innerHTML = project.cicd.hasBuildScripts ? "✔️" : "❌";
+  }
+  
+  tr.append(td);
+}
+
+rnProjects.fn.appendBuildScriptVersion = function(tr, project) {
+  if(!canDisplay(rnEnum.tblCol.BuildScriptsVersion)) { return; }
+  var td = document.createElement('td');
+
+  if(!project.hasOwnProperty('cicd')) {
+    td.innerHTML = '❓';
+  } else {
+    td.innerHTML = project.cicd.buildScriptsVersion;
+  }
+  
+  tr.append(td);
+}
+
+
+
 
 rnProjects.fn.scmCheckmark = function(project, property) {
   var span = document.createElement('span');
