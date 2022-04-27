@@ -101,7 +101,8 @@
   _rowFn.appendVisibility = function(tr, project) {
     if(!canDisplay(_colEnum.Visibility)) { return; }
     var td = document.createElement('td');
-    td.append(_html.boolPill(project.isPublic, 'public', 'private'));
+    td.innerHTML = project.isPublic ? _ascii.open : _ascii.locked;
+    td.className = project.isPublic ? 'vis-public' : 'vis-private';
     tr.append(td);
   }
 

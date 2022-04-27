@@ -97,6 +97,10 @@ table.overview {
   margin-right: 0;
 }
 
+.wrapper .projects table.overview td.vis-private {
+  background-color: #e9f6ad;
+}
+
 .wrapper .projects table.loading td {
   text-align: center;
 }

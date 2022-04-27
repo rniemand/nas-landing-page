@@ -24,21 +24,7 @@
     link.setAttribute('target', '_blank');
     return link;
   }
-
-  html.boolPill = function(value, txtTrue, txtFalse) {
-    var span = document.createElement('span');
   
-    if(!value) {
-      span.innerHTML = txtFalse;
-      span.className = 'pill-false';
-    } else {
-      span.innerHTML = txtTrue;
-      span.className = 'pill-true';
-    }
-  
-    return span;
-  }
-
   html.createLink = function(title, url) {
     if(!url) {
       var div = document.createElement('div');

@@ -44,7 +44,9 @@
     "tick": "✔️",
     "check": "✔️",
     "cross": "❌",
-    "folder": "📁"
+    "folder": "📁",
+    "open": "🔓",
+    "locked": "🔒"
   };
 
   global.rn.config = config;
