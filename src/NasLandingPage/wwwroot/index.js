@@ -1,57 +1,4 @@
-var rnEnum = {
-  tblCol: {
-    Name: 1,
-    Visibility: 2,
-    Code: 3,
-    Action: 4,
-    SonarQube: 5,
-    Badges: 6,
-    Readme: 7,
-    GitAttributes: 8,
-    EditorConfig: 9,
-    PrTemplate: 10,
-    License: 11,
-    HasBuildScripts: 12,
-    BuildScriptsVersion: 13
-  }
-};
 
-var rnProjects = {
-  el: {
-    tbl: document.getElementById('projects-table')
-  },
-  data: {},
-  fn: {},
-  config: {
-    sonarQubeBaseUrl: "http://niemandr.duckdns.org:9001"
-  },
-  urlKeys: [
-    'sonarQubeBaseUrl'
-  ],
-  columns: [
-    rnEnum.tblCol.Name,
-    rnEnum.tblCol.Visibility,
-    rnEnum.tblCol.Code,
-    rnEnum.tblCol.Action,
-    rnEnum.tblCol.SonarQube,
-    rnEnum.tblCol.Readme,
-    rnEnum.tblCol.GitAttributes,
-    rnEnum.tblCol.EditorConfig,
-    rnEnum.tblCol.PrTemplate,
-    rnEnum.tblCol.License,
-    rnEnum.tblCol.HasBuildScripts,
-    rnEnum.tblCol.BuildScriptsVersion,
-    rnEnum.tblCol.Badges,
-  ],
-  badges: [
-    'quality',
-    //'bugs',
-    //'codeSmells',
-    //'coverage',
-  ]
-};
-
-var rnHtml = {};
 
 var canDisplay = function(column) {
   if(rnProjects.columns.indexOf(column) === -1) {
@@ -60,27 +7,6 @@ var canDisplay = function(column) {
 
   return true;
 }
-
-rnHtml.createSpan = function(innerHtml) {
-  var span = document.createElement('span');
-  span.innerHTML = innerHtml;
-  return span;
-}
-
-rnHtml.createLink = function(title, url) {
-  if(!url) {
-    var div = document.createElement('div');
-    div.innerHTML = '-';
-    return div;
-  }
-
-  var link = document.createElement('a');
-  link.innerHTML = title;
-  link.href = rnProjects.fn.processUrl(url);
-  link.setAttribute('target', '_blank');
-  return link;
-}
-
 
 
 rnProjects.fn.generateTblHead = function() {
