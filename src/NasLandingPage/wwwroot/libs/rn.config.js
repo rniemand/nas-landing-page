@@ -18,13 +18,16 @@
     rn.enums.TableColumn.Action,
     rn.enums.TableColumn.SonarQube,
     rn.enums.TableColumn.Readme,
-    rn.enums.TableColumn.GitAttributes,
-    rn.enums.TableColumn.EditorConfig,
-    rn.enums.TableColumn.PrTemplate,
-    rn.enums.TableColumn.License,
-    rn.enums.TableColumn.HasBuildScripts,
-    rn.enums.TableColumn.BuildScriptsVersion,
+    //rn.enums.TableColumn.GitAttributes,
+    //rn.enums.TableColumn.EditorConfig,
+    //rn.enums.TableColumn.PrTemplate,
+    //rn.enums.TableColumn.License,
+    //rn.enums.TableColumn.HasBuildScripts,
+    //rn.enums.TableColumn.BuildScriptsVersion,
     rn.enums.TableColumn.GithubActions,
+    rn.enums.TableColumn.DirSrc,
+    rn.enums.TableColumn.DirTest,
+    rn.enums.TableColumn.DirDocs,
     rn.enums.TableColumn.Badges,
   ];
 
@@ -39,7 +42,8 @@
     "question": "❓",
     "tick": "✔️",
     "check": "✔️",
-    "cross": "❌"
+    "cross": "❌",
+    "folder": "📁"
   };
 
   global.rn.config = config;

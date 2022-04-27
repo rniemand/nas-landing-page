@@ -60,6 +60,9 @@
     _fn.appendTblHeadColumn(tr, 'Build', _colEnum.HasBuildScripts);
     _fn.appendTblHeadColumn(tr, '', _colEnum.BuildScriptsVersion);
     _fn.appendTblHeadColumn(tr, 'GH Actions', _colEnum.GithubActions);
+    _fn.appendTblHeadColumn(tr, `${_ascii.folder} src`, _colEnum.DirSrc);
+    _fn.appendTblHeadColumn(tr, `${_ascii.folder} test`, _colEnum.DirTest);
+    _fn.appendTblHeadColumn(tr, `${_ascii.folder} docs`, _colEnum.DirDocs);
     _fn.appendTblHeadColumn(tr, '', _colEnum.Badges);
 
     return tr;
@@ -97,6 +100,9 @@
     _rowFn.appendHasBuildScripts(tr, project);
     _rowFn.appendBuildScriptVersion(tr, project);
     _rowFn.appendGithubActions(tr, project);
+    _rowFn.appendDirExists(tr, project, _colEnum.DirSrc, 'src');
+    _rowFn.appendDirExists(tr, project, _colEnum.DirTest, 'test');
+    _rowFn.appendDirExists(tr, project, _colEnum.DirDocs, 'docs');
     _rowFn.appendBadges(tr, project);
   
     return tr;
@@ -227,9 +233,23 @@
     }
     
     td.innerHTML = tdValue;
-  
-    console.log(project.hasOwnProperty('cicd'))
+    tr.append(td);
+  }
+
+  _rowFn.appendDirExists = function(tr, project, enumDir, key) {
+    if(!canDisplay(enumDir)) { return; }
+    var td = document.createElement('td');
+    var tdValue = _ascii.cross;
+
+    if(project.hasOwnProperty('folderStructure')) {
+      if(project.folderStructure.hasOwnProperty(key)) {
+        if(project.folderStructure[key] === true) {
+          tdValue = _ascii.check;
+        }
+      }
+    }
     
+    td.innerHTML = tdValue;
     tr.append(td);
   }
 

@@ -19,7 +19,10 @@
     HasBuildScripts: 12,
     BuildScriptsVersion: 13,
     ProjectType: 14,
-    GithubActions: 15
+    GithubActions: 15,
+    DirSrc: 16,
+    DirTest: 17,
+    DirDocs: 18
   };
   
 }(window));

@@ -52,6 +52,11 @@
       "buildScriptsVersion": null,
       "buildScripts": [],
       "testScripts": []
+    },
+    "folderStructure": {
+      "src": true,
+      "test": false,
+      "docs": false
     }
   },
   {
@@ -77,6 +82,11 @@
       "buildScriptsVersion": null,
       "buildScripts": [],
       "testScripts": []
+    },
+    "folderStructure": {
+      "src": false,
+      "test": false,
+      "docs": false
     }
   },
   {
@@ -98,6 +108,11 @@
       "buildScriptsVersion": null,
       "buildScripts": [],
       "testScripts": []
+    },
+    "folderStructure": {
+      "src": true,
+      "test": false,
+      "docs": false
     }
   },
   {
@@ -119,6 +134,11 @@
       "buildScriptsVersion": null,
       "buildScripts": [],
       "testScripts": []
+    },
+    "folderStructure": {
+      "src": true,
+      "test": false,
+      "docs": false
     }
   },
   {
@@ -140,6 +160,11 @@
       "buildScriptsVersion": null,
       "buildScripts": [],
       "testScripts": []
+    },
+    "folderStructure": {
+      "src": false,
+      "test": false,
+      "docs": false
     }
   },
   {
@@ -169,6 +194,11 @@
       "buildScripts": ["./ci-build.ps1"],
       "testScripts": ["./ci-test.ps1"],
       "githubWorkflows": ["publish.yml"]
+    },
+    "folderStructure": {
+      "src": true,
+      "test": false,
+      "docs": false
     }
   },
   {
@@ -198,6 +228,11 @@
       "buildScripts": ["./ci-build.ps1"],
       "testScripts": ["./ci-test.ps1"],
       "githubWorkflows": ["publish.yml", "docker.yml"]
+    },
+    "folderStructure": {
+      "src": true,
+      "test": false,
+      "docs": false
     }
   },
   {
@@ -227,6 +262,11 @@
       "buildScripts": ["./ci-build.ps1"],
       "testScripts": ["./ci-test.ps1"],
       "githubWorkflows": ["publish.yml", "docker.yml"]
+    },
+    "folderStructure": {
+      "src": true,
+      "test": false,
+      "docs": false
     }
   },
   {
@@ -248,6 +288,11 @@
       "buildScriptsVersion": null,
       "buildScripts": [],
       "testScripts": []
+    },
+    "folderStructure": {
+      "src": true,
+      "test": false,
+      "docs": false
     }
   },
   {
@@ -269,6 +314,11 @@
       "buildScriptsVersion": null,
       "buildScripts": [],
       "testScripts": []
+    },
+    "folderStructure": {
+      "src": true,
+      "test": false,
+      "docs": false
     }
   },
   {
@@ -298,6 +348,11 @@
       "buildScripts": ["./ci-build.ps1"],
       "testScripts": ["./ci-test.ps1"],
       "githubWorkflows": ["publish.yml"]
+    },
+    "folderStructure": {
+      "src": true,
+      "test": false,
+      "docs": false
     }
   },
   {
@@ -319,6 +374,11 @@
       "buildScriptsVersion": null,
       "buildScripts": [],
       "testScripts": []
+    },
+    "folderStructure": {
+      "src": false,
+      "test": false,
+      "docs": false
     }
   },
   {
@@ -340,6 +400,11 @@
       "buildScriptsVersion": null,
       "buildScripts": [],
       "testScripts": []
+    },
+    "folderStructure": {
+      "src": true,
+      "test": false,
+      "docs": false
     }
   },
   {
@@ -369,6 +434,11 @@
       "buildScripts": ["./ci-build.ps1"],
       "testScripts": ["./ci-test.ps1"],
       "githubWorkflows": ["publish.yml", "docker.yml"]
+    },
+    "folderStructure": {
+      "src": true,
+      "test": false,
+      "docs": false
     }
   },
   {
@@ -390,6 +460,11 @@
       "buildScriptsVersion": null,
       "buildScripts": [],
       "testScripts": []
+    },
+    "folderStructure": {
+      "src": false,
+      "test": false,
+      "docs": false
     }
   },
   {
@@ -419,6 +494,11 @@
       "buildScripts": ["./ci-build.ps1"],
       "testScripts": ["./ci-test.ps1"],
       "githubWorkflows": ["publish.yml", "docker.yml"]
+    },
+    "folderStructure": {
+      "src": true,
+      "test": false,
+      "docs": false
     }
   },
   {
@@ -440,6 +520,11 @@
       "buildScriptsVersion": null,
       "buildScripts": [],
       "testScripts": []
+    },
+    "folderStructure": {
+      "src": false,
+      "test": false,
+      "docs": false
     }
   },
   {
@@ -469,6 +554,11 @@
       "buildScripts": ["./ci-build.ps1"],
       "testScripts": ["./ci-test.ps1"],
       "githubWorkflows": ["publish.yml", "docker.yml"]
+    },
+    "folderStructure": {
+      "src": true,
+      "test": false,
+      "docs": false
     }
   },
   {
@@ -498,6 +588,11 @@
       "buildScripts": ["./ci-build.ps1"],
       "testScripts": ["./ci-test.ps1"],
       "githubWorkflows": ["sonarqube.yml", "docker.yml"]
+    },
+    "folderStructure": {
+      "src": true,
+      "test": true,
+      "docs": false
     }
   },
   {
@@ -526,6 +621,11 @@
       "buildScripts": ["./ci-build.ps1"],
       "testScripts": ["./ci-test.ps1"],
       "githubWorkflows": ["publish.yml", "docker.yml"]
+    },
+    "folderStructure": {
+      "src": true,
+      "test": false,
+      "docs": false
     }
   },
   {
@@ -555,6 +655,11 @@
       "buildScripts": ["./ci-build.ps1"],
       "testScripts": ["./ci-test.ps1"],
       "githubWorkflows": ["publish.yml", "docker.yml"]
+    },
+    "folderStructure": {
+      "src": true,
+      "test": true,
+      "docs": false
     }
   },
   {
@@ -576,6 +681,11 @@
       "buildScriptsVersion": null,
       "buildScripts": [],
       "testScripts": []
+    },
+    "folderStructure": {
+      "src": true,
+      "test": false,
+      "docs": false
     }
   },
   {
@@ -601,6 +711,11 @@
       "buildScripts": [],
       "testScripts": [],
       "githubWorkflows": ["release.yml"]
+    },
+    "folderStructure": {
+      "src": true,
+      "test": false,
+      "docs": false
     }
   },
   {
@@ -622,6 +737,11 @@
       "buildScriptsVersion": null,
       "buildScripts": [],
       "testScripts": []
+    },
+    "folderStructure": {
+      "src": true,
+      "test": false,
+      "docs": false
     }
   },
   {
@@ -651,6 +771,11 @@
       "buildScripts": ["./ci-build.ps1"],
       "testScripts": ["./ci-test.ps1"],
       "githubWorkflows": ["publish.yml"]
+    },
+    "folderStructure": {
+      "src": true,
+      "test": false,
+      "docs": false
     }
   },
   {
@@ -680,6 +805,11 @@
       "buildScripts": ["./ci-build.ps1"],
       "testScripts": ["./ci-test.ps1"],
       "githubWorkflows": ["publish.yml"]
+    },
+    "folderStructure": {
+      "src": true,
+      "test": false,
+      "docs": false
     }
   },
   {
@@ -709,6 +839,11 @@
       "buildScripts": ["./ci-build.ps1"],
       "testScripts": ["./ci-test.ps1"],
       "githubWorkflows": ["publish.yml"]
+    },
+    "folderStructure": {
+      "src": true,
+      "test": false,
+      "docs": false
     }
   },
   {
@@ -738,6 +873,11 @@
       "buildScripts": ["./ci-build.ps1"],
       "testScripts": ["./ci-test.ps1"],
       "githubWorkflows": ["publish.yml"]
+    },
+    "folderStructure": {
+      "src": true,
+      "test": false,
+      "docs": false
     }
   },
   {
@@ -767,6 +907,11 @@
       "buildScripts": ["./ci-build.ps1"],
       "testScripts": ["./ci-test.ps1"],
       "githubWorkflows": ["publish.yml"]
+    },
+    "folderStructure": {
+      "src": true,
+      "test": false,
+      "docs": false
     }
   },
   {
@@ -796,6 +941,11 @@
       "buildScripts": ["./ci-build.ps1"],
       "testScripts": ["./ci-test.ps1"],
       "githubWorkflows": ["publish.yml"]
+    },
+    "folderStructure": {
+      "src": true,
+      "test": false,
+      "docs": false
     }
   },
   {
@@ -825,6 +975,11 @@
       "buildScripts": ["./ci-build.ps1"],
       "testScripts": ["./ci-test.ps1"],
       "githubWorkflows": ["publish.yml"]
+    },
+    "folderStructure": {
+      "src": true,
+      "test": false,
+      "docs": false
     }
   },
   {
@@ -854,6 +1009,11 @@
       "buildScripts": ["./ci-build.ps1"],
       "testScripts": ["./ci-test.ps1"],
       "githubWorkflows": ["publish.yml"]
+    },
+    "folderStructure": {
+      "src": true,
+      "test": false,
+      "docs": false
     }
   },
   {
@@ -883,6 +1043,11 @@
       "buildScripts": ["./ci-build.ps1"],
       "testScripts": ["./ci-test.ps1"],
       "githubWorkflows": ["publish.yml"]
+    },
+    "folderStructure": {
+      "src": true,
+      "test": false,
+      "docs": false
     }
   },
   {
@@ -912,6 +1077,11 @@
       "buildScripts": ["./ci-build.ps1"],
       "testScripts": ["./ci-test.ps1"],
       "githubWorkflows": ["docker.yml", "sonarqube.yml"]
+    },
+    "folderStructure": {
+      "src": true,
+      "test": false,
+      "docs": false
     }
   },
   {
@@ -936,6 +1106,11 @@
       "buildScripts": [],
       "testScripts": [],
       "githubWorkflows": ["docker-image.yml"]
+    },
+    "folderStructure": {
+      "src": false,
+      "test": false,
+      "docs": false
     }
   },
   {
@@ -965,6 +1140,11 @@
       "buildScripts": ["./ci-build.ps1"],
       "testScripts": ["./ci-test.ps1"],
       "githubWorkflows": ["docker.yml", "sonarqube.yml"]
+    },
+    "folderStructure": {
+      "src": true,
+      "test": false,
+      "docs": false
     }
   },
   {
@@ -992,6 +1172,11 @@
       "buildScriptsVersion": null,
       "buildScripts": [],
       "testScripts": []
+    },
+    "folderStructure": {
+      "src": false,
+      "test": false,
+      "docs": false
     }
   },
   {
@@ -1015,6 +1200,11 @@
       "buildScriptsVersion": null,
       "buildScripts": [],
       "testScripts": []
+    },
+    "folderStructure": {
+      "src": true,
+      "test": false,
+      "docs": false
     }
   },
   {
@@ -1044,6 +1234,11 @@
       "buildScripts": ["./ci-build.ps1"],
       "testScripts": ["./ci-test.ps1"],
       "githubWorkflows": ["docker.yml", "sonarqube.yml"]
+    },
+    "folderStructure": {
+      "src": true,
+      "test": false,
+      "docs": false
     }
   },
   {
@@ -1067,6 +1262,11 @@
       "buildScriptsVersion": null,
       "buildScripts": [],
       "testScripts": []
+    },
+    "folderStructure": {
+      "src": false,
+      "test": false,
+      "docs": false
     }
   },
   {
@@ -1090,6 +1290,11 @@
       "buildScriptsVersion": null,
       "buildScripts": [],
       "testScripts": []
+    },
+    "folderStructure": {
+      "src": false,
+      "test": false,
+      "docs": false
     }
   },
   {
@@ -1113,6 +1318,11 @@
       "buildScriptsVersion": null,
       "buildScripts": [],
       "testScripts": []
+    },
+    "folderStructure": {
+      "src": false,
+      "test": false,
+      "docs": false
     }
   },
   {
@@ -1136,6 +1346,11 @@
       "buildScriptsVersion": null,
       "buildScripts": [],
       "testScripts": []
+    },
+    "folderStructure": {
+      "src": false,
+      "test": false,
+      "docs": false
     }
   },
   {
@@ -1165,6 +1380,11 @@
       "buildScripts": ["./ci-build.ps1"],
       "testScripts": ["./ci-test.ps1"],
       "githubWorkflows": ["docker.yml", "sonarqube.yml"]
+    },
+    "folderStructure": {
+      "src": true,
+      "test": false,
+      "docs": true
     }
   },
   {
@@ -1188,6 +1408,11 @@
       "buildScriptsVersion": null,
       "buildScripts": [],
       "testScripts": []
+    },
+    "folderStructure": {
+      "src": true,
+      "test": false,
+      "docs": false
     }
   }
 ]
