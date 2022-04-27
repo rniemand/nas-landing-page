@@ -10,7 +10,7 @@
     "sourceCodeMaturity": {
       "readme": true,
       "gitattributes": false,
-      "editorconfig": false
+      "pr_template": false
     }
   },
   {
@@ -24,7 +24,7 @@
     "sourceCodeMaturity": {
       "readme": false,
       "gitattributes": false,
-      "editorconfig": false
+      "pr_template": false
     }
   },
   {
@@ -38,7 +38,7 @@
     "sourceCodeMaturity": {
       "readme": false,
       "gitattributes": false,
-      "editorconfig": false
+      "pr_template": false
     }
   },
   {
@@ -52,7 +52,7 @@
     "sourceCodeMaturity": {
       "readme": true,
       "gitattributes": false,
-      "editorconfig": false
+      "pr_template": false
     }
   },
   {
@@ -66,7 +66,7 @@
     "sourceCodeMaturity": {
       "readme": false,
       "gitattributes": false,
-      "editorconfig": false
+      "pr_template": false
     }
   },
   {
@@ -80,7 +80,8 @@
     "sourceCodeMaturity": {
       "readme": false,
       "gitattributes": true,
-      "editorconfig": false
+
+      "pr_template": false
     }
   },
   {
@@ -101,7 +102,8 @@
     "sourceCodeMaturity": {
       "readme": false,
       "gitattributes": false,
-      "editorconfig": false
+
+      "pr_template": false
     }
   },
   {
@@ -122,7 +124,7 @@
     "sourceCodeMaturity": {
       "readme": false,
       "gitattributes": false,
-      "editorconfig": false
+      "pr_template": false
     }
   },
   {
@@ -143,7 +145,8 @@
     "sourceCodeMaturity": {
       "readme": false,
       "gitattributes": true,
-      "editorconfig": true
+      "editorconfig": true,
+      "pr_template": true
     }
   },
   {
@@ -157,7 +160,7 @@
     "sourceCodeMaturity": {
       "readme": false,
       "gitattributes": false,
-      "editorconfig": false
+      "pr_template": false
     }
   },
   {
@@ -171,7 +174,8 @@
     "sourceCodeMaturity": {
       "readme": false,
       "gitattributes": false,
-      "editorconfig": false
+
+      "pr_template": false
     }
   },
   {
@@ -192,7 +196,8 @@
     "sourceCodeMaturity": {
       "readme": false,
       "gitattributes": false,
-      "editorconfig": false
+
+      "pr_template": false
     }
   },
   {
@@ -206,7 +211,8 @@
     "sourceCodeMaturity": {
       "readme": false,
       "gitattributes": false,
-      "editorconfig": false
+
+      "pr_template": false
     }
   },
   {
@@ -220,7 +226,8 @@
     "sourceCodeMaturity": {
       "readme": false,
       "gitattributes": false,
-      "editorconfig": false
+
+      "pr_template": false
     }
   },
   {
@@ -241,7 +248,8 @@
     "sourceCodeMaturity": {
       "readme": false,
       "gitattributes": false,
-      "editorconfig": false
+
+      "pr_template": false
     }
   },
   {
@@ -255,7 +263,8 @@
     "sourceCodeMaturity": {
       "readme": false,
       "gitattributes": false,
-      "editorconfig": false
+
+      "pr_template": false
     }
   },
   {
@@ -276,7 +285,8 @@
     "sourceCodeMaturity": {
       "readme": true,
       "gitattributes": false,
-      "editorconfig": false
+
+      "pr_template": false
     }
   },
   {
@@ -290,7 +300,8 @@
     "sourceCodeMaturity": {
       "readme": false,
       "gitattributes": false,
-      "editorconfig": false
+
+      "pr_template": false
     }
   },
   {
@@ -311,7 +322,8 @@
     "sourceCodeMaturity": {
       "readme": false,
       "gitattributes": false,
-      "editorconfig": false
+
+      "pr_template": false
     }
   },
   {
@@ -332,7 +344,8 @@
     "sourceCodeMaturity": {
       "readme": true,
       "gitattributes": false,
-      "editorconfig": false
+
+      "pr_template": false
     }
   },
   {
@@ -388,7 +401,8 @@
     "sourceCodeMaturity": {
       "readme": false,
       "gitattributes": false,
-      "editorconfig": false
+
+      "pr_template": false
     }
   },
   {
@@ -416,7 +430,8 @@
     "sourceCodeMaturity": {
       "readme": false,
       "gitattributes": false,
-      "editorconfig": false
+
+      "pr_template": false
     }
   },
   {
@@ -437,7 +452,8 @@
     "sourceCodeMaturity": {
       "readme": false,
       "gitattributes": false,
-      "editorconfig": false
+
+      "pr_template": false
     }
   },
   {
@@ -458,7 +474,8 @@
     "sourceCodeMaturity": {
       "readme": false,
       "gitattributes": false,
-      "editorconfig": false
+
+      "pr_template": false
     }
   },
   {
@@ -479,7 +496,8 @@
     "sourceCodeMaturity": {
       "readme": false,
       "gitattributes": false,
-      "editorconfig": false
+
+      "pr_template": false
     }
   },
   {
@@ -500,7 +518,8 @@
     "sourceCodeMaturity": {
       "readme": false,
       "gitattributes": false,
-      "editorconfig": false
+
+      "pr_template": false
     }
   },
   {
@@ -521,7 +540,8 @@
     "sourceCodeMaturity": {
       "readme": false,
       "gitattributes": false,
-      "editorconfig": false
+
+      "pr_template": false
     }
   },
   {
@@ -542,7 +562,8 @@
     "sourceCodeMaturity": {
       "readme": false,
       "gitattributes": false,
-      "editorconfig": false
+
+      "pr_template": false
     }
   },
   {
@@ -563,7 +584,8 @@
     "sourceCodeMaturity": {
       "readme": false,
       "gitattributes": false,
-      "editorconfig": false
+
+      "pr_template": false
     }
   },
   {
@@ -584,7 +606,8 @@
     "sourceCodeMaturity": {
       "readme": false,
       "gitattributes": false,
-      "editorconfig": false
+
+      "pr_template": false
     }
   },
   {
@@ -605,7 +628,8 @@
     "sourceCodeMaturity": {
       "readme": false,
       "gitattributes": false,
-      "editorconfig": false
+
+      "pr_template": false
     }
   },
   {
@@ -626,7 +650,8 @@
     "sourceCodeMaturity": {
       "readme": false,
       "gitattributes": false,
-      "editorconfig": false
+
+      "pr_template": false
     }
   },
   {
@@ -642,7 +667,8 @@
     "sourceCodeMaturity": {
       "readme": true,
       "gitattributes": false,
-      "editorconfig": false
+
+      "pr_template": false
     }
   },
   {
@@ -663,7 +689,8 @@
     "sourceCodeMaturity": {
       "readme": false,
       "gitattributes": false,
-      "editorconfig": false
+
+      "pr_template": false
     }
   },
   {
@@ -679,7 +706,8 @@
     "sourceCodeMaturity": {
       "readme": true,
       "gitattributes": false,
-      "editorconfig": false
+
+      "pr_template": false
     }
   },
   {
@@ -695,7 +723,8 @@
     "sourceCodeMaturity": {
       "readme": false,
       "gitattributes": false,
-      "editorconfig": false
+
+      "pr_template": false
     }
   },
   {
@@ -716,7 +745,8 @@
     "sourceCodeMaturity": {
       "readme": false,
       "gitattributes": false,
-      "editorconfig": false
+
+      "pr_template": false
     }
   },
   {
@@ -732,7 +762,8 @@
     "sourceCodeMaturity": {
       "readme": true,
       "gitattributes": false,
-      "editorconfig": false
+
+      "pr_template": false
     }
   },
   {
@@ -748,7 +779,8 @@
     "sourceCodeMaturity": {
       "readme": false,
       "gitattributes": false,
-      "editorconfig": false
+
+      "pr_template": false
     }
   },
   {
@@ -764,7 +796,8 @@
     "sourceCodeMaturity": {
       "readme": true,
       "gitattributes": false,
-      "editorconfig": false
+
+      "pr_template": false
     }
   },
   {
@@ -780,7 +813,8 @@
     "sourceCodeMaturity": {
       "readme": false,
       "gitattributes": false,
-      "editorconfig": false
+
+      "pr_template": false
     }
   },
   {
@@ -801,7 +835,8 @@
     "sourceCodeMaturity": {
       "readme": false,
       "gitattributes": false,
-      "editorconfig": false
+
+      "pr_template": false
     }
   },
   {
@@ -817,7 +852,8 @@
     "sourceCodeMaturity": {
       "readme": false,
       "gitattributes": false,
-      "editorconfig": false
+
+      "pr_template": false
     }
   }
 ]

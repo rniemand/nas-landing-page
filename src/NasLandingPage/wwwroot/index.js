@@ -8,7 +8,8 @@ var rnEnum = {
     Badges: 6,
     Readme: 7,
     GitAttributes: 8,
-    EditorConfig: 9
+    EditorConfig: 9,
+    PrTemplate: 10
   }
 };
 
@@ -31,8 +32,9 @@ var rnProjects = {
     rnEnum.tblCol.Action,
     rnEnum.tblCol.SonarQube,
     //rnEnum.tblCol.Readme,
-    rnEnum.tblCol.GitAttributes,
-    rnEnum.tblCol.EditorConfig,
+    //rnEnum.tblCol.GitAttributes,
+    //rnEnum.tblCol.EditorConfig,
+    rnEnum.tblCol.PrTemplate,
     rnEnum.tblCol.Badges,
   ],
   badges: [
@@ -65,6 +67,7 @@ rnProjects.fn.generateTblHead = function() {
   rnProjects.fn.appendTblHeadColumn(tr, 'Readme', rnEnum.tblCol.Readme);
   rnProjects.fn.appendTblHeadColumn(tr, '.gitattr', rnEnum.tblCol.GitAttributes);
   rnProjects.fn.appendTblHeadColumn(tr, '.editcfg', rnEnum.tblCol.EditorConfig);
+  rnProjects.fn.appendTblHeadColumn(tr, 'PR', rnEnum.tblCol.PrTemplate);
   rnProjects.fn.appendTblHeadColumn(tr, '', rnEnum.tblCol.Badges);
 
   return tr;
@@ -123,6 +126,12 @@ rnProjects.fn.generateTblRow = function(project) {
   if(rnProjects.columns.indexOf(rnEnum.tblCol.EditorConfig) !== -1) {
     currentTd = document.createElement('td');
     currentTd.append(rnProjects.fn.scmCheckmark(project, 'editorconfig'));
+    tr.append(currentTd);
+  }
+
+  if(rnProjects.columns.indexOf(rnEnum.tblCol.PrTemplate) !== -1) {
+    currentTd = document.createElement('td');
+    currentTd.append(rnProjects.fn.scmCheckmark(project, 'pr_template'));
     tr.append(currentTd);
   }
 
