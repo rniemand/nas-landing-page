@@ -2,6 +2,7 @@ using NasLandingPage.Services;
 using NLog;
 using NLog.Web;
 using Rn.NetCore.Common.Abstractions;
+using Rn.NetCore.Common.Helpers;
 using Rn.NetCore.Common.Logging;
 
 // https://github.com/NLog/NLog/wiki/Getting-started-with-ASP.NET-Core-6
@@ -22,6 +23,8 @@ try
     .AddSingleton<IEnvironmentAbstraction, EnvironmentAbstraction>()
 
     .AddSingleton(typeof(ILoggerAdapter<>), typeof(LoggerAdapter<>))
+
+    .AddSingleton<IJsonHelper, JsonHelper>()
 
     .AddSingleton<IProjectsService, ProjectsService>();
 
