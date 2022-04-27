@@ -42,6 +42,10 @@
       "gitattributes": false,
       "pr_template": false,
       "editorconfig": false
+    },
+    "license": {
+      "name": "MIT",
+      "url": "https://github.com/rniemand/ArduinoProjects/blob/master/LICENSE"
     }
   },
   {
@@ -424,6 +428,10 @@
       "readme": true,
       "gitattributes": false,
       "editorconfig": true
+    },
+    "license": {
+      "name": "MIT",
+      "url": "https://github.com/rniemand/rn-angular-core/blob/master/LICENSE"
     }
   },
   {
@@ -715,6 +723,10 @@
       "gitattributes": false,
       "pr_template": false,
       "editorconfig": false
+    },
+    "license": {
+      "name": "MIT",
+      "url": "https://github.com/rniemand/SerialTester/blob/master/LICENSE"
     }
   },
   {

@@ -9,7 +9,8 @@ var rnEnum = {
     Readme: 7,
     GitAttributes: 8,
     EditorConfig: 9,
-    PrTemplate: 10
+    PrTemplate: 10,
+    License: 11
   }
 };
 
@@ -35,6 +36,7 @@ var rnProjects = {
     //rnEnum.tblCol.GitAttributes,
     rnEnum.tblCol.EditorConfig,
     rnEnum.tblCol.PrTemplate,
+    rnEnum.tblCol.License,
     rnEnum.tblCol.Badges,
   ],
   badges: [
@@ -45,6 +47,35 @@ var rnProjects = {
   ]
 };
 
+var rnHtml = {};
+
+var canDisplay = function(column) {
+  if(rnProjects.columns.indexOf(column) === -1) {
+    return false;
+  }
+
+  return true;
+}
+
+rnHtml.createSpan = function(innerHtml) {
+  var span = document.createElement('span');
+  span.innerHTML = innerHtml;
+  return span;
+}
+
+rnHtml.createLink = function(title, url) {
+  if(!url) {
+    var div = document.createElement('div');
+    div.innerHTML = '-';
+    return div;
+  }
+
+  var link = document.createElement('a');
+  link.innerHTML = title;
+  link.href = rnProjects.fn.processUrl(url);
+  link.setAttribute('target', '_blank');
+  return link;
+}
 
 rnProjects.fn.appendTblHeadColumn = function(tr, name, colEnum) {
   if(rnProjects.columns.indexOf(colEnum) === -1) {
@@ -68,6 +99,7 @@ rnProjects.fn.generateTblHead = function() {
   rnProjects.fn.appendTblHeadColumn(tr, '.gitattr', rnEnum.tblCol.GitAttributes);
   rnProjects.fn.appendTblHeadColumn(tr, '.editcfg', rnEnum.tblCol.EditorConfig);
   rnProjects.fn.appendTblHeadColumn(tr, 'PR', rnEnum.tblCol.PrTemplate);
+  rnProjects.fn.appendTblHeadColumn(tr, 'License', rnEnum.tblCol.License);
   rnProjects.fn.appendTblHeadColumn(tr, '', rnEnum.tblCol.Badges);
 
   return tr;
@@ -135,6 +167,8 @@ rnProjects.fn.generateTblRow = function(project) {
     tr.append(currentTd);
   }
 
+  rnProjects.fn.appendLicense(tr, project);
+
   if(rnProjects.columns.indexOf(rnEnum.tblCol.Badges) !== -1) {
     currentTd = document.createElement('td');
     currentTd.append(rnProjects.fn.generateBadges(project));
@@ -142,6 +176,28 @@ rnProjects.fn.generateTblRow = function(project) {
   }
   
   return tr;
+}
+
+
+
+rnProjects.fn.createSpan = function(innerHtml) {
+  var span = document.createElement('span');
+  span.innerHTML = innerHtml;
+  return span;
+}
+
+rnProjects.fn.appendLicense = function(tr, project) {
+  if(!canDisplay(rnEnum.tblCol.License)) { return; }
+  var td = document.createElement('td');
+  td.className = 'license';
+
+  if(!project.hasOwnProperty('license')) {
+    td.innerHTML = '❌';
+  } else {
+    td.append(rnHtml.createLink(project.license.name, project.license.url));
+  }
+  
+  tr.append(td);
 }
 
 rnProjects.fn.scmCheckmark = function(project, property) {

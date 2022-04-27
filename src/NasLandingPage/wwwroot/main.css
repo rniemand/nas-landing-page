@@ -149,6 +149,13 @@ table.overview {
   text-align: center;
 }
 
+.wrapper .projects table.overview td.license a {
+  color: #2a408d;
+  font-weight: bold;
+  cursor: pointer;
+  text-decoration: none;
+}
+
 /* ========================================================================================== */
 .wrapper {
   padding: 2px;
