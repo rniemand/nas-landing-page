@@ -1,7 +1,6 @@
 (function(global) {
   global.rn = global.rn || {};
   global.rn.config = global.rn.config || {
-    data: {},
     fn: {},
     config: {
       sonarQubeBaseUrl: "http://niemandr.duckdns.org:9001"
