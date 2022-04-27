@@ -1,7 +1,7 @@
-
+console.log(rn);
 
 var canDisplay = function(column) {
-  if(rnProjects.columns.indexOf(column) === -1) {
+  if(rn.config.columns.indexOf(column) === -1) {
     return false;
   }
 
@@ -9,50 +9,50 @@ var canDisplay = function(column) {
 }
 
 
-rnProjects.fn.generateTblHead = function() {
+rn.config.fn.generateTblHead = function() {
   var tr = document.createElement('tr');
   
-  rnProjects.fn.appendTblHeadColumn(tr, 'Name', rn.enums.TableColumn.Name);
-  rnProjects.fn.appendTblHeadColumn(tr, '', rn.enums.TableColumn.Visibility);
-  rnProjects.fn.appendTblHeadColumn(tr, 'Code', rn.enums.TableColumn.Code);
-  rnProjects.fn.appendTblHeadColumn(tr, 'Action', rn.enums.TableColumn.Action);
-  rnProjects.fn.appendTblHeadColumn(tr, 'SonarQube', rn.enums.TableColumn.SonarQube);
-  rnProjects.fn.appendTblHeadColumn(tr, 'Readme', rn.enums.TableColumn.Readme);
-  rnProjects.fn.appendTblHeadColumn(tr, '.gitattr', rn.enums.TableColumn.GitAttributes);
-  rnProjects.fn.appendTblHeadColumn(tr, '.editcfg', rn.enums.TableColumn.EditorConfig);
-  rnProjects.fn.appendTblHeadColumn(tr, 'PR', rn.enums.TableColumn.PrTemplate);
-  rnProjects.fn.appendTblHeadColumn(tr, 'License', rn.enums.TableColumn.License);
-  rnProjects.fn.appendTblHeadColumn(tr, 'Build', rn.enums.TableColumn.HasBuildScripts);
-  rnProjects.fn.appendTblHeadColumn(tr, '', rn.enums.TableColumn.BuildScriptsVersion);
-  rnProjects.fn.appendTblHeadColumn(tr, '', rn.enums.TableColumn.Badges);
+  rn.config.fn.appendTblHeadColumn(tr, 'Name', rn.enums.TableColumn.Name);
+  rn.config.fn.appendTblHeadColumn(tr, '', rn.enums.TableColumn.Visibility);
+  rn.config.fn.appendTblHeadColumn(tr, 'Code', rn.enums.TableColumn.Code);
+  rn.config.fn.appendTblHeadColumn(tr, 'Action', rn.enums.TableColumn.Action);
+  rn.config.fn.appendTblHeadColumn(tr, 'SonarQube', rn.enums.TableColumn.SonarQube);
+  rn.config.fn.appendTblHeadColumn(tr, 'Readme', rn.enums.TableColumn.Readme);
+  rn.config.fn.appendTblHeadColumn(tr, '.gitattr', rn.enums.TableColumn.GitAttributes);
+  rn.config.fn.appendTblHeadColumn(tr, '.editcfg', rn.enums.TableColumn.EditorConfig);
+  rn.config.fn.appendTblHeadColumn(tr, 'PR', rn.enums.TableColumn.PrTemplate);
+  rn.config.fn.appendTblHeadColumn(tr, 'License', rn.enums.TableColumn.License);
+  rn.config.fn.appendTblHeadColumn(tr, 'Build', rn.enums.TableColumn.HasBuildScripts);
+  rn.config.fn.appendTblHeadColumn(tr, '', rn.enums.TableColumn.BuildScriptsVersion);
+  rn.config.fn.appendTblHeadColumn(tr, '', rn.enums.TableColumn.Badges);
 
   return tr;
 }
 
-rnProjects.fn.generateTblRow = function(project) {
+rn.config.fn.generateTblRow = function(project) {
   var tr = document.createElement('tr');
   
-  rnProjects.fn.appendName(tr, project);
-  rnProjects.fn.appendVisibility(tr, project);
-  rnProjects.fn.appendSourceCode(tr, project);
-  rnProjects.fn.appendAction(tr, project);
-  rnProjects.fn.appendSonarQube(tr, project);
-  rnProjects.fn.appendReadme(tr, project);
-  rnProjects.fn.appendGitAttributes(tr, project);
-  rnProjects.fn.appendEditorConfig(tr, project);
-  rnProjects.fn.appendPrTemplate(tr, project);
-  rnProjects.fn.appendLicense(tr, project);
-  rnProjects.fn.appendHasBuildScripts(tr, project);
-  rnProjects.fn.appendBuildScriptVersion(tr, project);
-  rnProjects.fn.appendBadges(tr, project);
+  rn.config.fn.appendName(tr, project);
+  rn.config.fn.appendVisibility(tr, project);
+  rn.config.fn.appendSourceCode(tr, project);
+  rn.config.fn.appendAction(tr, project);
+  rn.config.fn.appendSonarQube(tr, project);
+  rn.config.fn.appendReadme(tr, project);
+  rn.config.fn.appendGitAttributes(tr, project);
+  rn.config.fn.appendEditorConfig(tr, project);
+  rn.config.fn.appendPrTemplate(tr, project);
+  rn.config.fn.appendLicense(tr, project);
+  rn.config.fn.appendHasBuildScripts(tr, project);
+  rn.config.fn.appendBuildScriptVersion(tr, project);
+  rn.config.fn.appendBadges(tr, project);
 
   return tr;
 }
 
 
 
-rnProjects.fn.appendTblHeadColumn = function(tr, name, colEnum) {
-  if(rnProjects.columns.indexOf(colEnum) === -1) {
+rn.config.fn.appendTblHeadColumn = function(tr, name, colEnum) {
+  if(rn.config.columns.indexOf(colEnum) === -1) {
     return;
   }
 
@@ -61,7 +61,7 @@ rnProjects.fn.appendTblHeadColumn = function(tr, name, colEnum) {
   tr.append(td);
 }
 
-rnProjects.fn.appendName = function(tr, project) {
+rn.config.fn.appendName = function(tr, project) {
   if(!canDisplay(rn.enums.TableColumn.Name)) { return; }
   var td = document.createElement('td');
   td.innerHTML = project.name;
@@ -69,66 +69,66 @@ rnProjects.fn.appendName = function(tr, project) {
   tr.append(td);
 }
 
-rnProjects.fn.appendVisibility = function(tr, project) {
+rn.config.fn.appendVisibility = function(tr, project) {
   if(!canDisplay(rn.enums.TableColumn.Visibility)) { return; }
   var td = document.createElement('td');
-  td.append(rnProjects.fn.boolPill(project.isPublic, 'public', 'private'));
+  td.append(rn.config.fn.boolPill(project.isPublic, 'public', 'private'));
   tr.append(td);
 }
 
-rnProjects.fn.appendSourceCode = function(tr, project) {
+rn.config.fn.appendSourceCode = function(tr, project) {
   if(!canDisplay(rn.enums.TableColumn.Code)) { return; }
   var td = document.createElement('td');
   td.className = 'code';
-  td.append(rnProjects.fn.createLink(project.repoType, project.repoUrl));
+  td.append(rn.config.fn.createLink(project.repoType, project.repoUrl));
   tr.append(td);
 }
 
-rnProjects.fn.appendAction = function(tr, project) {
+rn.config.fn.appendAction = function(tr, project) {
   if(!canDisplay(rn.enums.TableColumn.SonarQube)) { return; }
   var td = document.createElement('td');
   td.className = 'actions';
-  td.append(rnProjects.fn.createLink('actions', project.actionsUrl));
+  td.append(rn.config.fn.createLink('actions', project.actionsUrl));
   tr.append(td);
 }
 
-rnProjects.fn.appendSonarQube = function(tr, project) {
+rn.config.fn.appendSonarQube = function(tr, project) {
   if(!canDisplay(rn.enums.TableColumn.SonarQube)) { return; }
   var td = document.createElement('td');
   td.className = 'sonarqube';
-  td.append(rnProjects.fn.createLink('SonarQube', project.sonarQubeUrl));
+  td.append(rn.config.fn.createLink('SonarQube', project.sonarQubeUrl));
   tr.append(td);
 }
 
-rnProjects.fn.appendReadme = function(tr, project) {
+rn.config.fn.appendReadme = function(tr, project) {
   if(!canDisplay(rn.enums.TableColumn.Readme)) { return; }
   var td = document.createElement('td');
-  td.append(rnProjects.fn.scmCheckmark(project, 'readme'));
+  td.append(rn.config.fn.scmCheckmark(project, 'readme'));
   tr.append(td);
 }
 
-rnProjects.fn.appendGitAttributes = function(tr, project) {
+rn.config.fn.appendGitAttributes = function(tr, project) {
   if(!canDisplay(rn.enums.TableColumn.GitAttributes)) { return; }
   var td = document.createElement('td');
-  td.append(rnProjects.fn.scmCheckmark(project, 'gitattributes'));
+  td.append(rn.config.fn.scmCheckmark(project, 'gitattributes'));
   tr.append(td);
 }
 
-rnProjects.fn.appendEditorConfig = function(tr, project) {
+rn.config.fn.appendEditorConfig = function(tr, project) {
   if(!canDisplay(rn.enums.TableColumn.EditorConfig)) { return; }
   var td = document.createElement('td');
-  td.append(rnProjects.fn.scmCheckmark(project, 'editorconfig'));
+  td.append(rn.config.fn.scmCheckmark(project, 'editorconfig'));
   tr.append(td);
 }
 
-rnProjects.fn.appendPrTemplate = function(tr, project) {
+rn.config.fn.appendPrTemplate = function(tr, project) {
   if(!canDisplay(rn.enums.TableColumn.PrTemplate)) { return; }
   var td = document.createElement('td');
-  td.append(rnProjects.fn.scmCheckmark(project, 'pr_template'));
+  td.append(rn.config.fn.scmCheckmark(project, 'pr_template'));
   tr.append(td);
 }
 
-rnProjects.fn.appendLicense = function(tr, project) {
+rn.config.fn.appendLicense = function(tr, project) {
   if(!canDisplay(rn.enums.TableColumn.License)) { return; }
   var td = document.createElement('td');
   td.className = 'license';
@@ -142,15 +142,15 @@ rnProjects.fn.appendLicense = function(tr, project) {
   tr.append(td);
 }
 
-rnProjects.fn.appendBadges = function(tr, project) {
+rn.config.fn.appendBadges = function(tr, project) {
   if(!canDisplay(rn.enums.TableColumn.Badges)) { return; }
 
   var td = document.createElement('td');
-  td.append(rnProjects.fn.generateBadges(project));
+  td.append(rn.config.fn.generateBadges(project));
   tr.append(td);
 }
 
-rnProjects.fn.appendHasBuildScripts = function(tr, project) {
+rn.config.fn.appendHasBuildScripts = function(tr, project) {
   if(!canDisplay(rn.enums.TableColumn.HasBuildScripts)) { return; }
   var td = document.createElement('td');
 
@@ -163,7 +163,7 @@ rnProjects.fn.appendHasBuildScripts = function(tr, project) {
   tr.append(td);
 }
 
-rnProjects.fn.appendBuildScriptVersion = function(tr, project) {
+rn.config.fn.appendBuildScriptVersion = function(tr, project) {
   if(!canDisplay(rn.enums.TableColumn.BuildScriptsVersion)) { return; }
   var td = document.createElement('td');
 
@@ -179,7 +179,7 @@ rnProjects.fn.appendBuildScriptVersion = function(tr, project) {
 
 
 
-rnProjects.fn.scmCheckmark = function(project, property) {
+rn.config.fn.scmCheckmark = function(project, property) {
   var span = document.createElement('span');
   var isTrue = false;
 
@@ -192,21 +192,21 @@ rnProjects.fn.scmCheckmark = function(project, property) {
   return span;
 }
 
-rnProjects.fn.processUrl = function(url) {
+rn.config.fn.processUrl = function(url) {
   if(url.indexOf('{') === -1) {
     return url;
   }
 
-  rnProjects.urlKeys.forEach(key => {
+  rn.config.urlKeys.forEach(key => {
     var strFind = `{${key}}`;
-    var strReplace = rnProjects.config[key];
+    var strReplace = rn.config.config[key];
     url = url.replace(strFind, strReplace);
   });
 
   return url;
 }
 
-rnProjects.fn.createLink = function(title, url) {
+rn.config.fn.createLink = function(title, url) {
   if(!url) {
     var div = document.createElement('div');
     div.innerHTML = '-';
@@ -215,12 +215,12 @@ rnProjects.fn.createLink = function(title, url) {
 
   var link = document.createElement('a');
   link.innerHTML = title;
-  link.href = rnProjects.fn.processUrl(url);
+  link.href = rn.config.fn.processUrl(url);
   link.setAttribute('target', '_blank');
   return link;
 }
 
-rnProjects.fn.boolPill = function(value, txtTrue, txtFalse) {
+rn.config.fn.boolPill = function(value, txtTrue, txtFalse) {
   var span = document.createElement('span');
 
   if(!value) {
@@ -234,14 +234,14 @@ rnProjects.fn.boolPill = function(value, txtTrue, txtFalse) {
   return span;
 }
 
-rnProjects.fn.generateBadge = function(badgeUrl) {
+rn.config.fn.generateBadge = function(badgeUrl) {
   var img = document.createElement('img');
-  img.src = rnProjects.fn.processUrl(badgeUrl);
+  img.src = rn.config.fn.processUrl(badgeUrl);
   img.className = 'badge';
   return img;
 }
 
-rnProjects.fn.generateBadges = function(project) {
+rn.config.fn.generateBadges = function(project) {
   var div = document.createElement('div');
 
   if(!project.badges) {
@@ -250,7 +250,7 @@ rnProjects.fn.generateBadges = function(project) {
   }
 
   (Object.getOwnPropertyNames(project.badges)).forEach(badge => {
-    if(rnProjects.badges.indexOf(badge) === -1) {
+    if(rn.config.badges.indexOf(badge) === -1) {
       return;
     }
 
@@ -258,27 +258,27 @@ rnProjects.fn.generateBadges = function(project) {
       .replace('{sonarQubeProjectId}', project.sonarQubeProjectId)
       .replace('{sonarQubeToken}', project.sonarQubeToken);
 
-    div.append(rnProjects.fn.generateBadge(badgeUrl));
+    div.append(rn.config.fn.generateBadge(badgeUrl));
   });
   
   return div;
 }
 
-rnProjects.fn.appendTblRows = function() {
-  rnProjects.data.forEach(project => {
-    rnProjects.el.tbl.append(rnProjects.fn.generateTblRow(project));
+rn.config.fn.appendTblRows = function() {
+  rn.config.data.forEach(project => {
+    rn.config.el.tbl.append(rn.config.fn.generateTblRow(project));
   });
 }
 
-rnProjects.fn.populateTable = function() {
-  rnProjects.el.tbl.removeChild(rnProjects.el.tbl.children[0]);
-  rnProjects.el.tbl.append(rnProjects.fn.generateTblHead());
-  rnProjects.fn.appendTblRows();
+rn.config.fn.populateTable = function() {
+  rn.config.el.tbl.removeChild(rn.config.el.tbl.children[0]);
+  rn.config.el.tbl.append(rn.config.fn.generateTblHead());
+  rn.config.fn.appendTblRows();
 };
 
 fetch('projects.json')
   .then(response => response.json())
   .then(data => {
-    rnProjects.data = data;
-    rnProjects.fn.populateTable();
+    rn.config.data = data;
+    rn.config.fn.populateTable();
   });

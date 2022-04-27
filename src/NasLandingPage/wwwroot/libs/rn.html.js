@@ -16,7 +16,7 @@ rn.html.createLink = function(title, url) {
 
   var link = document.createElement('a');
   link.innerHTML = title;
-  link.href = rnProjects.fn.processUrl(url);
+  link.href = rn.config.fn.processUrl(url);
   link.setAttribute('target', '_blank');
   return link;
 }
