@@ -9,7 +9,7 @@
   
     global.rn.config.urlKeys.forEach(key => {
       var strFind = `{${key}}`;
-      var strReplace = global.rn.config.config[key];
+      var strReplace = global.rn.config.urlValues[key];
       url = url.replace(strFind, strReplace);
     });
   

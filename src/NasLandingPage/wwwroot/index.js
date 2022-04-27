@@ -3,5 +3,3 @@ fetch('projects.json')
   .then(data => {
     rn.plugins.projects.populate(data);
   });
-
-console.log(rn);

@@ -3,6 +3,7 @@
   var html = global.rn.html || {};
 
   var _url = global.rn.url;
+  var _ascii = global.rn.config.ascii;
 
   html.createSpan = function(innerHtml) {
     var span = document.createElement('span');
@@ -50,6 +51,19 @@
     link.href = _url.process(url);
     link.setAttribute('target', '_blank');
     return link;
+  }
+
+  html.scmCheckmark = function(project, property) {
+    var span = document.createElement('span');
+    var isTrue = false;
+  
+    if(project.hasOwnProperty('sourceCodeMaturity') && project.sourceCodeMaturity.hasOwnProperty(property)) {
+      isTrue = project.sourceCodeMaturity[property];
+    }
+  
+    span.innerHTML = isTrue ? _ascii.tick : _ascii.cross;
+  
+    return span;
   }
 
   global.rn.html = html;
