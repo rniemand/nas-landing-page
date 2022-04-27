@@ -2,7 +2,6 @@ using NasLandingPage.Config;
 using NasLandingPage.Models;
 using Rn.NetCore.Common.Abstractions;
 using Rn.NetCore.Common.Helpers;
-using Rn.NetCore.Common.Logging;
 
 namespace NasLandingPage.Services
 {
@@ -13,7 +12,6 @@ namespace NasLandingPage.Services
 
   public class ProjectsService : IProjectsService
   {
-    private readonly ILoggerAdapter<ProjectsService> _logger;
     private readonly IDirectoryAbstraction _directory;
     private readonly IEnvironmentAbstraction _environment;
     private readonly IFileAbstraction _file;
@@ -23,7 +21,7 @@ namespace NasLandingPage.Services
 
     public ProjectsService(IServiceProvider serviceProvider)
     {
-      _logger = serviceProvider.GetRequiredService<ILoggerAdapter<ProjectsService>>();
+      // TODO: [ProjectsService.ProjectsService] (TESTS) Add tests
       _directory = serviceProvider.GetRequiredService<IDirectoryAbstraction>();
       _environment = serviceProvider.GetRequiredService<IEnvironmentAbstraction>();
       _file = serviceProvider.GetRequiredService<IFileAbstraction>();
