@@ -33,7 +33,7 @@ var rnProjects = {
     rnEnum.tblCol.SonarQube,
     //rnEnum.tblCol.Readme,
     //rnEnum.tblCol.GitAttributes,
-    //rnEnum.tblCol.EditorConfig,
+    rnEnum.tblCol.EditorConfig,
     rnEnum.tblCol.PrTemplate,
     rnEnum.tblCol.Badges,
   ],
