@@ -31,7 +31,7 @@ namespace NasLandingPage.Services
       _file = serviceProvider.GetRequiredService<IFileAbstraction>();
 
       _config = GetConfig(serviceProvider);
-      _dataDir = FormatDataDir();
+      _dataDir = GenerateDataDirPath();
 
       EnsureDataDirExists();
     }
@@ -49,17 +49,24 @@ namespace NasLandingPage.Services
       return boundConfig;
     }
 
-    private string FormatDataDir()
+    private string GenerateDataDirPath()
     {
+      // TODO: [ProjectsService.GenerateDataDirPath] (TESTS) Add tests
       var sep = _config.IsLinux ? "/" : "\\";
+      var rootDir = _environment.CurrentDirectory;
+
+      if (!rootDir.EndsWith(sep))
+        rootDir += sep;
 
       var processed = _config.DataDir
-        .Replace("./", _environment.CurrentDirectory);
+        .Replace("./", rootDir);
 
-      if (processed.EndsWith(sep))
-        return processed;
+      if (!processed.EndsWith(sep))
+        processed += sep;
 
-      return processed + sep;
+      processed += $"projects{sep}";
+
+      return processed;
     }
 
     private void EnsureDataDirExists()
