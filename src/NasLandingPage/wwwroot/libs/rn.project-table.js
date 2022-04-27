@@ -59,6 +59,7 @@
     _fn.appendTblHeadColumn(tr, 'License', _colEnum.License);
     _fn.appendTblHeadColumn(tr, 'Build', _colEnum.HasBuildScripts);
     _fn.appendTblHeadColumn(tr, '', _colEnum.BuildScriptsVersion);
+    _fn.appendTblHeadColumn(tr, 'GH Actions', _colEnum.GithubActions);
     _fn.appendTblHeadColumn(tr, '', _colEnum.Badges);
 
     return tr;
@@ -95,6 +96,7 @@
     _rowFn.appendLicense(tr, project);
     _rowFn.appendHasBuildScripts(tr, project);
     _rowFn.appendBuildScriptVersion(tr, project);
+    _rowFn.appendGithubActions(tr, project);
     _rowFn.appendBadges(tr, project);
   
     return tr;
@@ -211,6 +213,26 @@
     tr.append(td);
   }
 
+  _rowFn.appendGithubActions = function(tr, project) {
+    if(!canDisplay(_colEnum.GithubActions)) { return; }
+    var td = document.createElement('td');
+    var tdValue = _ascii.cross;
+
+    if(project.hasOwnProperty('cicd')) {
+      if(project.cicd.hasOwnProperty('githubWorkflows')) {
+        if(project.cicd.githubWorkflows.length > 0) {
+          tdValue = `${_ascii.check} (${project.cicd.githubWorkflows.length})`;
+        }
+      }
+    }
+    
+    td.innerHTML = tdValue;
+  
+    console.log(project.hasOwnProperty('cicd'))
+    
+    tr.append(td);
+  }
+
   _rowFn.appendBadges = function(tr, project) {
     if(!canDisplay(_colEnum.Badges)) { return; }
   
@@ -260,7 +282,6 @@
     domEl.table.append(_fn.generateTblHead());
     _fn.appendTblRows();
   }
-
 
   global.rn.plugins.projects = api;
 }(window));

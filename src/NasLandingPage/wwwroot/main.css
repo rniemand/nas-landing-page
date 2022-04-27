@@ -128,7 +128,7 @@ table.overview {
   justify-content: center;
   align-items: center;
 
-  display: none;
+  /* display: none; */
 }
 
 .wrapper .links-wrapper .links-new .link {

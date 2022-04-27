@@ -19,7 +19,6 @@
       "buildScripts": [],
       "testScripts": [],
       "sonarLint": false,
-      "usesGithubWorkflows": false,
       "githubWorkflows": []
     },
     "tags": [],
@@ -168,7 +167,8 @@
       "hasBuildScripts": true,
       "buildScriptsVersion": "1",
       "buildScripts": ["./ci-build.ps1"],
-      "testScripts": ["./ci-test.ps1"]
+      "testScripts": ["./ci-test.ps1"],
+      "githubWorkflows": ["publish.yml"]
     }
   },
   {
@@ -196,7 +196,8 @@
       "hasBuildScripts": true,
       "buildScriptsVersion": "1",
       "buildScripts": ["./ci-build.ps1"],
-      "testScripts": ["./ci-test.ps1"]
+      "testScripts": ["./ci-test.ps1"],
+      "githubWorkflows": ["publish.yml", "docker.yml"]
     }
   },
   {
@@ -224,7 +225,8 @@
       "hasBuildScripts": true,
       "buildScriptsVersion": "1",
       "buildScripts": ["./ci-build.ps1"],
-      "testScripts": ["./ci-test.ps1"]
+      "testScripts": ["./ci-test.ps1"],
+      "githubWorkflows": ["publish.yml", "docker.yml"]
     }
   },
   {
@@ -294,7 +296,8 @@
       "hasBuildScripts": true,
       "buildScriptsVersion": "1",
       "buildScripts": ["./ci-build.ps1"],
-      "testScripts": ["./ci-test.ps1"]
+      "testScripts": ["./ci-test.ps1"],
+      "githubWorkflows": ["publish.yml"]
     }
   },
   {
@@ -364,7 +367,8 @@
       "hasBuildScripts": true,
       "buildScriptsVersion": "1",
       "buildScripts": ["./ci-build.ps1"],
-      "testScripts": ["./ci-test.ps1"]
+      "testScripts": ["./ci-test.ps1"],
+      "githubWorkflows": ["publish.yml", "docker.yml"]
     }
   },
   {
@@ -413,7 +417,8 @@
       "hasBuildScripts": true,
       "buildScriptsVersion": "1",
       "buildScripts": ["./ci-build.ps1"],
-      "testScripts": ["./ci-test.ps1"]
+      "testScripts": ["./ci-test.ps1"],
+      "githubWorkflows": ["publish.yml", "docker.yml"]
     }
   },
   {
@@ -462,7 +467,8 @@
       "hasBuildScripts": true,
       "buildScriptsVersion": "1",
       "buildScripts": ["./ci-build.ps1"],
-      "testScripts": ["./ci-test.ps1"]
+      "testScripts": ["./ci-test.ps1"],
+      "githubWorkflows": ["publish.yml", "docker.yml"]
     }
   },
   {
@@ -490,7 +496,8 @@
       "hasBuildScripts": true,
       "buildScriptsVersion": "1.1",
       "buildScripts": ["./ci-build.ps1"],
-      "testScripts": ["./ci-test.ps1"]
+      "testScripts": ["./ci-test.ps1"],
+      "githubWorkflows": ["sonarqube.yml", "docker.yml"]
     }
   },
   {
@@ -517,7 +524,8 @@
       "hasBuildScripts": true,
       "buildScriptsVersion": "1",
       "buildScripts": ["./ci-build.ps1"],
-      "testScripts": ["./ci-test.ps1"]
+      "testScripts": ["./ci-test.ps1"],
+      "githubWorkflows": ["publish.yml", "docker.yml"]
     }
   },
   {
@@ -538,13 +546,15 @@
     "sourceCodeMaturity": {
       "readme": false,
       "gitattributes": true,
-      "editorconfig": true
+      "editorconfig": true,
+      "pr_template": true
     },
     "cicd": {
       "hasBuildScripts": true,
       "buildScriptsVersion": "1",
       "buildScripts": ["./ci-build.ps1"],
-      "testScripts": ["./ci-test.ps1"]
+      "testScripts": ["./ci-test.ps1"],
+      "githubWorkflows": ["publish.yml", "docker.yml"]
     }
   },
   {
@@ -589,7 +599,8 @@
       "hasBuildScripts": false,
       "buildScriptsVersion": null,
       "buildScripts": [],
-      "testScripts": []
+      "testScripts": [],
+      "githubWorkflows": ["release.yml"]
     }
   },
   {
@@ -638,7 +649,8 @@
       "hasBuildScripts": true,
       "buildScriptsVersion": "1",
       "buildScripts": ["./ci-build.ps1"],
-      "testScripts": ["./ci-test.ps1"]
+      "testScripts": ["./ci-test.ps1"],
+      "githubWorkflows": ["publish.yml"]
     }
   },
   {
@@ -666,7 +678,8 @@
       "hasBuildScripts": true,
       "buildScriptsVersion": "1",
       "buildScripts": ["./ci-build.ps1"],
-      "testScripts": ["./ci-test.ps1"]
+      "testScripts": ["./ci-test.ps1"],
+      "githubWorkflows": ["publish.yml"]
     }
   },
   {
@@ -694,7 +707,8 @@
       "hasBuildScripts": true,
       "buildScriptsVersion": "1",
       "buildScripts": ["./ci-build.ps1"],
-      "testScripts": ["./ci-test.ps1"]
+      "testScripts": ["./ci-test.ps1"],
+      "githubWorkflows": ["publish.yml"]
     }
   },
   {
@@ -722,7 +736,8 @@
       "hasBuildScripts": true,
       "buildScriptsVersion": "1",
       "buildScripts": ["./ci-build.ps1"],
-      "testScripts": ["./ci-test.ps1"]
+      "testScripts": ["./ci-test.ps1"],
+      "githubWorkflows": ["publish.yml"]
     }
   },
   {
@@ -750,7 +765,8 @@
       "hasBuildScripts": true,
       "buildScriptsVersion": "1",
       "buildScripts": ["./ci-build.ps1"],
-      "testScripts": ["./ci-test.ps1"]
+      "testScripts": ["./ci-test.ps1"],
+      "githubWorkflows": ["publish.yml"]
     }
   },
   {
@@ -778,7 +794,8 @@
       "hasBuildScripts": true,
       "buildScriptsVersion": "1",
       "buildScripts": ["./ci-build.ps1"],
-      "testScripts": ["./ci-test.ps1"]
+      "testScripts": ["./ci-test.ps1"],
+      "githubWorkflows": ["publish.yml"]
     }
   },
   {
@@ -806,7 +823,8 @@
       "hasBuildScripts": true,
       "buildScriptsVersion": "1",
       "buildScripts": ["./ci-build.ps1"],
-      "testScripts": ["./ci-test.ps1"]
+      "testScripts": ["./ci-test.ps1"],
+      "githubWorkflows": ["publish.yml"]
     }
   },
   {
@@ -834,7 +852,8 @@
       "hasBuildScripts": true,
       "buildScriptsVersion": "1",
       "buildScripts": ["./ci-build.ps1"],
-      "testScripts": ["./ci-test.ps1"]
+      "testScripts": ["./ci-test.ps1"],
+      "githubWorkflows": ["publish.yml"]
     }
   },
   {
@@ -862,7 +881,8 @@
       "hasBuildScripts": true,
       "buildScriptsVersion": "1",
       "buildScripts": ["./ci-build.ps1"],
-      "testScripts": ["./ci-test.ps1"]
+      "testScripts": ["./ci-test.ps1"],
+      "githubWorkflows": ["publish.yml"]
     }
   },
   {
@@ -890,7 +910,8 @@
       "hasBuildScripts": true,
       "buildScriptsVersion": "1",
       "buildScripts": ["./ci-build.ps1"],
-      "testScripts": ["./ci-test.ps1"]
+      "testScripts": ["./ci-test.ps1"],
+      "githubWorkflows": ["docker.yml", "sonarqube.yml"]
     }
   },
   {
@@ -913,7 +934,8 @@
       "hasBuildScripts": false,
       "buildScriptsVersion": null,
       "buildScripts": [],
-      "testScripts": []
+      "testScripts": [],
+      "githubWorkflows": ["docker-image.yml"]
     }
   },
   {
@@ -941,7 +963,8 @@
       "hasBuildScripts": true,
       "buildScriptsVersion": "1",
       "buildScripts": ["./ci-build.ps1"],
-      "testScripts": ["./ci-test.ps1"]
+      "testScripts": ["./ci-test.ps1"],
+      "githubWorkflows": ["docker.yml", "sonarqube.yml"]
     }
   },
   {
@@ -1019,7 +1042,8 @@
       "hasBuildScripts": true,
       "buildScriptsVersion": "1",
       "buildScripts": ["./ci-build.ps1"],
-      "testScripts": ["./ci-test.ps1"]
+      "testScripts": ["./ci-test.ps1"],
+      "githubWorkflows": ["docker.yml", "sonarqube.yml"]
     }
   },
   {
@@ -1139,7 +1163,8 @@
       "hasBuildScripts": true,
       "buildScriptsVersion": "1",
       "buildScripts": ["./ci-build.ps1"],
-      "testScripts": ["./ci-test.ps1"]
+      "testScripts": ["./ci-test.ps1"],
+      "githubWorkflows": ["docker.yml", "sonarqube.yml"]
     }
   },
   {

@@ -18,7 +18,8 @@
     License: 11,
     HasBuildScripts: 12,
     BuildScriptsVersion: 13,
-    ProjectType: 14
+    ProjectType: 14,
+    GithubActions: 15
   };
   
 }(window));

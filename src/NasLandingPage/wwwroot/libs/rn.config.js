@@ -24,19 +24,21 @@
     rn.enums.TableColumn.License,
     rn.enums.TableColumn.HasBuildScripts,
     rn.enums.TableColumn.BuildScriptsVersion,
+    rn.enums.TableColumn.GithubActions,
     rn.enums.TableColumn.Badges,
   ];
 
   config.badges = [
-    'quality',
+    //'quality',
     //'bugs',
     //'codeSmells',
-    //'coverage',
+    'coverage',
   ];
 
   config.ascii = {
     "question": "❓",
     "tick": "✔️",
+    "check": "✔️",
     "cross": "❌"
   };
 
