@@ -1,93 +1,11 @@
 using NasLandingPage.Config;
-using NasLandingPage.Enums;
-using Newtonsoft.Json;
+using NasLandingPage.Models;
 using Rn.NetCore.Common.Abstractions;
 using Rn.NetCore.Common.Helpers;
 using Rn.NetCore.Common.Logging;
 
 namespace NasLandingPage.Services
 {
-  public class RepoInfo
-  {
-    [JsonProperty("type")]
-    public RepoType RepoType { get; set; } = RepoType.Unknown;
-
-    [JsonProperty("url")]
-    public string RepoUrl { get; set; } = string.Empty;
-
-    [JsonProperty("cicd")]
-    public string CiCd { get; set; } = string.Empty;
-
-    [JsonProperty("isPublic")]
-    public bool IsPublic { get; set; } = true;
-  }
-
-  public class SonarQubeInfo
-  {
-    [JsonProperty("url")]
-    public string Url { get; set; } = string.Empty;
-
-    [JsonProperty("id")]
-    public string ProjectId { get; set; } = string.Empty;
-
-    [JsonProperty("tokenBadge")]
-    public string BadgeToken { get; set; } = string.Empty;
-
-    [JsonProperty("badges")]
-    public Dictionary<string, string> Badges { get; set; } = new();
-  }
-
-  public class SourceCodeMaturityInfo
-  {
-    [JsonProperty("hasReadme")]
-    public bool HasReadme { get; set; } = false;
-
-    [JsonProperty("hasGitAttributes")]
-    public bool HasGitAttributes { get; set; } = false;
-
-    [JsonProperty("hasPrTemplate")]
-    public bool HasPrTemplate { get; set; } = false;
-
-    [JsonProperty("hasEditorConfig")]
-    public bool HasEditorConfig { get; set; } = false;
-
-    [JsonProperty("hasBuildScripts")]
-    public bool HasBuildScripts { get; set; } = false;
-
-    [JsonProperty("buildScriptVersion")]
-    public string BuildScriptVersion { get; set; } = "0";
-
-    [JsonProperty("buildScripts")]
-    public string[] BuildScripts { get; set; } = Array.Empty<string>();
-
-    [JsonProperty("testScripts")]
-    public string[] TestScripts { get; set; } = Array.Empty<string>();
-
-    [JsonProperty("workFlows")]
-    public string[] WorkFlows { get; set; } = Array.Empty<string>();
-  }
-  
-  public class ProjectInfo
-  {
-    [JsonProperty("name")]
-    public string Name { get; set; } = string.Empty;
-
-    [JsonProperty("repo")]
-    public RepoInfo Repo { get; set; } = new();
-
-    [JsonProperty("sonarQube")]
-    public SonarQubeInfo SonarQube { get; set; } = new();
-
-    [JsonProperty("scm")]
-    public SourceCodeMaturityInfo Scm { get; set; } = new();
-
-    [JsonProperty("folders")]
-    public Dictionary<string, bool> Folders { get; set; } = new();
-
-    [JsonProperty("languages")]
-    public string[] Languages { get; set; } = Array.Empty<string>();
-  }
-
   public interface IProjectsService
   {
     List<ProjectInfo> GetAll();
