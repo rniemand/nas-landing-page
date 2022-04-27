@@ -1,3 +1,4 @@
+using NasLandingPage.Providers;
 using NasLandingPage.Services;
 using NLog;
 using NLog.Web;
@@ -26,7 +27,10 @@ try
 
     .AddSingleton<IJsonHelper, JsonHelper>()
 
-    .AddSingleton<IProjectsService, ProjectsService>();
+    .AddSingleton<INasLandingPageConfigProvider, NasLandingPageConfigProvider>()
+
+    .AddSingleton<IProjectsService, ProjectsService>()
+    .AddSingleton<IConfigService, ConfigService>();
 
   builder.Services.AddSwaggerDocument();
 

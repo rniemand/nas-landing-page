@@ -1,5 +1,6 @@
 using NasLandingPage.Config;
 using NasLandingPage.Models;
+using NasLandingPage.Providers;
 using Rn.NetCore.Common.Abstractions;
 using Rn.NetCore.Common.Helpers;
 
@@ -26,10 +27,9 @@ namespace NasLandingPage.Services
       _environment = serviceProvider.GetRequiredService<IEnvironmentAbstraction>();
       _file = serviceProvider.GetRequiredService<IFileAbstraction>();
       _jsonHelper = serviceProvider.GetRequiredService<IJsonHelper>();
+      _config = serviceProvider.GetRequiredService<INasLandingPageConfigProvider>().Provide();
 
-      _config = GetConfig(serviceProvider);
       _dataDir = GenerateDataDirPath();
-
       EnsureDataDirExists();
     }
 
@@ -55,21 +55,7 @@ namespace NasLandingPage.Services
       var fileJson = _file.ReadAllText(path);
       return _jsonHelper.DeserializeObject<ProjectInfo>(fileJson);
     }
-
-    private static NasLandingPageConfig GetConfig(IServiceProvider serviceProvider)
-    {
-      // TODO: [ProjectsService.GetConfig] (TESTS) Add tests
-      var configuration = serviceProvider.GetRequiredService<IConfiguration>();
-      var boundConfig = new NasLandingPageConfig();
-      var configSection = configuration.GetSection("NasLandingPage");
-
-      if (!configSection.Exists())
-        return boundConfig;
-
-      configSection.Bind(boundConfig);
-      return boundConfig;
-    }
-
+    
     private string GenerateDataDirPath()
     {
       // TODO: [ProjectsService.GenerateDataDirPath] (TESTS) Add tests

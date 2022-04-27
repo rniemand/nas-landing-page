@@ -8,7 +8,7 @@ import { AppComponent } from './app.component';
 import { NavMenuComponent } from './layout/nav-menu/nav-menu.component';
 import { HomeComponent } from './views/home/home.component';
 import { CounterComponent } from './views/counter/counter.component';
-import { API_BASE_URL, ProjectsClient } from './nlp-api';
+import { API_BASE_URL, ConfigClient, ProjectsClient } from './nlp-api';
 import { DOCUMENT, LocationStrategy } from '@angular/common';
 
 function getBaseUrl(locationStrategy: LocationStrategy, document: any): string {
@@ -48,6 +48,7 @@ function getBaseUrl(locationStrategy: LocationStrategy, document: any): string {
   providers: [
     // Clients
     ProjectsClient,
+    ConfigClient,
 
     // Custom providers
     { provide: API_BASE_URL, useFactory: getBaseUrl, deps: [LocationStrategy, DOCUMENT] }

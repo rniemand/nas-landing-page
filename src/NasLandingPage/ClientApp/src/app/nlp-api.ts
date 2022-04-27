@@ -16,6 +16,66 @@ import { HttpClient, HttpHeaders, HttpResponse, HttpResponseBase } from '@angula
 export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 
 @Injectable()
+export class ConfigClient {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    getClientConfig(): Observable<ClientConfig> {
+        let url_ = this.baseUrl + "/api/Config";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetClientConfig(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetClientConfig(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ClientConfig>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ClientConfig>;
+        }));
+    }
+
+    protected processGetClientConfig(response: HttpResponseBase): Observable<ClientConfig> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ClientConfig.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
 export class ProjectsClient {
     private http: HttpClient;
     private baseUrl: string;
@@ -27,7 +87,7 @@ export class ProjectsClient {
     }
 
     getAll(): Observable<ProjectInfo[]> {
-        let url_ = this.baseUrl + "/Projects";
+        let url_ = this.baseUrl + "/api/Projects";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -80,6 +140,57 @@ export class ProjectsClient {
         }
         return _observableOf(null as any);
     }
+}
+
+export class ClientConfig implements IClientConfig {
+    columns!: ProjectTableColumn[];
+
+    constructor(data?: IClientConfig) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.columns = [];
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["columns"])) {
+                this.columns = [] as any;
+                for (let item of _data["columns"])
+                    this.columns!.push(item);
+            }
+        }
+    }
+
+    static fromJS(data: any): ClientConfig {
+        data = typeof data === 'object' ? data : {};
+        let result = new ClientConfig();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.columns)) {
+            data["columns"] = [];
+            for (let item of this.columns)
+                data["columns"].push(item);
+        }
+        return data;
+    }
+}
+
+export interface IClientConfig {
+    columns: ProjectTableColumn[];
+}
+
+export enum ProjectTableColumn {
+    Name = 1,
 }
 
 export class ProjectInfo implements IProjectInfo {
