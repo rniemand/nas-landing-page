@@ -136,7 +136,7 @@ rnProjects.fn.appendLicense = function(tr, project) {
   if(!project.hasOwnProperty('license')) {
     td.innerHTML = '❌';
   } else {
-    td.append(rnHtml.createLink(project.license.name, project.license.url));
+    td.append(rn.html.createLink(project.license.name, project.license.url));
   }
   
   tr.append(td);

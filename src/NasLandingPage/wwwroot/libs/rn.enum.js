@@ -17,6 +17,3 @@ rn.enums.TableColumn = rn.enums.TableColumn || {
   BuildScriptsVersion: 13,
   ProjectType: 14
 };
-
-
-console.log(rn);

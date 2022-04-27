@@ -1,12 +1,13 @@
-var rnHtml = {};
+var rn = rn || {};
+rn.html = rn.html || {};
 
-rnHtml.createSpan = function(innerHtml) {
+rn.html.createSpan = function(innerHtml) {
   var span = document.createElement('span');
   span.innerHTML = innerHtml;
   return span;
 }
 
-rnHtml.createLink = function(title, url) {
+rn.html.createLink = function(title, url) {
   if(!url) {
     var div = document.createElement('div');
     div.innerHTML = '-';
