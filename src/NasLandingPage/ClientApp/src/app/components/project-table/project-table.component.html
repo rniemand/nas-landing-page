@@ -24,15 +24,15 @@
         <th scope="col" *ngIf="canRenderColumn('ScmHasEditorConfig')">.editorconfig</th>
         <th scope="col" *ngIf="canRenderColumn('ScmHasBuildScripts')">Build</th>
         <th scope="col" *ngIf="canRenderColumn('ScmBuildScriptVersion')">Build</th>
-        <th scope="col" *ngIf="canRenderColumn('BuildScriptCount')">Build</th>
-        <th scope="col" *ngIf="canRenderColumn('WorkFlowCount')">flows</th>
+        <th scope="col" *ngIf="canRenderColumn('CountBuildScripts')">📜</th>
+        <th scope="col" *ngIf="canRenderColumn('CountTestScripts')">🧪</th>
+        <th scope="col" *ngIf="canRenderColumn('CountWorkFlows')">🔄</th>
         <th scope="col" *ngIf="canRenderColumn('CountRepoForks')">🍴</th>
         <th scope="col" *ngIf="canRenderColumn('CountOpenIssues')">⚠️</th>
         <th scope="col" *ngIf="canRenderColumn('DirSrc')">📁 src</th>
         <th scope="col" *ngIf="canRenderColumn('DirTests')">📁 tests</th>
         <th scope="col" *ngIf="canRenderColumn('DirDocs')">📁 docs</th>
         <th scope="col" *ngIf="canRenderColumn('DirBuild')">📁 build</th>
-        <th scope="col" *ngIf="canRenderColumn('TestScriptCount')">tests</th>
         <th scope="col" *ngIf="canRenderColumn('Languages')">Languages</th>
         <th scope="col" *ngIf="canRenderColumn('SonarQubeBadges')">&nbsp;</th>
         <th scope="col" *ngIf="canRenderColumn('License')">License</th>
@@ -58,15 +58,15 @@
         <td *ngIf="canRenderColumn('ScmHasEditorConfig')"><bool-tick [value]="project.scm.hasEditorConfig"></bool-tick></td>
         <td *ngIf="canRenderColumn('ScmHasBuildScripts')"><bool-tick [value]="project.scm.hasBuildScripts"></bool-tick></td>
         <td *ngIf="canRenderColumn('ScmBuildScriptVersion')">{{project.scm.buildScriptVersion}}</td>
-        <td *ngIf="canRenderColumn('BuildScriptCount')"><array-count [value]="project.scm.buildScripts"></array-count></td>
-        <td *ngIf="canRenderColumn('WorkFlowCount')"><array-count [value]="project.scm.workFlows"></array-count></td>
+        <td *ngIf="canRenderColumn('CountBuildScripts')"><array-count [value]="project.scm.buildScripts"></array-count></td>
+        <td *ngIf="canRenderColumn('CountTestScripts')"><array-count [value]="project.scm.testScripts"></array-count></td>
+        <td *ngIf="canRenderColumn('CountWorkFlows')"><array-count [value]="project.scm.workFlows"></array-count></td>
         <td *ngIf="canRenderColumn('CountRepoForks')"><raw-count [value]="project.repo.forks"></raw-count></td>
         <td *ngIf="canRenderColumn('CountOpenIssues')"><raw-count [value]="project.repo.openIssues"></raw-count></td>
         <td *ngIf="canRenderColumn('DirSrc')"><bool-tick [value]="project.folders.src"></bool-tick></td>
         <td *ngIf="canRenderColumn('DirTests')"><bool-tick [value]="project.folders.tests"></bool-tick></td>
         <td *ngIf="canRenderColumn('DirDocs')"><bool-tick [value]="project.folders.docs"></bool-tick></td>
         <td *ngIf="canRenderColumn('DirBuild')"><bool-tick [value]="project.folders.build"></bool-tick></td>
-        <td *ngIf="canRenderColumn('TestScriptCount')"><array-count [value]="project.scm.testScripts"></array-count></td>
         <td *ngIf="canRenderColumn('Languages')"><array-string [value]="project.languages"></array-string></td>
         <td *ngIf="canRenderColumn('SonarQubeBadges')"><sq-badges [config]="config" [project]="project"></sq-badges></td>
         <td *ngIf="canRenderColumn('License')">

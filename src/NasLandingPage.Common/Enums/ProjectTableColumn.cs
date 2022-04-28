@@ -17,9 +17,6 @@ public enum ProjectTableColumn
   DirDocs,
   DirBuild,
   Languages,
-  BuildScriptCount,
-  TestScriptCount,
-  WorkFlowCount,
   License,
   Description,
   RepoId,
@@ -29,5 +26,8 @@ public enum ProjectTableColumn
   UrlCiCd,
   UrlSonarQube,
   CountRepoForks,
-  CountOpenIssues
+  CountOpenIssues,
+  CountBuildScripts,
+  CountTestScripts,
+  CountWorkFlows
 }
