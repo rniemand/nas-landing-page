@@ -12,6 +12,7 @@
         <th scope="col" *ngIf="canRenderColumn('Description')">Description</th>
         <th scope="col" *ngIf="canRenderColumn('RepoType')">&nbsp;</th>
         <th scope="col" *ngIf="canRenderColumn('RepoUrl')">Repo</th>
+        <th scope="col" *ngIf="canRenderColumn('RepoId')">RepoId</th>
         <th scope="col" *ngIf="canRenderColumn('CiCdUrl')">CiCd</th>
         <th scope="col" *ngIf="canRenderColumn('SonarQubeUrl')">SonarQube</th>
         <th scope="col" *ngIf="canRenderColumn('RepoIsPublic')">Public</th>
@@ -41,6 +42,7 @@
         <td *ngIf="canRenderColumn('RepoUrl')">
           <a [href]="project.repo.repoUrl" target="_blank">open</a>
         </td>
+        <td *ngIf="canRenderColumn('RepoId')">{{ project.repo.repoId }}</td>
         <td *ngIf="canRenderColumn('CiCdUrl')">
           <a [href]="project.repo.ciCd" *ngIf="project.repo.ciCd" target="_blank">open</a>
         </td>

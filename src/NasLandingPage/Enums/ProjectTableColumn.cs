@@ -24,5 +24,6 @@ public enum ProjectTableColumn
   TestScriptCount,
   WorkFlowCount,
   License,
-  Description
+  Description,
+  RepoId
 }

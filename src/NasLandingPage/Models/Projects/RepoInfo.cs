@@ -16,4 +16,7 @@ public class RepoInfo
 
   [JsonProperty("isPublic")]
   public bool IsPublic { get; set; } = true;
+
+  [JsonProperty("id")]
+  public long RepoId { get; set; } = 0;
 }

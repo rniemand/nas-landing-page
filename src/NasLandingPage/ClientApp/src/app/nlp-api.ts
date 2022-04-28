@@ -230,6 +230,7 @@ export enum ProjectTableColumn {
     WorkFlowCount = 20,
     License = 21,
     Description = 22,
+    RepoId = 23,
 }
 
 export class ProjectInfo implements IProjectInfo {
@@ -317,6 +318,7 @@ export class RepoInfo implements IRepoInfo {
     repoUrl!: string;
     ciCd!: string;
     isPublic!: boolean;
+    repoId!: number;
 
     constructor(data?: IRepoInfo) {
         if (data) {
@@ -333,6 +335,7 @@ export class RepoInfo implements IRepoInfo {
             this.repoUrl = _data["repoUrl"];
             this.ciCd = _data["ciCd"];
             this.isPublic = _data["isPublic"];
+            this.repoId = _data["repoId"];
         }
     }
 
@@ -349,6 +352,7 @@ export class RepoInfo implements IRepoInfo {
         data["repoUrl"] = this.repoUrl;
         data["ciCd"] = this.ciCd;
         data["isPublic"] = this.isPublic;
+        data["repoId"] = this.repoId;
         return data;
     }
 }
@@ -358,6 +362,7 @@ export interface IRepoInfo {
     repoUrl: string;
     ciCd: string;
     isPublic: boolean;
+    repoId: number;
 }
 
 export enum RepoType {
