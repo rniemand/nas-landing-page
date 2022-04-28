@@ -228,7 +228,8 @@ export enum ProjectTableColumn {
     FoldersSrc = 18,
     FoldersTests = 19,
     FoldersDocs = 20,
-    Languages = 21,
+    FoldersBuild = 21,
+    Languages = 22,
 }
 
 export class ProjectInfo implements IProjectInfo {
@@ -236,7 +237,7 @@ export class ProjectInfo implements IProjectInfo {
     repo!: RepoInfo;
     sonarQube!: SonarQubeInfo;
     scm!: SourceCodeMaturityInfo;
-    folders!: { [key: string]: boolean; };
+    folders!: ProjectFolderInfo;
     languages!: string[];
 
     constructor(data?: IProjectInfo) {
@@ -250,7 +251,7 @@ export class ProjectInfo implements IProjectInfo {
             this.repo = new RepoInfo();
             this.sonarQube = new SonarQubeInfo();
             this.scm = new SourceCodeMaturityInfo();
-            this.folders = {};
+            this.folders = new ProjectFolderInfo();
             this.languages = [];
         }
     }
@@ -261,13 +262,7 @@ export class ProjectInfo implements IProjectInfo {
             this.repo = _data["repo"] ? RepoInfo.fromJS(_data["repo"]) : new RepoInfo();
             this.sonarQube = _data["sonarQube"] ? SonarQubeInfo.fromJS(_data["sonarQube"]) : new SonarQubeInfo();
             this.scm = _data["scm"] ? SourceCodeMaturityInfo.fromJS(_data["scm"]) : new SourceCodeMaturityInfo();
-            if (_data["folders"]) {
-                this.folders = {} as any;
-                for (let key in _data["folders"]) {
-                    if (_data["folders"].hasOwnProperty(key))
-                        (<any>this.folders)![key] = _data["folders"][key];
-                }
-            }
+            this.folders = _data["folders"] ? ProjectFolderInfo.fromJS(_data["folders"]) : new ProjectFolderInfo();
             if (Array.isArray(_data["languages"])) {
                 this.languages = [] as any;
                 for (let item of _data["languages"])
@@ -289,13 +284,7 @@ export class ProjectInfo implements IProjectInfo {
         data["repo"] = this.repo ? this.repo.toJSON() : <any>undefined;
         data["sonarQube"] = this.sonarQube ? this.sonarQube.toJSON() : <any>undefined;
         data["scm"] = this.scm ? this.scm.toJSON() : <any>undefined;
-        if (this.folders) {
-            data["folders"] = {};
-            for (let key in this.folders) {
-                if (this.folders.hasOwnProperty(key))
-                    (<any>data["folders"])[key] = this.folders[key];
-            }
-        }
+        data["folders"] = this.folders ? this.folders.toJSON() : <any>undefined;
         if (Array.isArray(this.languages)) {
             data["languages"] = [];
             for (let item of this.languages)
@@ -310,7 +299,7 @@ export interface IProjectInfo {
     repo: RepoInfo;
     sonarQube: SonarQubeInfo;
     scm: SourceCodeMaturityInfo;
-    folders: { [key: string]: boolean; };
+    folders: ProjectFolderInfo;
     languages: string[];
 }
 
@@ -525,6 +514,54 @@ export interface ISourceCodeMaturityInfo {
     buildScripts: string[];
     testScripts: string[];
     workFlows: string[];
+}
+
+export class ProjectFolderInfo implements IProjectFolderInfo {
+    src!: boolean;
+    tests!: boolean;
+    docs!: boolean;
+    build!: boolean;
+
+    constructor(data?: IProjectFolderInfo) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.src = _data["src"];
+            this.tests = _data["tests"];
+            this.docs = _data["docs"];
+            this.build = _data["build"];
+        }
+    }
+
+    static fromJS(data: any): ProjectFolderInfo {
+        data = typeof data === 'object' ? data : {};
+        let result = new ProjectFolderInfo();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["src"] = this.src;
+        data["tests"] = this.tests;
+        data["docs"] = this.docs;
+        data["build"] = this.build;
+        return data;
+    }
+}
+
+export interface IProjectFolderInfo {
+    src: boolean;
+    tests: boolean;
+    docs: boolean;
+    build: boolean;
 }
 
 export class ApiException extends Error {

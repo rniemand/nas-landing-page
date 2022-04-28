@@ -17,7 +17,7 @@ public class ProjectInfo
   public SourceCodeMaturityInfo Scm { get; set; } = new();
 
   [JsonProperty("folders")]
-  public Dictionary<string, bool> Folders { get; set; } = new();
+  public ProjectFolderInfo Folders { get; set; } = new();
 
   [JsonProperty("languages")]
   public string[] Languages { get; set; } = Array.Empty<string>();

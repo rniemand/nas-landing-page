@@ -23,5 +23,6 @@ public enum ProjectTableColumn
   FoldersSrc,
   FoldersTests,
   FoldersDocs,
+  FoldersBuild,
   Languages
 }

@@ -13,6 +13,7 @@ import { DOCUMENT, LocationStrategy } from '@angular/common';
 import { ProjectTableComponent } from './components/project-table/project-table.component';
 import { RepoTypeComponent } from './components/repo-type/repo-type.component';
 import { BoolTickComponent } from './components/bool-tick/bool-tick.component';
+import { ArrayStringComponent } from './components/array-string/array-string.component';
 
 function getBaseUrl(locationStrategy: LocationStrategy, document: any): string {
   let baseHref = locationStrategy.getBaseHref();
@@ -38,6 +39,7 @@ function getBaseUrl(locationStrategy: LocationStrategy, document: any): string {
     ProjectTableComponent,
     RepoTypeComponent,
     BoolTickComponent,
+    ArrayStringComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
