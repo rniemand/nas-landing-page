@@ -20,10 +20,17 @@ RUN curl -sL https://deb.nodesource.com/setup_lts.x | bash -
 RUN apt-get install -y nodejs
 
 WORKDIR /src
+
+COPY ["/src/NasLandingPage.Common/NasLandingPage.Common.csproj", "NasLandingPage.Common/"]
 COPY ["/src/NasLandingPage/NasLandingPage.csproj", "NasLandingPage/"]
+
 RUN dotnet restore "NasLandingPage/NasLandingPage.csproj"
+
 COPY "/src/NasLandingPage/" "NasLandingPage/"
+COPY "/src/NasLandingPage.Common/" "NasLandingPage.Common/"
+
 WORKDIR "/src/NasLandingPage"
+
 RUN dotnet build "/src/NasLandingPage/NasLandingPage.csproj" -c Release -o /app/build
 
 FROM build AS publish
