@@ -16,8 +16,11 @@
       <th scope="col" *ngIf="canRenderColumn('ScmHasEditorConfig')">.editorconfig</th>
       <th scope="col" *ngIf="canRenderColumn('ScmHasBuildScripts')">Build</th>
       <th scope="col" *ngIf="canRenderColumn('ScmBuildScriptVersion')">Build</th>
+      <th scope="col" *ngIf="canRenderColumn('BuildScriptCount')">Build</th>
+      <th scope="col" *ngIf="canRenderColumn('WorkFlowCount')">flows</th>
       <th scope="col" *ngIf="canRenderColumn('FoldersSrc')">📁 src</th>
       <th scope="col" *ngIf="canRenderColumn('FoldersTests')">📁 tests</th>
+      <th scope="col" *ngIf="canRenderColumn('TestScriptCount')">tests</th>
       <th scope="col" *ngIf="canRenderColumn('FoldersDocs')">📁 docs</th>
       <th scope="col" *ngIf="canRenderColumn('FoldersBuild')">📁 build</th>
       <th scope="col" *ngIf="canRenderColumn('Languages')">Languages</th>
@@ -41,8 +44,11 @@
       <td *ngIf="canRenderColumn('ScmHasEditorConfig')"><bool-tick [value]="project.scm.hasEditorConfig"></bool-tick></td>
       <td *ngIf="canRenderColumn('ScmHasBuildScripts')"><bool-tick [value]="project.scm.hasBuildScripts"></bool-tick></td>
       <td *ngIf="canRenderColumn('ScmBuildScriptVersion')">{{project.scm.buildScriptVersion}}</td>
+      <td *ngIf="canRenderColumn('BuildScriptCount')"><array-count [value]="project.scm.buildScripts"></array-count></td>
+      <td *ngIf="canRenderColumn('WorkFlowCount')"><array-count [value]="project.scm.workFlows"></array-count></td>
       <td *ngIf="canRenderColumn('FoldersSrc')"><bool-tick [value]="project.folders.src"></bool-tick></td>
       <td *ngIf="canRenderColumn('FoldersTests')"><bool-tick [value]="project.folders.tests"></bool-tick></td>
+      <td *ngIf="canRenderColumn('TestScriptCount')"><array-count [value]="project.scm.testScripts"></array-count></td>
       <td *ngIf="canRenderColumn('FoldersDocs')"><bool-tick [value]="project.folders.docs"></bool-tick></td>
       <td *ngIf="canRenderColumn('FoldersBuild')"><bool-tick [value]="project.folders.build"></bool-tick></td>
       <td *ngIf="canRenderColumn('Languages')"><array-string [value]="project.languages"></array-string></td>
