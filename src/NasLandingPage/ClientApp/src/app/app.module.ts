@@ -17,6 +17,7 @@ import { ArrayStringComponent } from './components/array-string/array-string.com
 import { SqBadgesComponent } from './components/sq-badges/sq-badges.component';
 import { ArrayCountComponent } from './components/array-count/array-count.component';
 import { OptionEditorComponent } from './components/project-table/option-editor/option-editor.component';
+import { LinkSqComponent } from './components/link-sq/link-sq.component';
 
 function getBaseUrl(locationStrategy: LocationStrategy, document: any): string {
   let baseHref = locationStrategy.getBaseHref();
@@ -46,6 +47,7 @@ function getBaseUrl(locationStrategy: LocationStrategy, document: any): string {
     SqBadgesComponent,
     ArrayCountComponent,
     OptionEditorComponent,
+    LinkSqComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

@@ -11,7 +11,8 @@
         <th scope="col" *ngIf="canRenderColumn('Name')">Name</th>
         <th scope="col" *ngIf="canRenderColumn('RepoType')">&nbsp;</th>
         <th scope="col" *ngIf="canRenderColumn('RepoUrl')">Repo</th>
-        <th scope="col" *ngIf="canRenderColumn('RepoCiCd')">CiCd</th>
+        <th scope="col" *ngIf="canRenderColumn('CiCdUrl')">CiCd</th>
+        <th scope="col" *ngIf="canRenderColumn('SonarQubeUrl')">SonarQube</th>
         <th scope="col" *ngIf="canRenderColumn('RepoIsPublic')">Public</th>
         <th scope="col" *ngIf="canRenderColumn('ScmHasReadme')">Readme</th>
         <th scope="col" *ngIf="canRenderColumn('ScmHasGitAttributes')">.gitAttr</th>
@@ -38,8 +39,11 @@
         <td *ngIf="canRenderColumn('RepoUrl')">
           <a [href]="project.repo.repoUrl" target="_blank">open</a>
         </td>
-        <td *ngIf="canRenderColumn('RepoCiCd')">
+        <td *ngIf="canRenderColumn('CiCdUrl')">
           <a [href]="project.repo.ciCd" *ngIf="project.repo.ciCd" target="_blank">open</a>
+        </td>
+        <td *ngIf="canRenderColumn('SonarQubeUrl')">
+          <link-sq [project]="project" [config]="config"></link-sq>
         </td>
         <td *ngIf="canRenderColumn('RepoIsPublic')"><bool-tick [value]="project.repo.isPublic"></bool-tick></td>
         <td *ngIf="canRenderColumn('ScmHasReadme')"><bool-tick [value]="project.scm.hasReadme"></bool-tick></td>
