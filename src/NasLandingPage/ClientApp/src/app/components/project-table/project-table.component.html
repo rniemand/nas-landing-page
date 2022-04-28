@@ -1,0 +1,66 @@
+<div class="alert alert-primary" role="alert" *ngIf="!canRender">
+  Loading...
+</div>
+
+<div *ngIf="canRender">
+  <option-editor [config]="config"></option-editor>
+
+  <table class="table table-striped table-hover table-bordered table-sm projectTable">
+    <thead>
+      <tr>
+        <th scope="col" *ngIf="canRenderColumn('Name')">Name</th>
+        <th scope="col" *ngIf="canRenderColumn('RepoType')">&nbsp;</th>
+        <th scope="col" *ngIf="canRenderColumn('RepoUrl')">Repo</th>
+        <th scope="col" *ngIf="canRenderColumn('RepoCiCd')">CiCd</th>
+        <th scope="col" *ngIf="canRenderColumn('RepoIsPublic')">Public</th>
+        <th scope="col" *ngIf="canRenderColumn('ScmHasReadme')">Readme</th>
+        <th scope="col" *ngIf="canRenderColumn('ScmHasGitAttributes')">.gitAttr</th>
+        <th scope="col" *ngIf="canRenderColumn('ScmHasGitAttributes')">PR</th>
+        <th scope="col" *ngIf="canRenderColumn('ScmHasEditorConfig')">.editorconfig</th>
+        <th scope="col" *ngIf="canRenderColumn('ScmHasBuildScripts')">Build</th>
+        <th scope="col" *ngIf="canRenderColumn('ScmBuildScriptVersion')">Build</th>
+        <th scope="col" *ngIf="canRenderColumn('BuildScriptCount')">Build</th>
+        <th scope="col" *ngIf="canRenderColumn('WorkFlowCount')">flows</th>
+        <th scope="col" *ngIf="canRenderColumn('FoldersSrc')">📁 src</th>
+        <th scope="col" *ngIf="canRenderColumn('FoldersTests')">📁 tests</th>
+        <th scope="col" *ngIf="canRenderColumn('TestScriptCount')">tests</th>
+        <th scope="col" *ngIf="canRenderColumn('FoldersDocs')">📁 docs</th>
+        <th scope="col" *ngIf="canRenderColumn('FoldersBuild')">📁 build</th>
+        <th scope="col" *ngIf="canRenderColumn('Languages')">Languages</th>
+        <th scope="col" *ngIf="canRenderColumn('SonarQubeBadges')">&nbsp;</th>
+        <th scope="col" *ngIf="canRenderColumn('License')">License</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let project of projects">
+        <td *ngIf="canRenderColumn('Name')">{{ project.name }}</td>
+        <td *ngIf="canRenderColumn('RepoType')"><repo-type [project]="project"></repo-type></td>
+        <td *ngIf="canRenderColumn('RepoUrl')">
+          <a [href]="project.repo.repoUrl" target="_blank">open</a>
+        </td>
+        <td *ngIf="canRenderColumn('RepoCiCd')">
+          <a [href]="project.repo.ciCd" target="_blank">open</a>
+        </td>
+        <td *ngIf="canRenderColumn('RepoIsPublic')"><bool-tick [value]="project.repo.isPublic"></bool-tick></td>
+        <td *ngIf="canRenderColumn('ScmHasReadme')"><bool-tick [value]="project.scm.hasReadme"></bool-tick></td>
+        <td *ngIf="canRenderColumn('ScmHasGitAttributes')"><bool-tick [value]="project.scm.hasGitAttributes"></bool-tick></td>
+        <td *ngIf="canRenderColumn('ScmHasGitAttributes')"><bool-tick [value]="project.scm.hasPrTemplate"></bool-tick></td>
+        <td *ngIf="canRenderColumn('ScmHasEditorConfig')"><bool-tick [value]="project.scm.hasEditorConfig"></bool-tick></td>
+        <td *ngIf="canRenderColumn('ScmHasBuildScripts')"><bool-tick [value]="project.scm.hasBuildScripts"></bool-tick></td>
+        <td *ngIf="canRenderColumn('ScmBuildScriptVersion')">{{project.scm.buildScriptVersion}}</td>
+        <td *ngIf="canRenderColumn('BuildScriptCount')"><array-count [value]="project.scm.buildScripts"></array-count></td>
+        <td *ngIf="canRenderColumn('WorkFlowCount')"><array-count [value]="project.scm.workFlows"></array-count></td>
+        <td *ngIf="canRenderColumn('FoldersSrc')"><bool-tick [value]="project.folders.src"></bool-tick></td>
+        <td *ngIf="canRenderColumn('FoldersTests')"><bool-tick [value]="project.folders.tests"></bool-tick></td>
+        <td *ngIf="canRenderColumn('TestScriptCount')"><array-count [value]="project.scm.testScripts"></array-count></td>
+        <td *ngIf="canRenderColumn('FoldersDocs')"><bool-tick [value]="project.folders.docs"></bool-tick></td>
+        <td *ngIf="canRenderColumn('FoldersBuild')"><bool-tick [value]="project.folders.build"></bool-tick></td>
+        <td *ngIf="canRenderColumn('Languages')"><array-string [value]="project.languages"></array-string></td>
+        <td *ngIf="canRenderColumn('SonarQubeBadges')"><sq-badges [config]="config" [project]="project"></sq-badges></td>
+        <td *ngIf="canRenderColumn('License')">
+          <a [href]="project.license.url" target="_blank">{{project.license.name}}</a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

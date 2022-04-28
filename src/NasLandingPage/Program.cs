@@ -1,26 +1,67 @@
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using NasLandingPage.Providers;
+using NasLandingPage.Services;
+using NLog;
+using NLog.Web;
+using Rn.NetCore.Common.Abstractions;
+using Rn.NetCore.Common.Helpers;
+using Rn.NetCore.Common.Logging;
 
-namespace NasLandingPage
+// https://github.com/NLog/NLog/wiki/Getting-started-with-ASP.NET-Core-6
+var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
+logger.Debug("init main");
+
+try
 {
-  public class Program
-  {
-    public static void Main(string[] args)
-    {
-      CreateHostBuilder(args).Build().Run();
-    }
+  var builder = WebApplication.CreateBuilder(args);
 
-    public static IHostBuilder CreateHostBuilder(string[] args) =>
-        Host.CreateDefaultBuilder(args)
-            .ConfigureWebHostDefaults(webBuilder =>
-            {
-              webBuilder.UseStartup<Startup>();
-            });
-  }
+  // Add services to the container.
+  builder.Services.AddControllersWithViews();
+
+  builder.Services
+    .AddSingleton<IDirectoryAbstraction, DirectoryAbstraction>()
+    .AddSingleton<IFileAbstraction, FileAbstraction>()
+    .AddSingleton<IDateTimeAbstraction, DateTimeAbstraction>()
+    .AddSingleton<IEnvironmentAbstraction, EnvironmentAbstraction>()
+
+    .AddSingleton(typeof(ILoggerAdapter<>), typeof(LoggerAdapter<>))
+
+    .AddSingleton<IJsonHelper, JsonHelper>()
+
+    .AddSingleton<INasLandingPageConfigProvider, NasLandingPageConfigProvider>()
+
+    .AddSingleton<IProjectsService, ProjectsService>()
+    .AddSingleton<IConfigService, ConfigService>();
+
+  builder.Services.AddSwaggerDocument();
+
+  builder.Logging.ClearProviders();
+  builder.Logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
+  builder.Host.UseNLog();
+
+  var app = builder.Build();
+
+  app.UseStaticFiles();
+  //app.UseOpenApi();
+  //app.UseSwaggerUi3();
+
+  app.UseRouting();
+
+  app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller}/{action=Index}/{id?}");
+
+  app.MapFallbackToFile("index.html");
+
+  app.Run();
+}
+catch (Exception exception)
+{
+  // NLog: catch setup errors
+  logger.Error(exception, "Stopped program because of exception");
+  throw;
+}
+finally
+{
+  // Ensure to flush and stop internal timers/threads before application-exit (Avoid segmentation fault on Linux)
+  LogManager.Shutdown();
 }
