@@ -15,7 +15,7 @@
         <th scope="col" *ngIf="canRenderColumn('RepoIsPublic')">Public</th>
         <th scope="col" *ngIf="canRenderColumn('ScmHasReadme')">Readme</th>
         <th scope="col" *ngIf="canRenderColumn('ScmHasGitAttributes')">.gitAttr</th>
-        <th scope="col" *ngIf="canRenderColumn('ScmHasGitAttributes')">PR</th>
+        <th scope="col" *ngIf="canRenderColumn('ScmHasPrTemplate')">PR</th>
         <th scope="col" *ngIf="canRenderColumn('ScmHasEditorConfig')">.editorconfig</th>
         <th scope="col" *ngIf="canRenderColumn('ScmHasBuildScripts')">Build</th>
         <th scope="col" *ngIf="canRenderColumn('ScmBuildScriptVersion')">Build</th>
@@ -44,7 +44,7 @@
         <td *ngIf="canRenderColumn('RepoIsPublic')"><bool-tick [value]="project.repo.isPublic"></bool-tick></td>
         <td *ngIf="canRenderColumn('ScmHasReadme')"><bool-tick [value]="project.scm.hasReadme"></bool-tick></td>
         <td *ngIf="canRenderColumn('ScmHasGitAttributes')"><bool-tick [value]="project.scm.hasGitAttributes"></bool-tick></td>
-        <td *ngIf="canRenderColumn('ScmHasGitAttributes')"><bool-tick [value]="project.scm.hasPrTemplate"></bool-tick></td>
+        <td *ngIf="canRenderColumn('ScmHasPrTemplate')"><bool-tick [value]="project.scm.hasPrTemplate"></bool-tick></td>
         <td *ngIf="canRenderColumn('ScmHasEditorConfig')"><bool-tick [value]="project.scm.hasEditorConfig"></bool-tick></td>
         <td *ngIf="canRenderColumn('ScmHasBuildScripts')"><bool-tick [value]="project.scm.hasBuildScripts"></bool-tick></td>
         <td *ngIf="canRenderColumn('ScmBuildScriptVersion')">{{project.scm.buildScriptVersion}}</td>
