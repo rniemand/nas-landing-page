@@ -1,4 +1,4 @@
-using NasLandingPage.Config;
+using NasLandingPage.Common.Config;
 
 namespace NasLandingPage.Providers
 {
