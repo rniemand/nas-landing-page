@@ -4,9 +4,6 @@ public enum ProjectTableColumn
 {
   Name,
   RepoType,
-  RepoUrl,
-  CiCdUrl,
-  SonarQubeUrl,
   RepoIsPublic,
   SonarQubeBadges,
   ScmHasReadme,
@@ -27,5 +24,8 @@ public enum ProjectTableColumn
   Description,
   RepoId,
   RepoDefaultBranch,
-  RepoLastUpdate
+  RepoLastUpdate,
+  UrlRepo,
+  UrlCiCd,
+  UrlSonarQube
 }
