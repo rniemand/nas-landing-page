@@ -216,7 +216,7 @@ export enum ProjectTableColumn {
     ScmHasPrTemplate = 6,
     ScmHasEditorConfig = 7,
     ScmHasBuildScripts = 8,
-    ScmBuildScriptVersion = 9,
+    VersionBuildScripts = 9,
     DirSrc = 10,
     DirTests = 11,
     DirDocs = 12,

@@ -11,7 +11,7 @@ public enum ProjectTableColumn
   ScmHasPrTemplate,
   ScmHasEditorConfig,
   ScmHasBuildScripts,
-  ScmBuildScriptVersion,
+  VersionBuildScripts,
   DirSrc,
   DirTests,
   DirDocs,

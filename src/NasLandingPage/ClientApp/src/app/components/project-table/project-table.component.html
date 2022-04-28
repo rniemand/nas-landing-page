@@ -23,8 +23,8 @@
         <th scope="col" *ngIf="canRenderColumn('ScmHasGitAttributes')">.gitAttr</th>
         <th scope="col" *ngIf="canRenderColumn('ScmHasPrTemplate')">PR</th>
         <th scope="col" *ngIf="canRenderColumn('ScmHasEditorConfig')">.editorconfig</th>
-        <th scope="col" *ngIf="canRenderColumn('ScmHasBuildScripts')">Build</th>
-        <th scope="col" *ngIf="canRenderColumn('ScmBuildScriptVersion')">Build</th>
+        <th scope="col" *ngIf="canRenderColumn('ScmHasBuildScripts')">👷‍♂️</th>
+        <th scope="col" *ngIf="canRenderColumn('VersionBuildScripts')">👷‍♂️</th>
         <th scope="col" *ngIf="canRenderColumn('CountBuildScripts')">📜</th>
         <th scope="col" *ngIf="canRenderColumn('CountTestScripts')">🧪</th>
         <th scope="col" *ngIf="canRenderColumn('CountWorkFlows')">🔄</th>
@@ -56,7 +56,7 @@
         <td *ngIf="canRenderColumn('ScmHasPrTemplate')"><bool-tick [value]="project.scm.hasPrTemplate"></bool-tick></td>
         <td *ngIf="canRenderColumn('ScmHasEditorConfig')"><bool-tick [value]="project.scm.hasEditorConfig"></bool-tick></td>
         <td *ngIf="canRenderColumn('ScmHasBuildScripts')"><bool-tick [value]="project.scm.hasBuildScripts"></bool-tick></td>
-        <td *ngIf="canRenderColumn('ScmBuildScriptVersion')">{{project.scm.buildScriptVersion}}</td>
+        <td *ngIf="canRenderColumn('VersionBuildScripts')">{{project.scm.buildScriptVersion}}</td>
         <td *ngIf="canRenderColumn('CountBuildScripts')"><array-count [value]="project.scm.buildScripts"></array-count></td>
         <td *ngIf="canRenderColumn('CountTestScripts')"><array-count [value]="project.scm.testScripts"></array-count></td>
         <td *ngIf="canRenderColumn('CountWorkFlows')"><array-count [value]="project.scm.workFlows"></array-count></td>
