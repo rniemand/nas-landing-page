@@ -9,6 +9,7 @@
     <thead>
       <tr>
         <th scope="col" *ngIf="canRenderColumn('Name')">Name</th>
+        <th scope="col" *ngIf="canRenderColumn('Description')">Description</th>
         <th scope="col" *ngIf="canRenderColumn('RepoType')">&nbsp;</th>
         <th scope="col" *ngIf="canRenderColumn('RepoUrl')">Repo</th>
         <th scope="col" *ngIf="canRenderColumn('CiCdUrl')">CiCd</th>
@@ -35,6 +36,7 @@
     <tbody>
       <tr *ngFor="let project of projects">
         <td class="name" *ngIf="canRenderColumn('Name')">{{ project.name }}</td>
+        <td class="description" *ngIf="canRenderColumn('Description')">{{ project.description }}</td>
         <td *ngIf="canRenderColumn('RepoType')"><repo-type [project]="project"></repo-type></td>
         <td *ngIf="canRenderColumn('RepoUrl')">
           <a [href]="project.repo.repoUrl" target="_blank">open</a>

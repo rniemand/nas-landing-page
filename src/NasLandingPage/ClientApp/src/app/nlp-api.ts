@@ -229,10 +229,12 @@ export enum ProjectTableColumn {
     TestScriptCount = 19,
     WorkFlowCount = 20,
     License = 21,
+    Description = 22,
 }
 
 export class ProjectInfo implements IProjectInfo {
     name!: string;
+    description!: string;
     repo!: RepoInfo;
     sonarQube!: SonarQubeInfo;
     scm!: SourceCodeMaturityInfo;
@@ -260,6 +262,7 @@ export class ProjectInfo implements IProjectInfo {
     init(_data?: any) {
         if (_data) {
             this.name = _data["name"];
+            this.description = _data["description"];
             this.repo = _data["repo"] ? RepoInfo.fromJS(_data["repo"]) : new RepoInfo();
             this.sonarQube = _data["sonarQube"] ? SonarQubeInfo.fromJS(_data["sonarQube"]) : new SonarQubeInfo();
             this.scm = _data["scm"] ? SourceCodeMaturityInfo.fromJS(_data["scm"]) : new SourceCodeMaturityInfo();
@@ -283,6 +286,7 @@ export class ProjectInfo implements IProjectInfo {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["name"] = this.name;
+        data["description"] = this.description;
         data["repo"] = this.repo ? this.repo.toJSON() : <any>undefined;
         data["sonarQube"] = this.sonarQube ? this.sonarQube.toJSON() : <any>undefined;
         data["scm"] = this.scm ? this.scm.toJSON() : <any>undefined;
@@ -299,6 +303,7 @@ export class ProjectInfo implements IProjectInfo {
 
 export interface IProjectInfo {
     name: string;
+    description: string;
     repo: RepoInfo;
     sonarQube: SonarQubeInfo;
     scm: SourceCodeMaturityInfo;
