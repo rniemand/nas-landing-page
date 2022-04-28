@@ -30,7 +30,11 @@ export class LinkSqComponent implements OnInit, OnChanges {
     if(!this.hasSonarQube) { return; }
     var baseUrl = this?.project?.sonarQube?.url ?? '';
     const sqBaseUrl = this?.config?.sonarQubeUrl ?? '';
-    this.sqUrl = baseUrl.replace('{sonarQubeBaseUrl}', sqBaseUrl);
+    const sqId = this?.project?.sonarQube?.id ?? '';
+
+    this.sqUrl = baseUrl
+      .replace('{sonarQubeBaseUrl}', sqBaseUrl)
+      .replace('{id}', sqId);
   }
 
 }
