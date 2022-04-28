@@ -210,28 +210,32 @@ export enum ProjectTableColumn {
     Name = 0,
     RepoType = 1,
     RepoUrl = 2,
-    RepoCiCd = 3,
-    RepoIsPublic = 4,
-    SonarQubeBadges = 5,
-    ScmHasReadme = 6,
-    ScmHasGitAttributes = 7,
-    ScmHasPrTemplate = 8,
-    ScmHasEditorConfig = 9,
-    ScmHasBuildScripts = 10,
-    ScmBuildScriptVersion = 11,
-    FoldersSrc = 12,
-    FoldersTests = 13,
-    FoldersDocs = 14,
-    FoldersBuild = 15,
-    Languages = 16,
-    BuildScriptCount = 17,
-    TestScriptCount = 18,
-    WorkFlowCount = 19,
-    License = 20,
+    CiCdUrl = 3,
+    SonarQubeUrl = 4,
+    RepoIsPublic = 5,
+    SonarQubeBadges = 6,
+    ScmHasReadme = 7,
+    ScmHasGitAttributes = 8,
+    ScmHasPrTemplate = 9,
+    ScmHasEditorConfig = 10,
+    ScmHasBuildScripts = 11,
+    ScmBuildScriptVersion = 12,
+    FoldersSrc = 13,
+    FoldersTests = 14,
+    FoldersDocs = 15,
+    FoldersBuild = 16,
+    Languages = 17,
+    BuildScriptCount = 18,
+    TestScriptCount = 19,
+    WorkFlowCount = 20,
+    License = 21,
+    Description = 22,
+    RepoId = 23,
 }
 
 export class ProjectInfo implements IProjectInfo {
     name!: string;
+    description!: string;
     repo!: RepoInfo;
     sonarQube!: SonarQubeInfo;
     scm!: SourceCodeMaturityInfo;
@@ -259,6 +263,7 @@ export class ProjectInfo implements IProjectInfo {
     init(_data?: any) {
         if (_data) {
             this.name = _data["name"];
+            this.description = _data["description"];
             this.repo = _data["repo"] ? RepoInfo.fromJS(_data["repo"]) : new RepoInfo();
             this.sonarQube = _data["sonarQube"] ? SonarQubeInfo.fromJS(_data["sonarQube"]) : new SonarQubeInfo();
             this.scm = _data["scm"] ? SourceCodeMaturityInfo.fromJS(_data["scm"]) : new SourceCodeMaturityInfo();
@@ -282,6 +287,7 @@ export class ProjectInfo implements IProjectInfo {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["name"] = this.name;
+        data["description"] = this.description;
         data["repo"] = this.repo ? this.repo.toJSON() : <any>undefined;
         data["sonarQube"] = this.sonarQube ? this.sonarQube.toJSON() : <any>undefined;
         data["scm"] = this.scm ? this.scm.toJSON() : <any>undefined;
@@ -298,6 +304,7 @@ export class ProjectInfo implements IProjectInfo {
 
 export interface IProjectInfo {
     name: string;
+    description: string;
     repo: RepoInfo;
     sonarQube: SonarQubeInfo;
     scm: SourceCodeMaturityInfo;
@@ -311,6 +318,7 @@ export class RepoInfo implements IRepoInfo {
     repoUrl!: string;
     ciCd!: string;
     isPublic!: boolean;
+    repoId!: number;
 
     constructor(data?: IRepoInfo) {
         if (data) {
@@ -327,6 +335,7 @@ export class RepoInfo implements IRepoInfo {
             this.repoUrl = _data["repoUrl"];
             this.ciCd = _data["ciCd"];
             this.isPublic = _data["isPublic"];
+            this.repoId = _data["repoId"];
         }
     }
 
@@ -343,6 +352,7 @@ export class RepoInfo implements IRepoInfo {
         data["repoUrl"] = this.repoUrl;
         data["ciCd"] = this.ciCd;
         data["isPublic"] = this.isPublic;
+        data["repoId"] = this.repoId;
         return data;
     }
 }
@@ -352,6 +362,7 @@ export interface IRepoInfo {
     repoUrl: string;
     ciCd: string;
     isPublic: boolean;
+    repoId: number;
 }
 
 export enum RepoType {

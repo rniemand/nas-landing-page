@@ -7,6 +7,9 @@ public class ProjectInfo
   [JsonProperty("name")]
   public string Name { get; set; } = string.Empty;
 
+  [JsonProperty("description")]
+  public string Description { get; set; } = string.Empty;
+
   [JsonProperty("repo")]
   public RepoInfo Repo { get; set; } = new();
 

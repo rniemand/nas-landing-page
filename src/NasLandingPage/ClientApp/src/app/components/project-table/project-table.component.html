@@ -9,9 +9,12 @@
     <thead>
       <tr>
         <th scope="col" *ngIf="canRenderColumn('Name')">Name</th>
+        <th scope="col" *ngIf="canRenderColumn('Description')">Description</th>
         <th scope="col" *ngIf="canRenderColumn('RepoType')">&nbsp;</th>
         <th scope="col" *ngIf="canRenderColumn('RepoUrl')">Repo</th>
-        <th scope="col" *ngIf="canRenderColumn('RepoCiCd')">CiCd</th>
+        <th scope="col" *ngIf="canRenderColumn('RepoId')">RepoId</th>
+        <th scope="col" *ngIf="canRenderColumn('CiCdUrl')">CiCd</th>
+        <th scope="col" *ngIf="canRenderColumn('SonarQubeUrl')">SonarQube</th>
         <th scope="col" *ngIf="canRenderColumn('RepoIsPublic')">Public</th>
         <th scope="col" *ngIf="canRenderColumn('ScmHasReadme')">Readme</th>
         <th scope="col" *ngIf="canRenderColumn('ScmHasGitAttributes')">.gitAttr</th>
@@ -34,12 +37,17 @@
     <tbody>
       <tr *ngFor="let project of projects">
         <td class="name" *ngIf="canRenderColumn('Name')">{{ project.name }}</td>
+        <td class="description" *ngIf="canRenderColumn('Description')">{{ project.description }}</td>
         <td *ngIf="canRenderColumn('RepoType')"><repo-type [project]="project"></repo-type></td>
         <td *ngIf="canRenderColumn('RepoUrl')">
           <a [href]="project.repo.repoUrl" target="_blank">open</a>
         </td>
-        <td *ngIf="canRenderColumn('RepoCiCd')">
+        <td *ngIf="canRenderColumn('RepoId')">{{ project.repo.repoId }}</td>
+        <td *ngIf="canRenderColumn('CiCdUrl')">
           <a [href]="project.repo.ciCd" *ngIf="project.repo.ciCd" target="_blank">open</a>
+        </td>
+        <td *ngIf="canRenderColumn('SonarQubeUrl')">
+          <link-sq [project]="project" [config]="config"></link-sq>
         </td>
         <td *ngIf="canRenderColumn('RepoIsPublic')"><bool-tick [value]="project.repo.isPublic"></bool-tick></td>
         <td *ngIf="canRenderColumn('ScmHasReadme')"><bool-tick [value]="project.scm.hasReadme"></bool-tick></td>

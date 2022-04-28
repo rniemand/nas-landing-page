@@ -5,7 +5,8 @@ public enum ProjectTableColumn
   Name,
   RepoType,
   RepoUrl,
-  RepoCiCd,
+  CiCdUrl,
+  SonarQubeUrl,
   RepoIsPublic,
   SonarQubeBadges,
   ScmHasReadme,
@@ -22,5 +23,7 @@ public enum ProjectTableColumn
   BuildScriptCount,
   TestScriptCount,
   WorkFlowCount,
-  License
+  License,
+  Description,
+  RepoId
 }
