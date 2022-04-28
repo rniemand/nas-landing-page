@@ -28,5 +28,6 @@ public enum ProjectTableColumn
   UrlRepo,
   UrlCiCd,
   UrlSonarQube,
-  CountRepoForks
+  CountRepoForks,
+  CountOpenIssues
 }
