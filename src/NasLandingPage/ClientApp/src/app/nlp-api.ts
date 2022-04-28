@@ -144,6 +144,8 @@ export class ProjectsClient {
 
 export class ClientConfig implements IClientConfig {
     columns!: ProjectTableColumn[];
+    sonarQubeUrl!: string;
+    badges!: string[];
 
     constructor(data?: IClientConfig) {
         if (data) {
@@ -154,6 +156,7 @@ export class ClientConfig implements IClientConfig {
         }
         if (!data) {
             this.columns = [];
+            this.badges = [];
         }
     }
 
@@ -163,6 +166,12 @@ export class ClientConfig implements IClientConfig {
                 this.columns = [] as any;
                 for (let item of _data["columns"])
                     this.columns!.push(item);
+            }
+            this.sonarQubeUrl = _data["sonarQubeUrl"];
+            if (Array.isArray(_data["badges"])) {
+                this.badges = [] as any;
+                for (let item of _data["badges"])
+                    this.badges!.push(item);
             }
         }
     }
@@ -181,16 +190,45 @@ export class ClientConfig implements IClientConfig {
             for (let item of this.columns)
                 data["columns"].push(item);
         }
+        data["sonarQubeUrl"] = this.sonarQubeUrl;
+        if (Array.isArray(this.badges)) {
+            data["badges"] = [];
+            for (let item of this.badges)
+                data["badges"].push(item);
+        }
         return data;
     }
 }
 
 export interface IClientConfig {
     columns: ProjectTableColumn[];
+    sonarQubeUrl: string;
+    badges: string[];
 }
 
 export enum ProjectTableColumn {
-    Name = 1,
+    Name = 0,
+    RepoType = 1,
+    RepoUrl = 2,
+    RepoCiCd = 3,
+    RepoIsPublic = 4,
+    SonarQubeId = 5,
+    SonarQubeUrl = 6,
+    SonarQubeTokenBadge = 7,
+    SonarQubeBadges = 8,
+    ScmHasReadme = 9,
+    ScmHasGitAttributes = 10,
+    ScmHasPrTemplate = 11,
+    ScmHasEditorConfig = 12,
+    ScmHasBuildScripts = 13,
+    ScmBuildScriptVersion = 14,
+    ScmBuildScripts = 15,
+    ScmTestScripts = 16,
+    ScmWorkFlows = 17,
+    FoldersSrc = 18,
+    FoldersTests = 19,
+    FoldersDocs = 20,
+    Languages = 21,
 }
 
 export class ProjectInfo implements IProjectInfo {

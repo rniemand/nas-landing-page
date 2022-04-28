@@ -18,7 +18,6 @@ public class ProjectsController : ControllerBase
   [HttpGet]
   public List<ProjectInfo> GetAll()
   {
-    // http://localhost:5296/projects
     return _projectsService.GetAll();
   }
 }
