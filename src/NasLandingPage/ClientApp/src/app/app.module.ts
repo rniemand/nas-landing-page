@@ -16,6 +16,7 @@ import { BoolTickComponent } from './components/bool-tick/bool-tick.component';
 import { ArrayStringComponent } from './components/array-string/array-string.component';
 import { SqBadgesComponent } from './components/sq-badges/sq-badges.component';
 import { ArrayCountComponent } from './components/array-count/array-count.component';
+import { OptionEditorComponent } from './components/project-table/option-editor/option-editor.component';
 
 function getBaseUrl(locationStrategy: LocationStrategy, document: any): string {
   let baseHref = locationStrategy.getBaseHref();
@@ -44,6 +45,7 @@ function getBaseUrl(locationStrategy: LocationStrategy, document: any): string {
     ArrayStringComponent,
     SqBadgesComponent,
     ArrayCountComponent,
+    OptionEditorComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
