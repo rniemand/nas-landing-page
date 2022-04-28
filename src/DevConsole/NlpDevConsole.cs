@@ -44,8 +44,28 @@ public class NlpDevConsole
   public NlpDevConsole TestGitHubClient()
   {
     var gitHubClient = _services.GetRequiredService<INlpGitHubClient>();
-
     var repository = gitHubClient.GetRepositoryAsync(137949496).GetAwaiter().GetResult();
+    Console.WriteLine($"{repository.FullName}");
+
+    return this;
+  }
+
+  public NlpDevConsole SyncRepoDefaultBranches()
+  {
+    var gitHubClient = _services.GetRequiredService<INlpGitHubClient>();
+    var projectInfoProvider = _services.GetRequiredService<IProjectInfoProvider>();
+    var projectFiles = projectInfoProvider.ListProjectFiles();
+
+    foreach (var projectFileName in projectFiles)
+    {
+      var projectInfo = projectInfoProvider.GetByName(projectFileName);
+      var repoId = projectInfo.Repo.RepoId;
+      var repository = gitHubClient.GetRepositoryAsync(repoId).GetAwaiter().GetResult();
+
+
+      Console.WriteLine("");
+    }
+
 
     return this;
   }

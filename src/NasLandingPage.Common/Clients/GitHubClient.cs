@@ -28,18 +28,24 @@ public class NlpGitHubClient : INlpGitHubClient
   }
 
 
-  private IGitHubClient CreateGitHubClient(IServiceProvider serviceProvider)
+  private static IGitHubClient CreateGitHubClient(IServiceProvider serviceProvider)
   {
     // TODO: [NlpGitHubClient.CreateGitHubClient] (TESTS) Add tests
     var credentials = GetCredentials(serviceProvider);
-    var github = new GitHubClient(new ProductHeaderValue("NasLandingPage"));
+    var github = new GitHubClient(new ProductHeaderValue("my-cool-app"));
+    var useToken = !string.IsNullOrWhiteSpace(credentials.AuthToken);
 
-    if (!string.IsNullOrWhiteSpace(credentials.Password))
+    if (!useToken && !string.IsNullOrWhiteSpace(credentials.Password))
     {
       var basicAuth = new Credentials(credentials.Username, credentials.Password);
       github.Credentials = basicAuth;
     }
 
+    if (useToken)
+    {
+      github.Credentials = new Credentials(credentials.AuthToken);
+    }
+    
     return github;
   }
 

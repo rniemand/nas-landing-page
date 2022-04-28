@@ -10,6 +10,9 @@ public class BasicCredentials
   [JsonProperty("pass")]
   public string Password { get; set; } = string.Empty;
 
+  [JsonProperty("token")]
+  public string AuthToken { get; set; } = string.Empty;
+
   [JsonProperty("name")]
   public string CredentialsName { get; set; } = string.Empty;
 }

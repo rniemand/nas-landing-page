@@ -11,6 +11,7 @@ public interface IProjectInfoProvider
   List<ProjectInfo> GetAll();
   ProjectInfo GetByName(string name);
   void UpdateProjectInfo(ProjectInfo projectInfo);
+  List<string> ListProjectFiles();
 }
 
 public class ProjectInfoProvider : IProjectInfoProvider
@@ -77,6 +78,21 @@ public class ProjectInfoProvider : IProjectInfoProvider
     projectInfo.Metadata = new ProjectInfoMetadata();
     var projectJson = _jsonHelper.SerializeObject(projectInfo, true);
     _file.WriteAllText(sourceFilePath, projectJson);
+  }
+
+  public List<string> ListProjectFiles()
+  {
+    // TODO: [ProjectInfoProvider.ListProjectFiles] (TESTS) Add tests
+    var projectFiles = new List<string>();
+    var files = _directory.GetFiles(_dataDir, "*.json", SearchOption.TopDirectoryOnly);
+
+    foreach (var file in files)
+    {
+      var fileName = _path.GetFileNameWithoutExtension(file);
+      projectFiles.Add(fileName);
+    }
+
+    return projectFiles;
   }
 
 
