@@ -26,6 +26,7 @@
         <th scope="col" *ngIf="canRenderColumn('ScmBuildScriptVersion')">Build</th>
         <th scope="col" *ngIf="canRenderColumn('BuildScriptCount')">Build</th>
         <th scope="col" *ngIf="canRenderColumn('WorkFlowCount')">flows</th>
+        <th scope="col" *ngIf="canRenderColumn('CountRepoForks')">forks</th>
         <th scope="col" *ngIf="canRenderColumn('DirSrc')">📁 src</th>
         <th scope="col" *ngIf="canRenderColumn('DirTests')">📁 tests</th>
         <th scope="col" *ngIf="canRenderColumn('DirDocs')">📁 docs</th>
@@ -58,6 +59,7 @@
         <td *ngIf="canRenderColumn('ScmBuildScriptVersion')">{{project.scm.buildScriptVersion}}</td>
         <td *ngIf="canRenderColumn('BuildScriptCount')"><array-count [value]="project.scm.buildScripts"></array-count></td>
         <td *ngIf="canRenderColumn('WorkFlowCount')"><array-count [value]="project.scm.workFlows"></array-count></td>
+        <td *ngIf="canRenderColumn('CountRepoForks')"><raw-count [value]="project.repo.forks"></raw-count></td>
         <td *ngIf="canRenderColumn('DirSrc')"><bool-tick [value]="project.folders.src"></bool-tick></td>
         <td *ngIf="canRenderColumn('DirTests')"><bool-tick [value]="project.folders.tests"></bool-tick></td>
         <td *ngIf="canRenderColumn('DirDocs')"><bool-tick [value]="project.folders.docs"></bool-tick></td>

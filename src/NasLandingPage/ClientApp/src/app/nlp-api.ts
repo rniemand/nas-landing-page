@@ -233,6 +233,7 @@ export enum ProjectTableColumn {
     UrlRepo = 23,
     UrlCiCd = 24,
     UrlSonarQube = 25,
+    CountRepoForks = 26,
 }
 
 export class ProjectInfo implements IProjectInfo {
