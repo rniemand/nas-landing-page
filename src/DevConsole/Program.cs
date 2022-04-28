@@ -1,6 +1,8 @@
 using DevConsole;
 
 new NlpDevConsole()
-  .HelloWorld();
+  //.HelloWorld()
+  .TestGetCredentials()
+  .DoNothing();
 
-Console.WriteLine("Done");
+Console.WriteLine("Fin.");

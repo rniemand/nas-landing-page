@@ -1,9 +1,9 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using NasLandingPage.Common.Extensions;
+using NasLandingPage.Common.Services;
 using NLog.Extensions.Logging;
-using Rn.NetCore.Common.Abstractions;
-using Rn.NetCore.Common.Helpers;
 using Rn.NetCore.Common.Logging;
 
 namespace DevConsole;
@@ -30,7 +30,15 @@ public class NlpDevConsole
 
     return this;
   }
-    
+
+  public NlpDevConsole TestGetCredentials()
+  {
+    var credentialsService = _services.GetRequiredService<ICredentialsService>();
+    var credentials = credentialsService.GetCredentials("github");
+
+    return this;
+  }
+
   private static IServiceProvider BuildServiceContainer()
   {
     var services = new ServiceCollection();
@@ -43,26 +51,16 @@ public class NlpDevConsole
     services
       // Configuration
       .AddSingleton<IConfiguration>(config)
+      .AddNasLandingPage()
 
       // Logging
-      .AddSingleton(typeof(ILoggerAdapter<>), typeof(LoggerAdapter<>))
       .AddLogging(loggingBuilder =>
       {
         // configure Logging with NLog
         loggingBuilder.ClearProviders();
         loggingBuilder.SetMinimumLevel(LogLevel.Trace);
         loggingBuilder.AddNLog(config);
-      })
-
-      // Helpers
-      .AddSingleton<IJsonHelper, JsonHelper>()
-
-      // Abstractions
-      .AddSingleton<IFileAbstraction, FileAbstraction>()
-      .AddSingleton<IDirectoryAbstraction, DirectoryAbstraction>()
-      .AddSingleton<IEnvironmentAbstraction, EnvironmentAbstraction>()
-      .AddSingleton<IPathAbstraction, PathAbstraction>()
-      .AddSingleton<IDateTimeAbstraction, DateTimeAbstraction>();
+      });
 
     return services.BuildServiceProvider();
   }
