@@ -41,14 +41,14 @@
         <td class="name" *ngIf="canRenderColumn('Name')">{{ project.name }}</td>
         <td class="description" *ngIf="canRenderColumn('Description')">{{ project.description }}</td>
         <td *ngIf="canRenderColumn('RepoType')"><repo-type [project]="project"></repo-type></td>
-        <td *ngIf="canRenderColumn('UrlRepo')"><link-generic [url]="project.repo.repoUrl" name="repo"></link-generic></td>
-        <td *ngIf="canRenderColumn('UrlCiCd')"><link-generic [url]="project.repo.ciCd" name="ci-cd"></link-generic></td>
+        <td *ngIf="canRenderColumn('UrlRepo')"><link-generic [url]="project.repo.url" name="repo"></link-generic></td>
+        <td *ngIf="canRenderColumn('UrlCiCd')"><link-generic [url]="project.repo.cicd" name="ci-cd"></link-generic></td>
         <td *ngIf="canRenderColumn('UrlSonarQube')"><link-sq [project]="project" [config]="config"></link-sq></td>
         <td class="branch" *ngIf="canRenderColumn('RepoDefaultBranch')">{{ project.repo.defaultBranch }}</td>
         <td *ngIf="canRenderColumn('RepoLastUpdate')">
           {{ project.repo.lastUpdated | date:'yyyy-MM-dd' }}
         </td>
-        <td *ngIf="canRenderColumn('RepoId')">{{ project.repo.repoId }}</td>
+        <td *ngIf="canRenderColumn('RepoId')">{{ project.repo.id }}</td>
         <td *ngIf="canRenderColumn('RepoIsPublic')"><bool-tick [value]="project.repo.isPublic"></bool-tick></td>
         <td *ngIf="canRenderColumn('ScmHasReadme')"><bool-tick [value]="project.scm.hasReadme"></bool-tick></td>
         <td *ngIf="canRenderColumn('ScmHasGitAttributes')"><bool-tick [value]="project.scm.hasGitAttributes"></bool-tick></td>

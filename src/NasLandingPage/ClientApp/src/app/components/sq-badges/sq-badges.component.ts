@@ -43,8 +43,8 @@ export class SqBadgesComponent implements OnInit, OnChanges {
 
     if(!this.canRender) { return; }
     var baseUrl = this?.config?.sonarQubeUrl ?? '';
-    var projectId = this?.project?.sonarQube?.projectId ?? '';
-    var tokenBadge = this?.project?.sonarQube?.badgeToken ?? '';
+    var projectId = this?.project?.sonarQube?.id ?? '';
+    var tokenBadge = this?.project?.sonarQube?.tokenBadge ?? '';
     var rawBadges = (this?.project?.sonarQube?.badges ?? []);
     var badgeUrls: string[] = [];
 

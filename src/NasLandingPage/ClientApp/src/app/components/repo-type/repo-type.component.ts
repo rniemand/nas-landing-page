@@ -18,6 +18,6 @@ export class RepoTypeComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     this.hasProject = (this?.project ?? undefined) !== undefined;
-    this.repoType = this.hasProject ? RepoType[this.project!.repo.repoType] : "";
+    this.repoType = this.hasProject ? RepoType[this.project!.repo.type] : "";
   }
 }

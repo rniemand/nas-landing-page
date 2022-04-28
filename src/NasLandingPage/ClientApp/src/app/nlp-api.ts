@@ -361,13 +361,20 @@ export interface IProjectInfoMetadata {
 }
 
 export class RepoInfo implements IRepoInfo {
-    repoType!: RepoType;
-    repoUrl!: string;
-    ciCd!: string;
+    type!: RepoType;
+    url!: string;
+    cicd!: string;
     isPublic!: boolean;
-    repoId!: number;
+    id!: number;
     defaultBranch!: string;
     lastUpdated!: Date;
+    forks!: number;
+    fullName!: string;
+    gitUrl!: string;
+    openIssues!: number;
+    sshUrl!: string;
+    apiUrl!: string;
+    size!: number;
 
     constructor(data?: IRepoInfo) {
         if (data) {
@@ -380,13 +387,20 @@ export class RepoInfo implements IRepoInfo {
 
     init(_data?: any) {
         if (_data) {
-            this.repoType = _data["repoType"];
-            this.repoUrl = _data["repoUrl"];
-            this.ciCd = _data["ciCd"];
+            this.type = _data["type"];
+            this.url = _data["url"];
+            this.cicd = _data["cicd"];
             this.isPublic = _data["isPublic"];
-            this.repoId = _data["repoId"];
+            this.id = _data["id"];
             this.defaultBranch = _data["defaultBranch"];
             this.lastUpdated = _data["lastUpdated"] ? new Date(_data["lastUpdated"].toString()) : <any>undefined;
+            this.forks = _data["forks"];
+            this.fullName = _data["fullName"];
+            this.gitUrl = _data["gitUrl"];
+            this.openIssues = _data["openIssues"];
+            this.sshUrl = _data["sshUrl"];
+            this.apiUrl = _data["apiUrl"];
+            this.size = _data["size"];
         }
     }
 
@@ -399,25 +413,39 @@ export class RepoInfo implements IRepoInfo {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["repoType"] = this.repoType;
-        data["repoUrl"] = this.repoUrl;
-        data["ciCd"] = this.ciCd;
+        data["type"] = this.type;
+        data["url"] = this.url;
+        data["cicd"] = this.cicd;
         data["isPublic"] = this.isPublic;
-        data["repoId"] = this.repoId;
+        data["id"] = this.id;
         data["defaultBranch"] = this.defaultBranch;
         data["lastUpdated"] = this.lastUpdated ? this.lastUpdated.toISOString() : <any>undefined;
+        data["forks"] = this.forks;
+        data["fullName"] = this.fullName;
+        data["gitUrl"] = this.gitUrl;
+        data["openIssues"] = this.openIssues;
+        data["sshUrl"] = this.sshUrl;
+        data["apiUrl"] = this.apiUrl;
+        data["size"] = this.size;
         return data;
     }
 }
 
 export interface IRepoInfo {
-    repoType: RepoType;
-    repoUrl: string;
-    ciCd: string;
+    type: RepoType;
+    url: string;
+    cicd: string;
     isPublic: boolean;
-    repoId: number;
+    id: number;
     defaultBranch: string;
     lastUpdated: Date;
+    forks: number;
+    fullName: string;
+    gitUrl: string;
+    openIssues: number;
+    sshUrl: string;
+    apiUrl: string;
+    size: number;
 }
 
 export enum RepoType {
@@ -427,8 +455,8 @@ export enum RepoType {
 
 export class SonarQubeInfo implements ISonarQubeInfo {
     url!: string;
-    projectId!: string;
-    badgeToken!: string;
+    id!: string;
+    tokenBadge!: string;
     badges!: { [key: string]: string; };
 
     constructor(data?: ISonarQubeInfo) {
@@ -446,8 +474,8 @@ export class SonarQubeInfo implements ISonarQubeInfo {
     init(_data?: any) {
         if (_data) {
             this.url = _data["url"];
-            this.projectId = _data["projectId"];
-            this.badgeToken = _data["badgeToken"];
+            this.id = _data["id"];
+            this.tokenBadge = _data["tokenBadge"];
             if (_data["badges"]) {
                 this.badges = {} as any;
                 for (let key in _data["badges"]) {
@@ -468,8 +496,8 @@ export class SonarQubeInfo implements ISonarQubeInfo {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["url"] = this.url;
-        data["projectId"] = this.projectId;
-        data["badgeToken"] = this.badgeToken;
+        data["id"] = this.id;
+        data["tokenBadge"] = this.tokenBadge;
         if (this.badges) {
             data["badges"] = {};
             for (let key in this.badges) {
@@ -483,8 +511,8 @@ export class SonarQubeInfo implements ISonarQubeInfo {
 
 export interface ISonarQubeInfo {
     url: string;
-    projectId: string;
-    badgeToken: string;
+    id: string;
+    tokenBadge: string;
     badges: { [key: string]: string; };
 }
 
