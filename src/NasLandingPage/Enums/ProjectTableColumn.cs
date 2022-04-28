@@ -7,9 +7,6 @@ public enum ProjectTableColumn
   RepoUrl,
   RepoCiCd,
   RepoIsPublic,
-  SonarQubeId,
-  SonarQubeUrl,
-  SonarQubeTokenBadge,
   SonarQubeBadges,
   ScmHasReadme,
   ScmHasGitAttributes,
@@ -24,5 +21,8 @@ public enum ProjectTableColumn
   FoldersTests,
   FoldersDocs,
   FoldersBuild,
-  Languages
+  Languages,
+  BuildScriptCount,
+  TestScriptCount,
+  WorkFlowCount
 }

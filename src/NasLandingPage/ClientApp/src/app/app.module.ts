@@ -15,6 +15,7 @@ import { RepoTypeComponent } from './components/repo-type/repo-type.component';
 import { BoolTickComponent } from './components/bool-tick/bool-tick.component';
 import { ArrayStringComponent } from './components/array-string/array-string.component';
 import { SqBadgesComponent } from './components/sq-badges/sq-badges.component';
+import { ArrayCountComponent } from './components/array-count/array-count.component';
 
 function getBaseUrl(locationStrategy: LocationStrategy, document: any): string {
   let baseHref = locationStrategy.getBaseHref();
@@ -42,6 +43,7 @@ function getBaseUrl(locationStrategy: LocationStrategy, document: any): string {
     BoolTickComponent,
     ArrayStringComponent,
     SqBadgesComponent,
+    ArrayCountComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
