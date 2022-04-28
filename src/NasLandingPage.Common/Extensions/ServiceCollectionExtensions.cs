@@ -17,6 +17,7 @@ public static class ServiceCollectionExtensions
       .AddSingleton<IFileAbstraction, FileAbstraction>()
       .AddSingleton<IDateTimeAbstraction, DateTimeAbstraction>()
       .AddSingleton<IEnvironmentAbstraction, EnvironmentAbstraction>()
+      .AddSingleton<IPathAbstraction, PathAbstraction>()
 
       .AddSingleton(typeof(ILoggerAdapter<>), typeof(LoggerAdapter<>))
 

@@ -18,6 +18,7 @@ public class ProjectInfoProvider : IProjectInfoProvider
   private readonly IEnvironmentAbstraction _environment;
   private readonly IFileAbstraction _file;
   private readonly IJsonHelper _jsonHelper;
+  private readonly IPathAbstraction _path;
   private readonly NasLandingPageConfig _config;
   private readonly string _dataDir;
 
@@ -28,6 +29,7 @@ public class ProjectInfoProvider : IProjectInfoProvider
     _environment = serviceProvider.GetRequiredService<IEnvironmentAbstraction>();
     _file = serviceProvider.GetRequiredService<IFileAbstraction>();
     _jsonHelper = serviceProvider.GetRequiredService<IJsonHelper>();
+    _path = serviceProvider.GetRequiredService<IPathAbstraction>();
     _config = serviceProvider.GetRequiredService<INasLandingPageConfigProvider>().Provide();
 
     _dataDir = GenerateDataDirPath();
@@ -69,7 +71,15 @@ public class ProjectInfoProvider : IProjectInfoProvider
   {
     // TODO: [ProjectInfoProvider.LoadProjectFile] (TESTS) Add tests
     var fileJson = _file.ReadAllText(path);
-    return _jsonHelper.DeserializeObject<ProjectInfo>(fileJson);
+    var projectInfo = _jsonHelper.DeserializeObject<ProjectInfo>(fileJson);
+
+    projectInfo.Metadata = new ProjectInfoMetadata
+    {
+      FileName = _path.GetFileName(path),
+      FileNameWithoutExtension = _path.GetFileNameWithoutExtension(path)
+    };
+    
+    return projectInfo;
   }
 
   private string GenerateDataDirPath()

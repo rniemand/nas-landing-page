@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace NasLandingPage.Common.Models.Projects;
+namespace NasLandingPage.Common.Models;
 
 public class SourceCodeMaturityInfo
 {
