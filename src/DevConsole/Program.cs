@@ -3,7 +3,8 @@ using DevConsole;
 new NlpDevConsole()
   //.HelloWorld()
   //.TestGetCredentials()
-  .TestGitHubClient()
+  //.TestGitHubClient()
+  .TestProjectInfoProvider()
   .DoNothing();
 
 Console.WriteLine("Fin.");

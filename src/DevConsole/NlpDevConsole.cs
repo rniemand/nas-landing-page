@@ -2,6 +2,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NasLandingPage.Common.Extensions;
+using NasLandingPage.Common.Providers;
 using NasLandingPage.Common.Services;
 using NLog.Extensions.Logging;
 using Octokit;
@@ -58,6 +59,14 @@ public class NlpDevConsole
 
     var repository = github.Repository.Get(137949496).GetAwaiter().GetResult();
     var tags = github.Repository.GetAllTags(137949496).GetAwaiter().GetResult();
+
+    return this;
+  }
+
+  public NlpDevConsole TestProjectInfoProvider()
+  {
+    var infoProvider = _services.GetRequiredService<IProjectInfoProvider>();
+
 
     return this;
   }

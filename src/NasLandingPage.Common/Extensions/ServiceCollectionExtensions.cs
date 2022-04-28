@@ -23,6 +23,7 @@ public static class ServiceCollectionExtensions
       .AddSingleton<IJsonHelper, JsonHelper>()
 
       .AddSingleton<INasLandingPageConfigProvider, NasLandingPageConfigProvider>()
+      .AddSingleton<IProjectInfoProvider, ProjectInfoProvider>()
 
       .AddSingleton<IProjectsService, ProjectsService>()
       .AddSingleton<IConfigService, ConfigService>()
