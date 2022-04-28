@@ -21,5 +21,6 @@ public enum ProjectTableColumn
   Languages,
   BuildScriptCount,
   TestScriptCount,
-  WorkFlowCount
+  WorkFlowCount,
+  License
 }

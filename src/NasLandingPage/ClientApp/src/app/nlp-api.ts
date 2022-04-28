@@ -227,6 +227,7 @@ export enum ProjectTableColumn {
     BuildScriptCount = 17,
     TestScriptCount = 18,
     WorkFlowCount = 19,
+    License = 20,
 }
 
 export class ProjectInfo implements IProjectInfo {
@@ -235,6 +236,7 @@ export class ProjectInfo implements IProjectInfo {
     sonarQube!: SonarQubeInfo;
     scm!: SourceCodeMaturityInfo;
     folders!: ProjectFolderInfo;
+    license!: LicenseInfo;
     languages!: string[];
 
     constructor(data?: IProjectInfo) {
@@ -249,6 +251,7 @@ export class ProjectInfo implements IProjectInfo {
             this.sonarQube = new SonarQubeInfo();
             this.scm = new SourceCodeMaturityInfo();
             this.folders = new ProjectFolderInfo();
+            this.license = new LicenseInfo();
             this.languages = [];
         }
     }
@@ -260,6 +263,7 @@ export class ProjectInfo implements IProjectInfo {
             this.sonarQube = _data["sonarQube"] ? SonarQubeInfo.fromJS(_data["sonarQube"]) : new SonarQubeInfo();
             this.scm = _data["scm"] ? SourceCodeMaturityInfo.fromJS(_data["scm"]) : new SourceCodeMaturityInfo();
             this.folders = _data["folders"] ? ProjectFolderInfo.fromJS(_data["folders"]) : new ProjectFolderInfo();
+            this.license = _data["license"] ? LicenseInfo.fromJS(_data["license"]) : new LicenseInfo();
             if (Array.isArray(_data["languages"])) {
                 this.languages = [] as any;
                 for (let item of _data["languages"])
@@ -282,6 +286,7 @@ export class ProjectInfo implements IProjectInfo {
         data["sonarQube"] = this.sonarQube ? this.sonarQube.toJSON() : <any>undefined;
         data["scm"] = this.scm ? this.scm.toJSON() : <any>undefined;
         data["folders"] = this.folders ? this.folders.toJSON() : <any>undefined;
+        data["license"] = this.license ? this.license.toJSON() : <any>undefined;
         if (Array.isArray(this.languages)) {
             data["languages"] = [];
             for (let item of this.languages)
@@ -297,6 +302,7 @@ export interface IProjectInfo {
     sonarQube: SonarQubeInfo;
     scm: SourceCodeMaturityInfo;
     folders: ProjectFolderInfo;
+    license: LicenseInfo;
     languages: string[];
 }
 
@@ -559,6 +565,46 @@ export interface IProjectFolderInfo {
     tests: boolean;
     docs: boolean;
     build: boolean;
+}
+
+export class LicenseInfo implements ILicenseInfo {
+    name!: string;
+    url!: string;
+
+    constructor(data?: ILicenseInfo) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.name = _data["name"];
+            this.url = _data["url"];
+        }
+    }
+
+    static fromJS(data: any): LicenseInfo {
+        data = typeof data === 'object' ? data : {};
+        let result = new LicenseInfo();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["url"] = this.url;
+        return data;
+    }
+}
+
+export interface ILicenseInfo {
+    name: string;
+    url: string;
 }
 
 export class ApiException extends Error {

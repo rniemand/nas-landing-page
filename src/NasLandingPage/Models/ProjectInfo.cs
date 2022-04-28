@@ -19,6 +19,9 @@ public class ProjectInfo
   [JsonProperty("folders")]
   public ProjectFolderInfo Folders { get; set; } = new();
 
+  [JsonProperty("license")]
+  public LicenseInfo License { get; set; } = new();
+
   [JsonProperty("languages")]
   public string[] Languages { get; set; } = Array.Empty<string>();
 }
