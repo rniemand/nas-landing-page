@@ -12,6 +12,7 @@ import { API_BASE_URL, ConfigClient, ProjectsClient } from './nlp-api';
 import { DOCUMENT, LocationStrategy } from '@angular/common';
 import { ProjectTableComponent } from './components/project-table/project-table.component';
 import { RepoTypeComponent } from './components/repo-type/repo-type.component';
+import { BoolTickComponent } from './components/bool-tick/bool-tick.component';
 
 function getBaseUrl(locationStrategy: LocationStrategy, document: any): string {
   let baseHref = locationStrategy.getBaseHref();
@@ -36,6 +37,7 @@ function getBaseUrl(locationStrategy: LocationStrategy, document: any): string {
     CounterComponent,
     ProjectTableComponent,
     RepoTypeComponent,
+    BoolTickComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
