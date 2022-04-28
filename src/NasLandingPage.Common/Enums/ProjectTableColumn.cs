@@ -1,4 +1,4 @@
-namespace NasLandingPage.Enums;
+namespace NasLandingPage.Common.Enums;
 
 public enum ProjectTableColumn
 {

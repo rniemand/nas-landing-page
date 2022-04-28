@@ -1,4 +1,4 @@
-using NasLandingPage.Enums;
+using NasLandingPage.Common.Enums;
 using Newtonsoft.Json;
 
 namespace NasLandingPage.Models;
