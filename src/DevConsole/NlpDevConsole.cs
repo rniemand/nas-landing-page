@@ -66,7 +66,7 @@ public class NlpDevConsole
   public NlpDevConsole TestProjectInfoProvider()
   {
     var infoProvider = _services.GetRequiredService<IProjectInfoProvider>();
-
+    var projectInfo = infoProvider.GetByName("Alert-Maker");
 
     return this;
   }

@@ -9,6 +9,7 @@ namespace NasLandingPage.Common.Providers;
 public interface IProjectInfoProvider
 {
   List<ProjectInfo> GetAll();
+  ProjectInfo GetByName(string name);
 }
 
 public class ProjectInfoProvider : IProjectInfoProvider
@@ -33,6 +34,7 @@ public class ProjectInfoProvider : IProjectInfoProvider
     EnsureDataDirExists();
   }
 
+
   public List<ProjectInfo> GetAll()
   {
     // TODO: [ProjectInfoProvider.GetAll] (TESTS) Add tests
@@ -47,6 +49,20 @@ public class ProjectInfoProvider : IProjectInfoProvider
     }
 
     return projects;
+  }
+
+  public ProjectInfo GetByName(string name)
+  {
+    // TODO: [ProjectInfoProvider.GetByName] (TESTS) Add tests
+    var filePath = GenerateProjectFilePath(name);
+    return LoadProjectFile(filePath);
+  }
+
+
+  private string GenerateProjectFilePath(string name)
+  {
+    // TODO: [ProjectInfoProvider.GenerateProjectFilePath] (TESTS) Add tests
+    return $"{_dataDir}{name}.json";
   }
 
   private ProjectInfo LoadProjectFile(string path)
