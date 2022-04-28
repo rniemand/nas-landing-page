@@ -6,6 +6,7 @@ using NasLandingPage.Common.Extensions;
 using NasLandingPage.Common.Providers;
 using NasLandingPage.Common.Services;
 using NLog.Extensions.Logging;
+using Octokit;
 using Rn.NetCore.Common.Logging;
 
 namespace DevConsole;
@@ -50,7 +51,7 @@ public class NlpDevConsole
     return this;
   }
 
-  public NlpDevConsole SyncRepoDefaultBranches()
+  public NlpDevConsole SyncBasicRepoInformation()
   {
     var gitHubClient = _services.GetRequiredService<INlpGitHubClient>();
     var projectInfoProvider = _services.GetRequiredService<IProjectInfoProvider>();
@@ -62,10 +63,12 @@ public class NlpDevConsole
       var repoId = projectInfo.Repo.RepoId;
       var repository = gitHubClient.GetRepositoryAsync(repoId).GetAwaiter().GetResult();
 
-
-      Console.WriteLine("");
+      projectInfo.Repo.DefaultBranch = repository.DefaultBranch;
+      projectInfo.Repo.IsPublic = repository.Visibility == RepositoryVisibility.Public;
+      projectInfo.Repo.LastUpdated = repository.UpdatedAt;
+      
+      projectInfoProvider.UpdateProjectInfo(projectInfo);
     }
-
 
     return this;
   }

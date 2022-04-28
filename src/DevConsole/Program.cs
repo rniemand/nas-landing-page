@@ -5,7 +5,7 @@ new NlpDevConsole()
   //.TestGetCredentials()
   //.TestGitHubClient()
   //.TestProjectInfoProvider()
-  .SyncRepoDefaultBranches()
+  //.SyncBasicRepoInformation()
   .DoNothing();
 
 Console.WriteLine("Fin.");

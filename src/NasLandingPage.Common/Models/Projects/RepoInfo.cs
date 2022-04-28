@@ -22,4 +22,7 @@ public class RepoInfo
 
   [JsonProperty("defaultBranch")]
   public string DefaultBranch { get; set; } = string.Empty;
+
+  [JsonProperty("lastUpdated")]
+  public DateTimeOffset LastUpdated { get; set; } = DateTimeOffset.MinValue;
 }
