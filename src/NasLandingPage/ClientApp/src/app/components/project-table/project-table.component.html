@@ -33,7 +33,7 @@
     </thead>
     <tbody>
       <tr *ngFor="let project of projects">
-        <td *ngIf="canRenderColumn('Name')">{{ project.name }}</td>
+        <td class="name" *ngIf="canRenderColumn('Name')">{{ project.name }}</td>
         <td *ngIf="canRenderColumn('RepoType')"><repo-type [project]="project"></repo-type></td>
         <td *ngIf="canRenderColumn('RepoUrl')">
           <a [href]="project.repo.repoUrl" target="_blank">open</a>

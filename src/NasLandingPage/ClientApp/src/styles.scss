@@ -18,6 +18,8 @@ code {
 .projectTable {
   tr {
     td {
+      text-align: center;
+
       .languages {
         font-size: 0.65em;
 
@@ -31,6 +33,10 @@ code {
 
           &:last-child { margin-right: 0; }
         }
+      }
+
+      &.name {
+        text-align: left;
       }
     }
   }
