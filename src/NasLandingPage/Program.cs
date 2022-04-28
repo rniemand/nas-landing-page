@@ -1,4 +1,4 @@
-using NasLandingPage.Providers;
+using NasLandingPage.Common.Providers;
 using NasLandingPage.Services;
 using NLog;
 using NLog.Web;

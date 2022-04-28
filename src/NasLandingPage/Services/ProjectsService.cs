@@ -1,6 +1,6 @@
 using NasLandingPage.Common.Config;
 using NasLandingPage.Common.Models;
-using NasLandingPage.Providers;
+using NasLandingPage.Common.Providers;
 using Rn.NetCore.Common.Abstractions;
 using Rn.NetCore.Common.Helpers;
 

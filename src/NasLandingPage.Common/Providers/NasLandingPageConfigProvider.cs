@@ -1,6 +1,8 @@
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using NasLandingPage.Common.Config;
 
-namespace NasLandingPage.Providers
+namespace NasLandingPage.Common.Providers
 {
   public interface INasLandingPageConfigProvider
   {
