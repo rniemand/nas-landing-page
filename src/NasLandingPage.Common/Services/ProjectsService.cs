@@ -36,6 +36,7 @@ namespace NasLandingPage.Common.Services
 
     public List<ProjectInfo> GetAll()
     {
+      // TODO: [ProjectsService.GetAll] (TESTS) Add tests
       var projects = new List<ProjectInfo>();
 
       var files = _directory.GetFiles(_dataDir, "*.json", SearchOption.TopDirectoryOnly);

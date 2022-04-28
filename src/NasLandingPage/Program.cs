@@ -1,10 +1,6 @@
-using NasLandingPage.Common.Providers;
-using NasLandingPage.Common.Services;
+using NasLandingPage.Common.Extensions;
 using NLog;
 using NLog.Web;
-using Rn.NetCore.Common.Abstractions;
-using Rn.NetCore.Common.Helpers;
-using Rn.NetCore.Common.Logging;
 
 // https://github.com/NLog/NLog/wiki/Getting-started-with-ASP.NET-Core-6
 var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
@@ -16,22 +12,7 @@ try
 
   // Add services to the container.
   builder.Services.AddControllersWithViews();
-
-  builder.Services
-    .AddSingleton<IDirectoryAbstraction, DirectoryAbstraction>()
-    .AddSingleton<IFileAbstraction, FileAbstraction>()
-    .AddSingleton<IDateTimeAbstraction, DateTimeAbstraction>()
-    .AddSingleton<IEnvironmentAbstraction, EnvironmentAbstraction>()
-
-    .AddSingleton(typeof(ILoggerAdapter<>), typeof(LoggerAdapter<>))
-
-    .AddSingleton<IJsonHelper, JsonHelper>()
-
-    .AddSingleton<INasLandingPageConfigProvider, NasLandingPageConfigProvider>()
-
-    .AddSingleton<IProjectsService, ProjectsService>()
-    .AddSingleton<IConfigService, ConfigService>();
-
+  builder.Services.AddNasLandingPage();
   builder.Services.AddSwaggerDocument();
 
   builder.Logging.ClearProviders();
@@ -41,8 +22,6 @@ try
   var app = builder.Build();
 
   app.UseStaticFiles();
-  //app.UseOpenApi();
-  //app.UseSwaggerUi3();
 
   app.UseRouting();
 
