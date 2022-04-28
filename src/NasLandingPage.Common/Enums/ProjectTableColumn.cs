@@ -1,4 +1,4 @@
-namespace NasLandingPage.Enums;
+namespace NasLandingPage.Common.Enums;
 
 public enum ProjectTableColumn
 {
@@ -25,5 +25,7 @@ public enum ProjectTableColumn
   WorkFlowCount,
   License,
   Description,
-  RepoId
+  RepoId,
+  RepoDefaultBranch,
+  RepoLastUpdate
 }

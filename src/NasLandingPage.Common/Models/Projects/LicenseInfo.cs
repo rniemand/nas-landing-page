@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace NasLandingPage.Models;
+namespace NasLandingPage.Common.Models;
 
 public class LicenseInfo
 {

@@ -1,7 +1,7 @@
-using NasLandingPage.Enums;
+using NasLandingPage.Common.Enums;
 using Newtonsoft.Json;
 
-namespace NasLandingPage.Models;
+namespace NasLandingPage.Common.Models;
 
 public class RepoInfo
 {
@@ -19,4 +19,10 @@ public class RepoInfo
 
   [JsonProperty("id")]
   public long RepoId { get; set; } = 0;
+
+  [JsonProperty("defaultBranch")]
+  public string DefaultBranch { get; set; } = string.Empty;
+
+  [JsonProperty("lastUpdated")]
+  public DateTimeOffset LastUpdated { get; set; } = DateTimeOffset.MinValue;
 }

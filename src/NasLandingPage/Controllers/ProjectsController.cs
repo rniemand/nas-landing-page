@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using NasLandingPage.Models;
-using NasLandingPage.Services;
+using NasLandingPage.Common.Models;
+using NasLandingPage.Common.Services;
 
 namespace NasLandingPage.Controllers;
 

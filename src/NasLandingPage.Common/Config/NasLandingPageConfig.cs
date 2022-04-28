@@ -1,4 +1,4 @@
-namespace NasLandingPage.Config;
+namespace NasLandingPage.Common.Config;
 
 public class NasLandingPageConfig
 {

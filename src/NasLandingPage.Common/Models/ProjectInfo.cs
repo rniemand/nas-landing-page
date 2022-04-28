@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace NasLandingPage.Models;
+namespace NasLandingPage.Common.Models;
 
 public class ProjectInfo
 {
@@ -9,6 +9,9 @@ public class ProjectInfo
 
   [JsonProperty("description")]
   public string Description { get; set; } = string.Empty;
+
+  [JsonProperty("metadata")]
+  public ProjectInfoMetadata Metadata { get; set; } = new();
 
   [JsonProperty("repo")]
   public RepoInfo Repo { get; set; } = new();
