@@ -7,7 +7,6 @@ FROM mcr.microsoft.com/dotnet/aspnet:6.0-bullseye-slim AS base
 WORKDIR /app
 EXPOSE 80
 
-
 FROM mcr.microsoft.com/dotnet/sdk:6.0-bullseye-slim AS build
 RUN apt-get update
 RUN apt-get install -y curl
