@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ConfigClient, ProjectsClient } from 'src/app/nlp-api';
+import { ClientConfig, ConfigClient, ProjectInfo, ProjectsClient } from 'src/app/nlp-api';
 
 @Component({
   selector: 'app-home',
@@ -7,15 +7,18 @@ import { ConfigClient, ProjectsClient } from 'src/app/nlp-api';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent {
+  clientConfig?: ClientConfig = undefined;
+  projects: ProjectInfo[] = [];
+
   constructor(
     private _projectsClient: ProjectsClient,
     private _configClient: ConfigClient) {
     this._projectsClient.getAll().toPromise().then(projects => {
-      console.log(projects);
+      this.projects = projects;
     });
 
     this._configClient.getClientConfig().toPromise().then(config => {
-      console.log(config);
+      this.clientConfig = config;
     });
   }
 }

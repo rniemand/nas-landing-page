@@ -10,6 +10,7 @@ import { HomeComponent } from './views/home/home.component';
 import { CounterComponent } from './views/counter/counter.component';
 import { API_BASE_URL, ConfigClient, ProjectsClient } from './nlp-api';
 import { DOCUMENT, LocationStrategy } from '@angular/common';
+import { ProjectTableComponent } from './components/project-table/project-table.component';
 
 function getBaseUrl(locationStrategy: LocationStrategy, document: any): string {
   let baseHref = locationStrategy.getBaseHref();
@@ -32,6 +33,7 @@ function getBaseUrl(locationStrategy: LocationStrategy, document: any): string {
     NavMenuComponent,
     HomeComponent,
     CounterComponent,
+    ProjectTableComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
