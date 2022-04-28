@@ -41,8 +41,8 @@
         <td class="name" *ngIf="canRenderColumn('Name')">{{ project.name }}</td>
         <td class="description" *ngIf="canRenderColumn('Description')">{{ project.description }}</td>
         <td *ngIf="canRenderColumn('RepoType')"><repo-type [project]="project"></repo-type></td>
-        <td *ngIf="canRenderColumn('UrlRepo')"><a [href]="project.repo.repoUrl" target="_blank">repo</a></td>
-        <td *ngIf="canRenderColumn('UrlCiCd')"><a [href]="project.repo.ciCd" *ngIf="project.repo.ciCd" target="_blank">ci-cd</a></td>
+        <td *ngIf="canRenderColumn('UrlRepo')"><link-generic [url]="project.repo.repoUrl" name="repo"></link-generic></td>
+        <td *ngIf="canRenderColumn('UrlCiCd')"><link-generic [url]="project.repo.ciCd" name="ci-cd"></link-generic></td>
         <td *ngIf="canRenderColumn('UrlSonarQube')"><link-sq [project]="project" [config]="config"></link-sq></td>
         <td class="branch" *ngIf="canRenderColumn('RepoDefaultBranch')">{{ project.repo.defaultBranch }}</td>
         <td *ngIf="canRenderColumn('RepoLastUpdate')">
