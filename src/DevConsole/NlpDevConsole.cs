@@ -66,7 +66,9 @@ public class NlpDevConsole
       projectInfo.Repo.DefaultBranch = repository.DefaultBranch;
       projectInfo.Repo.IsPublic = repository.Visibility == RepositoryVisibility.Public;
       projectInfo.Repo.LastUpdated = repository.UpdatedAt;
-      
+      if (!string.IsNullOrWhiteSpace(repository.Description))
+        projectInfo.Description = repository.Description;
+
       projectInfoProvider.UpdateProjectInfo(projectInfo);
     }
 

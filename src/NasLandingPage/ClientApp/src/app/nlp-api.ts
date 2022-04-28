@@ -231,11 +231,14 @@ export enum ProjectTableColumn {
     License = 21,
     Description = 22,
     RepoId = 23,
+    RepoDefaultBranch = 24,
+    RepoLastUpdate = 25,
 }
 
 export class ProjectInfo implements IProjectInfo {
     name!: string;
     description!: string;
+    metadata!: ProjectInfoMetadata;
     repo!: RepoInfo;
     sonarQube!: SonarQubeInfo;
     scm!: SourceCodeMaturityInfo;
@@ -251,6 +254,7 @@ export class ProjectInfo implements IProjectInfo {
             }
         }
         if (!data) {
+            this.metadata = new ProjectInfoMetadata();
             this.repo = new RepoInfo();
             this.sonarQube = new SonarQubeInfo();
             this.scm = new SourceCodeMaturityInfo();
@@ -264,6 +268,7 @@ export class ProjectInfo implements IProjectInfo {
         if (_data) {
             this.name = _data["name"];
             this.description = _data["description"];
+            this.metadata = _data["metadata"] ? ProjectInfoMetadata.fromJS(_data["metadata"]) : new ProjectInfoMetadata();
             this.repo = _data["repo"] ? RepoInfo.fromJS(_data["repo"]) : new RepoInfo();
             this.sonarQube = _data["sonarQube"] ? SonarQubeInfo.fromJS(_data["sonarQube"]) : new SonarQubeInfo();
             this.scm = _data["scm"] ? SourceCodeMaturityInfo.fromJS(_data["scm"]) : new SourceCodeMaturityInfo();
@@ -288,6 +293,7 @@ export class ProjectInfo implements IProjectInfo {
         data = typeof data === 'object' ? data : {};
         data["name"] = this.name;
         data["description"] = this.description;
+        data["metadata"] = this.metadata ? this.metadata.toJSON() : <any>undefined;
         data["repo"] = this.repo ? this.repo.toJSON() : <any>undefined;
         data["sonarQube"] = this.sonarQube ? this.sonarQube.toJSON() : <any>undefined;
         data["scm"] = this.scm ? this.scm.toJSON() : <any>undefined;
@@ -305,6 +311,7 @@ export class ProjectInfo implements IProjectInfo {
 export interface IProjectInfo {
     name: string;
     description: string;
+    metadata: ProjectInfoMetadata;
     repo: RepoInfo;
     sonarQube: SonarQubeInfo;
     scm: SourceCodeMaturityInfo;
@@ -313,12 +320,54 @@ export interface IProjectInfo {
     languages: string[];
 }
 
+export class ProjectInfoMetadata implements IProjectInfoMetadata {
+    fileName!: string;
+    fileNameWithoutExtension!: string;
+
+    constructor(data?: IProjectInfoMetadata) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.fileName = _data["fileName"];
+            this.fileNameWithoutExtension = _data["fileNameWithoutExtension"];
+        }
+    }
+
+    static fromJS(data: any): ProjectInfoMetadata {
+        data = typeof data === 'object' ? data : {};
+        let result = new ProjectInfoMetadata();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["fileName"] = this.fileName;
+        data["fileNameWithoutExtension"] = this.fileNameWithoutExtension;
+        return data;
+    }
+}
+
+export interface IProjectInfoMetadata {
+    fileName: string;
+    fileNameWithoutExtension: string;
+}
+
 export class RepoInfo implements IRepoInfo {
     repoType!: RepoType;
     repoUrl!: string;
     ciCd!: string;
     isPublic!: boolean;
     repoId!: number;
+    defaultBranch!: string;
+    lastUpdated!: Date;
 
     constructor(data?: IRepoInfo) {
         if (data) {
@@ -336,6 +385,8 @@ export class RepoInfo implements IRepoInfo {
             this.ciCd = _data["ciCd"];
             this.isPublic = _data["isPublic"];
             this.repoId = _data["repoId"];
+            this.defaultBranch = _data["defaultBranch"];
+            this.lastUpdated = _data["lastUpdated"] ? new Date(_data["lastUpdated"].toString()) : <any>undefined;
         }
     }
 
@@ -353,6 +404,8 @@ export class RepoInfo implements IRepoInfo {
         data["ciCd"] = this.ciCd;
         data["isPublic"] = this.isPublic;
         data["repoId"] = this.repoId;
+        data["defaultBranch"] = this.defaultBranch;
+        data["lastUpdated"] = this.lastUpdated ? this.lastUpdated.toISOString() : <any>undefined;
         return data;
     }
 }
@@ -363,6 +416,8 @@ export interface IRepoInfo {
     ciCd: string;
     isPublic: boolean;
     repoId: number;
+    defaultBranch: string;
+    lastUpdated: Date;
 }
 
 export enum RepoType {

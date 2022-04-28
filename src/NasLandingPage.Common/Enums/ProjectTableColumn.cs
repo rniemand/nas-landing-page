@@ -25,5 +25,7 @@ public enum ProjectTableColumn
   WorkFlowCount,
   License,
   Description,
-  RepoId
+  RepoId,
+  RepoDefaultBranch,
+  RepoLastUpdate
 }

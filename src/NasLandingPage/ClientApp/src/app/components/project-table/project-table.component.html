@@ -12,6 +12,8 @@
         <th scope="col" *ngIf="canRenderColumn('Description')">Description</th>
         <th scope="col" *ngIf="canRenderColumn('RepoType')">&nbsp;</th>
         <th scope="col" *ngIf="canRenderColumn('RepoUrl')">Repo</th>
+        <th scope="col" *ngIf="canRenderColumn('RepoDefaultBranch')">Branch</th>
+        <th scope="col" *ngIf="canRenderColumn('RepoLastUpdate')">Last Push</th>
         <th scope="col" *ngIf="canRenderColumn('RepoId')">RepoId</th>
         <th scope="col" *ngIf="canRenderColumn('CiCdUrl')">CiCd</th>
         <th scope="col" *ngIf="canRenderColumn('SonarQubeUrl')">SonarQube</th>
@@ -41,6 +43,10 @@
         <td *ngIf="canRenderColumn('RepoType')"><repo-type [project]="project"></repo-type></td>
         <td *ngIf="canRenderColumn('RepoUrl')">
           <a [href]="project.repo.repoUrl" target="_blank">open</a>
+        </td>
+        <td class="branch" *ngIf="canRenderColumn('RepoDefaultBranch')">{{ project.repo.defaultBranch }}</td>
+        <td *ngIf="canRenderColumn('RepoLastUpdate')">
+          {{ project.repo.lastUpdated | date:'yyyy-MM-dd' }}
         </td>
         <td *ngIf="canRenderColumn('RepoId')">{{ project.repo.repoId }}</td>
         <td *ngIf="canRenderColumn('CiCdUrl')">
