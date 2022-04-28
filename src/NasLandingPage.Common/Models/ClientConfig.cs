@@ -1,7 +1,7 @@
 using NasLandingPage.Common.Enums;
 using Newtonsoft.Json;
 
-namespace NasLandingPage.Models
+namespace NasLandingPage.Common.Models
 {
   public class ClientConfig
   {
