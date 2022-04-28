@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using NasLandingPage.Common.Clients;
 using NasLandingPage.Common.Providers;
 using NasLandingPage.Common.Services;
 using Rn.NetCore.Common.Abstractions;
@@ -18,6 +19,8 @@ public static class ServiceCollectionExtensions
       .AddSingleton<IDateTimeAbstraction, DateTimeAbstraction>()
       .AddSingleton<IEnvironmentAbstraction, EnvironmentAbstraction>()
       .AddSingleton<IPathAbstraction, PathAbstraction>()
+
+      .AddSingleton<INlpGitHubClient, NlpGitHubClient>()
 
       .AddSingleton(typeof(ILoggerAdapter<>), typeof(LoggerAdapter<>))
 

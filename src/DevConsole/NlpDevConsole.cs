@@ -1,11 +1,11 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using NasLandingPage.Common.Clients;
 using NasLandingPage.Common.Extensions;
 using NasLandingPage.Common.Providers;
 using NasLandingPage.Common.Services;
 using NLog.Extensions.Logging;
-using Octokit;
 using Rn.NetCore.Common.Logging;
 
 namespace DevConsole;
@@ -43,22 +43,9 @@ public class NlpDevConsole
 
   public NlpDevConsole TestGitHubClient()
   {
-    var credentialsService = _services.GetRequiredService<ICredentialsService>();
-    var credentials = credentialsService.GetCredentials("github");
+    var gitHubClient = _services.GetRequiredService<INlpGitHubClient>();
 
-    // https://github.com/octokit/octokit.net/blob/main/docs/index.md
-    // https://github.com/octokit/octokit.net/blob/main/docs/getting-started.md
-
-    var github = new GitHubClient(new ProductHeaderValue("MyAmazingApp"));
-
-    if (!string.IsNullOrWhiteSpace(credentials.Password))
-    {
-      var basicAuth = new Credentials(credentials.Username, credentials.Password);
-      github.Credentials = basicAuth;
-    }
-
-    var repository = github.Repository.Get(137949496).GetAwaiter().GetResult();
-    var tags = github.Repository.GetAllTags(137949496).GetAwaiter().GetResult();
+    var repository = gitHubClient.GetRepositoryAsync(137949496).GetAwaiter().GetResult();
 
     return this;
   }
@@ -67,8 +54,6 @@ public class NlpDevConsole
   {
     var infoProvider = _services.GetRequiredService<IProjectInfoProvider>();
     var projectInfo = infoProvider.GetByName("Alert-Maker");
-
-    projectInfo.Repo.DefaultBranch = "test";
     infoProvider.UpdateProjectInfo(projectInfo);
 
     return this;
