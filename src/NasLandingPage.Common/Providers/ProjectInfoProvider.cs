@@ -10,6 +10,7 @@ public interface IProjectInfoProvider
 {
   List<ProjectInfo> GetAll();
   ProjectInfo GetByName(string name);
+  void UpdateProjectInfo(ProjectInfo projectInfo);
 }
 
 public class ProjectInfoProvider : IProjectInfoProvider
@@ -21,6 +22,7 @@ public class ProjectInfoProvider : IProjectInfoProvider
   private readonly IPathAbstraction _path;
   private readonly NasLandingPageConfig _config;
   private readonly string _dataDir;
+  private readonly string _backupDir;
 
   public ProjectInfoProvider(IServiceProvider serviceProvider)
   {
@@ -33,7 +35,7 @@ public class ProjectInfoProvider : IProjectInfoProvider
     _config = serviceProvider.GetRequiredService<INasLandingPageConfigProvider>().Provide();
 
     _dataDir = GenerateDataDirPath();
-    EnsureDataDirExists();
+    _backupDir = GenerateBackupDirPath();
   }
 
 
@@ -60,6 +62,40 @@ public class ProjectInfoProvider : IProjectInfoProvider
     return LoadProjectFile(filePath);
   }
 
+  public void UpdateProjectInfo(ProjectInfo projectInfo)
+  {
+    // TODO: [ProjectInfoProvider.UpdateProjectInfo] (TESTS) Add tests
+    var sourceFilePath = GenerateProjectFilePath(projectInfo.Metadata.FileNameWithoutExtension);
+    var backupFilePath = sourceFilePath.Replace(_dataDir, _backupDir);
+
+    if (!BackupFile(sourceFilePath, backupFilePath))
+    {
+      // TODO: [ProjectInfoProvider.UpdateProjectInfo] (EX) Use better exception here
+      throw new Exception("Unable to backup file");
+    }
+
+    projectInfo.Metadata = new ProjectInfoMetadata();
+    var projectJson = _jsonHelper.SerializeObject(projectInfo, true);
+    _file.WriteAllText(sourceFilePath, projectJson);
+  }
+
+
+  private bool BackupFile(string source, string destination)
+  {
+    // TODO: [ProjectInfoProvider.BackupFile] (TESTS) Add tests
+    if (!_file.Exists(source))
+    {
+      return false;
+    }
+
+    if (_file.Exists(destination))
+    {
+      _file.Delete(destination);
+    }
+
+    _file.Move(source, destination);
+    return true;
+  }
 
   private string GenerateProjectFilePath(string name)
   {
@@ -78,7 +114,7 @@ public class ProjectInfoProvider : IProjectInfoProvider
       FileName = _path.GetFileName(path),
       FileNameWithoutExtension = _path.GetFileNameWithoutExtension(path)
     };
-    
+
     return projectInfo;
   }
 
@@ -98,16 +134,38 @@ public class ProjectInfoProvider : IProjectInfoProvider
       processed += sep;
 
     processed += $"projects{sep}";
+    EnsureFolderExists(processed);
 
     return processed;
   }
 
-  private void EnsureDataDirExists()
+  private string GenerateBackupDirPath()
   {
-    // TODO: [ProjectInfoProvider.EnsureDataDirExists] (TESTS) Add tests
-    if (_directory.Exists(_dataDir))
+    // TODO: [ProjectInfoProvider.GenerateBackupDirPath] (TESTS) Add tests
+    var sep = _config.IsLinux ? "/" : "\\";
+    var rootDir = _environment.CurrentDirectory;
+
+    if (!rootDir.EndsWith(sep))
+      rootDir += sep;
+
+    var processed = _config.DataDir
+      .Replace("./", rootDir);
+
+    if (!processed.EndsWith(sep))
+      processed += sep;
+
+    processed += $"projects-backup{sep}";
+    EnsureFolderExists(processed);
+
+    return processed;
+  }
+
+  private void EnsureFolderExists(string path)
+  {
+    // TODO: [ProjectInfoProvider.EnsureFolderExists] (TESTS) Add tests
+    if (_directory.Exists(path))
       return;
 
-    _directory.CreateDirectory(_dataDir);
+    _directory.CreateDirectory(path);
   }
 }

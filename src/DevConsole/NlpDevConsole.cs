@@ -68,6 +68,9 @@ public class NlpDevConsole
     var infoProvider = _services.GetRequiredService<IProjectInfoProvider>();
     var projectInfo = infoProvider.GetByName("Alert-Maker");
 
+    projectInfo.Repo.DefaultBranch = "test";
+    infoProvider.UpdateProjectInfo(projectInfo);
+
     return this;
   }
 

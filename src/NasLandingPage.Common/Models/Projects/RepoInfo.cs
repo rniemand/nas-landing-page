@@ -19,4 +19,7 @@ public class RepoInfo
 
   [JsonProperty("id")]
   public long RepoId { get; set; } = 0;
+
+  [JsonProperty("defaultBranch")]
+  public string DefaultBranch { get; set; } = string.Empty;
 }
