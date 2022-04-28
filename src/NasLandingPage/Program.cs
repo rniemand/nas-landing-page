@@ -1,5 +1,5 @@
 using NasLandingPage.Common.Providers;
-using NasLandingPage.Services;
+using NasLandingPage.Common.Services;
 using NLog;
 using NLog.Web;
 using Rn.NetCore.Common.Abstractions;

@@ -1,10 +1,11 @@
+using Microsoft.Extensions.DependencyInjection;
 using NasLandingPage.Common.Config;
 using NasLandingPage.Common.Models;
 using NasLandingPage.Common.Providers;
 using Rn.NetCore.Common.Abstractions;
 using Rn.NetCore.Common.Helpers;
 
-namespace NasLandingPage.Services;
+namespace NasLandingPage.Common.Services;
 
 public interface IConfigService
 {
