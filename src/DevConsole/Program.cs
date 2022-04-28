@@ -1,1 +1,6 @@
-Console.WriteLine("Hello, World!");
+using DevConsole;
+
+new NlpDevConsole()
+  .HelloWorld();
+
+Console.WriteLine("Done");
