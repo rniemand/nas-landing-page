@@ -11,17 +11,12 @@ export class ProjectsComponent implements OnInit {
   projects: ProjectInfo[] = [];
 
   constructor(
-    private _projectsClient: ProjectsClient,
-    private _configClient: ConfigClient) { }
+    private _projects: ProjectsClient,
+    private _config: ConfigClient) { }
 
   ngOnInit(): void {
-    this._projectsClient.getAll().toPromise().then(projects => {
-      this.projects = projects;
-    });
-
-    this._configClient.getClientConfig().toPromise().then(config => {
-      this.clientConfig = config;
-    });
+    this._projects.getAll().toPromise().then(projects => { this.projects = projects; });
+    this._config.getClientConfig().toPromise().then(config => { this.clientConfig = config; });
   }
 
 }
