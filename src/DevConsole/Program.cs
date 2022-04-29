@@ -1,13 +1,8 @@
 using DevConsole;
 
 new NlpDevConsole()
-  //.HelloWorld()
   //.TestGetCredentials()
-  //.TestGitHubClient()
-  //.TestProjectInfoProvider()
-  //.SyncBasicRepoInformation()
-  //.CurrentTesting()
-  .TestProjectSync()
+  //.TestProjectSync()
   .DoNothing();
 
 Console.WriteLine("Fin.");
