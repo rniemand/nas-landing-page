@@ -41,6 +41,18 @@ code {
       &.name, &.description, &.branch {
         text-align: left;
       }
+
+      &.description { 
+        font-size: 0.80em;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 200px;
+      }
+
+      img {
+        &.refresh { cursor: pointer; }
+      }
     }
   }
 }

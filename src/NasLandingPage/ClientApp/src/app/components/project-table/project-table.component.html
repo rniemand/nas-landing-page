@@ -5,6 +5,8 @@
 <div *ngIf="canRender">
   <option-editor [config]="config"></option-editor>
 
+  <div *ngIf="showNotification" [class]="notificationClass">{{notification}}</div>
+
   <table class="table table-striped table-hover table-bordered table-sm projectTable">
     <thead>
       <tr>
@@ -37,6 +39,7 @@
         <th scope="col" *ngIf="canRenderColumn('DirBuild')">build</th>
         <th scope="col" *ngIf="canRenderColumn('Languages')">Languages</th>
         <th scope="col" *ngIf="canRenderColumn('SonarQubeBadges')">&nbsp;</th>
+        <th scope="col">&nbsp;</th>
       </tr>
     </thead>
     <tbody>
@@ -70,6 +73,9 @@
         <td *ngIf="canRenderColumn('DirBuild')"><bool-tick [value]="project.folders.build"></bool-tick></td>
         <td *ngIf="canRenderColumn('Languages')"><array-string [value]="project.languages"></array-string></td>
         <td *ngIf="canRenderColumn('SonarQubeBadges')"><sq-badges [config]="config" [project]="project"></sq-badges></td>
+        <td>
+          <img src="assets/refresh-16.png" class="refresh" (click)="refreshProject(project)">
+        </td>
       </tr>
     </tbody>
   </table>
