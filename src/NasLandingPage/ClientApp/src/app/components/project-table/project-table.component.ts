@@ -16,6 +16,7 @@ export class ProjectTableComponent implements OnInit, OnDestroy, OnChanges {
   showNotification: boolean = false;
   notificationClass: string = 'alert alert-secondary';
   notification: string = '';
+  commandResponse?: RunCommandResponse = undefined;
 
   constructor(private _projects: ProjectsClient) { }
   
@@ -40,8 +41,8 @@ export class ProjectTableComponent implements OnInit, OnDestroy, OnChanges {
     this._showNotification(`Updating project: ${project.name}`);
     this._projects.syncProject(request).toPromise().then(
       (response: RunCommandResponse) => {
-        let messages = response.messages.join(', ');
-        this._showSuccess(`Updated "${project.name}": ${messages}`);
+        this.showNotification = false;
+        this.commandResponse = response;
       },
       (error: any) => {
         this._showError(`Error updating: ${error}`);
@@ -70,12 +71,5 @@ export class ProjectTableComponent implements OnInit, OnDestroy, OnChanges {
     this.showNotification = true;
     this.notification = message;
     this.notificationClass = 'alert alert-danger';
-  }
-
-  private _showSuccess = (message: string) => {
-    this.showNotification = true;
-    this.notification = message;
-    this.notificationClass = 'alert alert-success';
-    setTimeout(() => { this.showNotification = false; }, 2000);
   }
 }

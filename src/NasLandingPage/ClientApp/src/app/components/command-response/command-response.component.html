@@ -1,1 +1,12 @@
-<p>command-response works!</p>
+<div [class]="wrapperClass" role="alert" *ngIf="shouldRender" (click)="close()">
+  <div class="title">
+    Command: <strong>{{response!.command}}</strong> completed
+    <span *ngIf="!wasSuccess">with error(s)</span>
+  </div>
+
+  <div class="args" *ngIf="hasArgs">{{response!.args}}</div>
+
+  <ul *ngIf="messageCount > 0">
+    <li *ngFor="let message of response!.messages">{{message}}</li>
+  </ul>
+</div>
