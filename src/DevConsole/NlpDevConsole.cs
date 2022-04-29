@@ -3,7 +3,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NasLandingPage.Common.Extensions;
 using NasLandingPage.Common.Models.Requests;
-using NasLandingPage.Common.Models.Responses;
 using NasLandingPage.Common.Providers;
 using NasLandingPage.Common.Services;
 using NLog.Extensions.Logging;
@@ -47,12 +46,11 @@ public class NlpDevConsole
     return this;
   }
 
-  public NlpDevConsole TestUserLinks()
+  public NlpDevConsole TestImages()
   {
-    var linkService = _services.GetRequiredService<IUserLinkService>();
-    var linkProvider = _services.GetRequiredService<IUserLinkProvider>();
+    var imageProvider = _services.GetRequiredService<ILinkImageProvider>();
+    var imagePath = imageProvider.ResolveImagePath("bob.jpg");
 
-    var links = linkProvider.GetAll().GetAwaiter().GetResult();
 
 
     Console.WriteLine();
