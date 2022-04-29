@@ -7,7 +7,6 @@ import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './layout/nav-menu/nav-menu.component';
 import { HomeComponent } from './views/home/home.component';
-import { CounterComponent } from './views/counter/counter.component';
 import { API_BASE_URL, ConfigClient, ProjectsClient, UserLinksClient } from './nlp-api';
 import { DOCUMENT, LocationStrategy } from '@angular/common';
 import { ProjectTableComponent } from './components/project-table/project-table.component';
@@ -43,7 +42,6 @@ function getBaseUrl(locationStrategy: LocationStrategy, document: any): string {
     AppComponent,
     NavMenuComponent,
     HomeComponent,
-    CounterComponent,
     ProjectTableComponent,
     RepoTypeComponent,
     BoolTickComponent,
@@ -66,7 +64,6 @@ function getBaseUrl(locationStrategy: LocationStrategy, document: any): string {
 
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'counter', component: CounterComponent },
       { path: 'projects', component: ProjectsComponent },
     ])
   ],
