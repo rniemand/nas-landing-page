@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NasLandingPage.Common.Clients;
 using NasLandingPage.Common.Extensions;
+using NasLandingPage.Common.Models.Requests;
 using NasLandingPage.Common.Providers;
 using NasLandingPage.Common.Services;
 using NLog.Extensions.Logging;
@@ -103,9 +104,13 @@ public class NlpDevConsole
 
   public NlpDevConsole TestProjectSync()
   {
-    var projectInfoProvider = _services.GetRequiredService<IProjectInfoProvider>();
-    var projectInfo = projectInfoProvider.GetByName("DnsUpdater");
+    var projectsService = _services.GetRequiredService<IProjectsService>();
 
+    var commandResponse = projectsService.SyncProject(new RunCommandRequest
+    {
+      Command = "SyncProject",
+      Arguments = "DnsUpdater"
+    }).GetAwaiter().GetResult();
 
 
     Console.WriteLine();

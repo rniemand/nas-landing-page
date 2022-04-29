@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using NasLandingPage.Common.Models.Requests;
 using NasLandingPage.Common.Models.Responses;
 using NasLandingPage.Common.Services;
 
@@ -18,6 +19,14 @@ public class ProjectsController : ControllerBase
   [HttpGet]
   public List<ProjectInfo> GetAll()
   {
+    // TODO: [ProjectsController.GetAll] (TESTS) Add tests
     return _projectsService.GetAll();
+  }
+
+  [HttpPost, Route("sync")]
+  public async Task<RunCommandResponse> SyncProject(RunCommandRequest request)
+  {
+    // TODO: [ProjectsController.SyncProject] (TESTS) Add tests
+    return await _projectsService.SyncProject(request);
   }
 }

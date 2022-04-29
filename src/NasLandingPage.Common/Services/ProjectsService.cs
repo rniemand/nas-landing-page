@@ -1,4 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
+using NasLandingPage.Common.Builders;
+using NasLandingPage.Common.Models.Requests;
 using NasLandingPage.Common.Models.Responses;
 using NasLandingPage.Common.Providers;
 
@@ -7,7 +9,7 @@ namespace NasLandingPage.Common.Services
   public interface IProjectsService
   {
     List<ProjectInfo> GetAll();
-    Task<CommandResponse> SyncProject(ProjectInfo project);
+    Task<RunCommandResponse> SyncProject(RunCommandRequest request);
   }
 
   public class ProjectsService : IProjectsService
@@ -26,11 +28,19 @@ namespace NasLandingPage.Common.Services
       return _projectInfoProvider.GetAll();
     }
 
-    public async Task<CommandResponse> SyncProject(ProjectInfo project)
+    public async Task<RunCommandResponse> SyncProject(RunCommandRequest request)
     {
       // TODO: [ProjectsService.SyncProject] (TESTS) Add tests
+      var responseBuilder = new RunCommandResponseBuilder(request);
 
-      return new CommandResponse();
+      var projectInfo = _projectInfoProvider.GetByName(request.Arguments);
+      if (projectInfo is null)
+        return responseBuilder.Failed("Project not found");
+
+
+
+      Console.WriteLine();
+      return new RunCommandResponse();
     }
   }
 }
