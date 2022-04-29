@@ -12,6 +12,7 @@
     <thead>
       <tr>
         <th scope="col" *ngIf="canRenderColumn('Name')">Name</th>
+        <th scope="col" *ngIf="canRenderColumn('LastUpdated')">Updated</th>
         <th scope="col" *ngIf="canRenderColumn('Description')">Description</th>
         <th scope="col" *ngIf="canRenderColumn('RepoType')">&nbsp;</th>
         <th scope="col" *ngIf="canRenderColumn('UrlRepo')">&nbsp;</th>
@@ -46,6 +47,7 @@
     <tbody>
       <tr *ngFor="let project of projects">
         <td *ngIf="canRenderColumn('Name')" class="name">{{ project.name }}</td>
+        <td *ngIf="canRenderColumn('LastUpdated')" class="date">{{ project.lastUpdated | date:'yyyy-MM-dd hh:mm' }}</td>
         <td *ngIf="canRenderColumn('Description')" class="description">{{ project.description }}</td>
         <td *ngIf="canRenderColumn('RepoType')"><repo-type [project]="project"></repo-type></td>
         <td *ngIf="canRenderColumn('UrlRepo')"><link-generic [url]="project.repo.url" name="repo"></link-generic></td>

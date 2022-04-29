@@ -63,6 +63,7 @@ public class ProjectInfoProvider : IProjectInfoProvider
       throw new Exception("Unable to backup file");
     }
 
+    projectInfo.LastUpdated = DateTimeOffset.Now;
     projectInfo.Metadata = new ProjectInfoMetadata();
     _fsHelper.SaveJsonFile(sourceFilePath, projectInfo, true);
   }
