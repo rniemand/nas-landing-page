@@ -1,13 +1,16 @@
 using Microsoft.Extensions.DependencyInjection;
 using NasLandingPage.Common.Config;
 using NasLandingPage.Common.Helpers;
+using NasLandingPage.Common.Models.Responses;
 using Rn.NetCore.Common.Abstractions;
+using Rn.NetCore.Common.Extensions;
 using Rn.NetCore.Common.Helpers;
 
 namespace NasLandingPage.Common.Providers;
 
 public interface IUserLinkProvider
 {
+  Task AddLink(UserLink link);
 }
 
 public class UserLinkProvider : IUserLinkProvider
@@ -38,6 +41,25 @@ public class UserLinkProvider : IUserLinkProvider
   }
 
 
+  public async Task AddLink(UserLink link)
+  {
+    // TODO: [UserLinkProvider.AddLink] (TESTS) Add tests
+    link.LinkId = Guid.NewGuid();
+    var filePath = GenerateLinkFilePath(link.LinkId);
+    await Task.CompletedTask;
+    _fsHelper.SaveJsonFile(filePath, link, true);
+  }
+
+
+  private string GenerateLinkFilePath(Guid linkId) =>
+    GenerateLinkFilePath(linkId.ToString("N"));
+
+  private string GenerateLinkFilePath(string linkId)
+  {
+    // TODO: [UserLinkProvider.GenerateLinkFilePath] (TESTS) Add tests
+    var cleanLinkId = linkId.Replace("-", "").LowerTrim();
+    return $"{_dataDir}{cleanLinkId}.json";
+  }
 
   private string GenerateDataDirPath()
   {

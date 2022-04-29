@@ -3,6 +3,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NasLandingPage.Common.Extensions;
 using NasLandingPage.Common.Models.Requests;
+using NasLandingPage.Common.Models.Responses;
+using NasLandingPage.Common.Providers;
 using NasLandingPage.Common.Services;
 using NLog.Extensions.Logging;
 
@@ -48,6 +50,15 @@ public class NlpDevConsole
   public NlpDevConsole TestUserLinks()
   {
     var linkService = _services.GetRequiredService<IUserLinkService>();
+    var linkProvider = _services.GetRequiredService<IUserLinkProvider>();
+
+    linkProvider.AddLink(new UserLink
+    {
+      Url = "https://icons-for-free.com/bx+refresh-1325051908640901702/",
+      Enabled = true,
+      Name = "Delete me"
+    }).GetAwaiter().GetResult();
+
 
     Console.WriteLine();
     return this;
