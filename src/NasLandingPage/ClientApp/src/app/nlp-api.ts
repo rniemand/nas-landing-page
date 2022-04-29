@@ -140,6 +140,58 @@ export class ProjectsClient {
         }
         return _observableOf(null as any);
     }
+
+    syncProject(request: RunCommandRequest): Observable<RunCommandResponse> {
+        let url_ = this.baseUrl + "/api/Projects/sync";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(request);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSyncProject(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processSyncProject(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<RunCommandResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<RunCommandResponse>;
+        }));
+    }
+
+    protected processSyncProject(response: HttpResponseBase): Observable<RunCommandResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = RunCommandResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
 }
 
 export class ClientConfig implements IClientConfig {
@@ -702,6 +754,109 @@ export class LicenseInfo implements ILicenseInfo {
 export interface ILicenseInfo {
     name: string;
     url: string;
+}
+
+export class RunCommandResponse implements IRunCommandResponse {
+    command!: string;
+    args!: string;
+    success!: boolean;
+    messages!: string[];
+    runningTime!: string;
+
+    constructor(data?: IRunCommandResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.messages = [];
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.command = _data["command"];
+            this.args = _data["args"];
+            this.success = _data["success"];
+            if (Array.isArray(_data["messages"])) {
+                this.messages = [] as any;
+                for (let item of _data["messages"])
+                    this.messages!.push(item);
+            }
+            this.runningTime = _data["runningTime"];
+        }
+    }
+
+    static fromJS(data: any): RunCommandResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new RunCommandResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["command"] = this.command;
+        data["args"] = this.args;
+        data["success"] = this.success;
+        if (Array.isArray(this.messages)) {
+            data["messages"] = [];
+            for (let item of this.messages)
+                data["messages"].push(item);
+        }
+        data["runningTime"] = this.runningTime;
+        return data;
+    }
+}
+
+export interface IRunCommandResponse {
+    command: string;
+    args: string;
+    success: boolean;
+    messages: string[];
+    runningTime: string;
+}
+
+export class RunCommandRequest implements IRunCommandRequest {
+    command!: string;
+    args!: string;
+
+    constructor(data?: IRunCommandRequest) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.command = _data["command"];
+            this.args = _data["args"];
+        }
+    }
+
+    static fromJS(data: any): RunCommandRequest {
+        data = typeof data === 'object' ? data : {};
+        let result = new RunCommandRequest();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["command"] = this.command;
+        data["args"] = this.args;
+        return data;
+    }
+}
+
+export interface IRunCommandRequest {
+    command: string;
+    args: string;
 }
 
 export class ApiException extends Error {
