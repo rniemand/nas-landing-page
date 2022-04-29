@@ -50,6 +50,10 @@ code {
         max-width: 200px;
       }
 
+      &.date {
+        font-size: 0.8em;
+      }
+
       img {
         &.refresh { cursor: pointer; }
       }

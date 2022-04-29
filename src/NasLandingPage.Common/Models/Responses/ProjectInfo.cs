@@ -11,6 +11,9 @@ public class ProjectInfo
   [JsonProperty("description")]
   public string Description { get; set; } = string.Empty;
 
+  [JsonProperty("lastUpdated")]
+  public DateTimeOffset LastUpdated { get; set; } = DateTimeOffset.MinValue;
+
   [JsonProperty("metadata")]
   public ProjectInfoMetadata Metadata { get; set; } = new();
 

@@ -30,5 +30,6 @@ public enum ProjectTableColumn
   CountBuildScripts,
   CountTestScripts,
   CountWorkFlows,
-  RepoSize
+  RepoSize,
+  LastUpdated
 }

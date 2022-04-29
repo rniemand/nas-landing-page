@@ -23,6 +23,7 @@ import { HumanSizeComponent } from './components/human-size/human-size.component
 import { ProjectsComponent } from './views/projects/projects.component';
 import { UserLinksComponent } from './components/user-links/user-links.component';
 import { UserLinkComponent } from './components/user-link/user-link.component';
+import { CommandResponseComponent } from './components/command-response/command-response.component';
 
 function getBaseUrl(locationStrategy: LocationStrategy, document: any): string {
   let baseHref = locationStrategy.getBaseHref();
@@ -58,6 +59,7 @@ function getBaseUrl(locationStrategy: LocationStrategy, document: any): string {
     ProjectsComponent,
     UserLinksComponent,
     UserLinkComponent,
+    CommandResponseComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

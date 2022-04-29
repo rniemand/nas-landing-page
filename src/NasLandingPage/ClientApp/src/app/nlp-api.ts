@@ -404,11 +404,13 @@ export enum ProjectTableColumn {
     CountTestScripts = 26,
     CountWorkFlows = 27,
     RepoSize = 28,
+    LastUpdated = 29,
 }
 
 export class ProjectInfo implements IProjectInfo {
     name!: string;
     description!: string;
+    lastUpdated!: Date;
     metadata!: ProjectInfoMetadata;
     repo!: RepoInfo;
     sonarQube!: SonarQubeInfo;
@@ -439,6 +441,7 @@ export class ProjectInfo implements IProjectInfo {
         if (_data) {
             this.name = _data["name"];
             this.description = _data["description"];
+            this.lastUpdated = _data["lastUpdated"] ? new Date(_data["lastUpdated"].toString()) : <any>undefined;
             this.metadata = _data["metadata"] ? ProjectInfoMetadata.fromJS(_data["metadata"]) : new ProjectInfoMetadata();
             this.repo = _data["repo"] ? RepoInfo.fromJS(_data["repo"]) : new RepoInfo();
             this.sonarQube = _data["sonarQube"] ? SonarQubeInfo.fromJS(_data["sonarQube"]) : new SonarQubeInfo();
@@ -464,6 +467,7 @@ export class ProjectInfo implements IProjectInfo {
         data = typeof data === 'object' ? data : {};
         data["name"] = this.name;
         data["description"] = this.description;
+        data["lastUpdated"] = this.lastUpdated ? this.lastUpdated.toISOString() : <any>undefined;
         data["metadata"] = this.metadata ? this.metadata.toJSON() : <any>undefined;
         data["repo"] = this.repo ? this.repo.toJSON() : <any>undefined;
         data["sonarQube"] = this.sonarQube ? this.sonarQube.toJSON() : <any>undefined;
@@ -482,6 +486,7 @@ export class ProjectInfo implements IProjectInfo {
 export interface IProjectInfo {
     name: string;
     description: string;
+    lastUpdated: Date;
     metadata: ProjectInfoMetadata;
     repo: RepoInfo;
     sonarQube: SonarQubeInfo;
@@ -689,9 +694,12 @@ export interface ISonarQubeInfo {
 
 export class SourceCodeMaturityInfo implements ISourceCodeMaturityInfo {
     hasReadme!: boolean;
+    readme!: string;
     hasGitAttributes!: boolean;
+    gitAttributes!: string;
     hasPrTemplate!: boolean;
     hasEditorConfig!: boolean;
+    editorConfig!: string;
     hasBuildScripts!: boolean;
     buildScriptVersion!: string;
     buildScripts!: string[];
@@ -715,9 +723,12 @@ export class SourceCodeMaturityInfo implements ISourceCodeMaturityInfo {
     init(_data?: any) {
         if (_data) {
             this.hasReadme = _data["hasReadme"];
+            this.readme = _data["readme"];
             this.hasGitAttributes = _data["hasGitAttributes"];
+            this.gitAttributes = _data["gitAttributes"];
             this.hasPrTemplate = _data["hasPrTemplate"];
             this.hasEditorConfig = _data["hasEditorConfig"];
+            this.editorConfig = _data["editorConfig"];
             this.hasBuildScripts = _data["hasBuildScripts"];
             this.buildScriptVersion = _data["buildScriptVersion"];
             if (Array.isArray(_data["buildScripts"])) {
@@ -748,9 +759,12 @@ export class SourceCodeMaturityInfo implements ISourceCodeMaturityInfo {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["hasReadme"] = this.hasReadme;
+        data["readme"] = this.readme;
         data["hasGitAttributes"] = this.hasGitAttributes;
+        data["gitAttributes"] = this.gitAttributes;
         data["hasPrTemplate"] = this.hasPrTemplate;
         data["hasEditorConfig"] = this.hasEditorConfig;
+        data["editorConfig"] = this.editorConfig;
         data["hasBuildScripts"] = this.hasBuildScripts;
         data["buildScriptVersion"] = this.buildScriptVersion;
         if (Array.isArray(this.buildScripts)) {
@@ -774,9 +788,12 @@ export class SourceCodeMaturityInfo implements ISourceCodeMaturityInfo {
 
 export interface ISourceCodeMaturityInfo {
     hasReadme: boolean;
+    readme: string;
     hasGitAttributes: boolean;
+    gitAttributes: string;
     hasPrTemplate: boolean;
     hasEditorConfig: boolean;
+    editorConfig: string;
     hasBuildScripts: boolean;
     buildScriptVersion: string;
     buildScripts: string[];

@@ -40,6 +40,7 @@ public class ProjectInfoProvider : IProjectInfoProvider
     return files
       .Where(file => !string.IsNullOrWhiteSpace(file))
       .Select(LoadProjectFile)
+      .OrderBy(x => x.Name)
       .ToList();
   }
 
@@ -62,6 +63,7 @@ public class ProjectInfoProvider : IProjectInfoProvider
       throw new Exception("Unable to backup file");
     }
 
+    projectInfo.LastUpdated = DateTimeOffset.Now;
     projectInfo.Metadata = new ProjectInfoMetadata();
     _fsHelper.SaveJsonFile(sourceFilePath, projectInfo, true);
   }
