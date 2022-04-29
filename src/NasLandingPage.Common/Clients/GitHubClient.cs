@@ -1,5 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
-using NasLandingPage.Common.Models;
+using NasLandingPage.Common.Models.Responses;
 using NasLandingPage.Common.Services;
 using Octokit;
 

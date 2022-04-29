@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace NasLandingPage.Common.Models;
+namespace NasLandingPage.Common.Models.Responses;
 
 public class BasicCredentials
 {

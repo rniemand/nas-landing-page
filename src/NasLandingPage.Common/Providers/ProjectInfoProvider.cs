@@ -1,6 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using NasLandingPage.Common.Config;
-using NasLandingPage.Common.Models;
+using NasLandingPage.Common.Models.Responses;
+using NasLandingPage.Common.Models.Responses.Projects;
 using Rn.NetCore.Common.Abstractions;
 using Rn.NetCore.Common.Helpers;
 
@@ -9,7 +10,7 @@ namespace NasLandingPage.Common.Providers;
 public interface IProjectInfoProvider
 {
   List<ProjectInfo> GetAll();
-  ProjectInfo GetByName(string name);
+  ProjectInfo? GetByName(string name);
   void UpdateProjectInfo(ProjectInfo projectInfo);
   List<string> ListProjectFiles();
 }
@@ -56,10 +57,14 @@ public class ProjectInfoProvider : IProjectInfoProvider
     return projects;
   }
 
-  public ProjectInfo GetByName(string name)
+  public ProjectInfo? GetByName(string name)
   {
     // TODO: [ProjectInfoProvider.GetByName] (TESTS) Add tests
     var filePath = GenerateProjectFilePath(name);
+
+    if (!_file.Exists(filePath))
+      return null;
+
     return LoadProjectFile(filePath);
   }
 
