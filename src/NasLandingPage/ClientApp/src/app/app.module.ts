@@ -21,6 +21,8 @@ import { LinkGenericComponent } from './components/link-generic/link-generic.com
 import { RawCountComponent } from './components/raw-count/raw-count.component';
 import { HumanSizeComponent } from './components/human-size/human-size.component';
 import { ProjectsComponent } from './views/projects/projects.component';
+import { UserLinksComponent } from './components/user-links/user-links.component';
+import { UserLinkComponent } from './components/user-link/user-link.component';
 
 function getBaseUrl(locationStrategy: LocationStrategy, document: any): string {
   let baseHref = locationStrategy.getBaseHref();
@@ -54,6 +56,8 @@ function getBaseUrl(locationStrategy: LocationStrategy, document: any): string {
     RawCountComponent,
     HumanSizeComponent,
     ProjectsComponent,
+    UserLinksComponent,
+    UserLinkComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

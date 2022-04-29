@@ -19,11 +19,7 @@ public class UserLinkService : IUserLinkService
     _linkProvider = serviceProvider.GetRequiredService<IUserLinkProvider>();
   }
 
-  public async Task<List<UserLink>> GetAll()
-  {
+  public async Task<List<UserLink>> GetAll() =>
     // TODO: [UserLinkService.GetAll] (TESTS) Add tests
-    await Task.CompletedTask;
-
-    return new List<UserLink>();
-  }
+    await _linkProvider.GetAll();
 }

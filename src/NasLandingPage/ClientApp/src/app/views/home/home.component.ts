@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ClientConfig, ConfigClient, UserLink, UserLinksClient } from 'src/app/nlp-api';
 
 @Component({
   selector: 'app-home',
@@ -6,9 +7,17 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  constructor() { }
+  clientConfig?: ClientConfig = undefined;
+  
+  constructor(private _config: ConfigClient, private _links: UserLinksClient) { }
 
   ngOnInit(): void {
-    console.log('here');
+    this._config.getClientConfig().toPromise().then(config => {
+      console.log(config);
+    });
+
+    this._links.getAll().toPromise().then((links: UserLink[]) => {
+      console.log(links);
+    });
   }
 }

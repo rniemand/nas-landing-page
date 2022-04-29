@@ -10,9 +10,7 @@ export class ProjectsComponent implements OnInit {
   clientConfig?: ClientConfig = undefined;
   projects: ProjectInfo[] = [];
 
-  constructor(
-    private _projects: ProjectsClient,
-    private _config: ConfigClient) { }
+  constructor(private _config: ConfigClient, private _projects: ProjectsClient) { }
 
   ngOnInit(): void {
     this._projects.getAll().toPromise().then(projects => { this.projects = projects; });
