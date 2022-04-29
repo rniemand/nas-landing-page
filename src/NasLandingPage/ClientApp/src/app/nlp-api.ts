@@ -259,6 +259,55 @@ export class UserLinksClient {
         }
         return _observableOf(null as any);
     }
+
+    getImage(image: string | null): Observable<FileResponse | null> {
+        let url_ = this.baseUrl + "/api/UserLinks/image/{image}";
+        if (image === undefined || image === null)
+            throw new Error("The parameter 'image' must be defined.");
+        url_ = url_.replace("{image}", encodeURIComponent("" + image));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/octet-stream"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetImage(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetImage(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileResponse | null>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileResponse | null>;
+        }));
+    }
+
+    protected processGetImage(response: HttpResponseBase): Observable<FileResponse | null> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            return _observableOf({ fileName: fileName, data: responseBlob as any, status: status, headers: _headers });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
 }
 
 export class ClientConfig implements IClientConfig {
@@ -931,6 +980,7 @@ export class UserLink implements IUserLink {
     name!: string;
     url!: string;
     order!: number;
+    image!: string;
 
     constructor(data?: IUserLink) {
         if (data) {
@@ -947,6 +997,7 @@ export class UserLink implements IUserLink {
             this.name = _data["name"];
             this.url = _data["url"];
             this.order = _data["order"];
+            this.image = _data["image"];
         }
     }
 
@@ -963,6 +1014,7 @@ export class UserLink implements IUserLink {
         data["name"] = this.name;
         data["url"] = this.url;
         data["order"] = this.order;
+        data["image"] = this.image;
         return data;
     }
 }
@@ -972,6 +1024,14 @@ export interface IUserLink {
     name: string;
     url: string;
     order: number;
+    image: string;
+}
+
+export interface FileResponse {
+    data: Blob;
+    status: number;
+    fileName?: string;
+    headers?: { [name: string]: any };
 }
 
 export class ApiException extends Error {

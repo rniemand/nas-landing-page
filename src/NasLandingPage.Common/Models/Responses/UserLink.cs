@@ -15,4 +15,7 @@ public class UserLink
 
   [JsonProperty("order")]
   public int Order { get; set; } = 1024;
+
+  [JsonProperty("image")]
+  public string Image { get; set; } = string.Empty;
 }

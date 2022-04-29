@@ -10,6 +10,7 @@ public interface IUserLinkProvider
 {
   Task AddLink(UserLink link);
   Task<List<UserLink>> GetAll();
+  Task<UserLink?> GetById(string linkId);
 }
 
 public class UserLinkProvider : IUserLinkProvider
@@ -48,6 +49,13 @@ public class UserLinkProvider : IUserLinkProvider
     return GetEnabledLinks(linkFiles.ToList())
       .OrderBy(x => x.Order)
       .ToList();
+  }
+
+  public async Task<UserLink?> GetById(string linkId)
+  {
+    // TODO: [UserLinkProvider.GetById] (TESTS) Add tests
+    var linkFilePath = GenerateLinkFilePath(linkId);
+    return _fsHelper.LoadJsonFile<UserLink>(linkFilePath);
   }
 
 
