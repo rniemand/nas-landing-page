@@ -8,7 +8,7 @@ import { AppComponent } from './app.component';
 import { NavMenuComponent } from './layout/nav-menu/nav-menu.component';
 import { HomeComponent } from './views/home/home.component';
 import { CounterComponent } from './views/counter/counter.component';
-import { API_BASE_URL, ConfigClient, ProjectsClient } from './nlp-api';
+import { API_BASE_URL, ConfigClient, ProjectsClient, UserLinksClient } from './nlp-api';
 import { DOCUMENT, LocationStrategy } from '@angular/common';
 import { ProjectTableComponent } from './components/project-table/project-table.component';
 import { RepoTypeComponent } from './components/repo-type/repo-type.component';
@@ -21,6 +21,7 @@ import { LinkSqComponent } from './components/link-sq/link-sq.component';
 import { LinkGenericComponent } from './components/link-generic/link-generic.component';
 import { RawCountComponent } from './components/raw-count/raw-count.component';
 import { HumanSizeComponent } from './components/human-size/human-size.component';
+import { ProjectsComponent } from './views/projects/projects.component';
 
 function getBaseUrl(locationStrategy: LocationStrategy, document: any): string {
   let baseHref = locationStrategy.getBaseHref();
@@ -54,6 +55,7 @@ function getBaseUrl(locationStrategy: LocationStrategy, document: any): string {
     LinkGenericComponent,
     RawCountComponent,
     HumanSizeComponent,
+    ProjectsComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -65,12 +67,14 @@ function getBaseUrl(locationStrategy: LocationStrategy, document: any): string {
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
+      { path: 'projects', component: ProjectsComponent },
     ])
   ],
   providers: [
     // Clients
     ProjectsClient,
     ConfigClient,
+    UserLinksClient,
 
     // Custom providers
     { provide: API_BASE_URL, useFactory: getBaseUrl, deps: [LocationStrategy, DOCUMENT] }

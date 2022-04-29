@@ -8,6 +8,7 @@ const PROXY_CONFIG = [
     context: [
       "/api/Projects",
       "/api/Config",
+      "/api/UserLinks",
    ],
     target: target,
     secure: false,
