@@ -18,6 +18,9 @@ import { SqBadgesComponent } from './components/sq-badges/sq-badges.component';
 import { ArrayCountComponent } from './components/array-count/array-count.component';
 import { OptionEditorComponent } from './components/project-table/option-editor/option-editor.component';
 import { LinkSqComponent } from './components/link-sq/link-sq.component';
+import { LinkGenericComponent } from './components/link-generic/link-generic.component';
+import { RawCountComponent } from './components/raw-count/raw-count.component';
+import { HumanSizeComponent } from './components/human-size/human-size.component';
 
 function getBaseUrl(locationStrategy: LocationStrategy, document: any): string {
   let baseHref = locationStrategy.getBaseHref();
@@ -48,6 +51,9 @@ function getBaseUrl(locationStrategy: LocationStrategy, document: any): string {
     ArrayCountComponent,
     OptionEditorComponent,
     LinkSqComponent,
+    LinkGenericComponent,
+    RawCountComponent,
+    HumanSizeComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

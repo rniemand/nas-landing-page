@@ -66,6 +66,16 @@ public class NlpDevConsole
       projectInfo.Repo.DefaultBranch = repository.DefaultBranch;
       projectInfo.Repo.IsPublic = repository.Visibility == RepositoryVisibility.Public;
       projectInfo.Repo.LastUpdated = repository.UpdatedAt;
+      projectInfo.Repo.ForksCount = repository.ForksCount;
+      projectInfo.Repo.HtmlUrl = repository.HtmlUrl;
+      projectInfo.Repo.FullName = repository.FullName;
+      projectInfo.Repo.GitUrl = repository.GitUrl;
+      projectInfo.Languages = new[] { repository.Language };
+      projectInfo.Repo.OpenIssuesCount = repository.OpenIssuesCount;
+      projectInfo.Repo.SshUrl = repository.SshUrl;
+      projectInfo.Repo.ApiUrl = repository.Url;
+      projectInfo.Repo.Size = repository.Size;
+
       if (!string.IsNullOrWhiteSpace(repository.Description))
         projectInfo.Description = repository.Description;
 
@@ -81,6 +91,13 @@ public class NlpDevConsole
     var projectInfo = infoProvider.GetByName("Alert-Maker");
     infoProvider.UpdateProjectInfo(projectInfo);
 
+    return this;
+  }
+
+  public NlpDevConsole CurrentTesting()
+  {
+    Console.WriteLine();
+    Console.WriteLine();
     return this;
   }
 
