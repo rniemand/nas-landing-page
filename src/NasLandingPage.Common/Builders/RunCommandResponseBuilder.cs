@@ -44,6 +44,12 @@ public class RunCommandResponseBuilder
     return this;
   }
 
+  public RunCommandResponseBuilder WithMessages(List<string> messages)
+  {
+    _messages.AddRange(messages);
+    return this;
+  }
+
   public RunCommandResponse Failed() =>
     // TODO: [RunCommandResponseBuilder.Failed] (TESTS) Add tests
     WithSuccess(false).Build();
@@ -53,6 +59,9 @@ public class RunCommandResponseBuilder
     WithSuccess(false)
       .WithMessage(message)
       .Build();
+
+  public RunCommandResponse Success() =>
+    WithSuccess(true).Build();
 
   public RunCommandResponse Build()
   {
