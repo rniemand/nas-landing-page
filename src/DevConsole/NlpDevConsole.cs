@@ -52,12 +52,7 @@ public class NlpDevConsole
     var linkService = _services.GetRequiredService<IUserLinkService>();
     var linkProvider = _services.GetRequiredService<IUserLinkProvider>();
 
-    linkProvider.AddLink(new UserLink
-    {
-      Url = "https://icons-for-free.com/bx+refresh-1325051908640901702/",
-      Enabled = true,
-      Name = "Delete me"
-    }).GetAwaiter().GetResult();
+    var links = linkProvider.GetAll().GetAwaiter().GetResult();
 
 
     Console.WriteLine();

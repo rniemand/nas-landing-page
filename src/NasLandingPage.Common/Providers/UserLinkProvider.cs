@@ -2,25 +2,19 @@ using Microsoft.Extensions.DependencyInjection;
 using NasLandingPage.Common.Config;
 using NasLandingPage.Common.Helpers;
 using NasLandingPage.Common.Models.Responses;
-using Rn.NetCore.Common.Abstractions;
 using Rn.NetCore.Common.Extensions;
-using Rn.NetCore.Common.Helpers;
 
 namespace NasLandingPage.Common.Providers;
 
 public interface IUserLinkProvider
 {
   Task AddLink(UserLink link);
+  Task<List<UserLink>> GetAll();
 }
 
 public class UserLinkProvider : IUserLinkProvider
 {
   private readonly IFileSystemHelper _fsHelper;
-  private readonly IDirectoryAbstraction _directory;
-  private readonly IEnvironmentAbstraction _environment;
-  private readonly IFileAbstraction _file;
-  private readonly IJsonHelper _jsonHelper;
-  private readonly IPathAbstraction _path;
   private readonly NasLandingPageConfig _config;
   private readonly string _dataDir;
   private readonly string _backupDir;
@@ -29,11 +23,6 @@ public class UserLinkProvider : IUserLinkProvider
   {
     // TODO: [UserLinkProvider.UserLinkProvider] (TESTS) Add tests
     _fsHelper = serviceProvider.GetRequiredService<IFileSystemHelper>();
-    _directory = serviceProvider.GetRequiredService<IDirectoryAbstraction>();
-    _environment = serviceProvider.GetRequiredService<IEnvironmentAbstraction>();
-    _file = serviceProvider.GetRequiredService<IFileAbstraction>();
-    _jsonHelper = serviceProvider.GetRequiredService<IJsonHelper>();
-    _path = serviceProvider.GetRequiredService<IPathAbstraction>();
     _config = serviceProvider.GetRequiredService<INasLandingPageConfigProvider>().Provide();
 
     _dataDir = GenerateDataDirPath();
@@ -50,6 +39,34 @@ public class UserLinkProvider : IUserLinkProvider
     _fsHelper.SaveJsonFile(filePath, link, true);
   }
 
+  public async Task<List<UserLink>> GetAll()
+  {
+    // TODO: [UserLinkProvider.GetAll] (TESTS) Add tests
+    var linkFiles = _fsHelper.DirectoryGetFiles(_dataDir, "*.json", SearchOption.TopDirectoryOnly);
+    await Task.CompletedTask;
+
+    return GetEnabledLinks(linkFiles.ToList())
+      .OrderBy(x => x.Order)
+      .ToList();
+  }
+
+
+  private List<UserLink> GetEnabledLinks(List<string> filePaths)
+  {
+    var enabledLinks = new List<UserLink>();
+
+    foreach (var filePath in filePaths)
+    {
+      var parsedLink = _fsHelper.LoadJsonFile<UserLink>(filePath);
+
+      if(parsedLink is null)
+        continue;
+
+      enabledLinks.Add(parsedLink);
+    }
+
+    return enabledLinks;
+  }
 
   private string GenerateLinkFilePath(Guid linkId) =>
     GenerateLinkFilePath(linkId.ToString("N"));
