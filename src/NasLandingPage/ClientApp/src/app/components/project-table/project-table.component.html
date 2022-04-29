@@ -18,6 +18,7 @@
         <th scope="col" *ngIf="canRenderColumn('RepoLastUpdate')">Last Push</th>
         <th scope="col" *ngIf="canRenderColumn('RepoId')">RepoId</th>
         <th scope="col" *ngIf="canRenderColumn('RepoIsPublic')">Public</th>
+        <th scope="col" *ngIf="canRenderColumn('RepoSize')">SIZE</th>
         <th scope="col" *ngIf="canRenderColumn('License')">License</th>
         <th scope="col" *ngIf="canRenderColumn('HasReadme')">Readme</th>
         <th scope="col" *ngIf="canRenderColumn('HasGitAttributes')">.gitAttr</th>
@@ -50,6 +51,7 @@
         <td *ngIf="canRenderColumn('RepoLastUpdate')">{{ project.repo.lastUpdated | date:'yyyy-MM-dd' }}</td>
         <td *ngIf="canRenderColumn('RepoId')">{{ project.repo.id }}</td>
         <td *ngIf="canRenderColumn('RepoIsPublic')"><bool-tick [value]="project.repo.isPublic"></bool-tick></td>
+        <td *ngIf="canRenderColumn('RepoSize')"><human-size [value]="project.repo.size"></human-size></td>
         <td *ngIf="canRenderColumn('License')"><link-generic [url]="project.license.url" [name]="project.license.name"></link-generic></td>
         <td *ngIf="canRenderColumn('HasReadme')"><bool-tick [value]="project.scm.hasReadme"></bool-tick></td>
         <td *ngIf="canRenderColumn('HasGitAttributes')"><bool-tick [value]="project.scm.hasGitAttributes"></bool-tick></td>

@@ -29,5 +29,6 @@ public enum ProjectTableColumn
   CountOpenIssues,
   CountBuildScripts,
   CountTestScripts,
-  CountWorkFlows
+  CountWorkFlows,
+  RepoSize
 }

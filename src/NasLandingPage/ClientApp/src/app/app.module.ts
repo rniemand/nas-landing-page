@@ -20,6 +20,7 @@ import { OptionEditorComponent } from './components/project-table/option-editor/
 import { LinkSqComponent } from './components/link-sq/link-sq.component';
 import { LinkGenericComponent } from './components/link-generic/link-generic.component';
 import { RawCountComponent } from './components/raw-count/raw-count.component';
+import { HumanSizeComponent } from './components/human-size/human-size.component';
 
 function getBaseUrl(locationStrategy: LocationStrategy, document: any): string {
   let baseHref = locationStrategy.getBaseHref();
@@ -52,6 +53,7 @@ function getBaseUrl(locationStrategy: LocationStrategy, document: any): string {
     LinkSqComponent,
     LinkGenericComponent,
     RawCountComponent,
+    HumanSizeComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

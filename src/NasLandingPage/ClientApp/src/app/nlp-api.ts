@@ -235,6 +235,7 @@ export enum ProjectTableColumn {
     CountBuildScripts = 25,
     CountTestScripts = 26,
     CountWorkFlows = 27,
+    RepoSize = 28,
 }
 
 export class ProjectInfo implements IProjectInfo {
