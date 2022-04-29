@@ -8,16 +8,17 @@ import { ClientConfig, ConfigClient, UserLink, UserLinksClient } from 'src/app/n
 })
 export class HomeComponent implements OnInit {
   clientConfig?: ClientConfig = undefined;
+  userLinks: UserLink[] = [];
   
   constructor(private _config: ConfigClient, private _links: UserLinksClient) { }
 
   ngOnInit(): void {
     this._config.getClientConfig().toPromise().then(config => {
-      console.log(config);
+      this.clientConfig = config;
     });
 
     this._links.getAll().toPromise().then((links: UserLink[]) => {
-      console.log(links);
+      this.userLinks = links;
     });
   }
 }
