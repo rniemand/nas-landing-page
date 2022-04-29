@@ -19,8 +19,6 @@ export class UserLinksComponent implements OnInit, OnChanges {
   ngOnChanges(_: SimpleChanges): void {
     const hasConfig = (this?.config ?? undefined) != undefined;
     this.canRender = hasConfig && this.links.length > 0;
-
-    console.log(this.canRender);
   }
 
 }

@@ -19,4 +19,11 @@ export class UserLinkComponent implements OnInit, OnChanges {
     this.canRender = (this?.link ?? undefined) !== undefined;
   }
 
+  public follow = () => {
+    if(!this?.link?.url) {
+      return;
+    }
+
+    window.open(this.link.url, '_blank');
+  }
 }
