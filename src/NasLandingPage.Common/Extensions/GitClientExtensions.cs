@@ -24,4 +24,13 @@ public static class GitClientExtensions
 
     return file is null ? string.Empty : file.HtmlUrl;
   }
+
+  public static bool ContainsDirectory(this IReadOnlyList<RepositoryContent> contents, string name)
+  {
+    // TODO: [GitClientExtensions.ContainsDirectory] (TESTS) Add tests
+    return contents.Any(x =>
+      x.Type.Value == ContentType.Dir &&
+      x.Name.IgnoreCaseEquals(name)
+    );
+  }
 }

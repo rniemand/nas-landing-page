@@ -7,15 +7,18 @@ public class SourceCodeMaturityInfo
   [JsonProperty("hasReadme")]
   public bool HasReadme { get; set; } = false;
 
+  [JsonProperty("readme")]
+  public string Readme { get; set; } = string.Empty;
+
   [JsonProperty("hasGitAttributes")]
   public bool HasGitAttributes { get; set; } = false;
 
+  [JsonProperty("gitAttributes")]
+  public string GitAttributes { get; set; } = string.Empty;
+
   [JsonProperty("hasPrTemplate")]
   public bool HasPrTemplate { get; set; } = false;
-
-  [JsonProperty("prTemplate")]
-  public string PrTemplate { get; set; } = string.Empty;
-
+  
   [JsonProperty("hasEditorConfig")]
   public bool HasEditorConfig { get; set; } = false;
 
