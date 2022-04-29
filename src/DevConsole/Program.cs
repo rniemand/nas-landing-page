@@ -2,8 +2,7 @@ using DevConsole;
 
 new NlpDevConsole()
   //.TestGetCredentials()
-  //.TestProjectSync()
-  .TestImages()
+  .TestProjectSync()
   .DoNothing();
 
 Console.WriteLine("Fin.");

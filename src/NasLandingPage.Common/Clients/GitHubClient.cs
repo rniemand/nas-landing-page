@@ -8,6 +8,7 @@ namespace NasLandingPage.Common.Clients;
 public interface INlpGitHubClient
 {
   Task<Repository> GetRepositoryAsync(long repositoryId);
+  Task<IReadOnlyList<RepositoryContent>> GetAllContentsAsync(long repositoryId);
 }
 
 public class NlpGitHubClient : INlpGitHubClient
@@ -26,6 +27,9 @@ public class NlpGitHubClient : INlpGitHubClient
     // TODO: [NlpGitHubClient.GetRepositoryAsync] (TESTS) Add tests
     return await _gitHubClient.Repository.Get(repositoryId);
   }
+
+  public async Task<IReadOnlyList<RepositoryContent>> GetAllContentsAsync(long repositoryId) =>
+    await _gitHubClient.Repository.Content.GetAllContents(repositoryId);
 
 
   private static IGitHubClient CreateGitHubClient(IServiceProvider serviceProvider)

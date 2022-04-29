@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using NasLandingPage.Common.Clients;
 using NasLandingPage.Common.Extensions;
 using NasLandingPage.Common.Models.Requests;
 using NasLandingPage.Common.Models.Responses;
@@ -46,22 +47,7 @@ public class NlpDevConsole
     Console.WriteLine(commandResponse.Success);
     return this;
   }
-
-  public NlpDevConsole TestImages()
-  {
-    var linkProvider = _services.GetRequiredService<IUserLinkProvider>();
-    var userLink = linkProvider.GetById("9c610095fc9b4fcb8108351b7ff8d93b").GetAwaiter().GetResult();
-    if (userLink is null)
-      throw new Exception("Wrong link ID");
-
-    var imageProvider = _services.GetRequiredService<ILinkImageProvider>();
-    var imagePath = imageProvider.ResolveImagePath(userLink.Image);
-
-
-    Console.WriteLine();
-    return this;
-  }
-
+  
   private static IServiceProvider BuildServiceContainer()
   {
     var services = new ServiceCollection();

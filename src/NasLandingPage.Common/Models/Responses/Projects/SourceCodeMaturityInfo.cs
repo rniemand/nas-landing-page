@@ -13,8 +13,14 @@ public class SourceCodeMaturityInfo
   [JsonProperty("hasPrTemplate")]
   public bool HasPrTemplate { get; set; } = false;
 
+  [JsonProperty("prTemplate")]
+  public string PrTemplate { get; set; } = string.Empty;
+
   [JsonProperty("hasEditorConfig")]
   public bool HasEditorConfig { get; set; } = false;
+
+  [JsonProperty("editorConfig")]
+  public string EditorConfig { get; set; } = string.Empty;
 
   [JsonProperty("hasBuildScripts")]
   public bool HasBuildScripts { get; set; } = false;
