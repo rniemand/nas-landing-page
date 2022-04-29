@@ -101,6 +101,17 @@ public class NlpDevConsole
     return this;
   }
 
+  public NlpDevConsole TestProjectSync()
+  {
+    var projectInfoProvider = _services.GetRequiredService<IProjectInfoProvider>();
+    var projectInfo = projectInfoProvider.GetByName("DnsUpdater");
+
+
+
+    Console.WriteLine();
+    return this;
+  }
+
   private static IServiceProvider BuildServiceContainer()
   {
     var services = new ServiceCollection();

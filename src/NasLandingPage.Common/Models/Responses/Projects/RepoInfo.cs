@@ -1,7 +1,7 @@
 using NasLandingPage.Common.Enums;
 using Newtonsoft.Json;
 
-namespace NasLandingPage.Common.Models;
+namespace NasLandingPage.Common.Models.Responses.Projects;
 
 public class RepoInfo
 {

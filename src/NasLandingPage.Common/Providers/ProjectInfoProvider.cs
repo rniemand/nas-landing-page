@@ -1,6 +1,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using NasLandingPage.Common.Config;
 using NasLandingPage.Common.Models;
+using NasLandingPage.Common.Models.Responses;
+using NasLandingPage.Common.Models.Responses.Projects;
 using Rn.NetCore.Common.Abstractions;
 using Rn.NetCore.Common.Helpers;
 

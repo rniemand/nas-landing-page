@@ -1,5 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
-using NasLandingPage.Common.Models;
+using NasLandingPage.Common.Models.Responses;
 using NasLandingPage.Common.Providers;
 
 namespace NasLandingPage.Common.Services
@@ -7,6 +7,7 @@ namespace NasLandingPage.Common.Services
   public interface IProjectsService
   {
     List<ProjectInfo> GetAll();
+    Task<CommandResponse> SyncProject(ProjectInfo project);
   }
 
   public class ProjectsService : IProjectsService
@@ -23,6 +24,13 @@ namespace NasLandingPage.Common.Services
     {
       // TODO: [ProjectsService.GetAll] (TESTS) Add tests
       return _projectInfoProvider.GetAll();
+    }
+
+    public async Task<CommandResponse> SyncProject(ProjectInfo project)
+    {
+      // TODO: [ProjectsService.SyncProject] (TESTS) Add tests
+
+      return new CommandResponse();
     }
   }
 }
