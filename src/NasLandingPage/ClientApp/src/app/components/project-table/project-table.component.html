@@ -11,9 +11,9 @@
         <th scope="col" *ngIf="canRenderColumn('Name')">Name</th>
         <th scope="col" *ngIf="canRenderColumn('Description')">Description</th>
         <th scope="col" *ngIf="canRenderColumn('RepoType')">&nbsp;</th>
-        <th scope="col" *ngIf="canRenderColumn('UrlRepo')">🔗</th>
-        <th scope="col" *ngIf="canRenderColumn('UrlCiCd')">🔗</th>
-        <th scope="col" *ngIf="canRenderColumn('UrlSonarQube')">🔗</th>
+        <th scope="col" *ngIf="canRenderColumn('UrlRepo')">&nbsp;</th>
+        <th scope="col" *ngIf="canRenderColumn('UrlCiCd')">&nbsp;</th>
+        <th scope="col" *ngIf="canRenderColumn('UrlSonarQube')">&nbsp;</th>
         <th scope="col" *ngIf="canRenderColumn('RepoDefaultBranch')">Branch</th>
         <th scope="col" *ngIf="canRenderColumn('RepoLastUpdate')">Last Push</th>
         <th scope="col" *ngIf="canRenderColumn('RepoId')">RepoId</th>
@@ -31,10 +31,10 @@
         <th scope="col" *ngIf="canRenderColumn('CountWorkFlows')">🔄</th>
         <th scope="col" *ngIf="canRenderColumn('CountRepoForks')">🍴</th>
         <th scope="col" *ngIf="canRenderColumn('CountOpenIssues')">⚠️</th>
-        <th scope="col" *ngIf="canRenderColumn('DirSrc')">📁 src</th>
-        <th scope="col" *ngIf="canRenderColumn('DirTests')">📁 tests</th>
-        <th scope="col" *ngIf="canRenderColumn('DirDocs')">📁 docs</th>
-        <th scope="col" *ngIf="canRenderColumn('DirBuild')">📁 build</th>
+        <th scope="col" *ngIf="canRenderColumn('DirSrc')">src</th>
+        <th scope="col" *ngIf="canRenderColumn('DirTests')">tests</th>
+        <th scope="col" *ngIf="canRenderColumn('DirDocs')">docs</th>
+        <th scope="col" *ngIf="canRenderColumn('DirBuild')">build</th>
         <th scope="col" *ngIf="canRenderColumn('Languages')">Languages</th>
         <th scope="col" *ngIf="canRenderColumn('SonarQubeBadges')">&nbsp;</th>
       </tr>
