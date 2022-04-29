@@ -1,0 +1,19 @@
+.user-link {
+  border: 1px solid red;
+  width: 80px;
+  height: 80px;
+  margin-right: 5px;
+  box-shadow: 1px 1px 1px 1px #888888;
+  background-color: white;
+  font-size: 0.8em;
+
+  &:hover {
+    background-color: #d6d6d6;
+  }
+
+  .title {
+    padding: 0 3px;
+    text-align: center;
+    cursor: pointer;
+  }
+}

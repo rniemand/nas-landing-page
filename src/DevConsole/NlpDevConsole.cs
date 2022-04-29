@@ -3,6 +3,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NasLandingPage.Common.Extensions;
 using NasLandingPage.Common.Models.Requests;
+using NasLandingPage.Common.Models.Responses;
+using NasLandingPage.Common.Providers;
 using NasLandingPage.Common.Services;
 using NLog.Extensions.Logging;
 
@@ -42,6 +44,18 @@ public class NlpDevConsole
 
 
     Console.WriteLine(commandResponse.Success);
+    return this;
+  }
+
+  public NlpDevConsole TestUserLinks()
+  {
+    var linkService = _services.GetRequiredService<IUserLinkService>();
+    var linkProvider = _services.GetRequiredService<IUserLinkProvider>();
+
+    var links = linkProvider.GetAll().GetAwaiter().GetResult();
+
+
+    Console.WriteLine();
     return this;
   }
 

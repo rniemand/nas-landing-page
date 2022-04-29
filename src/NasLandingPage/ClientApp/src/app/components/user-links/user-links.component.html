@@ -1,0 +1,7 @@
+<div class="alert alert-info" role="alert" *ngIf="!canRender">
+  Fetching links...
+</div>
+
+<div *ngIf="canRender" class="user-links">
+  <user-link *ngFor="let link of links" [link]="link"></user-link>
+</div>
