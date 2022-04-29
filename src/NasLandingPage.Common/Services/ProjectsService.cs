@@ -39,23 +39,22 @@ public class ProjectsService : IProjectsService
   {
     // TODO: [ProjectsService.SyncProject] (TESTS) Add tests
     var responseBuilder = new RunCommandResponseBuilder(request);
-
     var projectInfo = _projectInfoProvider.GetByName(request.Arguments);
     if (projectInfo is null)
       return responseBuilder.Failed("Project not found");
 
     var repositoryId = projectInfo.Repo.RepoId;
 
-    //// Sync core repo information
-    //var repository = await _gitHubClient.GetRepositoryAsync(repositoryId);
-    //responseBuilder.WithMessages(CoreRepositoryInfoSync.Sync(projectInfo, repository));
+    // Sync core repo information
+    var repository = await _gitHubClient.GetRepositoryAsync(repositoryId);
+    responseBuilder.WithMessages(CoreRepositoryInfoSync.Sync(projectInfo, repository));
 
     // Sync directory contents
     var directoryContents = await _gitHubClient.GetAllContentsAsync(repositoryId);
-    CoreRepositoryContentInfoSync.Sync(projectInfo, directoryContents);
+    responseBuilder.WithMessages(CoreRepositoryContentInfoSync.Sync(projectInfo, directoryContents));
 
-    //_projectInfoProvider.UpdateProjectInfo(projectInfo);
-
+    // Save and return
+    _projectInfoProvider.UpdateProjectInfo(projectInfo);
     return responseBuilder.Success();
   }
 }

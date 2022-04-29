@@ -43,7 +43,6 @@ public class NlpDevConsole
       Arguments = "DnsUpdater"
     }).GetAwaiter().GetResult();
 
-
     Console.WriteLine(commandResponse.Success);
     return this;
   }
