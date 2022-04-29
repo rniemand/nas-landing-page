@@ -35,6 +35,6 @@ public static class ServiceCollectionExtensions
       .AddSingleton<IProjectsService, ProjectsService>()
       .AddSingleton<IConfigService, ConfigService>()
       .AddSingleton<ICredentialsService, CredentialsService>()
-      .AddSingleton<IUserLinksService, UserLinkService>();
+      .AddSingleton<IUserLinkService, UserLinkService>();
   }
 }

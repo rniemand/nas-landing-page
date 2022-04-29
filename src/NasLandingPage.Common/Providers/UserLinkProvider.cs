@@ -43,7 +43,7 @@ public class UserLinkProvider : IUserLinkProvider
   {
     // TODO: [UserLinkProvider.GenerateDataDirPath] (TESTS) Add tests
     var sep = _config.IsLinux ? "/" : "\\";
-    var rootDir = _environment.CurrentDirectory;
+    var rootDir = _fsHelper.CurrentDirectory;
 
     if (!rootDir.EndsWith(sep))
       rootDir += sep;
@@ -64,7 +64,7 @@ public class UserLinkProvider : IUserLinkProvider
   {
     // TODO: [UserLinkProvider.GenerateBackupDirPath] (TESTS) Add tests
     var sep = _config.IsLinux ? "/" : "\\";
-    var rootDir = _environment.CurrentDirectory;
+    var rootDir = _fsHelper.CurrentDirectory;
 
     if (!rootDir.EndsWith(sep))
       rootDir += sep;

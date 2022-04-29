@@ -3,11 +3,11 @@ using NasLandingPage.Common.Providers;
 
 namespace NasLandingPage.Common.Services;
 
-public interface IUserLinksService
+public interface IUserLinkService
 {
 }
 
-public class UserLinkService : IUserLinksService
+public class UserLinkService : IUserLinkService
 {
   private readonly IUserLinkProvider _linkProvider;
 

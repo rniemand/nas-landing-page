@@ -45,6 +45,14 @@ public class NlpDevConsole
     return this;
   }
 
+  public NlpDevConsole TestUserLinks()
+  {
+    var linkService = _services.GetRequiredService<IUserLinkService>();
+
+    Console.WriteLine();
+    return this;
+  }
+
   private static IServiceProvider BuildServiceContainer()
   {
     var services = new ServiceCollection();
