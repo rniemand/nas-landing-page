@@ -1,5 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using NasLandingPage.Common.Clients;
+using NasLandingPage.Common.Helpers;
 using NasLandingPage.Common.Providers;
 using NasLandingPage.Common.Services;
 using Rn.NetCore.Common.Abstractions;
@@ -25,6 +26,7 @@ public static class ServiceCollectionExtensions
       .AddSingleton(typeof(ILoggerAdapter<>), typeof(LoggerAdapter<>))
 
       .AddSingleton<IJsonHelper, JsonHelper>()
+      .AddSingleton<IFileSystemHelper, FileSystemHelper>()
 
       .AddSingleton<INasLandingPageConfigProvider, NasLandingPageConfigProvider>()
       .AddSingleton<IProjectInfoProvider, ProjectInfoProvider>()

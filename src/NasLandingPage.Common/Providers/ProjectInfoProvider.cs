@@ -1,5 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using NasLandingPage.Common.Config;
+using NasLandingPage.Common.Helpers;
 using NasLandingPage.Common.Models.Responses;
 using NasLandingPage.Common.Models.Responses.Projects;
 using Rn.NetCore.Common.Abstractions;
@@ -17,6 +18,7 @@ public interface IProjectInfoProvider
 
 public class ProjectInfoProvider : IProjectInfoProvider
 {
+  private readonly IFileSystemHelper _fsHelper;
   private readonly IDirectoryAbstraction _directory;
   private readonly IEnvironmentAbstraction _environment;
   private readonly IFileAbstraction _file;
@@ -29,6 +31,7 @@ public class ProjectInfoProvider : IProjectInfoProvider
   public ProjectInfoProvider(IServiceProvider serviceProvider)
   {
     // TODO: [ProjectInfoProvider.ProjectInfoProvider] (TESTS) Add tests
+    _fsHelper = serviceProvider.GetRequiredService<IFileSystemHelper>();
     _directory = serviceProvider.GetRequiredService<IDirectoryAbstraction>();
     _environment = serviceProvider.GetRequiredService<IEnvironmentAbstraction>();
     _file = serviceProvider.GetRequiredService<IFileAbstraction>();
@@ -155,7 +158,7 @@ public class ProjectInfoProvider : IProjectInfoProvider
       processed += sep;
 
     processed += $"projects{sep}";
-    EnsureFolderExists(processed);
+    _fsHelper.EnsureFolderExists(processed);
 
     return processed;
   }
@@ -176,17 +179,8 @@ public class ProjectInfoProvider : IProjectInfoProvider
       processed += sep;
 
     processed += $"projects-backup{sep}";
-    EnsureFolderExists(processed);
+    _fsHelper.EnsureFolderExists(processed);
 
     return processed;
-  }
-
-  private void EnsureFolderExists(string path)
-  {
-    // TODO: [ProjectInfoProvider.EnsureFolderExists] (TESTS) Add tests
-    if (_directory.Exists(path))
-      return;
-
-    _directory.CreateDirectory(path);
   }
 }
