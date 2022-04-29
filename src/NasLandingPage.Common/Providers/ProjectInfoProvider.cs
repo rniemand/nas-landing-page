@@ -40,6 +40,7 @@ public class ProjectInfoProvider : IProjectInfoProvider
     return files
       .Where(file => !string.IsNullOrWhiteSpace(file))
       .Select(LoadProjectFile)
+      .OrderBy(x => x.Name)
       .ToList();
   }
 
