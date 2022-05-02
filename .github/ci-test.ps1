@@ -2,12 +2,11 @@ param (
   $output             = $PSScriptRoot,
   $testCsprojPattern  = "*T1.Tests.csproj",
   $configuration      = "Release",
-  $frameworkVersion   = "net5.0"
+  $frameworkVersion   = "net6.0"
 )
 
-$output                = Join-Path $output "\..\";
-$workingRoot           = Join-Path $PSScriptRoot "\";
-
+$output                = [IO.Path]::GetFullPath((Join-Path $output "\..\"));
+$workingRoot           = $output;
 $sourceDir             = Join-Path $workingRoot "src";
 $publishDir            = Join-Path $output "artifacts";
 $toolsDir              = Join-Path $workingRoot "tools";
