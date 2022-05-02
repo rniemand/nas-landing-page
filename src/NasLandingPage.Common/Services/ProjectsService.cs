@@ -1,12 +1,9 @@
 using Microsoft.Extensions.DependencyInjection;
 using NasLandingPage.Common.Builders;
-using NasLandingPage.Common.Clients;
-using NasLandingPage.Common.Extensions;
+using NasLandingPage.Common.Factories;
 using NasLandingPage.Common.Models.Requests;
 using NasLandingPage.Common.Models.Responses;
 using NasLandingPage.Common.Providers;
-using NasLandingPage.Common.Sync;
-using Octokit;
 
 namespace NasLandingPage.Common.Services;
 
@@ -19,13 +16,13 @@ public interface IProjectsService
 public class ProjectsService : IProjectsService
 {
   private readonly IProjectInfoProvider _projectInfoProvider;
-  private readonly INlpGitHubClient _gitHubClient;
+  private readonly IProjectInfoSyncFactory _syncFactory;
 
   public ProjectsService(IServiceProvider serviceProvider)
   {
     // TODO: [ProjectsService.ProjectsService] (TESTS) Add tests
     _projectInfoProvider = serviceProvider.GetRequiredService<IProjectInfoProvider>();
-    _gitHubClient = serviceProvider.GetRequiredService<INlpGitHubClient>();
+    _syncFactory = serviceProvider.GetRequiredService<IProjectInfoSyncFactory>();
   }
 
 
@@ -42,16 +39,12 @@ public class ProjectsService : IProjectsService
     var projectInfo = _projectInfoProvider.GetByName(request.Arguments);
     if (projectInfo is null)
       return responseBuilder.Failed("Project not found");
-
-    var repositoryId = projectInfo.Repo.RepoId;
-
+    
     // Sync core repo information
-    var repository = await _gitHubClient.GetRepositoryAsync(repositoryId);
-    responseBuilder.WithMessages(CoreRepositoryInfoSync.Sync(projectInfo, repository));
-
-    // Sync directory contents
-    var directoryContents = await _gitHubClient.GetAllContentsAsync(repositoryId);
-    responseBuilder.WithMessages(CoreRepositoryContentInfoSync.Sync(projectInfo, directoryContents));
+    await _syncFactory.CreateCoreRepositoryInfoSync().SyncAsync(responseBuilder, projectInfo);
+    await _syncFactory.CreateRootRepositoryContentInfoSync().SyncAsync(responseBuilder, projectInfo);
+    await _syncFactory.CreateBuildScriptInfoSync().SyncAsync(responseBuilder, projectInfo);
+    await _syncFactory.GetProjectCiInfoSync().SyncAsync(responseBuilder, projectInfo);
 
     // Save and return
     _projectInfoProvider.UpdateProjectInfo(projectInfo);

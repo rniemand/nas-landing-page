@@ -15,4 +15,7 @@ public class ProjectFolderInfo
 
   [JsonProperty("build")]
   public bool Build { get; set; } = false;
+
+  [JsonProperty("dotGithub")]
+  public bool DotGithub { get; set; } = false;
 }

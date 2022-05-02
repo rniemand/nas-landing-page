@@ -9,6 +9,7 @@ public interface INlpGitHubClient
 {
   Task<Repository> GetRepositoryAsync(long repositoryId);
   Task<IReadOnlyList<RepositoryContent>> GetAllContentsAsync(long repositoryId);
+  Task<IReadOnlyList<RepositoryContent>> GetAllContentsAsync(long repositoryId, string path);
 }
 
 public class NlpGitHubClient : INlpGitHubClient
@@ -31,6 +32,8 @@ public class NlpGitHubClient : INlpGitHubClient
   public async Task<IReadOnlyList<RepositoryContent>> GetAllContentsAsync(long repositoryId) =>
     await _gitHubClient.Repository.Content.GetAllContents(repositoryId);
 
+  public async Task<IReadOnlyList<RepositoryContent>> GetAllContentsAsync(long repositoryId, string path) =>
+    await _gitHubClient.Repository.Content.GetAllContents(repositoryId, path);
 
   private static IGitHubClient CreateGitHubClient(IServiceProvider serviceProvider)
   {

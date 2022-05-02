@@ -1,14 +1,29 @@
+using NasLandingPage.Common.Builders;
+using NasLandingPage.Common.Clients;
 using NasLandingPage.Common.Extensions;
 using NasLandingPage.Common.Models.Responses;
 using Octokit;
 
 namespace NasLandingPage.Common.Sync;
 
-public static class CoreRepositoryContentInfoSync
+public interface IRootRepositoryContentInfoSync
 {
-  public static List<string> Sync(ProjectInfo projectInfo, IReadOnlyList<RepositoryContent> contents)
+  Task SyncAsync(RunCommandResponseBuilder responseBuilder, ProjectInfo projectInfo);
+}
+
+public class RootRepositoryContentInfoSync : IRootRepositoryContentInfoSync
+{
+  private readonly INlpGitHubClient _gitHubClient;
+
+  public RootRepositoryContentInfoSync(INlpGitHubClient gitHubClient)
   {
-    // TODO: [CoreRepositoryContentInfoSync.Sync] (TESTS) Add tests
+    _gitHubClient = gitHubClient;
+  }
+
+  public async Task SyncAsync(RunCommandResponseBuilder responseBuilder, ProjectInfo projectInfo)
+  {
+    // TODO: [RootRepositoryContentInfoSync.SyncAsync] (TESTS) Add tests
+    var contents = await _gitHubClient.GetAllContentsAsync(projectInfo.Repo.RepoId);
     var messages = new List<string>();
 
     SyncEditorConfig(messages, projectInfo, contents);
@@ -19,16 +34,16 @@ public static class CoreRepositoryContentInfoSync
     SyncHasDirTests(messages, projectInfo, contents);
     SyncHasDirDocs(messages, projectInfo, contents);
     SyncHasDirBuild(messages, projectInfo, contents);
+    SyncHasDirDotGithub(messages, projectInfo, contents);
 
-    return messages;
+    responseBuilder.WithMessages(messages);
   }
-
 
   // Top level files
   private static void SyncEditorConfig(ICollection<string> messages, ProjectInfo projectInfo, IReadOnlyList<RepositoryContent> contents)
   {
-    // TODO: [CoreRepositoryContentInfoSync.SyncEditorConfig] (TESTS) Add tests
-    var filePath = contents.GetFilePath(".editorconfig");
+    // TODO: [RootRepositoryContentInfoSync.SyncEditorConfig] (TESTS) Add tests
+    var filePath = contents.GetHtmlFilePath(".editorconfig");
     var fileExists = !string.IsNullOrWhiteSpace(filePath);
 
     if (projectInfo.Scm.HasEditorConfig != fileExists)
@@ -46,8 +61,8 @@ public static class CoreRepositoryContentInfoSync
 
   private static void SyncGitAttributes(ICollection<string> messages, ProjectInfo projectInfo, IReadOnlyList<RepositoryContent> contents)
   {
-    // TODO: [CoreRepositoryContentInfoSync.SyncGitAttributes] (TESTS) Add tests
-    var filePath = contents.GetFilePath(".gitattributes");
+    // TODO: [RootRepositoryContentInfoSync.SyncGitAttributes] (TESTS) Add tests
+    var filePath = contents.GetHtmlFilePath(".gitattributes");
     var fileExists = !string.IsNullOrWhiteSpace(filePath);
 
     if (projectInfo.Scm.HasGitAttributes != fileExists)
@@ -65,8 +80,8 @@ public static class CoreRepositoryContentInfoSync
 
   private static void SyncReadme(ICollection<string> messages, ProjectInfo projectInfo, IReadOnlyList<RepositoryContent> contents)
   {
-    // TODO: [CoreRepositoryContentInfoSync.SyncReadme] (TESTS) Add tests
-    var filePath = contents.GetFilePath("README.md");
+    // TODO: [RootRepositoryContentInfoSync.SyncReadme] (TESTS) Add tests
+    var filePath = contents.GetHtmlFilePath("README.md");
     var fileExists = !string.IsNullOrWhiteSpace(filePath);
 
     if (projectInfo.Scm.HasReadme != fileExists)
@@ -86,7 +101,7 @@ public static class CoreRepositoryContentInfoSync
   // Top level directories
   private static void SyncHasDirSrc(ICollection<string> messages, ProjectInfo projectInfo, IReadOnlyList<RepositoryContent> contents)
   {
-    // TODO: [CoreRepositoryContentInfoSync.SyncHasDirSrc] (TESTS) Add tests
+    // TODO: [RootRepositoryContentInfoSync.SyncHasDirSrc] (TESTS) Add tests
     var hasDirectory = contents.ContainsDirectory("src");
 
     if (projectInfo.Folders.Src == hasDirectory)
@@ -98,7 +113,7 @@ public static class CoreRepositoryContentInfoSync
 
   private static void SyncHasDirTests(ICollection<string> messages, ProjectInfo projectInfo, IReadOnlyList<RepositoryContent> contents)
   {
-    // TODO: [CoreRepositoryContentInfoSync.SyncHasDirTests] (TESTS) Add tests
+    // TODO: [RootRepositoryContentInfoSync.SyncHasDirTests] (TESTS) Add tests
     var hasDirectory = contents.ContainsDirectory("tests");
 
     if (projectInfo.Folders.Tests == hasDirectory)
@@ -110,7 +125,7 @@ public static class CoreRepositoryContentInfoSync
 
   private static void SyncHasDirDocs(ICollection<string> messages, ProjectInfo projectInfo, IReadOnlyList<RepositoryContent> contents)
   {
-    // TODO: [CoreRepositoryContentInfoSync.SyncHasDirDocs] (TESTS) Add tests
+    // TODO: [RootRepositoryContentInfoSync.SyncHasDirDocs] (TESTS) Add tests
     var hasDirectory = contents.ContainsDirectory("docs");
 
     if (projectInfo.Folders.Docs == hasDirectory)
@@ -122,7 +137,7 @@ public static class CoreRepositoryContentInfoSync
 
   private static void SyncHasDirBuild(ICollection<string> messages, ProjectInfo projectInfo, IReadOnlyList<RepositoryContent> contents)
   {
-    // TODO: [CoreRepositoryContentInfoSync.SyncHasDirBuild] (TESTS) Add tests
+    // TODO: [RootRepositoryContentInfoSync.SyncHasDirBuild] (TESTS) Add tests
     var hasDirectory = contents.ContainsDirectory("build");
 
     if (projectInfo.Folders.Build == hasDirectory)
@@ -130,5 +145,17 @@ public static class CoreRepositoryContentInfoSync
 
     messages.Add("Setting Build to: " + (hasDirectory ? "true" : "false"));
     projectInfo.Folders.Build = hasDirectory;
+  }
+
+  private static void SyncHasDirDotGithub(ICollection<string> messages, ProjectInfo projectInfo, IReadOnlyList<RepositoryContent> contents)
+  {
+    // TODO: [RootRepositoryContentInfoSync.SyncHasDirDotGithub] (TESTS) Add tests
+    var hasDirectory = contents.ContainsDirectory(".github");
+
+    if (projectInfo.Folders.DotGithub == hasDirectory)
+      return;
+
+    messages.Add("Setting DotGithub to: " + (hasDirectory ? "true" : "false"));
+    projectInfo.Folders.DotGithub = hasDirectory;
   }
 }

@@ -1,3 +1,4 @@
+using NasLandingPage.Common.Models.External;
 using NasLandingPage.Common.Models.Responses.Projects;
 using Newtonsoft.Json;
 
@@ -34,4 +35,7 @@ public class ProjectInfo
 
   [JsonProperty("languages")]
   public string[] Languages { get; set; } = Array.Empty<string>();
+
+  [JsonProperty("ciInfo")]
+  public RepoCiInfo CiInfo { get; set; } = new();
 }

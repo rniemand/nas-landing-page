@@ -38,7 +38,7 @@
         <th scope="col" *ngIf="canRenderColumn('DirSrc')">src</th>
         <th scope="col" *ngIf="canRenderColumn('DirTests')">tests</th>
         <th scope="col" *ngIf="canRenderColumn('DirDocs')">docs</th>
-        <th scope="col" *ngIf="canRenderColumn('DirBuild')">build</th>
+        <th scope="col" *ngIf="canRenderColumn('DirDotGithub')">.github</th>
         <th scope="col" *ngIf="canRenderColumn('Languages')">Languages</th>
         <th scope="col" *ngIf="canRenderColumn('SonarQubeBadges')">&nbsp;</th>
         <th scope="col">&nbsp;</th>
@@ -63,7 +63,7 @@
         <td *ngIf="canRenderColumn('HasGitAttributes')"><bool-tick [value]="project.scm.hasGitAttributes"></bool-tick></td>
         <td *ngIf="canRenderColumn('HasPrTemplate')"><bool-tick [value]="project.scm.hasPrTemplate"></bool-tick></td>
         <td *ngIf="canRenderColumn('HasEditorConfig')"><bool-tick [value]="project.scm.hasEditorConfig"></bool-tick></td>
-        <td *ngIf="canRenderColumn('HasBuildScripts')"><bool-tick [value]="project.scm.hasBuildScripts"></bool-tick></td>
+        <td *ngIf="canRenderColumn('HasBuildScripts')"><bool-tick [value]="project.scm.hasBuildScript"></bool-tick></td>
         <td *ngIf="canRenderColumn('VersionBuildScripts')">{{project.scm.buildScriptVersion}}</td>
         <td *ngIf="canRenderColumn('CountBuildScripts')"><array-count [value]="project.scm.buildScripts"></array-count></td>
         <td *ngIf="canRenderColumn('CountTestScripts')"><array-count [value]="project.scm.testScripts"></array-count></td>
@@ -73,7 +73,7 @@
         <td *ngIf="canRenderColumn('DirSrc')"><bool-tick [value]="project.folders.src"></bool-tick></td>
         <td *ngIf="canRenderColumn('DirTests')"><bool-tick [value]="project.folders.tests"></bool-tick></td>
         <td *ngIf="canRenderColumn('DirDocs')"><bool-tick [value]="project.folders.docs"></bool-tick></td>
-        <td *ngIf="canRenderColumn('DirBuild')"><bool-tick [value]="project.folders.build"></bool-tick></td>
+        <td *ngIf="canRenderColumn('DirDotGithub')"><bool-tick [value]="project.folders.dotGithub"></bool-tick></td>
         <td *ngIf="canRenderColumn('Languages')"><array-string [value]="project.languages"></array-string></td>
         <td *ngIf="canRenderColumn('SonarQubeBadges')"><sq-badges [config]="config" [project]="project"></sq-badges></td>
         <td>

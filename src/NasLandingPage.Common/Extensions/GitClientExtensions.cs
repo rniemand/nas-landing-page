@@ -14,15 +14,26 @@ public static class GitClientExtensions
     );
   }
 
-  public static string GetFilePath(this IReadOnlyList<RepositoryContent> contents, string fileName)
+  public static string GetHtmlFilePath(this IReadOnlyList<RepositoryContent> contents, string fileName)
   {
-    // TODO: [GitClientExtensions.GetFilePath] (TESTS) Add tests
+    // TODO: [GitClientExtensions.GetHtmlFilePath] (TESTS) Add tests
     var file = contents.FirstOrDefault(x =>
       x.Type.Value == ContentType.File &&
       x.Name.IgnoreCaseEquals(fileName)
     );
 
     return file is null ? string.Empty : file.HtmlUrl;
+  }
+
+  public static string GetRepoFilePath(this IReadOnlyList<RepositoryContent> contents, string fileName)
+  {
+    // TODO: [GitClientExtensions.GetRepoFilePath] (TESTS) Add tests
+    var file = contents.FirstOrDefault(x =>
+      x.Type.Value == ContentType.File &&
+      x.Name.IgnoreCaseEquals(fileName)
+    );
+
+    return file is null ? string.Empty : file.Path;
   }
 
   public static bool ContainsDirectory(this IReadOnlyList<RepositoryContent> contents, string name)

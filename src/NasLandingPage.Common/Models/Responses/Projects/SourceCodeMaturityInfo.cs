@@ -24,18 +24,27 @@ public class SourceCodeMaturityInfo
 
   [JsonProperty("editorConfig")]
   public string EditorConfig { get; set; } = string.Empty;
+  
+  [JsonProperty("hasBuildScript")]
+  public bool HasBuildScript { get; set; } = false;
 
-  [JsonProperty("hasBuildScripts")]
-  public bool HasBuildScripts { get; set; } = false;
+  [JsonProperty("hasTestScript")]
+  public bool HasTestScript { get; set; } = false;
+
+  [JsonProperty("hasCiInfo")]
+  public bool HasCiInfo { get; set; } = false;
 
   [JsonProperty("buildScriptVersion")]
   public string BuildScriptVersion { get; set; } = "0";
 
   [JsonProperty("buildScripts")]
-  public string[] BuildScripts { get; set; } = Array.Empty<string>();
+  public List<string> BuildScripts { get; set; } = new();
 
   [JsonProperty("testScripts")]
-  public string[] TestScripts { get; set; } = Array.Empty<string>();
+  public List<string> TestScripts { get; set; } = new();
+
+  [JsonProperty("ciInfo")]
+  public string CiInfoPath { get; set; } = string.Empty;
 
   [JsonProperty("workFlows")]
   public string[] WorkFlows { get; set; } = Array.Empty<string>();

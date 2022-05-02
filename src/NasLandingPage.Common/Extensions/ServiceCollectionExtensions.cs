@@ -1,5 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using NasLandingPage.Common.Clients;
+using NasLandingPage.Common.Factories;
 using NasLandingPage.Common.Helpers;
 using NasLandingPage.Common.Providers;
 using NasLandingPage.Common.Services;
@@ -24,6 +25,8 @@ public static class ServiceCollectionExtensions
       .AddSingleton<INlpGitHubClient, NlpGitHubClient>()
 
       .AddSingleton(typeof(ILoggerAdapter<>), typeof(LoggerAdapter<>))
+
+      .AddSingleton<IProjectInfoSyncFactory, ProjectInfoSyncFactory>()
 
       .AddSingleton<IJsonHelper, JsonHelper>()
       .AddSingleton<IFileSystemHelper, FileSystemHelper>()
