@@ -43,7 +43,7 @@ public class RootRepositoryContentInfoSync : IRootRepositoryContentInfoSync
   private static void SyncEditorConfig(ICollection<string> messages, ProjectInfo projectInfo, IReadOnlyList<RepositoryContent> contents)
   {
     // TODO: [RootRepositoryContentInfoSync.SyncEditorConfig] (TESTS) Add tests
-    var filePath = contents.GetFilePath(".editorconfig");
+    var filePath = contents.GetHtmlFilePath(".editorconfig");
     var fileExists = !string.IsNullOrWhiteSpace(filePath);
 
     if (projectInfo.Scm.HasEditorConfig != fileExists)
@@ -62,7 +62,7 @@ public class RootRepositoryContentInfoSync : IRootRepositoryContentInfoSync
   private static void SyncGitAttributes(ICollection<string> messages, ProjectInfo projectInfo, IReadOnlyList<RepositoryContent> contents)
   {
     // TODO: [RootRepositoryContentInfoSync.SyncGitAttributes] (TESTS) Add tests
-    var filePath = contents.GetFilePath(".gitattributes");
+    var filePath = contents.GetHtmlFilePath(".gitattributes");
     var fileExists = !string.IsNullOrWhiteSpace(filePath);
 
     if (projectInfo.Scm.HasGitAttributes != fileExists)
@@ -81,7 +81,7 @@ public class RootRepositoryContentInfoSync : IRootRepositoryContentInfoSync
   private static void SyncReadme(ICollection<string> messages, ProjectInfo projectInfo, IReadOnlyList<RepositoryContent> contents)
   {
     // TODO: [RootRepositoryContentInfoSync.SyncReadme] (TESTS) Add tests
-    var filePath = contents.GetFilePath("README.md");
+    var filePath = contents.GetHtmlFilePath("README.md");
     var fileExists = !string.IsNullOrWhiteSpace(filePath);
 
     if (projectInfo.Scm.HasReadme != fileExists)
