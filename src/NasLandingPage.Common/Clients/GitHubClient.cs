@@ -35,7 +35,6 @@ public class NlpGitHubClient : INlpGitHubClient
   public async Task<IReadOnlyList<RepositoryContent>> GetAllContentsAsync(long repositoryId, string path) =>
     await _gitHubClient.Repository.Content.GetAllContents(repositoryId, path);
 
-
   private static IGitHubClient CreateGitHubClient(IServiceProvider serviceProvider)
   {
     // TODO: [NlpGitHubClient.CreateGitHubClient] (TESTS) Add tests

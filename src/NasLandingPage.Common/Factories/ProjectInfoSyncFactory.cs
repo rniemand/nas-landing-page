@@ -1,6 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using NasLandingPage.Common.Clients;
 using NasLandingPage.Common.Sync;
+using Rn.NetCore.Common.Helpers;
 
 namespace NasLandingPage.Common.Factories;
 
@@ -9,6 +10,7 @@ public interface IProjectInfoSyncFactory
   ICoreRepositoryInfoSync CreateCoreRepositoryInfoSync();
   IRootRepositoryContentInfoSync CreateRootRepositoryContentInfoSync();
   IBuildScriptInfoSync CreateBuildScriptInfoSync();
+  IProjectCiInfoSync GetProjectCiInfoSync();
 }
 
 public class ProjectInfoSyncFactory : IProjectInfoSyncFactory
@@ -33,5 +35,11 @@ public class ProjectInfoSyncFactory : IProjectInfoSyncFactory
   public IBuildScriptInfoSync CreateBuildScriptInfoSync()
   {
     return new BuildScriptInfoSync(_serviceProvider.GetRequiredService<INlpGitHubClient>());
+  }
+
+  public IProjectCiInfoSync GetProjectCiInfoSync()
+  {
+    return new ProjectCiInfoSync(_serviceProvider.GetRequiredService<INlpGitHubClient>(),
+      _serviceProvider.GetRequiredService<IJsonHelper>());
   }
 }
