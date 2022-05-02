@@ -1,17 +1,29 @@
+using NasLandingPage.Common.Builders;
+using NasLandingPage.Common.Clients;
 using NasLandingPage.Common.Models.Responses;
 using Octokit;
 
 namespace NasLandingPage.Common.Sync;
 
-public static class CoreRepositoryInfoSync
+public interface ICoreRepositoryInfoSync
 {
-  public static List<string> Sync(ProjectInfo projectInfo, Repository repository)
-  {
-    // TODO: [CoreRepositoryInfoSync.Sync] (TESTS) Add tests
-    var messages = new List<string>();
+  Task SyncAsync(RunCommandResponseBuilder responseBuilder, ProjectInfo projectInfo);
+}
 
-    projectInfo.Repo.LastUpdated = repository.UpdatedAt;
-    projectInfo.Languages = new[] { repository.Language };
+public class CoreRepositoryInfoSync : ICoreRepositoryInfoSync
+{
+  private readonly INlpGitHubClient _gitHubClient;
+
+  public CoreRepositoryInfoSync(INlpGitHubClient gitHubClient)
+  {
+    _gitHubClient = gitHubClient;
+  }
+
+  public async Task SyncAsync(RunCommandResponseBuilder responseBuilder, ProjectInfo projectInfo)
+  {
+    // TODO: [CoreRepositoryInfoSync.SyncAsync] (TESTS) Add tests
+    var repository = await _gitHubClient.GetRepositoryAsync(projectInfo.Repo.RepoId);
+    var messages = new List<string>();
 
     SyncDefaultBranch(messages, projectInfo, repository);
     SyncIsPublic(messages, projectInfo, repository);
@@ -25,7 +37,7 @@ public static class CoreRepositoryInfoSync
     SyncRepoSize(messages, projectInfo, repository);
     SyncDescription(messages, projectInfo, repository);
 
-    return messages;
+    responseBuilder.WithMessages(messages);
   }
 
   private static void SyncDefaultBranch(ICollection<string> messages, ProjectInfo projectInfo, Repository repository)

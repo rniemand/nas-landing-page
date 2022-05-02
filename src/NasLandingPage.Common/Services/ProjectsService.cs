@@ -1,12 +1,11 @@
 using Microsoft.Extensions.DependencyInjection;
 using NasLandingPage.Common.Builders;
 using NasLandingPage.Common.Clients;
-using NasLandingPage.Common.Extensions;
+using NasLandingPage.Common.Factories;
 using NasLandingPage.Common.Models.Requests;
 using NasLandingPage.Common.Models.Responses;
 using NasLandingPage.Common.Providers;
 using NasLandingPage.Common.Sync;
-using Octokit;
 
 namespace NasLandingPage.Common.Services;
 
@@ -19,12 +18,14 @@ public interface IProjectsService
 public class ProjectsService : IProjectsService
 {
   private readonly IProjectInfoProvider _projectInfoProvider;
+  private readonly IProjectInfoSyncFactory _syncFactory;
   private readonly INlpGitHubClient _gitHubClient;
 
   public ProjectsService(IServiceProvider serviceProvider)
   {
     // TODO: [ProjectsService.ProjectsService] (TESTS) Add tests
     _projectInfoProvider = serviceProvider.GetRequiredService<IProjectInfoProvider>();
+    _syncFactory = serviceProvider.GetRequiredService<IProjectInfoSyncFactory>();
     _gitHubClient = serviceProvider.GetRequiredService<INlpGitHubClient>();
   }
 
@@ -46,8 +47,7 @@ public class ProjectsService : IProjectsService
     var repositoryId = projectInfo.Repo.RepoId;
 
     // Sync core repo information
-    var repository = await _gitHubClient.GetRepositoryAsync(repositoryId);
-    responseBuilder.WithMessages(CoreRepositoryInfoSync.Sync(projectInfo, repository));
+    await _syncFactory.CreateCoreRepositoryInfoSync().SyncAsync(responseBuilder, projectInfo);
 
     // Sync directory contents
     var directoryContents = await _gitHubClient.GetAllContentsAsync(repositoryId);
