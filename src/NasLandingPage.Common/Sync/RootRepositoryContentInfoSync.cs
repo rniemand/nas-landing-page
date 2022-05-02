@@ -34,6 +34,7 @@ public class RootRepositoryContentInfoSync : IRootRepositoryContentInfoSync
     SyncHasDirTests(messages, projectInfo, contents);
     SyncHasDirDocs(messages, projectInfo, contents);
     SyncHasDirBuild(messages, projectInfo, contents);
+    SyncHasDirDotGithub(messages, projectInfo, contents);
 
     responseBuilder.WithMessages(messages);
   }
@@ -144,5 +145,17 @@ public class RootRepositoryContentInfoSync : IRootRepositoryContentInfoSync
 
     messages.Add("Setting Build to: " + (hasDirectory ? "true" : "false"));
     projectInfo.Folders.Build = hasDirectory;
+  }
+
+  private static void SyncHasDirDotGithub(ICollection<string> messages, ProjectInfo projectInfo, IReadOnlyList<RepositoryContent> contents)
+  {
+    // TODO: [RootRepositoryContentInfoSync.SyncHasDirDotGithub] (TESTS) Add tests
+    var hasDirectory = contents.ContainsDirectory(".github");
+
+    if (projectInfo.Folders.DotGithub == hasDirectory)
+      return;
+
+    messages.Add("Setting DotGithub to: " + (hasDirectory ? "true" : "false"));
+    projectInfo.Folders.DotGithub = hasDirectory;
   }
 }

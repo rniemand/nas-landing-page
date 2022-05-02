@@ -44,8 +44,9 @@ public class ProjectsService : IProjectsService
       return responseBuilder.Failed("Project not found");
     
     // Sync core repo information
-    await _syncFactory.CreateCoreRepositoryInfoSync().SyncAsync(responseBuilder, projectInfo);
-    await _syncFactory.CreateRootRepositoryContentInfoSync().SyncAsync(responseBuilder, projectInfo);
+    //await _syncFactory.CreateCoreRepositoryInfoSync().SyncAsync(responseBuilder, projectInfo);
+    //await _syncFactory.CreateRootRepositoryContentInfoSync().SyncAsync(responseBuilder, projectInfo);
+    await _syncFactory.CreateBuildScriptInfoSync().SyncAsync(responseBuilder, projectInfo);
 
     // Save and return
     _projectInfoProvider.UpdateProjectInfo(projectInfo);

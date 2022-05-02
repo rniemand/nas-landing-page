@@ -8,6 +8,7 @@ public interface IProjectInfoSyncFactory
 {
   ICoreRepositoryInfoSync CreateCoreRepositoryInfoSync();
   IRootRepositoryContentInfoSync CreateRootRepositoryContentInfoSync();
+  IBuildScriptInfoSync CreateBuildScriptInfoSync();
 }
 
 public class ProjectInfoSyncFactory : IProjectInfoSyncFactory
@@ -27,5 +28,10 @@ public class ProjectInfoSyncFactory : IProjectInfoSyncFactory
   public IRootRepositoryContentInfoSync CreateRootRepositoryContentInfoSync()
   {
     return new RootRepositoryContentInfoSync(_serviceProvider.GetRequiredService<INlpGitHubClient>());
+  }
+
+  public IBuildScriptInfoSync CreateBuildScriptInfoSync()
+  {
+    return new BuildScriptInfoSync(_serviceProvider.GetRequiredService<INlpGitHubClient>());
   }
 }

@@ -1,7 +1,6 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using NasLandingPage.Common.Clients;
 using NasLandingPage.Common.Extensions;
 using NasLandingPage.Common.Models.Requests;
 using NasLandingPage.Common.Models.Responses;
@@ -40,7 +39,7 @@ public class NlpDevConsole
     var commandResponse = projectsService.SyncProject(new RunCommandRequest
     {
       Command = "SyncProject",
-      Arguments = "DnsUpdater"
+      Arguments = "my-home"
     }).GetAwaiter().GetResult();
 
     Console.WriteLine(commandResponse.Success);
