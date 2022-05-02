@@ -4,7 +4,7 @@ param (
   $configuration  = "Release"
 )
 
-$outputRoot       = Join-Path $output "\";
+$outputRoot       = Join-Path $output "\..\";
 $workingRoot      = Join-Path $PSScriptRoot "\";
 $sourceDir        = Join-Path $workingRoot "src";
 $projectRootDir   = Join-Path $sourceDir ($project + "\");

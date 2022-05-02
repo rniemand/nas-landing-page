@@ -5,7 +5,7 @@ param (
   $frameworkVersion   = "net5.0"
 )
 
-$output                = Join-Path $output "\";
+$output                = Join-Path $output "\..\";
 $workingRoot           = Join-Path $PSScriptRoot "\";
 
 $sourceDir             = Join-Path $workingRoot "src";
