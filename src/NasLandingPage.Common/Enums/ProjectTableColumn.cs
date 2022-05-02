@@ -15,7 +15,7 @@ public enum ProjectTableColumn
   DirSrc,
   DirTests,
   DirDocs,
-  DirBuild,
+  DirDotGithub,
   Languages,
   License,
   Description,

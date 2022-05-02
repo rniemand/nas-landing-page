@@ -38,7 +38,7 @@
         <th scope="col" *ngIf="canRenderColumn('DirSrc')">src</th>
         <th scope="col" *ngIf="canRenderColumn('DirTests')">tests</th>
         <th scope="col" *ngIf="canRenderColumn('DirDocs')">docs</th>
-        <th scope="col" *ngIf="canRenderColumn('DirBuild')">build</th>
+        <th scope="col" *ngIf="canRenderColumn('DirDotGithub')">.github</th>
         <th scope="col" *ngIf="canRenderColumn('Languages')">Languages</th>
         <th scope="col" *ngIf="canRenderColumn('SonarQubeBadges')">&nbsp;</th>
         <th scope="col">&nbsp;</th>
@@ -73,7 +73,7 @@
         <td *ngIf="canRenderColumn('DirSrc')"><bool-tick [value]="project.folders.src"></bool-tick></td>
         <td *ngIf="canRenderColumn('DirTests')"><bool-tick [value]="project.folders.tests"></bool-tick></td>
         <td *ngIf="canRenderColumn('DirDocs')"><bool-tick [value]="project.folders.docs"></bool-tick></td>
-        <td *ngIf="canRenderColumn('DirBuild')"><bool-tick [value]="project.folders.build"></bool-tick></td>
+        <td *ngIf="canRenderColumn('DirDotGithub')"><bool-tick [value]="project.folders.dotGithub"></bool-tick></td>
         <td *ngIf="canRenderColumn('Languages')"><array-string [value]="project.languages"></array-string></td>
         <td *ngIf="canRenderColumn('SonarQubeBadges')"><sq-badges [config]="config" [project]="project"></sq-badges></td>
         <td>
