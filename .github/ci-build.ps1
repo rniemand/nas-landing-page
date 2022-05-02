@@ -1,11 +1,11 @@
 param (
   $output         = $PSScriptRoot,
-  $project        = "Rn.NetCore.DbCommon",
+  $project        = "NasLandingPage",
   $configuration  = "Release"
 )
 
-$outputRoot       = Join-Path $output "\..\";
-$workingRoot      = Join-Path $PSScriptRoot "\";
+$outputRoot       = Join-Path $output "\";
+$workingRoot      = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot "\..\"));
 $sourceDir        = Join-Path $workingRoot "src";
 $projectRootDir   = Join-Path $sourceDir ($project + "\");
 $artifactDir      = Join-Path $outputRoot "artifacts";
