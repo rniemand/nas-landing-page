@@ -24,10 +24,7 @@ public class SourceCodeMaturityInfo
 
   [JsonProperty("editorConfig")]
   public string EditorConfig { get; set; } = string.Empty;
-
-  [JsonProperty("hasBuildScripts"), Obsolete]
-  public bool HasBuildScripts { get; set; } = false;
-
+  
   [JsonProperty("hasBuildScript")]
   public bool HasBuildScript { get; set; } = false;
 

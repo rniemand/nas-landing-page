@@ -63,7 +63,7 @@
         <td *ngIf="canRenderColumn('HasGitAttributes')"><bool-tick [value]="project.scm.hasGitAttributes"></bool-tick></td>
         <td *ngIf="canRenderColumn('HasPrTemplate')"><bool-tick [value]="project.scm.hasPrTemplate"></bool-tick></td>
         <td *ngIf="canRenderColumn('HasEditorConfig')"><bool-tick [value]="project.scm.hasEditorConfig"></bool-tick></td>
-        <td *ngIf="canRenderColumn('HasBuildScripts')"><bool-tick [value]="project.scm.hasBuildScripts"></bool-tick></td>
+        <td *ngIf="canRenderColumn('HasBuildScripts')"><bool-tick [value]="project.scm.hasBuildScript"></bool-tick></td>
         <td *ngIf="canRenderColumn('VersionBuildScripts')">{{project.scm.buildScriptVersion}}</td>
         <td *ngIf="canRenderColumn('CountBuildScripts')"><array-count [value]="project.scm.buildScripts"></array-count></td>
         <td *ngIf="canRenderColumn('CountTestScripts')"><array-count [value]="project.scm.testScripts"></array-count></td>

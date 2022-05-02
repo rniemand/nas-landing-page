@@ -705,7 +705,6 @@ export class SourceCodeMaturityInfo implements ISourceCodeMaturityInfo {
     hasPrTemplate!: boolean;
     hasEditorConfig!: boolean;
     editorConfig!: string;
-    hasBuildScripts!: boolean;
     hasBuildScript!: boolean;
     hasTestScript!: boolean;
     hasCiInfo!: boolean;
@@ -738,7 +737,6 @@ export class SourceCodeMaturityInfo implements ISourceCodeMaturityInfo {
             this.hasPrTemplate = _data["hasPrTemplate"];
             this.hasEditorConfig = _data["hasEditorConfig"];
             this.editorConfig = _data["editorConfig"];
-            this.hasBuildScripts = _data["hasBuildScripts"];
             this.hasBuildScript = _data["hasBuildScript"];
             this.hasTestScript = _data["hasTestScript"];
             this.hasCiInfo = _data["hasCiInfo"];
@@ -778,7 +776,6 @@ export class SourceCodeMaturityInfo implements ISourceCodeMaturityInfo {
         data["hasPrTemplate"] = this.hasPrTemplate;
         data["hasEditorConfig"] = this.hasEditorConfig;
         data["editorConfig"] = this.editorConfig;
-        data["hasBuildScripts"] = this.hasBuildScripts;
         data["hasBuildScript"] = this.hasBuildScript;
         data["hasTestScript"] = this.hasTestScript;
         data["hasCiInfo"] = this.hasCiInfo;
@@ -811,7 +808,6 @@ export interface ISourceCodeMaturityInfo {
     hasPrTemplate: boolean;
     hasEditorConfig: boolean;
     editorConfig: string;
-    hasBuildScripts: boolean;
     hasBuildScript: boolean;
     hasTestScript: boolean;
     hasCiInfo: boolean;
