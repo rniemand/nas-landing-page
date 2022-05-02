@@ -7,6 +7,7 @@ namespace NasLandingPage.Common.Factories;
 public interface IProjectInfoSyncFactory
 {
   ICoreRepositoryInfoSync CreateCoreRepositoryInfoSync();
+  IRootRepositoryContentInfoSync CreateRootRepositoryContentInfoSync();
 }
 
 public class ProjectInfoSyncFactory : IProjectInfoSyncFactory
@@ -21,5 +22,10 @@ public class ProjectInfoSyncFactory : IProjectInfoSyncFactory
   public ICoreRepositoryInfoSync CreateCoreRepositoryInfoSync()
   {
     return new CoreRepositoryInfoSync(_serviceProvider.GetRequiredService<INlpGitHubClient>());
+  }
+
+  public IRootRepositoryContentInfoSync CreateRootRepositoryContentInfoSync()
+  {
+    return new RootRepositoryContentInfoSync(_serviceProvider.GetRequiredService<INlpGitHubClient>());
   }
 }

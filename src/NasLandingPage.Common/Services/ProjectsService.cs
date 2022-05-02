@@ -5,7 +5,6 @@ using NasLandingPage.Common.Factories;
 using NasLandingPage.Common.Models.Requests;
 using NasLandingPage.Common.Models.Responses;
 using NasLandingPage.Common.Providers;
-using NasLandingPage.Common.Sync;
 
 namespace NasLandingPage.Common.Services;
 
@@ -43,15 +42,10 @@ public class ProjectsService : IProjectsService
     var projectInfo = _projectInfoProvider.GetByName(request.Arguments);
     if (projectInfo is null)
       return responseBuilder.Failed("Project not found");
-
-    var repositoryId = projectInfo.Repo.RepoId;
-
+    
     // Sync core repo information
     await _syncFactory.CreateCoreRepositoryInfoSync().SyncAsync(responseBuilder, projectInfo);
-
-    // Sync directory contents
-    var directoryContents = await _gitHubClient.GetAllContentsAsync(repositoryId);
-    responseBuilder.WithMessages(CoreRepositoryContentInfoSync.Sync(projectInfo, directoryContents));
+    await _syncFactory.CreateRootRepositoryContentInfoSync().SyncAsync(responseBuilder, projectInfo);
 
     // Save and return
     _projectInfoProvider.UpdateProjectInfo(projectInfo);
