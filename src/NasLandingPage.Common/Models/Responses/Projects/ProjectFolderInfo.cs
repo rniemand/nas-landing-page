@@ -7,8 +7,8 @@ public class ProjectFolderInfo
   [JsonProperty("src")]
   public bool Src { get; set; } = false;
 
-  [JsonProperty("tests")]
-  public bool Tests { get; set; } = false;
+  [JsonProperty("test")]
+  public bool Test { get; set; } = false;
 
   [JsonProperty("docs")]
   public bool Docs { get; set; } = false;
