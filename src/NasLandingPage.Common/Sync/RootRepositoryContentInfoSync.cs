@@ -31,7 +31,7 @@ public class RootRepositoryContentInfoSync : IRootRepositoryContentInfoSync
     SyncReadme(messages, projectInfo, contents);
 
     SyncHasDirSrc(messages, projectInfo, contents);
-    SyncHasDirTests(messages, projectInfo, contents);
+    SyncHasDirTest(messages, projectInfo, contents);
     SyncHasDirDocs(messages, projectInfo, contents);
     SyncHasDirBuild(messages, projectInfo, contents);
     SyncHasDirDotGithub(messages, projectInfo, contents);
@@ -111,16 +111,16 @@ public class RootRepositoryContentInfoSync : IRootRepositoryContentInfoSync
     projectInfo.Folders.Src = hasDirectory;
   }
 
-  private static void SyncHasDirTests(ICollection<string> messages, ProjectInfo projectInfo, IReadOnlyList<RepositoryContent> contents)
+  private static void SyncHasDirTest(ICollection<string> messages, ProjectInfo projectInfo, IReadOnlyList<RepositoryContent> contents)
   {
-    // TODO: [RootRepositoryContentInfoSync.SyncHasDirTests] (TESTS) Add tests
-    var hasDirectory = contents.ContainsDirectory("tests");
+    // TODO: [RootRepositoryContentInfoSync.SyncHasDirTest] (TESTS) Add tests
+    var hasDirectory = contents.ContainsDirectory("test");
 
-    if (projectInfo.Folders.Tests == hasDirectory)
+    if (projectInfo.Folders.Test == hasDirectory)
       return;
 
-    messages.Add("Setting Tests to: " + (hasDirectory ? "true" : "false"));
-    projectInfo.Folders.Tests = hasDirectory;
+    messages.Add("Setting Test to: " + (hasDirectory ? "true" : "false"));
+    projectInfo.Folders.Test = hasDirectory;
   }
 
   private static void SyncHasDirDocs(ICollection<string> messages, ProjectInfo projectInfo, IReadOnlyList<RepositoryContent> contents)

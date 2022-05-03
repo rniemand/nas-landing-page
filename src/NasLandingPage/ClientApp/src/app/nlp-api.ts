@@ -386,7 +386,7 @@ export enum ProjectTableColumn {
     HasBuildScripts = 8,
     VersionBuildScripts = 9,
     DirSrc = 10,
-    DirTests = 11,
+    DirTest = 11,
     DirDocs = 12,
     DirDotGithub = 13,
     Languages = 14,
@@ -820,7 +820,7 @@ export interface ISourceCodeMaturityInfo {
 
 export class ProjectFolderInfo implements IProjectFolderInfo {
     src!: boolean;
-    tests!: boolean;
+    test!: boolean;
     docs!: boolean;
     build!: boolean;
     dotGithub!: boolean;
@@ -837,7 +837,7 @@ export class ProjectFolderInfo implements IProjectFolderInfo {
     init(_data?: any) {
         if (_data) {
             this.src = _data["src"];
-            this.tests = _data["tests"];
+            this.test = _data["test"];
             this.docs = _data["docs"];
             this.build = _data["build"];
             this.dotGithub = _data["dotGithub"];
@@ -854,7 +854,7 @@ export class ProjectFolderInfo implements IProjectFolderInfo {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["src"] = this.src;
-        data["tests"] = this.tests;
+        data["test"] = this.test;
         data["docs"] = this.docs;
         data["build"] = this.build;
         data["dotGithub"] = this.dotGithub;
@@ -864,7 +864,7 @@ export class ProjectFolderInfo implements IProjectFolderInfo {
 
 export interface IProjectFolderInfo {
     src: boolean;
-    tests: boolean;
+    test: boolean;
     docs: boolean;
     build: boolean;
     dotGithub: boolean;
