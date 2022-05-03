@@ -13,7 +13,7 @@ public enum ProjectTableColumn
   HasBuildScripts,
   VersionBuildScripts,
   DirSrc,
-  DirTests,
+  DirTest,
   DirDocs,
   DirDotGithub,
   Languages,
