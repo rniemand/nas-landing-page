@@ -5,15 +5,15 @@ VisualStudioVersion = 17.2.32422.2
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NasLandingPage", "NasLandingPage\NasLandingPage.csproj", "{DCE07288-1FDE-4911-A0D7-381D27DB9B32}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NasLandingPage.T1.Tests", "NasLandingPage.T1.Tests\NasLandingPage.T1.Tests.csproj", "{7986E1D1-751C-4980-9C6D-EBB3D6CD4B70}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevConsole", "DevConsole\DevConsole.csproj", "{2C19ADC4-5C16-4265-9051-EF595C79D29A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevConsole", "DevConsole\DevConsole.csproj", "{2C19ADC4-5C16-4265-9051-EF595C79D29A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{703E7442-1AE7-4940-9DE5-E2A8DED77DEB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libs", "Libs", "{4AE1124F-0929-45DA-A60C-1B4C40040216}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NasLandingPage.Common", "NasLandingPage.Common\NasLandingPage.Common.csproj", "{13F49061-D801-4BD7-BD59-3C659353E7EF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NasLandingPage.Common", "NasLandingPage.Common\NasLandingPage.Common.csproj", "{13F49061-D801-4BD7-BD59-3C659353E7EF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NasLandingPage.T1.Tests", "..\test\NasLandingPage.T1.Tests\NasLandingPage.T1.Tests.csproj", "{355C02B2-245C-4B24-9B3A-405CF4CCF80B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,10 +25,6 @@ Global
 		{DCE07288-1FDE-4911-A0D7-381D27DB9B32}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DCE07288-1FDE-4911-A0D7-381D27DB9B32}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DCE07288-1FDE-4911-A0D7-381D27DB9B32}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7986E1D1-751C-4980-9C6D-EBB3D6CD4B70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7986E1D1-751C-4980-9C6D-EBB3D6CD4B70}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7986E1D1-751C-4980-9C6D-EBB3D6CD4B70}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7986E1D1-751C-4980-9C6D-EBB3D6CD4B70}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2C19ADC4-5C16-4265-9051-EF595C79D29A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2C19ADC4-5C16-4265-9051-EF595C79D29A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2C19ADC4-5C16-4265-9051-EF595C79D29A}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -37,13 +33,17 @@ Global
 		{13F49061-D801-4BD7-BD59-3C659353E7EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{13F49061-D801-4BD7-BD59-3C659353E7EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{13F49061-D801-4BD7-BD59-3C659353E7EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{355C02B2-245C-4B24-9B3A-405CF4CCF80B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{355C02B2-245C-4B24-9B3A-405CF4CCF80B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{355C02B2-245C-4B24-9B3A-405CF4CCF80B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{355C02B2-245C-4B24-9B3A-405CF4CCF80B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{7986E1D1-751C-4980-9C6D-EBB3D6CD4B70} = {703E7442-1AE7-4940-9DE5-E2A8DED77DEB}
 		{13F49061-D801-4BD7-BD59-3C659353E7EF} = {4AE1124F-0929-45DA-A60C-1B4C40040216}
+		{355C02B2-245C-4B24-9B3A-405CF4CCF80B} = {703E7442-1AE7-4940-9DE5-E2A8DED77DEB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FE00949E-C8F9-4223-99FD-9D225183C465}
