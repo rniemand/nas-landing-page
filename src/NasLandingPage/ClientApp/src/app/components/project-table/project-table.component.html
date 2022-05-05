@@ -66,7 +66,10 @@
         <td *ngIf="canRenderColumn('CountCiFlows')"><array-count [value]="project.scm.ciFlows"></array-count></td>
         <td *ngIf="canRenderColumn('CountRepoForks')"><raw-count [value]="project.repo.forks"></raw-count></td>
         <td *ngIf="canRenderColumn('CountOpenIssues')"><raw-count [value]="project.repo.openIssues"></raw-count></td>
-        <td *ngIf="canRenderColumn('DirSrc')"><string-tick [value]="project.scm.srcDirectory"></string-tick></td>
+        <td *ngIf="canRenderColumn('DirSrc')">
+          <div *ngIf="!project.scm.srcDirectory">❌</div>
+          <link-generic *ngIf="project.scm.srcDirectory" [url]="project.scm.srcDirectory" name="✔"></link-generic>
+        </td>
         <td *ngIf="canRenderColumn('DirTest')"><string-tick [value]="project.scm.testDirectory"></string-tick></td>
         <td *ngIf="canRenderColumn('DirDocs')"><string-tick [value]="project.scm.docsDirectory"></string-tick></td>
         <td *ngIf="canRenderColumn('DirBuild')"><string-tick [value]="project.scm.buildDirectory"></string-tick></td>
