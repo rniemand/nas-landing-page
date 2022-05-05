@@ -12,7 +12,7 @@ public interface ILinkImageProvider
 public class LinkImageProvider : ILinkImageProvider
 {
   private readonly IFileSystemHelper _fsHelper;
-  private readonly NasLandingPageConfig _config;
+  private readonly NlpConfig _config;
   private readonly string _dataDir;
 
   public LinkImageProvider(IServiceProvider serviceProvider)

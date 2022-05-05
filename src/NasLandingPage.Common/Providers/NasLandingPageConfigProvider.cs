@@ -6,25 +6,25 @@ namespace NasLandingPage.Common.Providers
 {
   public interface INasLandingPageConfigProvider
   {
-    NasLandingPageConfig Provide();
+    NlpConfig Provide();
   }
 
   public class NasLandingPageConfigProvider : INasLandingPageConfigProvider
   {
-    private readonly NasLandingPageConfig _config;
+    private readonly NlpConfig _config;
 
     public NasLandingPageConfigProvider(IServiceProvider serviceProvider)
     {
       _config = BindConfiguration(serviceProvider);
     }
 
-    public NasLandingPageConfig Provide() => _config;
+    public NlpConfig Provide() => _config;
 
-    private static NasLandingPageConfig BindConfiguration(IServiceProvider serviceProvider)
+    private static NlpConfig BindConfiguration(IServiceProvider serviceProvider)
     {
       // TODO: [NasLandingPageConfigProvider.BindConfiguration] (TESTS) Add tests
       var configuration = serviceProvider.GetRequiredService<IConfiguration>();
-      var boundConfig = new NasLandingPageConfig();
+      var boundConfig = new NlpConfig();
       var configSection = configuration.GetSection("NasLandingPage");
 
       if (!configSection.Exists())

@@ -16,7 +16,7 @@ public interface IUserLinkProvider
 public class UserLinkProvider : IUserLinkProvider
 {
   private readonly IFileSystemHelper _fsHelper;
-  private readonly NasLandingPageConfig _config;
+  private readonly NlpConfig _config;
   private readonly string _dataDir;
   private readonly string _backupDir;
 

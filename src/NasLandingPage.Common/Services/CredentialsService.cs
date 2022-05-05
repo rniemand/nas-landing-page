@@ -18,7 +18,7 @@ public class CredentialsService : ICredentialsService
   private readonly IEnvironmentAbstraction _environment;
   private readonly IFileAbstraction _file;
   private readonly IJsonHelper _jsonHelper;
-  private readonly NasLandingPageConfig _config;
+  private readonly NlpConfig _config;
   private readonly string _credentialsFile;
   private readonly List<BasicCredentials> _credentials;
 
