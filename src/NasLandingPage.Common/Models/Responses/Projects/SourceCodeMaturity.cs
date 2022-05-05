@@ -24,12 +24,9 @@ public class SourceCodeMaturity
 
   [JsonProperty("testScript")]
   public string TestScript { get; set; } = string.Empty;
-
-
-
-
-  [JsonProperty("buildScriptVersion")]
-  public string BuildScriptVersion { get; set; } = "0";
+  
+  [JsonProperty("ciVersion")]
+  public string CiVersion { get; set; } = "0";
 
   
   

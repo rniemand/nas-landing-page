@@ -703,9 +703,9 @@ export class SourceCodeMaturity implements ISourceCodeMaturity {
     prTemplate!: string;
     editorConfig!: string;
     ciInfo!: string;
+    buildScript!: string;
+    testScript!: string;
     buildScriptVersion!: string;
-    buildScripts!: string[];
-    testScripts!: string[];
     workFlows!: string[];
 
     constructor(data?: ISourceCodeMaturity) {
@@ -716,8 +716,6 @@ export class SourceCodeMaturity implements ISourceCodeMaturity {
             }
         }
         if (!data) {
-            this.buildScripts = [];
-            this.testScripts = [];
             this.workFlows = [];
         }
     }
@@ -729,17 +727,9 @@ export class SourceCodeMaturity implements ISourceCodeMaturity {
             this.prTemplate = _data["prTemplate"];
             this.editorConfig = _data["editorConfig"];
             this.ciInfo = _data["ciInfo"];
+            this.buildScript = _data["buildScript"];
+            this.testScript = _data["testScript"];
             this.buildScriptVersion = _data["buildScriptVersion"];
-            if (Array.isArray(_data["buildScripts"])) {
-                this.buildScripts = [] as any;
-                for (let item of _data["buildScripts"])
-                    this.buildScripts!.push(item);
-            }
-            if (Array.isArray(_data["testScripts"])) {
-                this.testScripts = [] as any;
-                for (let item of _data["testScripts"])
-                    this.testScripts!.push(item);
-            }
             if (Array.isArray(_data["workFlows"])) {
                 this.workFlows = [] as any;
                 for (let item of _data["workFlows"])
@@ -762,17 +752,9 @@ export class SourceCodeMaturity implements ISourceCodeMaturity {
         data["prTemplate"] = this.prTemplate;
         data["editorConfig"] = this.editorConfig;
         data["ciInfo"] = this.ciInfo;
+        data["buildScript"] = this.buildScript;
+        data["testScript"] = this.testScript;
         data["buildScriptVersion"] = this.buildScriptVersion;
-        if (Array.isArray(this.buildScripts)) {
-            data["buildScripts"] = [];
-            for (let item of this.buildScripts)
-                data["buildScripts"].push(item);
-        }
-        if (Array.isArray(this.testScripts)) {
-            data["testScripts"] = [];
-            for (let item of this.testScripts)
-                data["testScripts"].push(item);
-        }
         if (Array.isArray(this.workFlows)) {
             data["workFlows"] = [];
             for (let item of this.workFlows)
@@ -788,9 +770,9 @@ export interface ISourceCodeMaturity {
     prTemplate: string;
     editorConfig: string;
     ciInfo: string;
+    buildScript: string;
+    testScript: string;
     buildScriptVersion: string;
-    buildScripts: string[];
-    testScripts: string[];
     workFlows: string[];
 }
 
