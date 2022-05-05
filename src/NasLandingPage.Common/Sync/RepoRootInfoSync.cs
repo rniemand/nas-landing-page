@@ -109,7 +109,7 @@ public class RepoRootInfoSync : IRootRepositoryContentInfoSync
   {
     // TODO: [RootRepositoryContentInfoSync.SyncDirectorySrc] (TESTS) Add tests
     var repoDirectory = contents.GetDirectory("src");
-    var dirPath = repoDirectory?.Path ?? string.Empty;
+    var dirPath = repoDirectory?.HtmlUrl ?? string.Empty;
 
     if(projectInfo.Directories.Src.IgnoreCaseEquals(dirPath))
       return;
@@ -122,7 +122,7 @@ public class RepoRootInfoSync : IRootRepositoryContentInfoSync
   {
     // TODO: [RootRepositoryContentInfoSync.SyncDirectoryTest] (TESTS) Add tests
     var repoDirectory = contents.GetDirectory("test");
-    var dirPath = repoDirectory?.Path ?? string.Empty;
+    var dirPath = repoDirectory?.HtmlUrl ?? string.Empty;
 
     if (projectInfo.Directories.Test.IgnoreCaseEquals(dirPath))
       return;
@@ -135,7 +135,7 @@ public class RepoRootInfoSync : IRootRepositoryContentInfoSync
   {
     // TODO: [RootRepositoryContentInfoSync.SyncDirectoryDocs] (TESTS) Add tests
     var repoDirectory = contents.GetDirectory("docs");
-    var dirPath = repoDirectory?.Path ?? string.Empty;
+    var dirPath = repoDirectory?.HtmlUrl ?? string.Empty;
 
     if (projectInfo.Directories.Docs.IgnoreCaseEquals(dirPath))
       return;
@@ -148,7 +148,7 @@ public class RepoRootInfoSync : IRootRepositoryContentInfoSync
   {
     // TODO: [RootRepositoryContentInfoSync.SyncDirectoryDocs] (TESTS) Add tests
     var repoDirectory = contents.GetDirectory(".github");
-    var dirPath = repoDirectory?.Path ?? string.Empty;
+    var dirPath = repoDirectory?.HtmlUrl ?? string.Empty;
 
     if (projectInfo.Directories.Build.IgnoreCaseEquals(dirPath))
       return;
