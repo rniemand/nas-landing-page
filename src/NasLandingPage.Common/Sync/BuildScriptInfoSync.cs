@@ -34,6 +34,7 @@ public class BuildScriptInfoSync : IBuildScriptInfoSync
     
     var contents = await _gitHubClient.GetAllContentsAsync(repositoryId, path);
 
+    SyncPrTemplate(messages, projectInfo, contents);
     SyncBuildScript(messages, projectInfo, contents);
     SyncTestScript(messages, projectInfo, contents);
     SyncCiInfo(messages, projectInfo, contents);
@@ -43,6 +44,17 @@ public class BuildScriptInfoSync : IBuildScriptInfoSync
 
 
   // Build script files
+  private static void SyncPrTemplate(ICollection<string> messages, ProjectInfo projectInfo, IReadOnlyList<RepositoryContent> contents)
+  {
+    // TODO: [BuildScriptInfoSync.SyncPrTemplate] (TESTS) Add tests
+    var filePath = contents.GetHtmlFilePath("pull_request_template.md");
+    if (projectInfo.Scm.PrTemplate.IgnoreCaseEquals(filePath))
+      return;
+
+    projectInfo.Scm.PrTemplate = filePath;
+    messages.Add($"Updated 'scm.prTemplate' to: {filePath}");
+  }
+
   private static void SyncBuildScript(ICollection<string> messages, ProjectInfo projectInfo, IReadOnlyList<RepositoryContent> contents)
   {
     // TODO: [RootRepositoryContentInfoSync.SyncEditorConfig] (TESTS) Add tests
