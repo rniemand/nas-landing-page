@@ -705,8 +705,8 @@ export class SourceCodeMaturity implements ISourceCodeMaturity {
     ciInfo!: string;
     buildScript!: string;
     testScript!: string;
-    buildScriptVersion!: string;
-    workFlows!: string[];
+    ciVersion!: string;
+    ciFlows!: string[];
 
     constructor(data?: ISourceCodeMaturity) {
         if (data) {
@@ -716,7 +716,7 @@ export class SourceCodeMaturity implements ISourceCodeMaturity {
             }
         }
         if (!data) {
-            this.workFlows = [];
+            this.ciFlows = [];
         }
     }
 
@@ -729,11 +729,11 @@ export class SourceCodeMaturity implements ISourceCodeMaturity {
             this.ciInfo = _data["ciInfo"];
             this.buildScript = _data["buildScript"];
             this.testScript = _data["testScript"];
-            this.buildScriptVersion = _data["buildScriptVersion"];
-            if (Array.isArray(_data["workFlows"])) {
-                this.workFlows = [] as any;
-                for (let item of _data["workFlows"])
-                    this.workFlows!.push(item);
+            this.ciVersion = _data["ciVersion"];
+            if (Array.isArray(_data["ciFlows"])) {
+                this.ciFlows = [] as any;
+                for (let item of _data["ciFlows"])
+                    this.ciFlows!.push(item);
             }
         }
     }
@@ -754,11 +754,11 @@ export class SourceCodeMaturity implements ISourceCodeMaturity {
         data["ciInfo"] = this.ciInfo;
         data["buildScript"] = this.buildScript;
         data["testScript"] = this.testScript;
-        data["buildScriptVersion"] = this.buildScriptVersion;
-        if (Array.isArray(this.workFlows)) {
-            data["workFlows"] = [];
-            for (let item of this.workFlows)
-                data["workFlows"].push(item);
+        data["ciVersion"] = this.ciVersion;
+        if (Array.isArray(this.ciFlows)) {
+            data["ciFlows"] = [];
+            for (let item of this.ciFlows)
+                data["ciFlows"].push(item);
         }
         return data;
     }
@@ -772,8 +772,8 @@ export interface ISourceCodeMaturity {
     ciInfo: string;
     buildScript: string;
     testScript: string;
-    buildScriptVersion: string;
-    workFlows: string[];
+    ciVersion: string;
+    ciFlows: string[];
 }
 
 export class ProjectDirectories implements IProjectDirectories {

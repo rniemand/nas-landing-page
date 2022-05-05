@@ -27,9 +27,7 @@ public class SourceCodeMaturity
   
   [JsonProperty("ciVersion")]
   public string CiVersion { get; set; } = "0";
-
   
-  
-  [JsonProperty("workFlows")]
-  public string[] WorkFlows { get; set; } = Array.Empty<string>();
+  [JsonProperty("ciFlows")]
+  public string[] CiFlows { get; set; } = Array.Empty<string>();
 }
