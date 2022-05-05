@@ -399,9 +399,9 @@ export enum TableColumn {
     UrlRepo = 21,
     UrlCiCd = 22,
     UrlSonarQube = 23,
-    CountRepoForks = 24,
-    CountOpenIssues = 25,
-    CountCiFlows = 26,
+    RepoForks = 24,
+    OpenIssues = 25,
+    CiFlowCount = 26,
     RepoSize = 27,
     LastUpdated = 28,
 }

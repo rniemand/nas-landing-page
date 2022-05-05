@@ -31,9 +31,9 @@
         <th scope="col" *ngIf="canRenderColumn('HasBuildScript')">👷‍♂️</th>
         <th scope="col" *ngIf="canRenderColumn('HasTestScript')">🧪</th>
         <th scope="col" *ngIf="canRenderColumn('CiVersion')">👷‍♂️</th>
-        <th scope="col" *ngIf="canRenderColumn('CountCiFlows')">🔄</th>
-        <th scope="col" *ngIf="canRenderColumn('CountRepoForks')">🍴</th>
-        <th scope="col" *ngIf="canRenderColumn('CountOpenIssues')">⚠️</th>
+        <th scope="col" *ngIf="canRenderColumn('CiFlowCount')">🔄</th>
+        <th scope="col" *ngIf="canRenderColumn('RepoForks')">🍴</th>
+        <th scope="col" *ngIf="canRenderColumn('OpenIssues')">⚠️</th>
         <th scope="col" *ngIf="canRenderColumn('DirSrc')">🧬</th>
         <th scope="col" *ngIf="canRenderColumn('DirTest')">🧪</th>
         <th scope="col" *ngIf="canRenderColumn('DirDocs')">📄</th>
@@ -83,9 +83,9 @@
           <link-generic *ngIf="project.scm.testScript" [url]="project.scm.testScript" name="✔"></link-generic>
         </td>
         <td *ngIf="canRenderColumn('CiVersion')">{{project.scm.ciVersion}}</td>
-        <td *ngIf="canRenderColumn('CountCiFlows')"><array-count [value]="project.scm.ciFlows"></array-count></td>
-        <td *ngIf="canRenderColumn('CountRepoForks')"><raw-count [value]="project.repo.forks"></raw-count></td>
-        <td *ngIf="canRenderColumn('CountOpenIssues')"><raw-count [value]="project.repo.openIssues"></raw-count></td>
+        <td *ngIf="canRenderColumn('CiFlowCount')"><array-count [value]="project.scm.ciFlows"></array-count></td>
+        <td *ngIf="canRenderColumn('RepoForks')"><raw-count [value]="project.repo.forks"></raw-count></td>
+        <td *ngIf="canRenderColumn('OpenIssues')"><raw-count [value]="project.repo.openIssues"></raw-count></td>
         <td *ngIf="canRenderColumn('DirSrc')">
           <div *ngIf="!project.scm.srcDirectory">❌</div>
           <link-generic *ngIf="project.scm.srcDirectory" [url]="project.scm.srcDirectory" name="✔"></link-generic>

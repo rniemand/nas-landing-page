@@ -26,9 +26,9 @@ public enum TableColumn
   UrlRepo,
   UrlCiCd,
   UrlSonarQube,
-  CountRepoForks,
-  CountOpenIssues,
-  CountCiFlows,
+  RepoForks,
+  OpenIssues,
+  CiFlowCount,
   RepoSize,
   LastUpdated
 }
