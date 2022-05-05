@@ -699,9 +699,8 @@ export interface ISonarQubeInfo {
 
 export class SourceCodeMaturity implements ISourceCodeMaturity {
     readme!: string;
-    hasGitAttributes!: boolean;
     gitAttributes!: string;
-    hasPrTemplate!: boolean;
+    prTemplate!: string;
     hasEditorConfig!: boolean;
     editorConfig!: string;
     hasBuildScript!: boolean;
@@ -730,9 +729,8 @@ export class SourceCodeMaturity implements ISourceCodeMaturity {
     init(_data?: any) {
         if (_data) {
             this.readme = _data["readme"];
-            this.hasGitAttributes = _data["hasGitAttributes"];
             this.gitAttributes = _data["gitAttributes"];
-            this.hasPrTemplate = _data["hasPrTemplate"];
+            this.prTemplate = _data["prTemplate"];
             this.hasEditorConfig = _data["hasEditorConfig"];
             this.editorConfig = _data["editorConfig"];
             this.hasBuildScript = _data["hasBuildScript"];
@@ -768,9 +766,8 @@ export class SourceCodeMaturity implements ISourceCodeMaturity {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["readme"] = this.readme;
-        data["hasGitAttributes"] = this.hasGitAttributes;
         data["gitAttributes"] = this.gitAttributes;
-        data["hasPrTemplate"] = this.hasPrTemplate;
+        data["prTemplate"] = this.prTemplate;
         data["hasEditorConfig"] = this.hasEditorConfig;
         data["editorConfig"] = this.editorConfig;
         data["hasBuildScript"] = this.hasBuildScript;
@@ -799,9 +796,8 @@ export class SourceCodeMaturity implements ISourceCodeMaturity {
 
 export interface ISourceCodeMaturity {
     readme: string;
-    hasGitAttributes: boolean;
     gitAttributes: string;
-    hasPrTemplate: boolean;
+    prTemplate: string;
     hasEditorConfig: boolean;
     editorConfig: string;
     hasBuildScript: boolean;

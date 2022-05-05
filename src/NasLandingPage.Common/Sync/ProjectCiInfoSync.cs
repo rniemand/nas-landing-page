@@ -2,6 +2,7 @@ using NasLandingPage.Common.Builders;
 using NasLandingPage.Common.Clients;
 using NasLandingPage.Common.Models.External;
 using NasLandingPage.Common.Models.Responses.Projects;
+using Rn.NetCore.Common.Extensions;
 using Rn.NetCore.Common.Helpers;
 
 namespace NasLandingPage.Common.Sync;
@@ -25,11 +26,11 @@ public class ProjectCiInfoSync : IProjectCiInfoSync
   public async Task SyncAsync(RunCommandResponseBuilder responseBuilder, ProjectInfo projectInfo)
   {
     // TODO: [ProjectCiInfoSync.SyncAsync] (TESTS) Add tests
-    if(!projectInfo.Scm.HasCiInfo)
+    if(string.IsNullOrWhiteSpace(projectInfo.Scm.CiInfo))
       return;
 
     var repositoryId = projectInfo.Repo.RepoId;
-    var filePath = projectInfo.Scm.CiInfoPath;
+    var filePath = ExtractGitFilePath(projectInfo.Scm.CiInfo);
 
     var contents = await _gitHubClient.GetAllContentsAsync(repositoryId, filePath);
     var ciFile = contents.FirstOrDefault();
@@ -55,17 +56,19 @@ public class ProjectCiInfoSync : IProjectCiInfoSync
   private static void HandleNoFileFound(RunCommandResponseBuilder responseBuilder, ProjectInfo projectInfo)
   {
     // TODO: [ProjectCiInfoSync.HandleNoFileFound] (TESTS) Add tests
-    responseBuilder.WithMessage("No ci.info.json file found, updating project information");
-    projectInfo.Scm.HasCiInfo = false;
-    projectInfo.Scm.CiInfoPath = string.Empty;
+    //responseBuilder.WithMessage("No ci.info.json file found, updating project information");
+    //projectInfo.Scm.HasCiInfo = false;
+    //projectInfo.Scm.CiInfoPath = string.Empty;
+    throw new Exception("complete me");
   }
 
   private static void HandleUnableToParseCiInfo(RunCommandResponseBuilder responseBuilder, ProjectInfo projectInfo)
   {
     // TODO: [ProjectCiInfoSync.HandleUnableToParseCiInfo] (TESTS) Add tests
-    responseBuilder.WithMessage("Unable to parse ci.info.json");
-    projectInfo.Scm.HasCiInfo = false;
-    projectInfo.Scm.CiInfoPath = string.Empty;
+    //responseBuilder.WithMessage("Unable to parse ci.info.json");
+    //projectInfo.Scm.HasCiInfo = false;
+    //projectInfo.Scm.CiInfoPath = string.Empty;
+    throw new Exception("complete me");
   }
 
   private static void SyncHasBuildScripVersion(RunCommandResponseBuilder responseBuilder, ProjectInfo projectInfo, RepoCiInfo ciInfo)
@@ -81,4 +84,18 @@ public class ProjectCiInfoSync : IProjectCiInfoSync
   private bool TryExtractRepoCiInfo(string rawJson, out RepoCiInfo parsed) =>
     // TODO: [ProjectCiInfoSync.TryExtractRepoCiInfo] (TESTS) Add tests
     _json.TryDeserializeObject(rawJson, out parsed);
+
+  private string ExtractGitFilePath(string url)
+  {
+    // TODO: [ProjectCiInfoSync.ExtractGitFilePath] (TESTS) Add tests
+
+    // http.*?:\/\/.*?\/blob\/([^\/]+)\/(.*)
+    const string rxp = @"http.*?:\/\/.*?\/blob\/([^\/]+)\/(.*)";
+
+    if (!url.MatchesRegex(rxp))
+      throw new Exception("Unable to extract file path");
+
+    var match = url.GetRegexMatch(rxp);
+    return match.Groups[2].Value;
+  }
 }

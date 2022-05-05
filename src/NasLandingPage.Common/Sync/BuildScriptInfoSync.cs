@@ -3,6 +3,7 @@ using NasLandingPage.Common.Clients;
 using NasLandingPage.Common.Extensions;
 using NasLandingPage.Common.Models.Responses.Projects;
 using Octokit;
+using Rn.NetCore.Common.Extensions;
 
 namespace NasLandingPage.Common.Sync;
 
@@ -20,10 +21,11 @@ public class BuildScriptInfoSync : IBuildScriptInfoSync
     _gitHubClient = gitHubClient;
   }
 
+
   public async Task SyncAsync(RunCommandResponseBuilder responseBuilder, ProjectInfo projectInfo)
   {
     // TODO: [BuildScriptInfoSync.SyncAsync] (TESTS) Add tests
-    if (!string.IsNullOrWhiteSpace(projectInfo.Directories.Build))
+    if (string.IsNullOrWhiteSpace(projectInfo.Directories.Build))
       return;
 
     var messages = new List<string>();
@@ -41,6 +43,7 @@ public class BuildScriptInfoSync : IBuildScriptInfoSync
 
     responseBuilder.WithMessages(messages);
   }
+
 
   // Build script files
   private static void SetHasBuildScript(ICollection<string> messages, ProjectInfo projectInfo, bool hasBuildScript)
@@ -63,15 +66,15 @@ public class BuildScriptInfoSync : IBuildScriptInfoSync
     projectInfo.Scm.HasBuildScript = hasTestScript;
   }
 
-  private static void SetHasCiInfo(ICollection<string> messages, ProjectInfo projectInfo, bool hasCiInfo)
-  {
-    // TODO: [BuildScriptInfoSync.SetHasCiInfo] (TESTS) Add tests
-    if (projectInfo.Scm.HasCiInfo == hasCiInfo)
-      return;
+  //private static void SetHasCiInfo(ICollection<string> messages, ProjectInfo projectInfo, bool hasCiInfo)
+  //{
+  //  // TODO: [BuildScriptInfoSync.SetHasCiInfo] (TESTS) Add tests
+  //  if (projectInfo.Scm.HasCiInfo == hasCiInfo)
+  //    return;
 
-    messages.Add("Updating HasCiInfo to " + (hasCiInfo ? "true" : "false"));
-    projectInfo.Scm.HasCiInfo = hasCiInfo;
-  }
+  //  messages.Add("Updating HasCiInfo to " + (hasCiInfo ? "true" : "false"));
+  //  projectInfo.Scm.HasCiInfo = hasCiInfo;
+  //}
 
   private static void SyncBuildScript(ICollection<string> messages, ProjectInfo projectInfo, IReadOnlyList<RepositoryContent> contents)
   {
@@ -109,15 +112,10 @@ public class BuildScriptInfoSync : IBuildScriptInfoSync
   {
     // TODO: [BuildScriptInfoSync.SyncCiInfo] (TESTS) Add tests
     var filePath = contents.GetHtmlFilePath("ci.info.json");
-    var fileExists = !string.IsNullOrWhiteSpace(filePath);
-
-    SetHasCiInfo(messages, projectInfo, fileExists);
-
-    if (!fileExists)
+    if (projectInfo.Scm.CiInfo.IgnoreCaseEquals(filePath))
       return;
 
-    var repoFilePath = contents.GetRepoFilePath("ci.info.json");
-    messages.Add($"Adding ci.info file: {repoFilePath}");
-    projectInfo.Scm.CiInfoPath = repoFilePath;
+    projectInfo.Scm.CiInfo = filePath;
+    messages.Add($"Updated 'scm.ciInfo' to: {filePath}");
   }
 }
