@@ -1,6 +1,6 @@
 namespace NasLandingPage.Common.Enums;
 
-public enum ProjectTableColumn
+public enum TableColumn
 {
   Name,
   RepoType,

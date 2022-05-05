@@ -311,7 +311,7 @@ export class UserLinksClient {
 }
 
 export class ClientConfig implements IClientConfig {
-    columns!: ProjectTableColumn[];
+    columns!: TableColumn[];
     sonarQubeUrl!: string;
     badges!: string[];
 
@@ -369,12 +369,12 @@ export class ClientConfig implements IClientConfig {
 }
 
 export interface IClientConfig {
-    columns: ProjectTableColumn[];
+    columns: TableColumn[];
     sonarQubeUrl: string;
     badges: string[];
 }
 
-export enum ProjectTableColumn {
+export enum TableColumn {
     Name = 0,
     RepoType = 1,
     RepoIsPublic = 2,

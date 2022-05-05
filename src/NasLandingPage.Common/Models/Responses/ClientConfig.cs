@@ -6,7 +6,7 @@ namespace NasLandingPage.Common.Models.Responses
   public class ClientConfig
   {
     [JsonProperty("columns")]
-    public ProjectTableColumn[] Columns { get; set; } = Array.Empty<ProjectTableColumn>();
+    public TableColumn[] Columns { get; set; } = Array.Empty<TableColumn>();
 
     [JsonProperty("sonarQubeUrl")]
     public string SonarQubeUrl { get; set; } = string.Empty;

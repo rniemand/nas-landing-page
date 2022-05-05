@@ -1,11 +1,11 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { ClientConfig, ProjectTableColumn } from 'src/app/nlp-api';
+import { ClientConfig, TableColumn } from 'src/app/nlp-api';
 
 interface TableColumnKey {
   value: number;
   name: string;
   checked: boolean;
-  enumValue: ProjectTableColumn;
+  enumValue: TableColumn;
 }
 
 @Component({
@@ -34,8 +34,8 @@ export class OptionEditorComponent implements OnInit, OnChanges {
     var targetValue = Number(e.target.value);
     var isChecked = e.target.checked;
 
-    var name = ProjectTableColumn[targetValue];
-    var enumValue = (<any>ProjectTableColumn)[name];
+    var name = TableColumn[targetValue];
+    var enumValue = (<any>TableColumn)[name];
     var exists = this.config?.columns.indexOf(enumValue) !== -1;
 
     if(isChecked && !exists) {
@@ -48,19 +48,19 @@ export class OptionEditorComponent implements OnInit, OnChanges {
 
   private _refreshOptions = () => {
     let parsedValues: TableColumnKey[] = [];
-    const optionColumns: ProjectTableColumn[] = this?.config?.columns ?? [];
+    const optionColumns: TableColumn[] = this?.config?.columns ?? [];
 
-    Object.keys(ProjectTableColumn).forEach(key => {
+    Object.keys(TableColumn).forEach(key => {
       let castNumber = Number(key);
       if(isNaN(castNumber)) { return; }
 
-      var name = ProjectTableColumn[castNumber];
-      var enumValue = (<any>ProjectTableColumn)[name];
+      var name = TableColumn[castNumber];
+      var enumValue = (<any>TableColumn)[name];
       var idx = optionColumns.indexOf(enumValue);
       
       parsedValues.push({
         checked: idx !== -1,
-        name: ProjectTableColumn[castNumber],
+        name: TableColumn[castNumber],
         value: castNumber,
         enumValue: enumValue
       });
