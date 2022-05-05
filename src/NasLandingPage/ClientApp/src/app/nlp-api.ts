@@ -413,7 +413,6 @@ export class ProjectInfo implements IProjectInfo {
     repo!: RepositoryInfo;
     sonarQube!: SonarQubeInfo;
     scm!: SourceCodeMaturity;
-    license!: ProjectLicense;
     languages!: string[];
     ciInfo!: RepoCiInfo;
 
@@ -429,7 +428,6 @@ export class ProjectInfo implements IProjectInfo {
             this.repo = new RepositoryInfo();
             this.sonarQube = new SonarQubeInfo();
             this.scm = new SourceCodeMaturity();
-            this.license = new ProjectLicense();
             this.languages = [];
             this.ciInfo = new RepoCiInfo();
         }
@@ -444,7 +442,6 @@ export class ProjectInfo implements IProjectInfo {
             this.repo = _data["repo"] ? RepositoryInfo.fromJS(_data["repo"]) : new RepositoryInfo();
             this.sonarQube = _data["sonarQube"] ? SonarQubeInfo.fromJS(_data["sonarQube"]) : new SonarQubeInfo();
             this.scm = _data["scm"] ? SourceCodeMaturity.fromJS(_data["scm"]) : new SourceCodeMaturity();
-            this.license = _data["license"] ? ProjectLicense.fromJS(_data["license"]) : new ProjectLicense();
             if (Array.isArray(_data["languages"])) {
                 this.languages = [] as any;
                 for (let item of _data["languages"])
@@ -470,7 +467,6 @@ export class ProjectInfo implements IProjectInfo {
         data["repo"] = this.repo ? this.repo.toJSON() : <any>undefined;
         data["sonarQube"] = this.sonarQube ? this.sonarQube.toJSON() : <any>undefined;
         data["scm"] = this.scm ? this.scm.toJSON() : <any>undefined;
-        data["license"] = this.license ? this.license.toJSON() : <any>undefined;
         if (Array.isArray(this.languages)) {
             data["languages"] = [];
             for (let item of this.languages)
@@ -489,7 +485,6 @@ export interface IProjectInfo {
     repo: RepositoryInfo;
     sonarQube: SonarQubeInfo;
     scm: SourceCodeMaturity;
-    license: ProjectLicense;
     languages: string[];
     ciInfo: RepoCiInfo;
 }
@@ -704,6 +699,8 @@ export class SourceCodeMaturity implements ISourceCodeMaturity {
     testDirectory!: string;
     docsDirectory!: string;
     buildDirectory!: string;
+    licenseName!: string;
+    licenseUrl!: string;
 
     constructor(data?: ISourceCodeMaturity) {
         if (data) {
@@ -736,6 +733,8 @@ export class SourceCodeMaturity implements ISourceCodeMaturity {
             this.testDirectory = _data["testDirectory"];
             this.docsDirectory = _data["docsDirectory"];
             this.buildDirectory = _data["buildDirectory"];
+            this.licenseName = _data["licenseName"];
+            this.licenseUrl = _data["licenseUrl"];
         }
     }
 
@@ -765,6 +764,8 @@ export class SourceCodeMaturity implements ISourceCodeMaturity {
         data["testDirectory"] = this.testDirectory;
         data["docsDirectory"] = this.docsDirectory;
         data["buildDirectory"] = this.buildDirectory;
+        data["licenseName"] = this.licenseName;
+        data["licenseUrl"] = this.licenseUrl;
         return data;
     }
 }
@@ -783,46 +784,8 @@ export interface ISourceCodeMaturity {
     testDirectory: string;
     docsDirectory: string;
     buildDirectory: string;
-}
-
-export class ProjectLicense implements IProjectLicense {
-    name!: string;
-    url!: string;
-
-    constructor(data?: IProjectLicense) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.name = _data["name"];
-            this.url = _data["url"];
-        }
-    }
-
-    static fromJS(data: any): ProjectLicense {
-        data = typeof data === 'object' ? data : {};
-        let result = new ProjectLicense();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["name"] = this.name;
-        data["url"] = this.url;
-        return data;
-    }
-}
-
-export interface IProjectLicense {
-    name: string;
-    url: string;
+    licenseName: string;
+    licenseUrl: string;
 }
 
 export class RepoCiInfo implements IRepoCiInfo {

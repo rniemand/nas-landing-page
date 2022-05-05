@@ -56,7 +56,7 @@
         <td *ngIf="canRenderColumn('RepoId')">{{ project.repo.id }}</td>
         <td *ngIf="canRenderColumn('RepoIsPublic')"><bool-tick [value]="project.repo.isPublic"></bool-tick></td>
         <td *ngIf="canRenderColumn('RepoSize')"><human-size [value]="project.repo.size"></human-size></td>
-        <td *ngIf="canRenderColumn('License')"><link-generic [url]="project.license.url" [name]="project.license.name"></link-generic></td>
+        <td *ngIf="canRenderColumn('License')"><link-generic [url]="project.scm.licenseUrl" [name]="project.scm.licenseName"></link-generic></td>
         <td *ngIf="canRenderColumn('HasReadme')"><string-tick [value]="project.scm.readme"></string-tick></td>
         <td *ngIf="canRenderColumn('HasGitAttributes')"><string-tick [value]="project.scm.gitAttributes"></string-tick></td>
         <td *ngIf="canRenderColumn('HasPrTemplate')"><string-tick [value]="project.scm.prTemplate"></string-tick></td>
