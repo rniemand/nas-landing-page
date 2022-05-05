@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 
 namespace NasLandingPage.Common.Models.Responses.Projects;
 
-public class SourceCodeMaturityInfo
+public class SourceCodeMaturity
 {
   [JsonProperty("hasReadme")]
   public bool HasReadme { get; set; } = false;

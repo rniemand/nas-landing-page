@@ -18,13 +18,13 @@ public class ProjectInfo
   public ProjectInfoMetadata Metadata { get; set; } = new();
 
   [JsonProperty("repo")]
-  public RepoInfo Repo { get; set; } = new();
+  public RepositoryInfo Repo { get; set; } = new();
 
   [JsonProperty("sonarQube")]
   public SonarQubeInfo SonarQube { get; set; } = new();
 
   [JsonProperty("scm")]
-  public SourceCodeMaturityInfo Scm { get; set; } = new();
+  public SourceCodeMaturity Scm { get; set; } = new();
 
   [JsonProperty("directories")]
   public ProjectDirectories Directories { get; set; } = new();
