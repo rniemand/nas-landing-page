@@ -56,19 +56,15 @@ public class ProjectCiInfoSync : IProjectCiInfoSync
   private static void HandleNoFileFound(RunCommandResponseBuilder responseBuilder, ProjectInfo projectInfo)
   {
     // TODO: [ProjectCiInfoSync.HandleNoFileFound] (TESTS) Add tests
-    //responseBuilder.WithMessage("No ci.info.json file found, updating project information");
-    //projectInfo.Scm.HasCiInfo = false;
-    //projectInfo.Scm.CiInfoPath = string.Empty;
-    throw new Exception("complete me");
+    responseBuilder.WithMessage("No ci.info.json file found, updating project information");
+    projectInfo.Scm.CiInfo = string.Empty;
   }
 
   private static void HandleUnableToParseCiInfo(RunCommandResponseBuilder responseBuilder, ProjectInfo projectInfo)
   {
     // TODO: [ProjectCiInfoSync.HandleUnableToParseCiInfo] (TESTS) Add tests
-    //responseBuilder.WithMessage("Unable to parse ci.info.json");
-    //projectInfo.Scm.HasCiInfo = false;
-    //projectInfo.Scm.CiInfoPath = string.Empty;
-    throw new Exception("complete me");
+    responseBuilder.WithMessage("Unable to parse ci.info.json");
+    projectInfo.Scm.CiInfo = string.Empty;
   }
 
   private static void SyncHasBuildScripVersion(RunCommandResponseBuilder responseBuilder, ProjectInfo projectInfo, RepoCiInfo ciInfo)
@@ -85,10 +81,9 @@ public class ProjectCiInfoSync : IProjectCiInfoSync
     // TODO: [ProjectCiInfoSync.TryExtractRepoCiInfo] (TESTS) Add tests
     _json.TryDeserializeObject(rawJson, out parsed);
 
-  private string ExtractGitFilePath(string url)
+  private static string ExtractGitFilePath(string url)
   {
     // TODO: [ProjectCiInfoSync.ExtractGitFilePath] (TESTS) Add tests
-
     // http.*?:\/\/.*?\/blob\/([^\/]+)\/(.*)
     const string rxp = @"http.*?:\/\/.*?\/blob\/([^\/]+)\/(.*)";
 
