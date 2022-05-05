@@ -29,7 +29,7 @@ public class ProjectInfoSyncFactory : IProjectInfoSyncFactory
 
   public IRootRepositoryContentInfoSync CreateRootRepositoryContentInfoSync()
   {
-    return new RootRepositoryContentInfoSync(_serviceProvider.GetRequiredService<INlpGitHubClient>());
+    return new RepoRootInfoSync(_serviceProvider.GetRequiredService<INlpGitHubClient>());
   }
 
   public IBuildScriptInfoSync CreateBuildScriptInfoSync()

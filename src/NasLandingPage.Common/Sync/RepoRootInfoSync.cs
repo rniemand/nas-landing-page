@@ -12,11 +12,11 @@ public interface IRootRepositoryContentInfoSync
   Task SyncAsync(RunCommandResponseBuilder responseBuilder, ProjectInfo projectInfo);
 }
 
-public class RootRepositoryContentInfoSync : IRootRepositoryContentInfoSync
+public class RepoRootInfoSync : IRootRepositoryContentInfoSync
 {
   private readonly INlpGitHubClient _gitHubClient;
 
-  public RootRepositoryContentInfoSync(INlpGitHubClient gitHubClient)
+  public RepoRootInfoSync(INlpGitHubClient gitHubClient)
   {
     _gitHubClient = gitHubClient;
   }
