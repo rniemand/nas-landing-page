@@ -701,15 +701,11 @@ export class SourceCodeMaturity implements ISourceCodeMaturity {
     readme!: string;
     gitAttributes!: string;
     prTemplate!: string;
-    hasEditorConfig!: boolean;
     editorConfig!: string;
-    hasBuildScript!: boolean;
-    hasTestScript!: boolean;
-    hasCiInfo!: boolean;
+    ciInfo!: string;
     buildScriptVersion!: string;
     buildScripts!: string[];
     testScripts!: string[];
-    ciInfo!: string;
     workFlows!: string[];
 
     constructor(data?: ISourceCodeMaturity) {
@@ -731,11 +727,8 @@ export class SourceCodeMaturity implements ISourceCodeMaturity {
             this.readme = _data["readme"];
             this.gitAttributes = _data["gitAttributes"];
             this.prTemplate = _data["prTemplate"];
-            this.hasEditorConfig = _data["hasEditorConfig"];
             this.editorConfig = _data["editorConfig"];
-            this.hasBuildScript = _data["hasBuildScript"];
-            this.hasTestScript = _data["hasTestScript"];
-            this.hasCiInfo = _data["hasCiInfo"];
+            this.ciInfo = _data["ciInfo"];
             this.buildScriptVersion = _data["buildScriptVersion"];
             if (Array.isArray(_data["buildScripts"])) {
                 this.buildScripts = [] as any;
@@ -747,7 +740,6 @@ export class SourceCodeMaturity implements ISourceCodeMaturity {
                 for (let item of _data["testScripts"])
                     this.testScripts!.push(item);
             }
-            this.ciInfo = _data["ciInfo"];
             if (Array.isArray(_data["workFlows"])) {
                 this.workFlows = [] as any;
                 for (let item of _data["workFlows"])
@@ -768,11 +760,8 @@ export class SourceCodeMaturity implements ISourceCodeMaturity {
         data["readme"] = this.readme;
         data["gitAttributes"] = this.gitAttributes;
         data["prTemplate"] = this.prTemplate;
-        data["hasEditorConfig"] = this.hasEditorConfig;
         data["editorConfig"] = this.editorConfig;
-        data["hasBuildScript"] = this.hasBuildScript;
-        data["hasTestScript"] = this.hasTestScript;
-        data["hasCiInfo"] = this.hasCiInfo;
+        data["ciInfo"] = this.ciInfo;
         data["buildScriptVersion"] = this.buildScriptVersion;
         if (Array.isArray(this.buildScripts)) {
             data["buildScripts"] = [];
@@ -784,7 +773,6 @@ export class SourceCodeMaturity implements ISourceCodeMaturity {
             for (let item of this.testScripts)
                 data["testScripts"].push(item);
         }
-        data["ciInfo"] = this.ciInfo;
         if (Array.isArray(this.workFlows)) {
             data["workFlows"] = [];
             for (let item of this.workFlows)
@@ -798,15 +786,11 @@ export interface ISourceCodeMaturity {
     readme: string;
     gitAttributes: string;
     prTemplate: string;
-    hasEditorConfig: boolean;
     editorConfig: string;
-    hasBuildScript: boolean;
-    hasTestScript: boolean;
-    hasCiInfo: boolean;
+    ciInfo: string;
     buildScriptVersion: string;
     buildScripts: string[];
     testScripts: string[];
-    ciInfo: string;
     workFlows: string[];
 }
 

@@ -19,20 +19,14 @@ public class SourceCodeMaturity
   [JsonProperty("ciInfo")]
   public string CiInfo { get; set; } = string.Empty;
 
+  [JsonProperty("buildScript")]
+  public string BuildScript { get; set; } = string.Empty;
 
 
 
-  [JsonProperty("hasBuildScript")]
-  public bool HasBuildScript { get; set; } = false;
-
-  [JsonProperty("hasTestScript")]
-  public bool HasTestScript { get; set; } = false;
 
   [JsonProperty("buildScriptVersion")]
   public string BuildScriptVersion { get; set; } = "0";
-
-  [JsonProperty("buildScripts")]
-  public List<string> BuildScripts { get; set; } = new();
 
   [JsonProperty("testScripts")]
   public List<string> TestScripts { get; set; } = new();

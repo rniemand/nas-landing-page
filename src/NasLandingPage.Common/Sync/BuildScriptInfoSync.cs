@@ -32,7 +32,6 @@ public class BuildScriptInfoSync : IBuildScriptInfoSync
     var repositoryId = projectInfo.Repo.RepoId;
     const string path = ".github";
 
-    projectInfo.Scm.BuildScripts = new List<string>();
     projectInfo.Scm.TestScripts = new List<string>();
 
     var contents = await _gitHubClient.GetAllContentsAsync(repositoryId, path);
@@ -46,50 +45,15 @@ public class BuildScriptInfoSync : IBuildScriptInfoSync
 
 
   // Build script files
-  private static void SetHasBuildScript(ICollection<string> messages, ProjectInfo projectInfo, bool hasBuildScript)
-  {
-    // TODO: [BuildScriptInfoSync.SetHasBuildScript] (TESTS) Add tests
-    if (projectInfo.Scm.HasBuildScript == hasBuildScript)
-      return;
-
-    messages.Add("Updating HasBuildScript to " + (hasBuildScript ? "true" : "false"));
-    projectInfo.Scm.HasBuildScript = hasBuildScript;
-  }
-
-  private static void SetHasTestScript(ICollection<string> messages, ProjectInfo projectInfo, bool hasTestScript)
-  {
-    // TODO: [BuildScriptInfoSync.SetHasTestScript] (TESTS) Add tests
-    if (projectInfo.Scm.HasTestScript == hasTestScript)
-      return;
-
-    messages.Add("Updating HasTestScript to " + (hasTestScript ? "true" : "false"));
-    projectInfo.Scm.HasBuildScript = hasTestScript;
-  }
-
-  //private static void SetHasCiInfo(ICollection<string> messages, ProjectInfo projectInfo, bool hasCiInfo)
-  //{
-  //  // TODO: [BuildScriptInfoSync.SetHasCiInfo] (TESTS) Add tests
-  //  if (projectInfo.Scm.HasCiInfo == hasCiInfo)
-  //    return;
-
-  //  messages.Add("Updating HasCiInfo to " + (hasCiInfo ? "true" : "false"));
-  //  projectInfo.Scm.HasCiInfo = hasCiInfo;
-  //}
-
   private static void SyncBuildScript(ICollection<string> messages, ProjectInfo projectInfo, IReadOnlyList<RepositoryContent> contents)
   {
     // TODO: [RootRepositoryContentInfoSync.SyncEditorConfig] (TESTS) Add tests
     var filePath = contents.GetHtmlFilePath("ci-build.ps1");
-    var fileExists = !string.IsNullOrWhiteSpace(filePath);
-
-    SetHasBuildScript(messages, projectInfo, fileExists);
-
-    if (!fileExists)
+    if (projectInfo.Scm.BuildScript.IgnoreCaseEquals(filePath))
       return;
 
-    var repoFilePath = contents.GetRepoFilePath("ci-build.ps1");
-    messages.Add($"Adding build script: {repoFilePath}");
-    projectInfo.Scm.BuildScripts.Add(repoFilePath);
+    projectInfo.Scm.BuildScript = filePath;
+    messages.Add($"Updated 'scm.buildScript' to: {filePath}");
   }
 
   private static void SyncTestScript(ICollection<string> messages, ProjectInfo projectInfo, IReadOnlyList<RepositoryContent> contents)
@@ -98,7 +62,7 @@ public class BuildScriptInfoSync : IBuildScriptInfoSync
     var filePath = contents.GetHtmlFilePath("ci-test.ps1");
     var fileExists = !string.IsNullOrWhiteSpace(filePath);
 
-    SetHasTestScript(messages, projectInfo, fileExists);
+    //SetHasTestScript(messages, projectInfo, fileExists);
 
     if (!fileExists)
       return;
