@@ -10,7 +10,8 @@ public enum TableColumn
   HasGitAttributes,
   HasPrTemplate,
   HasEditorConfig,
-  HasBuildScripts,
+  HasBuildScript,
+  HasTestScript,
   CiVersion,
   DirSrc,
   DirTest,
@@ -25,9 +26,9 @@ public enum TableColumn
   UrlRepo,
   UrlCiCd,
   UrlSonarQube,
-  CountRepoForks,
-  CountOpenIssues,
-  CountCiFlows,
+  RepoForks,
+  OpenIssues,
+  CiFlowCount,
   RepoSize,
   LastUpdated
 }
