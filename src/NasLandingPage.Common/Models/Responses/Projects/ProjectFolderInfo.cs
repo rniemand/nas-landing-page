@@ -4,24 +4,15 @@ namespace NasLandingPage.Common.Models.Responses.Projects;
 
 public class ProjectFolderInfo
 {
-  [JsonIgnore]
-  public bool HasDirectorySrc => !string.IsNullOrWhiteSpace(Src);
-
   [JsonProperty("src")]
   public string Src { get; set; } = string.Empty;
 
-
-
-
   [JsonProperty("test")]
-  public bool Test { get; set; } = false;
-
+  public string Test { get; set; } = string.Empty;
+  
   [JsonProperty("docs")]
-  public bool Docs { get; set; } = false;
+  public string Docs { get; set; } = string.Empty;
 
   [JsonProperty("build")]
-  public bool Build { get; set; } = false;
-
-  [JsonProperty("dotGithub")]
-  public bool DotGithub { get; set; } = false;
+  public string Build { get; set; } = string.Empty;
 }

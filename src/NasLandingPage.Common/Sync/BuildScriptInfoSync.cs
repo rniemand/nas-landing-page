@@ -23,7 +23,7 @@ public class BuildScriptInfoSync : IBuildScriptInfoSync
   public async Task SyncAsync(RunCommandResponseBuilder responseBuilder, ProjectInfo projectInfo)
   {
     // TODO: [BuildScriptInfoSync.SyncAsync] (TESTS) Add tests
-    if (!projectInfo.Directories.DotGithub)
+    if (!string.IsNullOrWhiteSpace(projectInfo.Directories.Build))
       return;
 
     var messages = new List<string>();
