@@ -30,7 +30,7 @@ public class ProjectInfo
   public ProjectDirectories Directories { get; set; } = new();
 
   [JsonProperty("license")]
-  public LicenseInfo License { get; set; } = new();
+  public ProjectLicense License { get; set; } = new();
 
   [JsonProperty("languages")]
   public string[] Languages { get; set; } = Array.Empty<string>();

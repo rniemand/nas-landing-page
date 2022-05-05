@@ -39,7 +39,8 @@ public class NlpDevConsole
     var commandResponse = projectsService.SyncProject(new RunCommandRequest
     {
       Command = "SyncProject",
-      Arguments = "BitMeterCollector"
+      //Arguments = "BitMeterCollector"
+      Arguments = "BuildScriptHelper"
     }).GetAwaiter().GetResult();
 
     Console.WriteLine(commandResponse.Success);
