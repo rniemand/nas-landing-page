@@ -39,7 +39,7 @@ public class NlpDevConsole
     var commandResponse = projectsService.SyncProject(new RunCommandRequest
     {
       Command = "SyncProject",
-      Arguments = "my-home"
+      Arguments = "BitMeterCollector"
     }).GetAwaiter().GetResult();
 
     Console.WriteLine(commandResponse.Success);

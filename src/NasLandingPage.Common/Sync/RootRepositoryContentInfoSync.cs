@@ -3,6 +3,7 @@ using NasLandingPage.Common.Clients;
 using NasLandingPage.Common.Extensions;
 using NasLandingPage.Common.Models.Responses;
 using Octokit;
+using Rn.NetCore.Common.Extensions;
 
 namespace NasLandingPage.Common.Sync;
 
@@ -29,6 +30,7 @@ public class RootRepositoryContentInfoSync : IRootRepositoryContentInfoSync
     SyncEditorConfig(messages, projectInfo, contents);
     SyncGitAttributes(messages, projectInfo, contents);
     SyncReadme(messages, projectInfo, contents);
+    SyncLicense(messages, projectInfo, contents);
 
     SyncHasDirSrc(messages, projectInfo, contents);
     SyncHasDirTest(messages, projectInfo, contents);
@@ -38,6 +40,7 @@ public class RootRepositoryContentInfoSync : IRootRepositoryContentInfoSync
 
     responseBuilder.WithMessages(messages);
   }
+
 
   // Top level files
   private static void SyncEditorConfig(ICollection<string> messages, ProjectInfo projectInfo, IReadOnlyList<RepositoryContent> contents)
@@ -96,6 +99,31 @@ public class RootRepositoryContentInfoSync : IRootRepositoryContentInfoSync
       projectInfo.Scm.Readme = filePath;
     }
   }
+
+  private void SyncLicense(ICollection<string> messages, ProjectInfo projectInfo, IReadOnlyList<RepositoryContent> contents)
+  {
+    // TODO: [RootRepositoryContentInfoSync.SyncLicense] (TESTS) Add tests
+    var filePath = contents.GetHtmlFilePath("LICENSE");
+    var fileExists = !string.IsNullOrWhiteSpace(filePath);
+    if (!fileExists) return;
+
+    var repoFiles = _gitHubClient.GetAllContentsAsync(
+      projectInfo.Repo.RepoId,
+      "LICENSE"
+    ).GetAwaiter().GetResult();
+    
+    var repoFile = repoFiles.FirstOrDefault();
+    if (repoFile is null) return;
+
+    var fileContent = repoFile.Content;
+    if (string.IsNullOrWhiteSpace(fileContent)) return;
+    projectInfo.License.Url = filePath;
+    projectInfo.License.Name = "Unknown";
+
+    if (fileContent.IgnoreCaseContains("The MIT License (MIT)"))
+      projectInfo.License.Name = "MIT";
+  }
+
 
 
   // Top level directories
