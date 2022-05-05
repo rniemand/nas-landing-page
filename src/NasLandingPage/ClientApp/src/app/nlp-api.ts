@@ -384,7 +384,7 @@ export enum TableColumn {
     HasPrTemplate = 6,
     HasEditorConfig = 7,
     HasBuildScripts = 8,
-    BuildScriptVersion = 9,
+    CiVersion = 9,
     DirSrc = 10,
     DirTest = 11,
     DirDocs = 12,
@@ -400,11 +400,9 @@ export enum TableColumn {
     UrlSonarQube = 22,
     CountRepoForks = 23,
     CountOpenIssues = 24,
-    CountBuildScripts = 25,
-    CountTestScripts = 26,
-    CountWorkFlows = 27,
-    RepoSize = 28,
-    LastUpdated = 29,
+    CountCiFlows = 25,
+    RepoSize = 26,
+    LastUpdated = 27,
 }
 
 export class ProjectInfo implements IProjectInfo {
@@ -412,11 +410,9 @@ export class ProjectInfo implements IProjectInfo {
     description!: string;
     lastUpdated!: Date;
     metadata!: ProjectInfoMetadata;
-    repo!: RepoInfo;
+    repo!: RepositoryInfo;
     sonarQube!: SonarQubeInfo;
-    scm!: SourceCodeMaturityInfo;
-    directories!: ProjectDirectories;
-    license!: LicenseInfo;
+    scm!: SourceCodeMaturity;
     languages!: string[];
     ciInfo!: RepoCiInfo;
 
@@ -429,11 +425,9 @@ export class ProjectInfo implements IProjectInfo {
         }
         if (!data) {
             this.metadata = new ProjectInfoMetadata();
-            this.repo = new RepoInfo();
+            this.repo = new RepositoryInfo();
             this.sonarQube = new SonarQubeInfo();
-            this.scm = new SourceCodeMaturityInfo();
-            this.directories = new ProjectDirectories();
-            this.license = new LicenseInfo();
+            this.scm = new SourceCodeMaturity();
             this.languages = [];
             this.ciInfo = new RepoCiInfo();
         }
@@ -445,11 +439,9 @@ export class ProjectInfo implements IProjectInfo {
             this.description = _data["description"];
             this.lastUpdated = _data["lastUpdated"] ? new Date(_data["lastUpdated"].toString()) : <any>undefined;
             this.metadata = _data["metadata"] ? ProjectInfoMetadata.fromJS(_data["metadata"]) : new ProjectInfoMetadata();
-            this.repo = _data["repo"] ? RepoInfo.fromJS(_data["repo"]) : new RepoInfo();
+            this.repo = _data["repo"] ? RepositoryInfo.fromJS(_data["repo"]) : new RepositoryInfo();
             this.sonarQube = _data["sonarQube"] ? SonarQubeInfo.fromJS(_data["sonarQube"]) : new SonarQubeInfo();
-            this.scm = _data["scm"] ? SourceCodeMaturityInfo.fromJS(_data["scm"]) : new SourceCodeMaturityInfo();
-            this.directories = _data["directories"] ? ProjectDirectories.fromJS(_data["directories"]) : new ProjectDirectories();
-            this.license = _data["license"] ? LicenseInfo.fromJS(_data["license"]) : new LicenseInfo();
+            this.scm = _data["scm"] ? SourceCodeMaturity.fromJS(_data["scm"]) : new SourceCodeMaturity();
             if (Array.isArray(_data["languages"])) {
                 this.languages = [] as any;
                 for (let item of _data["languages"])
@@ -475,8 +467,6 @@ export class ProjectInfo implements IProjectInfo {
         data["repo"] = this.repo ? this.repo.toJSON() : <any>undefined;
         data["sonarQube"] = this.sonarQube ? this.sonarQube.toJSON() : <any>undefined;
         data["scm"] = this.scm ? this.scm.toJSON() : <any>undefined;
-        data["directories"] = this.directories ? this.directories.toJSON() : <any>undefined;
-        data["license"] = this.license ? this.license.toJSON() : <any>undefined;
         if (Array.isArray(this.languages)) {
             data["languages"] = [];
             for (let item of this.languages)
@@ -492,11 +482,9 @@ export interface IProjectInfo {
     description: string;
     lastUpdated: Date;
     metadata: ProjectInfoMetadata;
-    repo: RepoInfo;
+    repo: RepositoryInfo;
     sonarQube: SonarQubeInfo;
-    scm: SourceCodeMaturityInfo;
-    directories: ProjectDirectories;
-    license: LicenseInfo;
+    scm: SourceCodeMaturity;
     languages: string[];
     ciInfo: RepoCiInfo;
 }
@@ -541,7 +529,7 @@ export interface IProjectInfoMetadata {
     fileNameWithoutExtension: string;
 }
 
-export class RepoInfo implements IRepoInfo {
+export class RepositoryInfo implements IRepositoryInfo {
     type!: RepoType;
     url!: string;
     cicd!: string;
@@ -557,7 +545,7 @@ export class RepoInfo implements IRepoInfo {
     apiUrl!: string;
     size!: number;
 
-    constructor(data?: IRepoInfo) {
+    constructor(data?: IRepositoryInfo) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -585,9 +573,9 @@ export class RepoInfo implements IRepoInfo {
         }
     }
 
-    static fromJS(data: any): RepoInfo {
+    static fromJS(data: any): RepositoryInfo {
         data = typeof data === 'object' ? data : {};
-        let result = new RepoInfo();
+        let result = new RepositoryInfo();
         result.init(data);
         return result;
     }
@@ -612,7 +600,7 @@ export class RepoInfo implements IRepoInfo {
     }
 }
 
-export interface IRepoInfo {
+export interface IRepositoryInfo {
     type: RepoType;
     url: string;
     cicd: string;
@@ -697,24 +685,24 @@ export interface ISonarQubeInfo {
     badges: { [key: string]: string; };
 }
 
-export class SourceCodeMaturityInfo implements ISourceCodeMaturityInfo {
-    hasReadme!: boolean;
+export class SourceCodeMaturity implements ISourceCodeMaturity {
     readme!: string;
-    hasGitAttributes!: boolean;
     gitAttributes!: string;
-    hasPrTemplate!: boolean;
-    hasEditorConfig!: boolean;
+    prTemplate!: string;
     editorConfig!: string;
-    hasBuildScript!: boolean;
-    hasTestScript!: boolean;
-    hasCiInfo!: boolean;
-    buildScriptVersion!: string;
-    buildScripts!: string[];
-    testScripts!: string[];
     ciInfo!: string;
-    workFlows!: string[];
+    buildScript!: string;
+    testScript!: string;
+    ciVersion!: string;
+    ciFlows!: string[];
+    srcDirectory!: string;
+    testDirectory!: string;
+    docsDirectory!: string;
+    buildDirectory!: string;
+    licenseName!: string;
+    licenseUrl!: string;
 
-    constructor(data?: ISourceCodeMaturityInfo) {
+    constructor(data?: ISourceCodeMaturity) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -722,188 +710,82 @@ export class SourceCodeMaturityInfo implements ISourceCodeMaturityInfo {
             }
         }
         if (!data) {
-            this.buildScripts = [];
-            this.testScripts = [];
-            this.workFlows = [];
+            this.ciFlows = [];
         }
     }
 
     init(_data?: any) {
         if (_data) {
-            this.hasReadme = _data["hasReadme"];
             this.readme = _data["readme"];
-            this.hasGitAttributes = _data["hasGitAttributes"];
             this.gitAttributes = _data["gitAttributes"];
-            this.hasPrTemplate = _data["hasPrTemplate"];
-            this.hasEditorConfig = _data["hasEditorConfig"];
+            this.prTemplate = _data["prTemplate"];
             this.editorConfig = _data["editorConfig"];
-            this.hasBuildScript = _data["hasBuildScript"];
-            this.hasTestScript = _data["hasTestScript"];
-            this.hasCiInfo = _data["hasCiInfo"];
-            this.buildScriptVersion = _data["buildScriptVersion"];
-            if (Array.isArray(_data["buildScripts"])) {
-                this.buildScripts = [] as any;
-                for (let item of _data["buildScripts"])
-                    this.buildScripts!.push(item);
-            }
-            if (Array.isArray(_data["testScripts"])) {
-                this.testScripts = [] as any;
-                for (let item of _data["testScripts"])
-                    this.testScripts!.push(item);
-            }
             this.ciInfo = _data["ciInfo"];
-            if (Array.isArray(_data["workFlows"])) {
-                this.workFlows = [] as any;
-                for (let item of _data["workFlows"])
-                    this.workFlows!.push(item);
+            this.buildScript = _data["buildScript"];
+            this.testScript = _data["testScript"];
+            this.ciVersion = _data["ciVersion"];
+            if (Array.isArray(_data["ciFlows"])) {
+                this.ciFlows = [] as any;
+                for (let item of _data["ciFlows"])
+                    this.ciFlows!.push(item);
             }
+            this.srcDirectory = _data["srcDirectory"];
+            this.testDirectory = _data["testDirectory"];
+            this.docsDirectory = _data["docsDirectory"];
+            this.buildDirectory = _data["buildDirectory"];
+            this.licenseName = _data["licenseName"];
+            this.licenseUrl = _data["licenseUrl"];
         }
     }
 
-    static fromJS(data: any): SourceCodeMaturityInfo {
+    static fromJS(data: any): SourceCodeMaturity {
         data = typeof data === 'object' ? data : {};
-        let result = new SourceCodeMaturityInfo();
+        let result = new SourceCodeMaturity();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["hasReadme"] = this.hasReadme;
         data["readme"] = this.readme;
-        data["hasGitAttributes"] = this.hasGitAttributes;
         data["gitAttributes"] = this.gitAttributes;
-        data["hasPrTemplate"] = this.hasPrTemplate;
-        data["hasEditorConfig"] = this.hasEditorConfig;
+        data["prTemplate"] = this.prTemplate;
         data["editorConfig"] = this.editorConfig;
-        data["hasBuildScript"] = this.hasBuildScript;
-        data["hasTestScript"] = this.hasTestScript;
-        data["hasCiInfo"] = this.hasCiInfo;
-        data["buildScriptVersion"] = this.buildScriptVersion;
-        if (Array.isArray(this.buildScripts)) {
-            data["buildScripts"] = [];
-            for (let item of this.buildScripts)
-                data["buildScripts"].push(item);
-        }
-        if (Array.isArray(this.testScripts)) {
-            data["testScripts"] = [];
-            for (let item of this.testScripts)
-                data["testScripts"].push(item);
-        }
         data["ciInfo"] = this.ciInfo;
-        if (Array.isArray(this.workFlows)) {
-            data["workFlows"] = [];
-            for (let item of this.workFlows)
-                data["workFlows"].push(item);
+        data["buildScript"] = this.buildScript;
+        data["testScript"] = this.testScript;
+        data["ciVersion"] = this.ciVersion;
+        if (Array.isArray(this.ciFlows)) {
+            data["ciFlows"] = [];
+            for (let item of this.ciFlows)
+                data["ciFlows"].push(item);
         }
+        data["srcDirectory"] = this.srcDirectory;
+        data["testDirectory"] = this.testDirectory;
+        data["docsDirectory"] = this.docsDirectory;
+        data["buildDirectory"] = this.buildDirectory;
+        data["licenseName"] = this.licenseName;
+        data["licenseUrl"] = this.licenseUrl;
         return data;
     }
 }
 
-export interface ISourceCodeMaturityInfo {
-    hasReadme: boolean;
+export interface ISourceCodeMaturity {
     readme: string;
-    hasGitAttributes: boolean;
     gitAttributes: string;
-    hasPrTemplate: boolean;
-    hasEditorConfig: boolean;
+    prTemplate: string;
     editorConfig: string;
-    hasBuildScript: boolean;
-    hasTestScript: boolean;
-    hasCiInfo: boolean;
-    buildScriptVersion: string;
-    buildScripts: string[];
-    testScripts: string[];
     ciInfo: string;
-    workFlows: string[];
-}
-
-export class ProjectDirectories implements IProjectDirectories {
-    src!: string;
-    test!: string;
-    docs!: string;
-    build!: string;
-
-    constructor(data?: IProjectDirectories) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.src = _data["src"];
-            this.test = _data["test"];
-            this.docs = _data["docs"];
-            this.build = _data["build"];
-        }
-    }
-
-    static fromJS(data: any): ProjectDirectories {
-        data = typeof data === 'object' ? data : {};
-        let result = new ProjectDirectories();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["src"] = this.src;
-        data["test"] = this.test;
-        data["docs"] = this.docs;
-        data["build"] = this.build;
-        return data;
-    }
-}
-
-export interface IProjectDirectories {
-    src: string;
-    test: string;
-    docs: string;
-    build: string;
-}
-
-export class LicenseInfo implements ILicenseInfo {
-    name!: string;
-    url!: string;
-
-    constructor(data?: ILicenseInfo) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.name = _data["name"];
-            this.url = _data["url"];
-        }
-    }
-
-    static fromJS(data: any): LicenseInfo {
-        data = typeof data === 'object' ? data : {};
-        let result = new LicenseInfo();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["name"] = this.name;
-        data["url"] = this.url;
-        return data;
-    }
-}
-
-export interface ILicenseInfo {
-    name: string;
-    url: string;
+    buildScript: string;
+    testScript: string;
+    ciVersion: string;
+    ciFlows: string[];
+    srcDirectory: string;
+    testDirectory: string;
+    docsDirectory: string;
+    buildDirectory: string;
+    licenseName: string;
+    licenseUrl: string;
 }
 
 export class RepoCiInfo implements IRepoCiInfo {

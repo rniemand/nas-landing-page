@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace NasLandingPage.Common.Models.Responses.Projects;
 
-public class RepoInfo
+public class RepositoryInfo
 {
   [JsonProperty("type")]
   public RepoType RepoType { get; set; } = RepoType.Unknown;

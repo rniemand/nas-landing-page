@@ -12,11 +12,11 @@ public interface IRootRepositoryContentInfoSync
   Task SyncAsync(RunCommandResponseBuilder responseBuilder, ProjectInfo projectInfo);
 }
 
-public class RootRepositoryContentInfoSync : IRootRepositoryContentInfoSync
+public class RepoRootInfoSync : IRootRepositoryContentInfoSync
 {
   private readonly INlpGitHubClient _gitHubClient;
 
-  public RootRepositoryContentInfoSync(INlpGitHubClient gitHubClient)
+  public RepoRootInfoSync(INlpGitHubClient gitHubClient)
   {
     _gitHubClient = gitHubClient;
   }
@@ -46,57 +46,36 @@ public class RootRepositoryContentInfoSync : IRootRepositoryContentInfoSync
   {
     // TODO: [RootRepositoryContentInfoSync.SyncEditorConfig] (TESTS) Add tests
     var filePath = contents.GetHtmlFilePath(".editorconfig");
-    var fileExists = !string.IsNullOrWhiteSpace(filePath);
 
-    if (projectInfo.Scm.HasEditorConfig != fileExists)
-    {
-      messages.Add("Updated HasEditorConfig to: " + (fileExists ? "true" : "false"));
-      projectInfo.Scm.HasEditorConfig = fileExists;
-    }
+    if (projectInfo.Scm.EditorConfig.IgnoreCaseEquals(filePath))
+      return;
 
-    if (projectInfo.Scm.EditorConfig != filePath)
-    {
-      messages.Add($"Updated .editorconfig file path: {filePath}");
-      projectInfo.Scm.EditorConfig = filePath;
-    }
+    projectInfo.Scm.EditorConfig = filePath;
+    messages.Add($"Updated 'scm.editorConfig' to: {filePath}");
   }
 
   private static void SyncGitAttributes(ICollection<string> messages, ProjectInfo projectInfo, IReadOnlyList<RepositoryContent> contents)
   {
     // TODO: [RootRepositoryContentInfoSync.SyncGitAttributes] (TESTS) Add tests
     var filePath = contents.GetHtmlFilePath(".gitattributes");
-    var fileExists = !string.IsNullOrWhiteSpace(filePath);
 
-    if (projectInfo.Scm.HasGitAttributes != fileExists)
-    {
-      messages.Add("Updated HasGitAttributes to: " + (fileExists ? "true" : "false"));
-      projectInfo.Scm.HasGitAttributes = fileExists;
-    }
+    if (projectInfo.Scm.GitAttributes.IgnoreCaseEquals(filePath))
+      return;
 
-    if (projectInfo.Scm.GitAttributes != filePath)
-    {
-      messages.Add($"Updated .gitattributes file path: {filePath}");
-      projectInfo.Scm.GitAttributes = filePath;
-    }
+    projectInfo.Scm.GitAttributes = filePath;
+    messages.Add($"Updated 'scm.gitAttributes' to: {filePath}");
   }
 
   private static void SyncReadme(ICollection<string> messages, ProjectInfo projectInfo, IReadOnlyList<RepositoryContent> contents)
   {
     // TODO: [RootRepositoryContentInfoSync.SyncReadme] (TESTS) Add tests
     var filePath = contents.GetHtmlFilePath("README.md");
-    var fileExists = !string.IsNullOrWhiteSpace(filePath);
 
-    if (projectInfo.Scm.HasReadme != fileExists)
-    {
-      messages.Add("Updated HasReadme to: " + (fileExists ? "true" : "false"));
-      projectInfo.Scm.HasReadme = fileExists;
-    }
+    if (projectInfo.Scm.Readme.IgnoreCaseEquals(filePath))
+      return;
 
-    if (projectInfo.Scm.Readme != filePath)
-    {
-      messages.Add($"Updated README.md file path: {filePath}");
-      projectInfo.Scm.Readme = filePath;
-    }
+    projectInfo.Scm.Readme = filePath;
+    messages.Add($"Updated 'scm.readme' to: {filePath}");
   }
 
   private void SyncLicense(ICollection<string> messages, ProjectInfo projectInfo, IReadOnlyList<RepositoryContent> contents)
@@ -116,11 +95,11 @@ public class RootRepositoryContentInfoSync : IRootRepositoryContentInfoSync
 
     var fileContent = repoFile.Content;
     if (string.IsNullOrWhiteSpace(fileContent)) return;
-    projectInfo.License.Url = filePath;
-    projectInfo.License.Name = "Unknown";
+    projectInfo.Scm.LicenseUrl = filePath;
+    projectInfo.Scm.LicenseUrl = "Unknown";
 
     if (fileContent.IgnoreCaseContains("The MIT License (MIT)"))
-      projectInfo.License.Name = "MIT";
+      projectInfo.Scm.LicenseName = "MIT";
   }
 
 
@@ -130,12 +109,12 @@ public class RootRepositoryContentInfoSync : IRootRepositoryContentInfoSync
   {
     // TODO: [RootRepositoryContentInfoSync.SyncDirectorySrc] (TESTS) Add tests
     var repoDirectory = contents.GetDirectory("src");
-    var dirPath = repoDirectory?.Path ?? string.Empty;
+    var dirPath = repoDirectory?.HtmlUrl ?? string.Empty;
 
-    if(projectInfo.Directories.Src.IgnoreCaseEquals(dirPath))
+    if(projectInfo.Scm.SrcDirectory.IgnoreCaseEquals(dirPath))
       return;
     
-    projectInfo.Directories.Src = dirPath;
+    projectInfo.Scm.SrcDirectory = dirPath;
     messages.Add($"Setting 'directories.src' to: {dirPath}");
   }
 
@@ -143,12 +122,12 @@ public class RootRepositoryContentInfoSync : IRootRepositoryContentInfoSync
   {
     // TODO: [RootRepositoryContentInfoSync.SyncDirectoryTest] (TESTS) Add tests
     var repoDirectory = contents.GetDirectory("test");
-    var dirPath = repoDirectory?.Path ?? string.Empty;
+    var dirPath = repoDirectory?.HtmlUrl ?? string.Empty;
 
-    if (projectInfo.Directories.Test.IgnoreCaseEquals(dirPath))
+    if (projectInfo.Scm.TestDirectory.IgnoreCaseEquals(dirPath))
       return;
 
-    projectInfo.Directories.Test = dirPath;
+    projectInfo.Scm.TestDirectory = dirPath;
     messages.Add($"Setting 'directories.test' to: {dirPath}");
   }
 
@@ -156,12 +135,12 @@ public class RootRepositoryContentInfoSync : IRootRepositoryContentInfoSync
   {
     // TODO: [RootRepositoryContentInfoSync.SyncDirectoryDocs] (TESTS) Add tests
     var repoDirectory = contents.GetDirectory("docs");
-    var dirPath = repoDirectory?.Path ?? string.Empty;
+    var dirPath = repoDirectory?.HtmlUrl ?? string.Empty;
 
-    if (projectInfo.Directories.Docs.IgnoreCaseEquals(dirPath))
+    if (projectInfo.Scm.DocsDirectory.IgnoreCaseEquals(dirPath))
       return;
 
-    projectInfo.Directories.Docs = dirPath;
+    projectInfo.Scm.DocsDirectory = dirPath;
     messages.Add($"Setting 'directories.docs' to: {dirPath}");
   }
 
@@ -169,12 +148,12 @@ public class RootRepositoryContentInfoSync : IRootRepositoryContentInfoSync
   {
     // TODO: [RootRepositoryContentInfoSync.SyncDirectoryDocs] (TESTS) Add tests
     var repoDirectory = contents.GetDirectory(".github");
-    var dirPath = repoDirectory?.Path ?? string.Empty;
+    var dirPath = repoDirectory?.HtmlUrl ?? string.Empty;
 
-    if (projectInfo.Directories.Build.IgnoreCaseEquals(dirPath))
+    if (projectInfo.Scm.BuildDirectory.IgnoreCaseEquals(dirPath))
       return;
 
-    projectInfo.Directories.Build = dirPath;
+    projectInfo.Scm.BuildDirectory = dirPath;
     messages.Add($"Setting 'directories.build' to: {dirPath}");
   }
 }

@@ -11,7 +11,7 @@ public enum TableColumn
   HasPrTemplate,
   HasEditorConfig,
   HasBuildScripts,
-  BuildScriptVersion,
+  CiVersion,
   DirSrc,
   DirTest,
   DirDocs,
@@ -27,9 +27,7 @@ public enum TableColumn
   UrlSonarQube,
   CountRepoForks,
   CountOpenIssues,
-  CountBuildScripts,
-  CountTestScripts,
-  CountWorkFlows,
+  CountCiFlows,
   RepoSize,
   LastUpdated
 }
