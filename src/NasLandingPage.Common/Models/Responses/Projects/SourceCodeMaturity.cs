@@ -22,14 +22,16 @@ public class SourceCodeMaturity
   [JsonProperty("buildScript")]
   public string BuildScript { get; set; } = string.Empty;
 
+  [JsonProperty("testScript")]
+  public string TestScript { get; set; } = string.Empty;
+
 
 
 
   [JsonProperty("buildScriptVersion")]
   public string BuildScriptVersion { get; set; } = "0";
 
-  [JsonProperty("testScripts")]
-  public List<string> TestScripts { get; set; } = new();
+  
   
   [JsonProperty("workFlows")]
   public string[] WorkFlows { get; set; } = Array.Empty<string>();

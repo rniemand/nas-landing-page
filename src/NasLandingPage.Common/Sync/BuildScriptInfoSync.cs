@@ -31,9 +31,7 @@ public class BuildScriptInfoSync : IBuildScriptInfoSync
     var messages = new List<string>();
     var repositoryId = projectInfo.Repo.RepoId;
     const string path = ".github";
-
-    projectInfo.Scm.TestScripts = new List<string>();
-
+    
     var contents = await _gitHubClient.GetAllContentsAsync(repositoryId, path);
 
     SyncBuildScript(messages, projectInfo, contents);
@@ -60,16 +58,11 @@ public class BuildScriptInfoSync : IBuildScriptInfoSync
   {
     // TODO: [BuildScriptInfoSync.SyncTestScript] (TESTS) Add tests
     var filePath = contents.GetHtmlFilePath("ci-test.ps1");
-    var fileExists = !string.IsNullOrWhiteSpace(filePath);
-
-    //SetHasTestScript(messages, projectInfo, fileExists);
-
-    if (!fileExists)
+    if (projectInfo.Scm.TestScript.IgnoreCaseEquals(filePath))
       return;
 
-    var repoFilePath = contents.GetRepoFilePath("ci-test.ps1");
-    messages.Add($"Adding test script: {repoFilePath}");
-    projectInfo.Scm.TestScripts.Add(repoFilePath);
+    projectInfo.Scm.TestScript = filePath;
+    messages.Add($"Updated 'scm.testScript' to: {filePath}");
   }
 
   private static void SyncCiInfo(ICollection<string> messages, ProjectInfo projectInfo, IReadOnlyList<RepositoryContent> contents)
