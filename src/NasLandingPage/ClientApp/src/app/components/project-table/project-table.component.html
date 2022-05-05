@@ -66,10 +66,10 @@
         <td *ngIf="canRenderColumn('CountCiFlows')"><array-count [value]="project.scm.ciFlows"></array-count></td>
         <td *ngIf="canRenderColumn('CountRepoForks')"><raw-count [value]="project.repo.forks"></raw-count></td>
         <td *ngIf="canRenderColumn('CountOpenIssues')"><raw-count [value]="project.repo.openIssues"></raw-count></td>
-        <td *ngIf="canRenderColumn('DirSrc')"><string-tick [value]="project.directories.src"></string-tick></td>
-        <td *ngIf="canRenderColumn('DirTest')"><string-tick [value]="project.directories.test"></string-tick></td>
-        <td *ngIf="canRenderColumn('DirDocs')"><string-tick [value]="project.directories.docs"></string-tick></td>
-        <td *ngIf="canRenderColumn('DirBuild')"><string-tick [value]="project.directories.build"></string-tick></td>
+        <td *ngIf="canRenderColumn('DirSrc')"><string-tick [value]="project.scm.srcDirectory"></string-tick></td>
+        <td *ngIf="canRenderColumn('DirTest')"><string-tick [value]="project.scm.testDirectory"></string-tick></td>
+        <td *ngIf="canRenderColumn('DirDocs')"><string-tick [value]="project.scm.docsDirectory"></string-tick></td>
+        <td *ngIf="canRenderColumn('DirBuild')"><string-tick [value]="project.scm.buildDirectory"></string-tick></td>
         <td *ngIf="canRenderColumn('Languages')"><array-string [value]="project.languages"></array-string></td>
         <td *ngIf="canRenderColumn('SonarQubeBadges')"><sq-badges [config]="config" [project]="project"></sq-badges></td>
         <td>

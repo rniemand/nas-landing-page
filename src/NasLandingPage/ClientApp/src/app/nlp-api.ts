@@ -413,7 +413,6 @@ export class ProjectInfo implements IProjectInfo {
     repo!: RepositoryInfo;
     sonarQube!: SonarQubeInfo;
     scm!: SourceCodeMaturity;
-    directories!: ProjectDirectories;
     license!: ProjectLicense;
     languages!: string[];
     ciInfo!: RepoCiInfo;
@@ -430,7 +429,6 @@ export class ProjectInfo implements IProjectInfo {
             this.repo = new RepositoryInfo();
             this.sonarQube = new SonarQubeInfo();
             this.scm = new SourceCodeMaturity();
-            this.directories = new ProjectDirectories();
             this.license = new ProjectLicense();
             this.languages = [];
             this.ciInfo = new RepoCiInfo();
@@ -446,7 +444,6 @@ export class ProjectInfo implements IProjectInfo {
             this.repo = _data["repo"] ? RepositoryInfo.fromJS(_data["repo"]) : new RepositoryInfo();
             this.sonarQube = _data["sonarQube"] ? SonarQubeInfo.fromJS(_data["sonarQube"]) : new SonarQubeInfo();
             this.scm = _data["scm"] ? SourceCodeMaturity.fromJS(_data["scm"]) : new SourceCodeMaturity();
-            this.directories = _data["directories"] ? ProjectDirectories.fromJS(_data["directories"]) : new ProjectDirectories();
             this.license = _data["license"] ? ProjectLicense.fromJS(_data["license"]) : new ProjectLicense();
             if (Array.isArray(_data["languages"])) {
                 this.languages = [] as any;
@@ -473,7 +470,6 @@ export class ProjectInfo implements IProjectInfo {
         data["repo"] = this.repo ? this.repo.toJSON() : <any>undefined;
         data["sonarQube"] = this.sonarQube ? this.sonarQube.toJSON() : <any>undefined;
         data["scm"] = this.scm ? this.scm.toJSON() : <any>undefined;
-        data["directories"] = this.directories ? this.directories.toJSON() : <any>undefined;
         data["license"] = this.license ? this.license.toJSON() : <any>undefined;
         if (Array.isArray(this.languages)) {
             data["languages"] = [];
@@ -493,7 +489,6 @@ export interface IProjectInfo {
     repo: RepositoryInfo;
     sonarQube: SonarQubeInfo;
     scm: SourceCodeMaturity;
-    directories: ProjectDirectories;
     license: ProjectLicense;
     languages: string[];
     ciInfo: RepoCiInfo;
@@ -705,6 +700,10 @@ export class SourceCodeMaturity implements ISourceCodeMaturity {
     testScript!: string;
     ciVersion!: string;
     ciFlows!: string[];
+    srcDirectory!: string;
+    testDirectory!: string;
+    docsDirectory!: string;
+    buildDirectory!: string;
 
     constructor(data?: ISourceCodeMaturity) {
         if (data) {
@@ -733,6 +732,10 @@ export class SourceCodeMaturity implements ISourceCodeMaturity {
                 for (let item of _data["ciFlows"])
                     this.ciFlows!.push(item);
             }
+            this.srcDirectory = _data["srcDirectory"];
+            this.testDirectory = _data["testDirectory"];
+            this.docsDirectory = _data["docsDirectory"];
+            this.buildDirectory = _data["buildDirectory"];
         }
     }
 
@@ -758,6 +761,10 @@ export class SourceCodeMaturity implements ISourceCodeMaturity {
             for (let item of this.ciFlows)
                 data["ciFlows"].push(item);
         }
+        data["srcDirectory"] = this.srcDirectory;
+        data["testDirectory"] = this.testDirectory;
+        data["docsDirectory"] = this.docsDirectory;
+        data["buildDirectory"] = this.buildDirectory;
         return data;
     }
 }
@@ -772,54 +779,10 @@ export interface ISourceCodeMaturity {
     testScript: string;
     ciVersion: string;
     ciFlows: string[];
-}
-
-export class ProjectDirectories implements IProjectDirectories {
-    src!: string;
-    test!: string;
-    docs!: string;
-    build!: string;
-
-    constructor(data?: IProjectDirectories) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.src = _data["src"];
-            this.test = _data["test"];
-            this.docs = _data["docs"];
-            this.build = _data["build"];
-        }
-    }
-
-    static fromJS(data: any): ProjectDirectories {
-        data = typeof data === 'object' ? data : {};
-        let result = new ProjectDirectories();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["src"] = this.src;
-        data["test"] = this.test;
-        data["docs"] = this.docs;
-        data["build"] = this.build;
-        return data;
-    }
-}
-
-export interface IProjectDirectories {
-    src: string;
-    test: string;
-    docs: string;
-    build: string;
+    srcDirectory: string;
+    testDirectory: string;
+    docsDirectory: string;
+    buildDirectory: string;
 }
 
 export class ProjectLicense implements IProjectLicense {
