@@ -412,11 +412,11 @@ export class ProjectInfo implements IProjectInfo {
     description!: string;
     lastUpdated!: Date;
     metadata!: ProjectInfoMetadata;
-    repo!: RepoInfo;
+    repo!: RepositoryInfo;
     sonarQube!: SonarQubeInfo;
-    scm!: SourceCodeMaturityInfo;
+    scm!: SourceCodeMaturity;
     directories!: ProjectDirectories;
-    license!: LicenseInfo;
+    license!: ProjectLicense;
     languages!: string[];
     ciInfo!: RepoCiInfo;
 
@@ -429,11 +429,11 @@ export class ProjectInfo implements IProjectInfo {
         }
         if (!data) {
             this.metadata = new ProjectInfoMetadata();
-            this.repo = new RepoInfo();
+            this.repo = new RepositoryInfo();
             this.sonarQube = new SonarQubeInfo();
-            this.scm = new SourceCodeMaturityInfo();
+            this.scm = new SourceCodeMaturity();
             this.directories = new ProjectDirectories();
-            this.license = new LicenseInfo();
+            this.license = new ProjectLicense();
             this.languages = [];
             this.ciInfo = new RepoCiInfo();
         }
@@ -445,11 +445,11 @@ export class ProjectInfo implements IProjectInfo {
             this.description = _data["description"];
             this.lastUpdated = _data["lastUpdated"] ? new Date(_data["lastUpdated"].toString()) : <any>undefined;
             this.metadata = _data["metadata"] ? ProjectInfoMetadata.fromJS(_data["metadata"]) : new ProjectInfoMetadata();
-            this.repo = _data["repo"] ? RepoInfo.fromJS(_data["repo"]) : new RepoInfo();
+            this.repo = _data["repo"] ? RepositoryInfo.fromJS(_data["repo"]) : new RepositoryInfo();
             this.sonarQube = _data["sonarQube"] ? SonarQubeInfo.fromJS(_data["sonarQube"]) : new SonarQubeInfo();
-            this.scm = _data["scm"] ? SourceCodeMaturityInfo.fromJS(_data["scm"]) : new SourceCodeMaturityInfo();
+            this.scm = _data["scm"] ? SourceCodeMaturity.fromJS(_data["scm"]) : new SourceCodeMaturity();
             this.directories = _data["directories"] ? ProjectDirectories.fromJS(_data["directories"]) : new ProjectDirectories();
-            this.license = _data["license"] ? LicenseInfo.fromJS(_data["license"]) : new LicenseInfo();
+            this.license = _data["license"] ? ProjectLicense.fromJS(_data["license"]) : new ProjectLicense();
             if (Array.isArray(_data["languages"])) {
                 this.languages = [] as any;
                 for (let item of _data["languages"])
@@ -492,11 +492,11 @@ export interface IProjectInfo {
     description: string;
     lastUpdated: Date;
     metadata: ProjectInfoMetadata;
-    repo: RepoInfo;
+    repo: RepositoryInfo;
     sonarQube: SonarQubeInfo;
-    scm: SourceCodeMaturityInfo;
+    scm: SourceCodeMaturity;
     directories: ProjectDirectories;
-    license: LicenseInfo;
+    license: ProjectLicense;
     languages: string[];
     ciInfo: RepoCiInfo;
 }
@@ -541,7 +541,7 @@ export interface IProjectInfoMetadata {
     fileNameWithoutExtension: string;
 }
 
-export class RepoInfo implements IRepoInfo {
+export class RepositoryInfo implements IRepositoryInfo {
     type!: RepoType;
     url!: string;
     cicd!: string;
@@ -557,7 +557,7 @@ export class RepoInfo implements IRepoInfo {
     apiUrl!: string;
     size!: number;
 
-    constructor(data?: IRepoInfo) {
+    constructor(data?: IRepositoryInfo) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -585,9 +585,9 @@ export class RepoInfo implements IRepoInfo {
         }
     }
 
-    static fromJS(data: any): RepoInfo {
+    static fromJS(data: any): RepositoryInfo {
         data = typeof data === 'object' ? data : {};
-        let result = new RepoInfo();
+        let result = new RepositoryInfo();
         result.init(data);
         return result;
     }
@@ -612,7 +612,7 @@ export class RepoInfo implements IRepoInfo {
     }
 }
 
-export interface IRepoInfo {
+export interface IRepositoryInfo {
     type: RepoType;
     url: string;
     cicd: string;
@@ -697,8 +697,7 @@ export interface ISonarQubeInfo {
     badges: { [key: string]: string; };
 }
 
-export class SourceCodeMaturityInfo implements ISourceCodeMaturityInfo {
-    hasReadme!: boolean;
+export class SourceCodeMaturity implements ISourceCodeMaturity {
     readme!: string;
     hasGitAttributes!: boolean;
     gitAttributes!: string;
@@ -714,7 +713,7 @@ export class SourceCodeMaturityInfo implements ISourceCodeMaturityInfo {
     ciInfo!: string;
     workFlows!: string[];
 
-    constructor(data?: ISourceCodeMaturityInfo) {
+    constructor(data?: ISourceCodeMaturity) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -730,7 +729,6 @@ export class SourceCodeMaturityInfo implements ISourceCodeMaturityInfo {
 
     init(_data?: any) {
         if (_data) {
-            this.hasReadme = _data["hasReadme"];
             this.readme = _data["readme"];
             this.hasGitAttributes = _data["hasGitAttributes"];
             this.gitAttributes = _data["gitAttributes"];
@@ -760,16 +758,15 @@ export class SourceCodeMaturityInfo implements ISourceCodeMaturityInfo {
         }
     }
 
-    static fromJS(data: any): SourceCodeMaturityInfo {
+    static fromJS(data: any): SourceCodeMaturity {
         data = typeof data === 'object' ? data : {};
-        let result = new SourceCodeMaturityInfo();
+        let result = new SourceCodeMaturity();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["hasReadme"] = this.hasReadme;
         data["readme"] = this.readme;
         data["hasGitAttributes"] = this.hasGitAttributes;
         data["gitAttributes"] = this.gitAttributes;
@@ -800,8 +797,7 @@ export class SourceCodeMaturityInfo implements ISourceCodeMaturityInfo {
     }
 }
 
-export interface ISourceCodeMaturityInfo {
-    hasReadme: boolean;
+export interface ISourceCodeMaturity {
     readme: string;
     hasGitAttributes: boolean;
     gitAttributes: string;
@@ -866,11 +862,11 @@ export interface IProjectDirectories {
     build: string;
 }
 
-export class LicenseInfo implements ILicenseInfo {
+export class ProjectLicense implements IProjectLicense {
     name!: string;
     url!: string;
 
-    constructor(data?: ILicenseInfo) {
+    constructor(data?: IProjectLicense) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -886,9 +882,9 @@ export class LicenseInfo implements ILicenseInfo {
         }
     }
 
-    static fromJS(data: any): LicenseInfo {
+    static fromJS(data: any): ProjectLicense {
         data = typeof data === 'object' ? data : {};
-        let result = new LicenseInfo();
+        let result = new ProjectLicense();
         result.init(data);
         return result;
     }
@@ -901,7 +897,7 @@ export class LicenseInfo implements ILicenseInfo {
     }
 }
 
-export interface ILicenseInfo {
+export interface IProjectLicense {
     name: string;
     url: string;
 }

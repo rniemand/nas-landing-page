@@ -4,11 +4,12 @@ namespace NasLandingPage.Common.Models.Responses.Projects;
 
 public class SourceCodeMaturity
 {
-  [JsonProperty("hasReadme")]
-  public bool HasReadme { get; set; } = false;
-
   [JsonProperty("readme")]
   public string Readme { get; set; } = string.Empty;
+
+
+
+
 
   [JsonProperty("hasGitAttributes")]
   public bool HasGitAttributes { get; set; } = false;

@@ -84,19 +84,12 @@ public class RootRepositoryContentInfoSync : IRootRepositoryContentInfoSync
   {
     // TODO: [RootRepositoryContentInfoSync.SyncReadme] (TESTS) Add tests
     var filePath = contents.GetHtmlFilePath("README.md");
-    var fileExists = !string.IsNullOrWhiteSpace(filePath);
 
-    if (projectInfo.Scm.HasReadme != fileExists)
-    {
-      messages.Add("Updated HasReadme to: " + (fileExists ? "true" : "false"));
-      projectInfo.Scm.HasReadme = fileExists;
-    }
+    if (projectInfo.Scm.Readme.IgnoreCaseEquals(filePath))
+      return;
 
-    if (projectInfo.Scm.Readme != filePath)
-    {
-      messages.Add($"Updated README.md file path: {filePath}");
-      projectInfo.Scm.Readme = filePath;
-    }
+    projectInfo.Scm.Readme = filePath;
+    messages.Add($"Updated 'scm.readme' to: {filePath}");
   }
 
   private void SyncLicense(ICollection<string> messages, ProjectInfo projectInfo, IReadOnlyList<RepositoryContent> contents)
