@@ -28,7 +28,8 @@
         <th scope="col" *ngIf="canRenderColumn('HasGitAttributes')">.gitAttr</th>
         <th scope="col" *ngIf="canRenderColumn('HasPrTemplate')">PR</th>
         <th scope="col" *ngIf="canRenderColumn('HasEditorConfig')">.editorconfig</th>
-        <th scope="col" *ngIf="canRenderColumn('HasBuildScripts')">👷‍♂️</th>
+        <th scope="col" *ngIf="canRenderColumn('HasBuildScript')">👷‍♂️</th>
+        <th scope="col" *ngIf="canRenderColumn('HasTestScript')">🧪</th>
         <th scope="col" *ngIf="canRenderColumn('CiVersion')">👷‍♂️</th>
         <th scope="col" *ngIf="canRenderColumn('CountCiFlows')">🔄</th>
         <th scope="col" *ngIf="canRenderColumn('CountRepoForks')">🍴</th>
@@ -73,7 +74,14 @@
           <div *ngIf="!project.scm.editorConfig">❌</div>
           <link-generic *ngIf="project.scm.editorConfig" [url]="project.scm.editorConfig" name="✔"></link-generic>
         </td>
-        <td *ngIf="canRenderColumn('HasBuildScripts')"><string-tick [value]="project.scm.buildScript"></string-tick></td>
+        <td *ngIf="canRenderColumn('HasBuildScript')">
+          <div *ngIf="!project.scm.buildScript">❌</div>
+          <link-generic *ngIf="project.scm.buildScript" [url]="project.scm.buildScript" name="✔"></link-generic>
+        </td>
+        <td *ngIf="canRenderColumn('HasTestScript')">
+          <div *ngIf="!project.scm.testScript">❌</div>
+          <link-generic *ngIf="project.scm.testScript" [url]="project.scm.testScript" name="✔"></link-generic>
+        </td>
         <td *ngIf="canRenderColumn('CiVersion')">{{project.scm.ciVersion}}</td>
         <td *ngIf="canRenderColumn('CountCiFlows')"><array-count [value]="project.scm.ciFlows"></array-count></td>
         <td *ngIf="canRenderColumn('CountRepoForks')"><raw-count [value]="project.repo.forks"></raw-count></td>
