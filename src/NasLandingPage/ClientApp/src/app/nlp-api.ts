@@ -311,7 +311,7 @@ export class UserLinksClient {
 }
 
 export class ClientConfig implements IClientConfig {
-    columns!: ProjectTableColumn[];
+    columns!: TableColumn[];
     sonarQubeUrl!: string;
     badges!: string[];
 
@@ -369,12 +369,12 @@ export class ClientConfig implements IClientConfig {
 }
 
 export interface IClientConfig {
-    columns: ProjectTableColumn[];
+    columns: TableColumn[];
     sonarQubeUrl: string;
     badges: string[];
 }
 
-export enum ProjectTableColumn {
+export enum TableColumn {
     Name = 0,
     RepoType = 1,
     RepoIsPublic = 2,
@@ -384,16 +384,16 @@ export enum ProjectTableColumn {
     HasPrTemplate = 6,
     HasEditorConfig = 7,
     HasBuildScripts = 8,
-    VersionBuildScripts = 9,
+    BuildScriptVersion = 9,
     DirSrc = 10,
     DirTest = 11,
     DirDocs = 12,
-    DirDotGithub = 13,
+    DirBuild = 13,
     Languages = 14,
     License = 15,
     Description = 16,
     RepoId = 17,
-    RepoDefaultBranch = 18,
+    DefaultBranch = 18,
     RepoLastUpdate = 19,
     UrlRepo = 20,
     UrlCiCd = 21,
@@ -415,7 +415,7 @@ export class ProjectInfo implements IProjectInfo {
     repo!: RepoInfo;
     sonarQube!: SonarQubeInfo;
     scm!: SourceCodeMaturityInfo;
-    folders!: ProjectFolderInfo;
+    directories!: ProjectDirectories;
     license!: LicenseInfo;
     languages!: string[];
     ciInfo!: RepoCiInfo;
@@ -432,7 +432,7 @@ export class ProjectInfo implements IProjectInfo {
             this.repo = new RepoInfo();
             this.sonarQube = new SonarQubeInfo();
             this.scm = new SourceCodeMaturityInfo();
-            this.folders = new ProjectFolderInfo();
+            this.directories = new ProjectDirectories();
             this.license = new LicenseInfo();
             this.languages = [];
             this.ciInfo = new RepoCiInfo();
@@ -448,7 +448,7 @@ export class ProjectInfo implements IProjectInfo {
             this.repo = _data["repo"] ? RepoInfo.fromJS(_data["repo"]) : new RepoInfo();
             this.sonarQube = _data["sonarQube"] ? SonarQubeInfo.fromJS(_data["sonarQube"]) : new SonarQubeInfo();
             this.scm = _data["scm"] ? SourceCodeMaturityInfo.fromJS(_data["scm"]) : new SourceCodeMaturityInfo();
-            this.folders = _data["folders"] ? ProjectFolderInfo.fromJS(_data["folders"]) : new ProjectFolderInfo();
+            this.directories = _data["directories"] ? ProjectDirectories.fromJS(_data["directories"]) : new ProjectDirectories();
             this.license = _data["license"] ? LicenseInfo.fromJS(_data["license"]) : new LicenseInfo();
             if (Array.isArray(_data["languages"])) {
                 this.languages = [] as any;
@@ -475,7 +475,7 @@ export class ProjectInfo implements IProjectInfo {
         data["repo"] = this.repo ? this.repo.toJSON() : <any>undefined;
         data["sonarQube"] = this.sonarQube ? this.sonarQube.toJSON() : <any>undefined;
         data["scm"] = this.scm ? this.scm.toJSON() : <any>undefined;
-        data["folders"] = this.folders ? this.folders.toJSON() : <any>undefined;
+        data["directories"] = this.directories ? this.directories.toJSON() : <any>undefined;
         data["license"] = this.license ? this.license.toJSON() : <any>undefined;
         if (Array.isArray(this.languages)) {
             data["languages"] = [];
@@ -495,7 +495,7 @@ export interface IProjectInfo {
     repo: RepoInfo;
     sonarQube: SonarQubeInfo;
     scm: SourceCodeMaturityInfo;
-    folders: ProjectFolderInfo;
+    directories: ProjectDirectories;
     license: LicenseInfo;
     languages: string[];
     ciInfo: RepoCiInfo;
@@ -818,14 +818,13 @@ export interface ISourceCodeMaturityInfo {
     workFlows: string[];
 }
 
-export class ProjectFolderInfo implements IProjectFolderInfo {
-    src!: boolean;
-    test!: boolean;
-    docs!: boolean;
-    build!: boolean;
-    dotGithub!: boolean;
+export class ProjectDirectories implements IProjectDirectories {
+    src!: string;
+    test!: string;
+    docs!: string;
+    build!: string;
 
-    constructor(data?: IProjectFolderInfo) {
+    constructor(data?: IProjectDirectories) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -840,13 +839,12 @@ export class ProjectFolderInfo implements IProjectFolderInfo {
             this.test = _data["test"];
             this.docs = _data["docs"];
             this.build = _data["build"];
-            this.dotGithub = _data["dotGithub"];
         }
     }
 
-    static fromJS(data: any): ProjectFolderInfo {
+    static fromJS(data: any): ProjectDirectories {
         data = typeof data === 'object' ? data : {};
-        let result = new ProjectFolderInfo();
+        let result = new ProjectDirectories();
         result.init(data);
         return result;
     }
@@ -857,17 +855,15 @@ export class ProjectFolderInfo implements IProjectFolderInfo {
         data["test"] = this.test;
         data["docs"] = this.docs;
         data["build"] = this.build;
-        data["dotGithub"] = this.dotGithub;
         return data;
     }
 }
 
-export interface IProjectFolderInfo {
-    src: boolean;
-    test: boolean;
-    docs: boolean;
-    build: boolean;
-    dotGithub: boolean;
+export interface IProjectDirectories {
+    src: string;
+    test: string;
+    docs: string;
+    build: string;
 }
 
 export class LicenseInfo implements ILicenseInfo {

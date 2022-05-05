@@ -18,7 +18,7 @@
         <th scope="col" *ngIf="canRenderColumn('UrlRepo')">&nbsp;</th>
         <th scope="col" *ngIf="canRenderColumn('UrlCiCd')">&nbsp;</th>
         <th scope="col" *ngIf="canRenderColumn('UrlSonarQube')">&nbsp;</th>
-        <th scope="col" *ngIf="canRenderColumn('RepoDefaultBranch')">Branch</th>
+        <th scope="col" *ngIf="canRenderColumn('DefaultBranch')">Branch</th>
         <th scope="col" *ngIf="canRenderColumn('RepoLastUpdate')">Last Push</th>
         <th scope="col" *ngIf="canRenderColumn('RepoId')">RepoId</th>
         <th scope="col" *ngIf="canRenderColumn('RepoIsPublic')">Public</th>
@@ -29,16 +29,16 @@
         <th scope="col" *ngIf="canRenderColumn('HasPrTemplate')">PR</th>
         <th scope="col" *ngIf="canRenderColumn('HasEditorConfig')">.editorconfig</th>
         <th scope="col" *ngIf="canRenderColumn('HasBuildScripts')">👷‍♂️</th>
-        <th scope="col" *ngIf="canRenderColumn('VersionBuildScripts')">👷‍♂️</th>
+        <th scope="col" *ngIf="canRenderColumn('BuildScriptVersion')">👷‍♂️</th>
         <th scope="col" *ngIf="canRenderColumn('CountBuildScripts')">📜</th>
         <th scope="col" *ngIf="canRenderColumn('CountTestScripts')">🧪</th>
         <th scope="col" *ngIf="canRenderColumn('CountWorkFlows')">🔄</th>
         <th scope="col" *ngIf="canRenderColumn('CountRepoForks')">🍴</th>
         <th scope="col" *ngIf="canRenderColumn('CountOpenIssues')">⚠️</th>
-        <th scope="col" *ngIf="canRenderColumn('DirSrc')">src</th>
-        <th scope="col" *ngIf="canRenderColumn('DirTest')">test</th>
-        <th scope="col" *ngIf="canRenderColumn('DirDocs')">docs</th>
-        <th scope="col" *ngIf="canRenderColumn('DirDotGithub')">.github</th>
+        <th scope="col" *ngIf="canRenderColumn('DirSrc')">🧬</th>
+        <th scope="col" *ngIf="canRenderColumn('DirTest')">🧪</th>
+        <th scope="col" *ngIf="canRenderColumn('DirDocs')">📄</th>
+        <th scope="col" *ngIf="canRenderColumn('DirBuild')">👷‍♂️</th>
         <th scope="col" *ngIf="canRenderColumn('Languages')">Languages</th>
         <th scope="col" *ngIf="canRenderColumn('SonarQubeBadges')">&nbsp;</th>
         <th scope="col">&nbsp;</th>
@@ -53,7 +53,7 @@
         <td *ngIf="canRenderColumn('UrlRepo')"><link-generic [url]="project.repo.url" name="repo"></link-generic></td>
         <td *ngIf="canRenderColumn('UrlCiCd')"><link-generic [url]="project.repo.cicd" name="ci-cd"></link-generic></td>
         <td *ngIf="canRenderColumn('UrlSonarQube')"><link-sq [project]="project" [config]="config"></link-sq></td>
-        <td *ngIf="canRenderColumn('RepoDefaultBranch')" class="branch">{{ project.repo.defaultBranch }}</td>
+        <td *ngIf="canRenderColumn('DefaultBranch')" class="branch">{{ project.repo.defaultBranch }}</td>
         <td *ngIf="canRenderColumn('RepoLastUpdate')">{{ project.repo.lastUpdated | date:'yyyy-MM-dd' }}</td>
         <td *ngIf="canRenderColumn('RepoId')">{{ project.repo.id }}</td>
         <td *ngIf="canRenderColumn('RepoIsPublic')"><bool-tick [value]="project.repo.isPublic"></bool-tick></td>
@@ -64,16 +64,16 @@
         <td *ngIf="canRenderColumn('HasPrTemplate')"><bool-tick [value]="project.scm.hasPrTemplate"></bool-tick></td>
         <td *ngIf="canRenderColumn('HasEditorConfig')"><bool-tick [value]="project.scm.hasEditorConfig"></bool-tick></td>
         <td *ngIf="canRenderColumn('HasBuildScripts')"><bool-tick [value]="project.scm.hasBuildScript"></bool-tick></td>
-        <td *ngIf="canRenderColumn('VersionBuildScripts')">{{project.scm.buildScriptVersion}}</td>
+        <td *ngIf="canRenderColumn('BuildScriptVersion')">{{project.scm.buildScriptVersion}}</td>
         <td *ngIf="canRenderColumn('CountBuildScripts')"><array-count [value]="project.scm.buildScripts"></array-count></td>
         <td *ngIf="canRenderColumn('CountTestScripts')"><array-count [value]="project.scm.testScripts"></array-count></td>
         <td *ngIf="canRenderColumn('CountWorkFlows')"><array-count [value]="project.scm.workFlows"></array-count></td>
         <td *ngIf="canRenderColumn('CountRepoForks')"><raw-count [value]="project.repo.forks"></raw-count></td>
         <td *ngIf="canRenderColumn('CountOpenIssues')"><raw-count [value]="project.repo.openIssues"></raw-count></td>
-        <td *ngIf="canRenderColumn('DirSrc')"><bool-tick [value]="project.folders.src"></bool-tick></td>
-        <td *ngIf="canRenderColumn('DirTest')"><bool-tick [value]="project.folders.test"></bool-tick></td>
-        <td *ngIf="canRenderColumn('DirDocs')"><bool-tick [value]="project.folders.docs"></bool-tick></td>
-        <td *ngIf="canRenderColumn('DirDotGithub')"><bool-tick [value]="project.folders.dotGithub"></bool-tick></td>
+        <td *ngIf="canRenderColumn('DirSrc')"><string-tick [value]="project.directories.src"></string-tick></td>
+        <td *ngIf="canRenderColumn('DirTest')"><string-tick [value]="project.directories.test"></string-tick></td>
+        <td *ngIf="canRenderColumn('DirDocs')"><string-tick [value]="project.directories.docs"></string-tick></td>
+        <td *ngIf="canRenderColumn('DirBuild')"><string-tick [value]="project.directories.build"></string-tick></td>
         <td *ngIf="canRenderColumn('Languages')"><array-string [value]="project.languages"></array-string></td>
         <td *ngIf="canRenderColumn('SonarQubeBadges')"><sq-badges [config]="config" [project]="project"></sq-badges></td>
         <td>

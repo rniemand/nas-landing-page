@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
-import { ClientConfig, ProjectInfo, ProjectsClient, ProjectTableColumn, RunCommandRequest, RunCommandResponse } from 'src/app/nlp-api';
+import { ClientConfig, ProjectInfo, ProjectsClient, TableColumn, RunCommandRequest, RunCommandResponse } from 'src/app/nlp-api';
 
 @Component({
   selector: 'app-project-table',
@@ -52,7 +52,7 @@ export class ProjectTableComponent implements OnInit, OnDestroy, OnChanges {
 
   public canRenderColumn = (column: string) => {
     if(!this.hasConfig || !this.config) { return false; }
-    let resolved = (<any>ProjectTableColumn)[column];
+    let resolved = (<any>TableColumn)[column];
 
     if(this.config.columns.indexOf(resolved) === -1) {
       return false;

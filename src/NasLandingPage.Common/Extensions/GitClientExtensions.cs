@@ -44,4 +44,14 @@ public static class GitClientExtensions
       x.Name.IgnoreCaseEquals(name)
     );
   }
+
+  public static RepositoryContent? GetDirectory(this IReadOnlyList<RepositoryContent> contents, string name)
+  {
+    // TODO: [GitClientExtensions.GetDirectory] (TESTS) Add tests
+    var directory = contents.FirstOrDefault(x =>
+      x.Type.Value == ContentType.Dir &&
+      x.Name.IgnoreCaseEquals(name));
+
+    return directory ?? null;
+  }
 }

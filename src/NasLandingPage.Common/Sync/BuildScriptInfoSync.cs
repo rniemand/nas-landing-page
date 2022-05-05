@@ -1,7 +1,7 @@
 using NasLandingPage.Common.Builders;
 using NasLandingPage.Common.Clients;
 using NasLandingPage.Common.Extensions;
-using NasLandingPage.Common.Models.Responses;
+using NasLandingPage.Common.Models.Responses.Projects;
 using Octokit;
 
 namespace NasLandingPage.Common.Sync;
@@ -23,7 +23,7 @@ public class BuildScriptInfoSync : IBuildScriptInfoSync
   public async Task SyncAsync(RunCommandResponseBuilder responseBuilder, ProjectInfo projectInfo)
   {
     // TODO: [BuildScriptInfoSync.SyncAsync] (TESTS) Add tests
-    if (!projectInfo.Folders.DotGithub)
+    if (!string.IsNullOrWhiteSpace(projectInfo.Directories.Build))
       return;
 
     var messages = new List<string>();

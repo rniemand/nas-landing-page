@@ -1,8 +1,7 @@
 using NasLandingPage.Common.Models.External;
-using NasLandingPage.Common.Models.Responses.Projects;
 using Newtonsoft.Json;
 
-namespace NasLandingPage.Common.Models.Responses;
+namespace NasLandingPage.Common.Models.Responses.Projects;
 
 public class ProjectInfo
 {
@@ -27,8 +26,8 @@ public class ProjectInfo
   [JsonProperty("scm")]
   public SourceCodeMaturityInfo Scm { get; set; } = new();
 
-  [JsonProperty("folders")]
-  public ProjectFolderInfo Folders { get; set; } = new();
+  [JsonProperty("directories")]
+  public ProjectDirectories Directories { get; set; } = new();
 
   [JsonProperty("license")]
   public LicenseInfo License { get; set; } = new();

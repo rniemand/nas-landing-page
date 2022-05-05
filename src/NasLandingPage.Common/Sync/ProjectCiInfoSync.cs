@@ -1,7 +1,7 @@
 using NasLandingPage.Common.Builders;
 using NasLandingPage.Common.Clients;
 using NasLandingPage.Common.Models.External;
-using NasLandingPage.Common.Models.Responses;
+using NasLandingPage.Common.Models.Responses.Projects;
 using Rn.NetCore.Common.Helpers;
 
 namespace NasLandingPage.Common.Sync;

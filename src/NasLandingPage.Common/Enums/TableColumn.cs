@@ -1,6 +1,6 @@
 namespace NasLandingPage.Common.Enums;
 
-public enum ProjectTableColumn
+public enum TableColumn
 {
   Name,
   RepoType,
@@ -11,16 +11,16 @@ public enum ProjectTableColumn
   HasPrTemplate,
   HasEditorConfig,
   HasBuildScripts,
-  VersionBuildScripts,
+  BuildScriptVersion,
   DirSrc,
   DirTest,
   DirDocs,
-  DirDotGithub,
+  DirBuild,
   Languages,
   License,
   Description,
   RepoId,
-  RepoDefaultBranch,
+  DefaultBranch,
   RepoLastUpdate,
   UrlRepo,
   UrlCiCd,

@@ -1,6 +1,6 @@
 using NasLandingPage.Common.Builders;
 using NasLandingPage.Common.Clients;
-using NasLandingPage.Common.Models.Responses;
+using NasLandingPage.Common.Models.Responses.Projects;
 using Octokit;
 
 namespace NasLandingPage.Common.Sync;

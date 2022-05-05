@@ -1,7 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using NasLandingPage.Common.Config;
 using NasLandingPage.Common.Helpers;
-using NasLandingPage.Common.Models.Responses;
 using NasLandingPage.Common.Models.Responses.Projects;
 
 namespace NasLandingPage.Common.Providers;
@@ -17,7 +16,7 @@ public interface IProjectInfoProvider
 public class ProjectInfoProvider : IProjectInfoProvider
 {
   private readonly IFileSystemHelper _fsHelper;
-  private readonly NasLandingPageConfig _config;
+  private readonly NlpConfig _config;
   private readonly string _dataDir;
   private readonly string _backupDir;
 
