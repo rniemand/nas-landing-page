@@ -29,10 +29,8 @@
         <th scope="col" *ngIf="canRenderColumn('HasPrTemplate')">PR</th>
         <th scope="col" *ngIf="canRenderColumn('HasEditorConfig')">.editorconfig</th>
         <th scope="col" *ngIf="canRenderColumn('HasBuildScripts')">👷‍♂️</th>
-        <th scope="col" *ngIf="canRenderColumn('BuildScriptVersion')">👷‍♂️</th>
-        <th scope="col" *ngIf="canRenderColumn('CountBuildScripts')">📜</th>
-        <th scope="col" *ngIf="canRenderColumn('CountTestScripts')">🧪</th>
-        <th scope="col" *ngIf="canRenderColumn('CountWorkFlows')">🔄</th>
+        <th scope="col" *ngIf="canRenderColumn('CiVersion')">👷‍♂️</th>
+        <th scope="col" *ngIf="canRenderColumn('CountCiFlows')">🔄</th>
         <th scope="col" *ngIf="canRenderColumn('CountRepoForks')">🍴</th>
         <th scope="col" *ngIf="canRenderColumn('CountOpenIssues')">⚠️</th>
         <th scope="col" *ngIf="canRenderColumn('DirSrc')">🧬</th>
@@ -60,14 +58,12 @@
         <td *ngIf="canRenderColumn('RepoSize')"><human-size [value]="project.repo.size"></human-size></td>
         <td *ngIf="canRenderColumn('License')"><link-generic [url]="project.license.url" [name]="project.license.name"></link-generic></td>
         <td *ngIf="canRenderColumn('HasReadme')"><string-tick [value]="project.scm.readme"></string-tick></td>
-        <td *ngIf="canRenderColumn('HasGitAttributes')"><bool-tick [value]="project.scm.hasGitAttributes"></bool-tick></td>
-        <td *ngIf="canRenderColumn('HasPrTemplate')"><bool-tick [value]="project.scm.hasPrTemplate"></bool-tick></td>
-        <td *ngIf="canRenderColumn('HasEditorConfig')"><bool-tick [value]="project.scm.hasEditorConfig"></bool-tick></td>
-        <td *ngIf="canRenderColumn('HasBuildScripts')"><bool-tick [value]="project.scm.hasBuildScript"></bool-tick></td>
-        <td *ngIf="canRenderColumn('BuildScriptVersion')">{{project.scm.buildScriptVersion}}</td>
-        <td *ngIf="canRenderColumn('CountBuildScripts')"><array-count [value]="project.scm.buildScripts"></array-count></td>
-        <td *ngIf="canRenderColumn('CountTestScripts')"><array-count [value]="project.scm.testScripts"></array-count></td>
-        <td *ngIf="canRenderColumn('CountWorkFlows')"><array-count [value]="project.scm.workFlows"></array-count></td>
+        <td *ngIf="canRenderColumn('HasGitAttributes')"><string-tick [value]="project.scm.gitAttributes"></string-tick></td>
+        <td *ngIf="canRenderColumn('HasPrTemplate')"><string-tick [value]="project.scm.prTemplate"></string-tick></td>
+        <td *ngIf="canRenderColumn('HasEditorConfig')"><string-tick [value]="project.scm.editorConfig"></string-tick></td>
+        <td *ngIf="canRenderColumn('HasBuildScripts')"><string-tick [value]="project.scm.buildScript"></string-tick></td>
+        <td *ngIf="canRenderColumn('CiVersion')">{{project.scm.ciVersion}}</td>
+        <td *ngIf="canRenderColumn('CountCiFlows')"><array-count [value]="project.scm.ciFlows"></array-count></td>
         <td *ngIf="canRenderColumn('CountRepoForks')"><raw-count [value]="project.repo.forks"></raw-count></td>
         <td *ngIf="canRenderColumn('CountOpenIssues')"><raw-count [value]="project.repo.openIssues"></raw-count></td>
         <td *ngIf="canRenderColumn('DirSrc')"><string-tick [value]="project.directories.src"></string-tick></td>

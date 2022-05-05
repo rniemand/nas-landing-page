@@ -384,7 +384,7 @@ export enum TableColumn {
     HasPrTemplate = 6,
     HasEditorConfig = 7,
     HasBuildScripts = 8,
-    BuildScriptVersion = 9,
+    CiVersion = 9,
     DirSrc = 10,
     DirTest = 11,
     DirDocs = 12,
@@ -400,11 +400,9 @@ export enum TableColumn {
     UrlSonarQube = 22,
     CountRepoForks = 23,
     CountOpenIssues = 24,
-    CountBuildScripts = 25,
-    CountTestScripts = 26,
-    CountWorkFlows = 27,
-    RepoSize = 28,
-    LastUpdated = 29,
+    CountCiFlows = 25,
+    RepoSize = 26,
+    LastUpdated = 27,
 }
 
 export class ProjectInfo implements IProjectInfo {
