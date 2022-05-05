@@ -1,8 +1,7 @@
 using NasLandingPage.Common.Models.External;
-using NasLandingPage.Common.Models.Responses.Projects;
 using Newtonsoft.Json;
 
-namespace NasLandingPage.Common.Models.Responses;
+namespace NasLandingPage.Common.Models.Responses.Projects;
 
 public class ProjectInfo
 {

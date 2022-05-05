@@ -1,7 +1,7 @@
 using NasLandingPage.Common.Builders;
 using NasLandingPage.Common.Clients;
 using NasLandingPage.Common.Extensions;
-using NasLandingPage.Common.Models.Responses;
+using NasLandingPage.Common.Models.Responses.Projects;
 using Octokit;
 using Rn.NetCore.Common.Extensions;
 

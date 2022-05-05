@@ -1,7 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using NasLandingPage.Common.Config;
 using NasLandingPage.Common.Helpers;
-using NasLandingPage.Common.Models.Responses;
 using NasLandingPage.Common.Models.Responses.Projects;
 
 namespace NasLandingPage.Common.Providers;
