@@ -26,9 +26,6 @@ public class ProjectInfo
   [JsonProperty("scm")]
   public SourceCodeMaturity Scm { get; set; } = new();
 
-  [JsonProperty("directories")]
-  public ProjectDirectories Directories { get; set; } = new();
-
   [JsonProperty("license")]
   public ProjectLicense License { get; set; } = new();
 

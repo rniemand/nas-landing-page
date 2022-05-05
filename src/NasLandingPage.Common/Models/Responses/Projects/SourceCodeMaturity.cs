@@ -30,4 +30,16 @@ public class SourceCodeMaturity
   
   [JsonProperty("ciFlows")]
   public string[] CiFlows { get; set; } = Array.Empty<string>();
+
+  [JsonProperty("srcDirectory")]
+  public string SrcDirectory { get; set; } = string.Empty;
+
+  [JsonProperty("testDirectory")]
+  public string TestDirectory { get; set; } = string.Empty;
+
+  [JsonProperty("docsDirectory")]
+  public string DocsDirectory { get; set; } = string.Empty;
+
+  [JsonProperty("buildDirectory")]
+  public string BuildDirectory { get; set; } = string.Empty;
 }

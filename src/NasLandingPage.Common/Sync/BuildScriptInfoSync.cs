@@ -25,7 +25,7 @@ public class BuildScriptInfoSync : IBuildScriptInfoSync
   public async Task SyncAsync(RunCommandResponseBuilder responseBuilder, ProjectInfo projectInfo)
   {
     // TODO: [BuildScriptInfoSync.SyncAsync] (TESTS) Add tests
-    if (string.IsNullOrWhiteSpace(projectInfo.Directories.Build))
+    if (string.IsNullOrWhiteSpace(projectInfo.Scm.BuildDirectory))
       return;
 
     var messages = new List<string>();

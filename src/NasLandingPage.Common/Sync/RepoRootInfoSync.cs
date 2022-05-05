@@ -111,10 +111,10 @@ public class RepoRootInfoSync : IRootRepositoryContentInfoSync
     var repoDirectory = contents.GetDirectory("src");
     var dirPath = repoDirectory?.HtmlUrl ?? string.Empty;
 
-    if(projectInfo.Directories.Src.IgnoreCaseEquals(dirPath))
+    if(projectInfo.Scm.SrcDirectory.IgnoreCaseEquals(dirPath))
       return;
     
-    projectInfo.Directories.Src = dirPath;
+    projectInfo.Scm.SrcDirectory = dirPath;
     messages.Add($"Setting 'directories.src' to: {dirPath}");
   }
 
@@ -124,10 +124,10 @@ public class RepoRootInfoSync : IRootRepositoryContentInfoSync
     var repoDirectory = contents.GetDirectory("test");
     var dirPath = repoDirectory?.HtmlUrl ?? string.Empty;
 
-    if (projectInfo.Directories.Test.IgnoreCaseEquals(dirPath))
+    if (projectInfo.Scm.TestDirectory.IgnoreCaseEquals(dirPath))
       return;
 
-    projectInfo.Directories.Test = dirPath;
+    projectInfo.Scm.TestDirectory = dirPath;
     messages.Add($"Setting 'directories.test' to: {dirPath}");
   }
 
@@ -137,10 +137,10 @@ public class RepoRootInfoSync : IRootRepositoryContentInfoSync
     var repoDirectory = contents.GetDirectory("docs");
     var dirPath = repoDirectory?.HtmlUrl ?? string.Empty;
 
-    if (projectInfo.Directories.Docs.IgnoreCaseEquals(dirPath))
+    if (projectInfo.Scm.DocsDirectory.IgnoreCaseEquals(dirPath))
       return;
 
-    projectInfo.Directories.Docs = dirPath;
+    projectInfo.Scm.DocsDirectory = dirPath;
     messages.Add($"Setting 'directories.docs' to: {dirPath}");
   }
 
@@ -150,10 +150,10 @@ public class RepoRootInfoSync : IRootRepositoryContentInfoSync
     var repoDirectory = contents.GetDirectory(".github");
     var dirPath = repoDirectory?.HtmlUrl ?? string.Empty;
 
-    if (projectInfo.Directories.Build.IgnoreCaseEquals(dirPath))
+    if (projectInfo.Scm.BuildDirectory.IgnoreCaseEquals(dirPath))
       return;
 
-    projectInfo.Directories.Build = dirPath;
+    projectInfo.Scm.BuildDirectory = dirPath;
     messages.Add($"Setting 'directories.build' to: {dirPath}");
   }
 }
