@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 
 namespace NasLandingPage.Common.Models.Responses.Projects;
 
-public class ProjectFolderInfo
+public class ProjectDirectories
 {
   [JsonProperty("src")]
   public string Src { get; set; } = string.Empty;
