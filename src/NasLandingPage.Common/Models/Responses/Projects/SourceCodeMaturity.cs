@@ -42,4 +42,10 @@ public class SourceCodeMaturity
 
   [JsonProperty("buildDirectory")]
   public string BuildDirectory { get; set; } = string.Empty;
+
+  [JsonProperty("licenseName")]
+  public string LicenseName { get; set; } = string.Empty;
+
+  [JsonProperty("licenseUrl")]
+  public string LicenseUrl { get; set; } = string.Empty;
 }

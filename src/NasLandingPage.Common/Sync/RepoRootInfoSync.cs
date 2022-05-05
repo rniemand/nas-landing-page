@@ -95,11 +95,11 @@ public class RepoRootInfoSync : IRootRepositoryContentInfoSync
 
     var fileContent = repoFile.Content;
     if (string.IsNullOrWhiteSpace(fileContent)) return;
-    projectInfo.License.Url = filePath;
-    projectInfo.License.Name = "Unknown";
+    projectInfo.Scm.LicenseUrl = filePath;
+    projectInfo.Scm.LicenseUrl = "Unknown";
 
     if (fileContent.IgnoreCaseContains("The MIT License (MIT)"))
-      projectInfo.License.Name = "MIT";
+      projectInfo.Scm.LicenseName = "MIT";
   }
 
 

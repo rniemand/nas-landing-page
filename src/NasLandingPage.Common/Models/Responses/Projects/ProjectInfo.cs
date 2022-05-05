@@ -25,10 +25,7 @@ public class ProjectInfo
 
   [JsonProperty("scm")]
   public SourceCodeMaturity Scm { get; set; } = new();
-
-  [JsonProperty("license")]
-  public ProjectLicense License { get; set; } = new();
-
+  
   [JsonProperty("languages")]
   public string[] Languages { get; set; } = Array.Empty<string>();
 
