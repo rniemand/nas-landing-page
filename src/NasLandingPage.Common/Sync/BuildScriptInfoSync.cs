@@ -23,7 +23,7 @@ public class BuildScriptInfoSync : IBuildScriptInfoSync
   public async Task SyncAsync(RunCommandResponseBuilder responseBuilder, ProjectInfo projectInfo)
   {
     // TODO: [BuildScriptInfoSync.SyncAsync] (TESTS) Add tests
-    if (!projectInfo.Folders.DotGithub)
+    if (!projectInfo.Directories.DotGithub)
       return;
 
     var messages = new List<string>();

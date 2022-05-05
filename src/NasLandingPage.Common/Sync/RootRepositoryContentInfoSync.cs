@@ -32,7 +32,7 @@ public class RootRepositoryContentInfoSync : IRootRepositoryContentInfoSync
     SyncReadme(messages, projectInfo, contents);
     SyncLicense(messages, projectInfo, contents);
 
-    SyncHasDirSrc(messages, projectInfo, contents);
+    SyncDirectorySrc(messages, projectInfo, contents);
     SyncHasDirTest(messages, projectInfo, contents);
     SyncHasDirDocs(messages, projectInfo, contents);
     SyncHasDirBuild(messages, projectInfo, contents);
@@ -127,16 +127,17 @@ public class RootRepositoryContentInfoSync : IRootRepositoryContentInfoSync
 
 
   // Top level directories
-  private static void SyncHasDirSrc(ICollection<string> messages, ProjectInfo projectInfo, IReadOnlyList<RepositoryContent> contents)
+  private static void SyncDirectorySrc(ICollection<string> messages, ProjectInfo projectInfo, IReadOnlyList<RepositoryContent> contents)
   {
-    // TODO: [RootRepositoryContentInfoSync.SyncHasDirSrc] (TESTS) Add tests
-    var hasDirectory = contents.ContainsDirectory("src");
+    // TODO: [RootRepositoryContentInfoSync.SyncDirectorySrc] (TESTS) Add tests
+    var repoDirectory = contents.GetDirectory("src");
+    var dirPath = repoDirectory?.Path ?? string.Empty;
 
-    if (projectInfo.Folders.Src == hasDirectory)
+    if(projectInfo.Directories.Src.IgnoreCaseEquals(dirPath))
       return;
-
-    messages.Add("Setting Src to: " + (hasDirectory ? "true" : "false"));
-    projectInfo.Folders.Src = hasDirectory;
+    
+    projectInfo.Directories.Src = dirPath;
+    messages.Add($"Setting 'directories.src' to: {dirPath}");
   }
 
   private static void SyncHasDirTest(ICollection<string> messages, ProjectInfo projectInfo, IReadOnlyList<RepositoryContent> contents)
@@ -144,11 +145,11 @@ public class RootRepositoryContentInfoSync : IRootRepositoryContentInfoSync
     // TODO: [RootRepositoryContentInfoSync.SyncHasDirTest] (TESTS) Add tests
     var hasDirectory = contents.ContainsDirectory("test");
 
-    if (projectInfo.Folders.Test == hasDirectory)
+    if (projectInfo.Directories.Test == hasDirectory)
       return;
 
     messages.Add("Setting Test to: " + (hasDirectory ? "true" : "false"));
-    projectInfo.Folders.Test = hasDirectory;
+    projectInfo.Directories.Test = hasDirectory;
   }
 
   private static void SyncHasDirDocs(ICollection<string> messages, ProjectInfo projectInfo, IReadOnlyList<RepositoryContent> contents)
@@ -156,11 +157,11 @@ public class RootRepositoryContentInfoSync : IRootRepositoryContentInfoSync
     // TODO: [RootRepositoryContentInfoSync.SyncHasDirDocs] (TESTS) Add tests
     var hasDirectory = contents.ContainsDirectory("docs");
 
-    if (projectInfo.Folders.Docs == hasDirectory)
+    if (projectInfo.Directories.Docs == hasDirectory)
       return;
 
     messages.Add("Setting Docs to: " + (hasDirectory ? "true" : "false"));
-    projectInfo.Folders.Docs = hasDirectory;
+    projectInfo.Directories.Docs = hasDirectory;
   }
 
   private static void SyncHasDirBuild(ICollection<string> messages, ProjectInfo projectInfo, IReadOnlyList<RepositoryContent> contents)
@@ -168,11 +169,11 @@ public class RootRepositoryContentInfoSync : IRootRepositoryContentInfoSync
     // TODO: [RootRepositoryContentInfoSync.SyncHasDirBuild] (TESTS) Add tests
     var hasDirectory = contents.ContainsDirectory("build");
 
-    if (projectInfo.Folders.Build == hasDirectory)
+    if (projectInfo.Directories.Build == hasDirectory)
       return;
 
     messages.Add("Setting Build to: " + (hasDirectory ? "true" : "false"));
-    projectInfo.Folders.Build = hasDirectory;
+    projectInfo.Directories.Build = hasDirectory;
   }
 
   private static void SyncHasDirDotGithub(ICollection<string> messages, ProjectInfo projectInfo, IReadOnlyList<RepositoryContent> contents)
@@ -180,10 +181,10 @@ public class RootRepositoryContentInfoSync : IRootRepositoryContentInfoSync
     // TODO: [RootRepositoryContentInfoSync.SyncHasDirDotGithub] (TESTS) Add tests
     var hasDirectory = contents.ContainsDirectory(".github");
 
-    if (projectInfo.Folders.DotGithub == hasDirectory)
+    if (projectInfo.Directories.DotGithub == hasDirectory)
       return;
 
     messages.Add("Setting DotGithub to: " + (hasDirectory ? "true" : "false"));
-    projectInfo.Folders.DotGithub = hasDirectory;
+    projectInfo.Directories.DotGithub = hasDirectory;
   }
 }
