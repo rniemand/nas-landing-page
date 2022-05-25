@@ -21,7 +21,6 @@ public class CoreRepositoryInfoSync : ICoreRepositoryInfoSync
 
   public async Task SyncAsync(RunCommandResponseBuilder responseBuilder, ProjectInfo projectInfo)
   {
-    // TODO: [CoreRepositoryInfoSync.SyncAsync] (TESTS) Add tests
     var repository = await _gitHubClient.GetRepositoryAsync(projectInfo.Repo.RepoId);
     var messages = new List<string>();
 
@@ -42,7 +41,6 @@ public class CoreRepositoryInfoSync : ICoreRepositoryInfoSync
 
   private static void SyncDefaultBranch(ICollection<string> messages, ProjectInfo projectInfo, Repository repository)
   {
-    // TODO: [CoreRepositoryInfoSync.SyncDefaultBranch] (TESTS) Add tests
     if (projectInfo.Repo.DefaultBranch == repository.DefaultBranch)
       return;
 
@@ -52,7 +50,6 @@ public class CoreRepositoryInfoSync : ICoreRepositoryInfoSync
 
   private static void SyncIsPublic(ICollection<string> messages, ProjectInfo projectInfo, Repository repository)
   {
-    // TODO: [CoreRepositoryInfoSync.SyncIsPublic] (TESTS) Add tests
     var repoIsPublic = repository.Visibility == RepositoryVisibility.Public;
     if (projectInfo.Repo.IsPublic == repoIsPublic)
       return;
@@ -63,7 +60,6 @@ public class CoreRepositoryInfoSync : ICoreRepositoryInfoSync
 
   private static void SyncForkCount(ICollection<string> messages, ProjectInfo projectInfo, Repository repository)
   {
-    // TODO: [CoreRepositoryInfoSync.SyncForkCount] (TESTS) Add tests
     if (projectInfo.Repo.ForksCount == repository.ForksCount)
       return;
 
@@ -73,7 +69,6 @@ public class CoreRepositoryInfoSync : ICoreRepositoryInfoSync
 
   private static void SyncHtmlUrl(ICollection<string> messages, ProjectInfo projectInfo, Repository repository)
   {
-    // TODO: [CoreRepositoryInfoSync.SyncHtmlUrl] (TESTS) Add tests
     if (projectInfo.Repo.HtmlUrl == repository.HtmlUrl)
       return;
 
@@ -83,7 +78,6 @@ public class CoreRepositoryInfoSync : ICoreRepositoryInfoSync
 
   private static void SyncFullName(ICollection<string> messages, ProjectInfo projectInfo, Repository repository)
   {
-    // TODO: [CoreRepositoryInfoSync.SyncFullName] (TESTS) Add tests
     if (projectInfo.Repo.FullName == repository.FullName)
       return;
 
@@ -93,7 +87,6 @@ public class CoreRepositoryInfoSync : ICoreRepositoryInfoSync
 
   private static void SyncGitUrl(ICollection<string> messages, ProjectInfo projectInfo, Repository repository)
   {
-    // TODO: [CoreRepositoryInfoSync.SyncGitUrl] (TESTS) Add tests
     if (projectInfo.Repo.GitUrl == repository.GitUrl)
       return;
 
@@ -103,7 +96,6 @@ public class CoreRepositoryInfoSync : ICoreRepositoryInfoSync
 
   private static void SyncOpenIssueCount(ICollection<string> messages, ProjectInfo projectInfo, Repository repository)
   {
-    // TODO: [CoreRepositoryInfoSync.SyncOpenIssueCount] (TESTS) Add tests
     if (projectInfo.Repo.OpenIssuesCount == repository.OpenIssuesCount)
       return;
 
@@ -113,7 +105,6 @@ public class CoreRepositoryInfoSync : ICoreRepositoryInfoSync
 
   private static void SyncSshUrl(ICollection<string> messages, ProjectInfo projectInfo, Repository repository)
   {
-    // TODO: [CoreRepositoryInfoSync.SyncSshUrl] (TESTS) Add tests
     if (projectInfo.Repo.SshUrl == repository.SshUrl)
       return;
 
@@ -123,7 +114,6 @@ public class CoreRepositoryInfoSync : ICoreRepositoryInfoSync
 
   private static void SyncApiUrl(ICollection<string> messages, ProjectInfo projectInfo, Repository repository)
   {
-    // TODO: [CoreRepositoryInfoSync.SyncApiUrl] (TESTS) Add tests
     if (projectInfo.Repo.ApiUrl == repository.Url)
       return;
 
@@ -133,7 +123,6 @@ public class CoreRepositoryInfoSync : ICoreRepositoryInfoSync
 
   private static void SyncRepoSize(ICollection<string> messages, ProjectInfo projectInfo, Repository repository)
   {
-    // TODO: [CoreRepositoryInfoSync.SyncRepoSize] (TESTS) Add tests
     if (projectInfo.Repo.Size == repository.Size)
       return;
 
@@ -143,7 +132,6 @@ public class CoreRepositoryInfoSync : ICoreRepositoryInfoSync
 
   private static void SyncDescription(ICollection<string> messages, ProjectInfo projectInfo, Repository repository)
   {
-    // TODO: [CoreRepositoryInfoSync.SyncDescription] (TESTS) Add tests
     if (projectInfo.Description == repository.Description)
       return;
 

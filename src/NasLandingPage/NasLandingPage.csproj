@@ -9,6 +9,7 @@
     <SpaProxyLaunchCommand>npm start</SpaProxyLaunchCommand>
     <ImplicitUsings>enable</ImplicitUsings>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <ProjectGuid>19595FAA-ED69-4306-9D1D-1D1253A4C052</ProjectGuid>
   </PropertyGroup>
 
   <ItemGroup>

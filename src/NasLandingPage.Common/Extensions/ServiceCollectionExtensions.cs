@@ -14,7 +14,6 @@ public static class ServiceCollectionExtensions
 {
   public static IServiceCollection AddNasLandingPage(this IServiceCollection serviceCollection)
   {
-    // TODO: [ServiceCollectionExtensions.AddNasLandingPage] (TESTS) Add tests
     return serviceCollection
       .AddSingleton<IDirectoryAbstraction, DirectoryAbstraction>()
       .AddSingleton<IFileAbstraction, FileAbstraction>()

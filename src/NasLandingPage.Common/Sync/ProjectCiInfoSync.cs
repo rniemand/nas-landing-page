@@ -25,7 +25,6 @@ public class ProjectCiInfoSync : IProjectCiInfoSync
 
   public async Task SyncAsync(RunCommandResponseBuilder responseBuilder, ProjectInfo projectInfo)
   {
-    // TODO: [ProjectCiInfoSync.SyncAsync] (TESTS) Add tests
     if(string.IsNullOrWhiteSpace(projectInfo.Scm.CiInfo))
       return;
 
@@ -55,21 +54,18 @@ public class ProjectCiInfoSync : IProjectCiInfoSync
 
   private static void HandleNoFileFound(RunCommandResponseBuilder responseBuilder, ProjectInfo projectInfo)
   {
-    // TODO: [ProjectCiInfoSync.HandleNoFileFound] (TESTS) Add tests
     responseBuilder.WithMessage("No ci.info.json file found, updating project information");
     projectInfo.Scm.CiInfo = string.Empty;
   }
 
   private static void HandleUnableToParseCiInfo(RunCommandResponseBuilder responseBuilder, ProjectInfo projectInfo)
   {
-    // TODO: [ProjectCiInfoSync.HandleUnableToParseCiInfo] (TESTS) Add tests
     responseBuilder.WithMessage("Unable to parse ci.info.json");
     projectInfo.Scm.CiInfo = string.Empty;
   }
 
   private static void SyncCiVersion(RunCommandResponseBuilder responseBuilder, ProjectInfo projectInfo, RepoCiInfo ciInfo)
   {
-    // TODO: [ProjectCiInfoSync.SyncCiVersion] (TESTS) Add tests
     if (projectInfo.Scm.CiVersion.IgnoreCaseEquals(ciInfo.BuildScriptVersion))
       return;
     
@@ -78,12 +74,10 @@ public class ProjectCiInfoSync : IProjectCiInfoSync
   }
 
   private bool TryExtractRepoCiInfo(string rawJson, out RepoCiInfo parsed) =>
-    // TODO: [ProjectCiInfoSync.TryExtractRepoCiInfo] (TESTS) Add tests
     _json.TryDeserializeObject(rawJson, out parsed);
 
   private static string ExtractGitFilePath(string url)
   {
-    // TODO: [ProjectCiInfoSync.ExtractGitFilePath] (TESTS) Add tests
     // http.*?:\/\/.*?\/blob\/([^\/]+)\/(.*)
     const string rxp = @"http.*?:\/\/.*?\/blob\/([^\/]+)\/(.*)";
 

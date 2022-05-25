@@ -18,14 +18,12 @@ public class NlpGitHubClient : INlpGitHubClient
 
   public NlpGitHubClient(IServiceProvider serviceProvider)
   {
-    // TODO: [NlpGitHubClient.NlpGitHubClient] (TESTS) Add tests
     _gitHubClient = CreateGitHubClient(serviceProvider);
   }
 
 
   public async Task<Repository> GetRepositoryAsync(long repositoryId)
   {
-    // TODO: [NlpGitHubClient.GetRepositoryAsync] (TESTS) Add tests
     return await _gitHubClient.Repository.Get(repositoryId);
   }
 
@@ -37,7 +35,6 @@ public class NlpGitHubClient : INlpGitHubClient
 
   private static IGitHubClient CreateGitHubClient(IServiceProvider serviceProvider)
   {
-    // TODO: [NlpGitHubClient.CreateGitHubClient] (TESTS) Add tests
     var credentials = GetCredentials(serviceProvider);
     var github = new GitHubClient(new ProductHeaderValue("my-cool-app"));
     var useToken = !string.IsNullOrWhiteSpace(credentials.AuthToken);
@@ -58,7 +55,6 @@ public class NlpGitHubClient : INlpGitHubClient
 
   private static BasicCredentials GetCredentials(IServiceProvider serviceProvider)
   {
-    // TODO: [NlpGitHubClient.GetCredentials] (TESTS) Add tests
     var credentialsService = serviceProvider.GetRequiredService<ICredentialsService>();
     return credentialsService.GetCredentials("github");
   }

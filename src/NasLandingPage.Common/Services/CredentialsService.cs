@@ -24,7 +24,6 @@ public class CredentialsService : ICredentialsService
 
   public CredentialsService(IServiceProvider serviceProvider)
   {
-    // TODO: [CredentialsService.CredentialsService] (TESTS) Add tests
     _environment = serviceProvider.GetRequiredService<IEnvironmentAbstraction>();
     _file = serviceProvider.GetRequiredService<IFileAbstraction>();
     _jsonHelper = serviceProvider.GetRequiredService<IJsonHelper>();
@@ -36,7 +35,6 @@ public class CredentialsService : ICredentialsService
 
   public BasicCredentials GetCredentials(string credentialsName)
   {
-    // TODO: [CredentialsService.GetCredentials] (TESTS) Add tests
     return !ContainsCredentials(credentialsName)
       ? new BasicCredentials()
       : _credentials.First(x => x.CredentialsName.IgnoreCaseEquals(credentialsName));
@@ -44,7 +42,6 @@ public class CredentialsService : ICredentialsService
 
   private bool ContainsCredentials(string name)
   {
-    // TODO: [CredentialsService.ContainsCredentials] (TESTS) Add tests
     if (_credentials.Count == 0)
       return false;
 
@@ -53,7 +50,6 @@ public class CredentialsService : ICredentialsService
 
   private string GenerateCredentialsFilePath()
   {
-    // TODO: [CredentialsService.GenerateCredentialsFilePath] (TESTS) Add tests
     var sep = _config.IsLinux ? "/" : "\\";
     var rootDir = _environment.CurrentDirectory;
 
@@ -73,7 +69,6 @@ public class CredentialsService : ICredentialsService
 
   private void EnsureCredentialsFileExists()
   {
-    // TODO: [CredentialsService.EnsureCredentialsFileExists] (TESTS) Add tests
     if(_file.Exists(_credentialsFile))
       return;
 
@@ -93,7 +88,6 @@ public class CredentialsService : ICredentialsService
 
   private List<BasicCredentials> LoadCredentials()
   {
-    // TODO: [CredentialsService.LoadCredentials] (TESTS) Add tests
     EnsureCredentialsFileExists();
     var rawJson = _file.ReadAllText(_credentialsFile);
     var parsedCredentials = _jsonHelper.DeserializeObject<List<BasicCredentials>>(rawJson);

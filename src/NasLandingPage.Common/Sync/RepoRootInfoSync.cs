@@ -23,7 +23,6 @@ public class RepoRootInfoSync : IRootRepositoryContentInfoSync
 
   public async Task SyncAsync(RunCommandResponseBuilder responseBuilder, ProjectInfo projectInfo)
   {
-    // TODO: [RootRepositoryContentInfoSync.SyncAsync] (TESTS) Add tests
     var contents = await _gitHubClient.GetAllContentsAsync(projectInfo.Repo.RepoId);
     var messages = new List<string>();
 
@@ -44,7 +43,6 @@ public class RepoRootInfoSync : IRootRepositoryContentInfoSync
   // Top level files
   private static void SyncEditorConfig(ICollection<string> messages, ProjectInfo projectInfo, IReadOnlyList<RepositoryContent> contents)
   {
-    // TODO: [RootRepositoryContentInfoSync.SyncEditorConfig] (TESTS) Add tests
     var filePath = contents.GetHtmlFilePath(".editorconfig");
 
     if (projectInfo.Scm.EditorConfig.IgnoreCaseEquals(filePath))
@@ -56,7 +54,6 @@ public class RepoRootInfoSync : IRootRepositoryContentInfoSync
 
   private static void SyncGitAttributes(ICollection<string> messages, ProjectInfo projectInfo, IReadOnlyList<RepositoryContent> contents)
   {
-    // TODO: [RootRepositoryContentInfoSync.SyncGitAttributes] (TESTS) Add tests
     var filePath = contents.GetHtmlFilePath(".gitattributes");
 
     if (projectInfo.Scm.GitAttributes.IgnoreCaseEquals(filePath))
@@ -68,7 +65,6 @@ public class RepoRootInfoSync : IRootRepositoryContentInfoSync
 
   private static void SyncReadme(ICollection<string> messages, ProjectInfo projectInfo, IReadOnlyList<RepositoryContent> contents)
   {
-    // TODO: [RootRepositoryContentInfoSync.SyncReadme] (TESTS) Add tests
     var filePath = contents.GetHtmlFilePath("README.md");
 
     if (projectInfo.Scm.Readme.IgnoreCaseEquals(filePath))
@@ -80,7 +76,6 @@ public class RepoRootInfoSync : IRootRepositoryContentInfoSync
 
   private void SyncLicense(ICollection<string> messages, ProjectInfo projectInfo, IReadOnlyList<RepositoryContent> contents)
   {
-    // TODO: [RootRepositoryContentInfoSync.SyncLicense] (TESTS) Add tests
     var filePath = contents.GetHtmlFilePath("LICENSE");
     var fileExists = !string.IsNullOrWhiteSpace(filePath);
     if (!fileExists) return;
@@ -107,7 +102,6 @@ public class RepoRootInfoSync : IRootRepositoryContentInfoSync
   // Top level directories
   private static void SyncDirectorySrc(ICollection<string> messages, ProjectInfo projectInfo, IReadOnlyList<RepositoryContent> contents)
   {
-    // TODO: [RootRepositoryContentInfoSync.SyncDirectorySrc] (TESTS) Add tests
     var repoDirectory = contents.GetDirectory("src");
     var dirPath = repoDirectory?.HtmlUrl ?? string.Empty;
 
@@ -120,7 +114,6 @@ public class RepoRootInfoSync : IRootRepositoryContentInfoSync
 
   private static void SyncDirectoryTest(ICollection<string> messages, ProjectInfo projectInfo, IReadOnlyList<RepositoryContent> contents)
   {
-    // TODO: [RootRepositoryContentInfoSync.SyncDirectoryTest] (TESTS) Add tests
     var repoDirectory = contents.GetDirectory("test");
     var dirPath = repoDirectory?.HtmlUrl ?? string.Empty;
 
@@ -133,7 +126,6 @@ public class RepoRootInfoSync : IRootRepositoryContentInfoSync
 
   private static void SyncDirectoryDocs(ICollection<string> messages, ProjectInfo projectInfo, IReadOnlyList<RepositoryContent> contents)
   {
-    // TODO: [RootRepositoryContentInfoSync.SyncDirectoryDocs] (TESTS) Add tests
     var repoDirectory = contents.GetDirectory("docs");
     var dirPath = repoDirectory?.HtmlUrl ?? string.Empty;
 
@@ -146,7 +138,6 @@ public class RepoRootInfoSync : IRootRepositoryContentInfoSync
 
   private static void SyncDirectoryBuild(ICollection<string> messages, ProjectInfo projectInfo, IReadOnlyList<RepositoryContent> contents)
   {
-    // TODO: [RootRepositoryContentInfoSync.SyncDirectoryDocs] (TESTS) Add tests
     var repoDirectory = contents.GetDirectory(".github");
     var dirPath = repoDirectory?.HtmlUrl ?? string.Empty;
 

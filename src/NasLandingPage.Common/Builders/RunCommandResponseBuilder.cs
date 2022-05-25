@@ -51,11 +51,9 @@ public class RunCommandResponseBuilder
   }
 
   public RunCommandResponse Failed() =>
-    // TODO: [RunCommandResponseBuilder.Failed] (TESTS) Add tests
     WithSuccess(false).Build();
 
   public RunCommandResponse Failed(string message) =>
-    // TODO: [RunCommandResponseBuilder.Failed] (TESTS) Add tests
     WithSuccess(false)
       .WithMessage(message)
       .Build();
@@ -65,7 +63,6 @@ public class RunCommandResponseBuilder
 
   public RunCommandResponse Build()
   {
-    // TODO: [RunCommandResponseBuilder.Build] (TESTS) Add tests
     _response.RunningTime = DateTime.Now - _startTime;
     _response.Messages = _messages.ToArray();
     return _response;

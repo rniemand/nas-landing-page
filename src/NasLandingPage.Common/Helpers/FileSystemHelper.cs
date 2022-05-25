@@ -48,7 +48,6 @@ public class FileSystemHelper : IFileSystemHelper
 
   public void EnsureFolderExists(string path)
   {
-    // TODO: [FileSystemHelper.EnsureFolderExists] (TESTS) Add tests
     if (_directory.Exists(path))
       return;
 
@@ -56,14 +55,12 @@ public class FileSystemHelper : IFileSystemHelper
   }
 
   public string[] DirectoryGetFiles(string path, string searchPattern, SearchOption searchOption) =>
-    // TODO: [FileSystemHelper.DirectoryGetFiles] (TESTS) Add tests
     _directory.GetFiles(path, searchPattern, searchOption);
 
 
   // Files
   public bool BackupFileToFolder(string source, string destination)
   {
-    // TODO: [FileSystemHelper.BackupFileToFolder] (TESTS) Add tests
     if (!_file.Exists(source))
     {
       return false;
@@ -80,7 +77,6 @@ public class FileSystemHelper : IFileSystemHelper
 
   public List<string> ListDirectoryFiles(string folder, bool stripExtension = false)
   {
-    // TODO: [FileSystemHelper.ListDirectoryFiles] (TESTS) Add tests
     var directoryFiles = _directory.GetFiles(folder, "*.json", SearchOption.TopDirectoryOnly);
 
     return directoryFiles.Select(file => stripExtension
@@ -90,24 +86,19 @@ public class FileSystemHelper : IFileSystemHelper
   }
 
   public bool FileExists(string path) =>
-    // TODO: [FileSystemHelper.FileExists] (TESTS) Add tests
     _file.Exists(path);
 
   public void WriteTextFile(string path, string contents) =>
-    // TODO: [FileSystemHelper.WriteTextFile] (TESTS) Add tests
     _file.WriteAllText(path, contents);
 
   public string GetFileName(string path) =>
-    // TODO: [FileSystemHelper.GetFileName] (TESTS) Add tests
     _path.GetFileName(path);
 
   public string GetFileNameWithoutExtension(string path) =>
-    // TODO: [FileSystemHelper.GetFileNameWithoutExtension] (TESTS) Add tests
     _path.GetFileNameWithoutExtension(path);
 
   public void SaveJsonFile<T>(string path, T data, bool formatJson)
   {
-    // TODO: [FileSystemHelper.SaveJsonFile] (TESTS) Add tests
     var projectJson = _jsonHelper.SerializeObject(data, formatJson);
     WriteTextFile(path, projectJson);
   }
@@ -116,7 +107,6 @@ public class FileSystemHelper : IFileSystemHelper
   // Helpers
   public TOut? LoadJsonFile<TOut>(string filePath) where TOut : class, new()
   {
-    // TODO: [FileSystemHelper.LoadJsonFile] (TESTS) Add tests
     if (!_file.Exists(filePath))
       return null;
 

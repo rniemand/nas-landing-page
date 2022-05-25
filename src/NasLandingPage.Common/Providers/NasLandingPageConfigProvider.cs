@@ -22,7 +22,6 @@ namespace NasLandingPage.Common.Providers
 
     private static NlpConfig BindConfiguration(IServiceProvider serviceProvider)
     {
-      // TODO: [NasLandingPageConfigProvider.BindConfiguration] (TESTS) Add tests
       var configuration = serviceProvider.GetRequiredService<IConfiguration>();
       var boundConfig = new NlpConfig();
       var configSection = configuration.GetSection("NasLandingPage");

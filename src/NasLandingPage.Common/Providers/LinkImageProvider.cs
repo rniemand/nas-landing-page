@@ -25,7 +25,6 @@ public class LinkImageProvider : ILinkImageProvider
 
   public string ResolveImagePath(string imageName)
   {
-    // TODO: [LinkImageProvider.ResolveImagePath] (TESTS) Add tests
     var imagePath = $"{_dataDir}{imageName}";
 
     return _fsHelper.FileExists(imagePath)
@@ -36,7 +35,6 @@ public class LinkImageProvider : ILinkImageProvider
 
   private string GenerateDataDirPath()
   {
-    // TODO: [LinkImageProvider.GenerateDataDirPath] (TESTS) Add tests
     var sep = _config.IsLinux ? "/" : "\\";
     var rootDir = _fsHelper.CurrentDirectory;
 

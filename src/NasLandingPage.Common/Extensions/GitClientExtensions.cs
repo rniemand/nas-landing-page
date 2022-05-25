@@ -7,7 +7,6 @@ public static class GitClientExtensions
 {
   public static bool ContainsFile(this IReadOnlyList<RepositoryContent> contents, string fileName)
   {
-    // TODO: [GitClientExtensions.ContainsFile] (TESTS) Add tests
     return contents.Any(x =>
       x.Type.Value == ContentType.File &&
       x.Name.IgnoreCaseEquals(fileName)
@@ -16,7 +15,6 @@ public static class GitClientExtensions
 
   public static string GetHtmlFilePath(this IReadOnlyList<RepositoryContent> contents, string fileName)
   {
-    // TODO: [GitClientExtensions.GetHtmlFilePath] (TESTS) Add tests
     var file = contents.FirstOrDefault(x =>
       x.Type.Value == ContentType.File &&
       x.Name.IgnoreCaseEquals(fileName)
@@ -27,7 +25,6 @@ public static class GitClientExtensions
 
   public static string GetRepoFilePath(this IReadOnlyList<RepositoryContent> contents, string fileName)
   {
-    // TODO: [GitClientExtensions.GetRepoFilePath] (TESTS) Add tests
     var file = contents.FirstOrDefault(x =>
       x.Type.Value == ContentType.File &&
       x.Name.IgnoreCaseEquals(fileName)
@@ -38,7 +35,6 @@ public static class GitClientExtensions
 
   public static bool ContainsDirectory(this IReadOnlyList<RepositoryContent> contents, string name)
   {
-    // TODO: [GitClientExtensions.ContainsDirectory] (TESTS) Add tests
     return contents.Any(x =>
       x.Type.Value == ContentType.Dir &&
       x.Name.IgnoreCaseEquals(name)
@@ -47,7 +43,6 @@ public static class GitClientExtensions
 
   public static RepositoryContent? GetDirectory(this IReadOnlyList<RepositoryContent> contents, string name)
   {
-    // TODO: [GitClientExtensions.GetDirectory] (TESTS) Add tests
     var directory = contents.FirstOrDefault(x =>
       x.Type.Value == ContentType.Dir &&
       x.Name.IgnoreCaseEquals(name));

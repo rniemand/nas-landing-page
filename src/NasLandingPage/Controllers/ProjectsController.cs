@@ -18,16 +18,10 @@ public class ProjectsController : ControllerBase
   }
 
   [HttpGet]
-  public List<ProjectInfo> GetAll()
-  {
-    // TODO: [ProjectsController.GetAll] (TESTS) Add tests
-    return _projectsService.GetAll();
-  }
+  public List<ProjectInfo> GetAll() =>
+    _projectsService.GetAll();
 
   [HttpPost, Route("sync")]
-  public async Task<RunCommandResponse> SyncProject(RunCommandRequest request)
-  {
-    // TODO: [ProjectsController.SyncProject] (TESTS) Add tests
-    return await _projectsService.SyncProject(request);
-  }
+  public async Task<RunCommandResponse> SyncProject(RunCommandRequest request) =>
+    await _projectsService.SyncProject(request);
 }

@@ -22,7 +22,6 @@ public class ProjectInfoProvider : IProjectInfoProvider
 
   public ProjectInfoProvider(IServiceProvider serviceProvider)
   {
-    // TODO: [ProjectInfoProvider.ProjectInfoProvider] (TESTS) Add tests
     _fsHelper = serviceProvider.GetRequiredService<IFileSystemHelper>();
     _config = serviceProvider.GetRequiredService<INasLandingPageConfigProvider>().Provide();
 
@@ -33,7 +32,6 @@ public class ProjectInfoProvider : IProjectInfoProvider
 
   public List<ProjectInfo> GetAll()
   {
-    // TODO: [ProjectInfoProvider.GetAll] (TESTS) Add tests
     var files = _fsHelper.DirectoryGetFiles(_dataDir, "*.json", SearchOption.TopDirectoryOnly);
 
     return files
@@ -45,14 +43,12 @@ public class ProjectInfoProvider : IProjectInfoProvider
 
   public ProjectInfo? GetByName(string name)
   {
-    // TODO: [ProjectInfoProvider.GetByName] (TESTS) Add tests
     var filePath = GenerateProjectFilePath(name);
     return !_fsHelper.FileExists(filePath) ? null : LoadProjectFile(filePath);
   }
 
   public void UpdateProjectInfo(ProjectInfo projectInfo)
   {
-    // TODO: [ProjectInfoProvider.UpdateProjectInfo] (TESTS) Add tests
     var sourceFilePath = GenerateProjectFilePath(projectInfo.Metadata.FileNameWithoutExtension);
     var backupFilePath = sourceFilePath.Replace(_dataDir, _backupDir);
 
@@ -68,17 +64,14 @@ public class ProjectInfoProvider : IProjectInfoProvider
   }
 
   public List<string> ListProjectFiles() =>
-    // TODO: [ProjectInfoProvider.ListDirectoryFiles] (TESTS) Add tests
     _fsHelper.ListDirectoryFiles(_dataDir, true);
 
 
   private string GenerateProjectFilePath(string name) =>
-    // TODO: [ProjectInfoProvider.GenerateProjectFilePath] (TESTS) Add tests
     $"{_dataDir}{name}.json";
 
   private ProjectInfo LoadProjectFile(string path)
   {
-    // TODO: [ProjectInfoProvider.LoadProjectFile] (TESTS) Add tests
     var projectInfo = _fsHelper.LoadJsonFile<ProjectInfo>(path);
     if (projectInfo is null)
       throw new Exception("Unable to load project file");
@@ -94,7 +87,6 @@ public class ProjectInfoProvider : IProjectInfoProvider
 
   private string GenerateDataDirPath()
   {
-    // TODO: [ProjectInfoProvider.GenerateDataDirPath] (TESTS) Add tests
     var sep = _config.IsLinux ? "/" : "\\";
     var rootDir = _fsHelper.CurrentDirectory;
 
@@ -115,7 +107,6 @@ public class ProjectInfoProvider : IProjectInfoProvider
 
   private string GenerateBackupDirPath()
   {
-    // TODO: [ProjectInfoProvider.GenerateBackupDirPath] (TESTS) Add tests
     var sep = _config.IsLinux ? "/" : "\\";
     var rootDir = _fsHelper.CurrentDirectory;
 

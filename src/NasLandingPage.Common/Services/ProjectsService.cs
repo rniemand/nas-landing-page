@@ -21,7 +21,6 @@ public class ProjectsService : IProjectsService
 
   public ProjectsService(IServiceProvider serviceProvider)
   {
-    // TODO: [ProjectsService.ProjectsService] (TESTS) Add tests
     _projectInfoProvider = serviceProvider.GetRequiredService<IProjectInfoProvider>();
     _syncFactory = serviceProvider.GetRequiredService<IProjectInfoSyncFactory>();
   }
@@ -29,13 +28,11 @@ public class ProjectsService : IProjectsService
 
   public List<ProjectInfo> GetAll()
   {
-    // TODO: [ProjectsService.GetAll] (TESTS) Add tests
     return _projectInfoProvider.GetAll();
   }
 
   public async Task<RunCommandResponse> SyncProject(RunCommandRequest request)
   {
-    // TODO: [ProjectsService.SyncProject] (TESTS) Add tests
     var responseBuilder = new RunCommandResponseBuilder(request);
     var projectInfo = _projectInfoProvider.GetByName(request.Arguments);
     if (projectInfo is null)

@@ -22,7 +22,6 @@ public class UserLinkProvider : IUserLinkProvider
 
   public UserLinkProvider(IServiceProvider serviceProvider)
   {
-    // TODO: [UserLinkProvider.UserLinkProvider] (TESTS) Add tests
     _fsHelper = serviceProvider.GetRequiredService<IFileSystemHelper>();
     _config = serviceProvider.GetRequiredService<INasLandingPageConfigProvider>().Provide();
 
@@ -33,7 +32,6 @@ public class UserLinkProvider : IUserLinkProvider
 
   public async Task AddLink(UserLink link)
   {
-    // TODO: [UserLinkProvider.AddLink] (TESTS) Add tests
     link.LinkId = Guid.NewGuid();
     var filePath = GenerateLinkFilePath(link.LinkId);
     await Task.CompletedTask;
@@ -42,7 +40,6 @@ public class UserLinkProvider : IUserLinkProvider
 
   public async Task<List<UserLink>> GetAll()
   {
-    // TODO: [UserLinkProvider.GetAll] (TESTS) Add tests
     var linkFiles = _fsHelper.DirectoryGetFiles(_dataDir, "*.json", SearchOption.TopDirectoryOnly);
     await Task.CompletedTask;
 
@@ -53,7 +50,6 @@ public class UserLinkProvider : IUserLinkProvider
 
   public async Task<UserLink?> GetById(string linkId)
   {
-    // TODO: [UserLinkProvider.GetById] (TESTS) Add tests
     var linkFilePath = GenerateLinkFilePath(linkId);
     return _fsHelper.LoadJsonFile<UserLink>(linkFilePath);
   }
@@ -81,14 +77,12 @@ public class UserLinkProvider : IUserLinkProvider
 
   private string GenerateLinkFilePath(string linkId)
   {
-    // TODO: [UserLinkProvider.GenerateLinkFilePath] (TESTS) Add tests
     var cleanLinkId = linkId.Replace("-", "").LowerTrim();
     return $"{_dataDir}{cleanLinkId}.json";
   }
 
   private string GenerateDataDirPath()
   {
-    // TODO: [UserLinkProvider.GenerateDataDirPath] (TESTS) Add tests
     var sep = _config.IsLinux ? "/" : "\\";
     var rootDir = _fsHelper.CurrentDirectory;
 
@@ -109,7 +103,6 @@ public class UserLinkProvider : IUserLinkProvider
 
   private string GenerateBackupDirPath()
   {
-    // TODO: [UserLinkProvider.GenerateBackupDirPath] (TESTS) Add tests
     var sep = _config.IsLinux ? "/" : "\\";
     var rootDir = _fsHelper.CurrentDirectory;
 

@@ -29,7 +29,6 @@ public class UserLinksController : ControllerBase
   [HttpGet, Route("image/{image}")]
   public async Task<IActionResult> GetImage([FromRoute] string image)
   {
-    // TODO: [UserLinksController.GetImage] (TESTS) Add tests
     var resolveImagePath = _imageProvider.ResolveImagePath(image);
     var fileStream = System.IO.File.OpenRead(resolveImagePath);
 

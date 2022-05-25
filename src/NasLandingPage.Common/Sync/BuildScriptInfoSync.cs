@@ -24,7 +24,6 @@ public class BuildScriptInfoSync : IBuildScriptInfoSync
 
   public async Task SyncAsync(RunCommandResponseBuilder responseBuilder, ProjectInfo projectInfo)
   {
-    // TODO: [BuildScriptInfoSync.SyncAsync] (TESTS) Add tests
     if (string.IsNullOrWhiteSpace(projectInfo.Scm.BuildDirectory))
       return;
 
@@ -46,7 +45,6 @@ public class BuildScriptInfoSync : IBuildScriptInfoSync
   // Build script files
   private static void SyncPrTemplate(ICollection<string> messages, ProjectInfo projectInfo, IReadOnlyList<RepositoryContent> contents)
   {
-    // TODO: [BuildScriptInfoSync.SyncPrTemplate] (TESTS) Add tests
     var filePath = contents.GetHtmlFilePath("pull_request_template.md");
     if (projectInfo.Scm.PrTemplate.IgnoreCaseEquals(filePath))
       return;
@@ -57,7 +55,6 @@ public class BuildScriptInfoSync : IBuildScriptInfoSync
 
   private static void SyncBuildScript(ICollection<string> messages, ProjectInfo projectInfo, IReadOnlyList<RepositoryContent> contents)
   {
-    // TODO: [RootRepositoryContentInfoSync.SyncEditorConfig] (TESTS) Add tests
     var filePath = contents.GetHtmlFilePath("ci-build.ps1");
     if (projectInfo.Scm.BuildScript.IgnoreCaseEquals(filePath))
       return;
@@ -68,7 +65,6 @@ public class BuildScriptInfoSync : IBuildScriptInfoSync
 
   private static void SyncTestScript(ICollection<string> messages, ProjectInfo projectInfo, IReadOnlyList<RepositoryContent> contents)
   {
-    // TODO: [BuildScriptInfoSync.SyncTestScript] (TESTS) Add tests
     var filePath = contents.GetHtmlFilePath("ci-test.ps1");
     if (projectInfo.Scm.TestScript.IgnoreCaseEquals(filePath))
       return;
@@ -79,7 +75,6 @@ public class BuildScriptInfoSync : IBuildScriptInfoSync
 
   private static void SyncCiInfo(ICollection<string> messages, ProjectInfo projectInfo, IReadOnlyList<RepositoryContent> contents)
   {
-    // TODO: [BuildScriptInfoSync.SyncCiInfo] (TESTS) Add tests
     var filePath = contents.GetHtmlFilePath("ci.info.json");
     if (projectInfo.Scm.CiInfo.IgnoreCaseEquals(filePath))
       return;

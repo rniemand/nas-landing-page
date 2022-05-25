@@ -22,7 +22,6 @@ public class ConfigService : IConfigService
 
   public ConfigService(IServiceProvider serviceProvider)
   {
-    // TODO: [ConfigService.ConfigService] (TESTS) Add tests
     _environment = serviceProvider.GetRequiredService<IEnvironmentAbstraction>();
     _file = serviceProvider.GetRequiredService<IFileAbstraction>();
     _jsonHelper = serviceProvider.GetRequiredService<IJsonHelper>();
@@ -33,14 +32,12 @@ public class ConfigService : IConfigService
 
   public ClientConfig GetClientConfig()
   {
-    // TODO: [ConfigService.GetClientConfig] (TESTS) Add tests
     var configJson = _file.ReadAllText(_configFilePath);
     return _jsonHelper.DeserializeObject<ClientConfig>(configJson);
   }
 
   private string GenerateConfigFilePath()
   {
-    // TODO: [ConfigService.GenerateConfigFilePath] (TESTS) Add tests
     var sep = _config.IsLinux ? "/" : "\\";
     var rootDir = _environment.CurrentDirectory;
 
