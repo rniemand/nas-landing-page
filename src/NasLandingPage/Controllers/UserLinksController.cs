@@ -32,6 +32,12 @@ public class UserLinksController : ControllerBase
     await _linkService.RegisterFollow(linkId);
   }
 
+  [HttpGet, Route("categories")]
+  public async Task<List<string>> GetCategories()
+  {
+    return await _linkService.GetCategories();
+  }
+
   [HttpGet, Route("image/{image}")]
   public async Task<IActionResult> GetImage([FromRoute] string image)
   {

@@ -21,4 +21,7 @@ public class UserLink
 
   [JsonProperty("followCount")]
   public int FollowCount { get; set; } = 0;
+
+  [JsonProperty("category")]
+  public string Category { get; set; } = "none";
 }

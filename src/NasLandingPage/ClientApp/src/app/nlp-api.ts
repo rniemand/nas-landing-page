@@ -307,6 +307,61 @@ export class UserLinksClient {
         return _observableOf(null as any);
     }
 
+    getCategories(): Observable<string[]> {
+        let url_ = this.baseUrl + "/api/UserLinks/categories";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetCategories(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetCategories(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<string[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<string[]>;
+        }));
+    }
+
+    protected processGetCategories(response: HttpResponseBase): Observable<string[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(item);
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
     getImage(image: string | null): Observable<FileResponse | null> {
         let url_ = this.baseUrl + "/api/UserLinks/image/{image}";
         if (image === undefined || image === null)
@@ -986,6 +1041,7 @@ export class UserLink implements IUserLink {
     order!: number;
     image!: string;
     followCount!: number;
+    category!: string;
 
     constructor(data?: IUserLink) {
         if (data) {
@@ -1004,6 +1060,7 @@ export class UserLink implements IUserLink {
             this.order = _data["order"];
             this.image = _data["image"];
             this.followCount = _data["followCount"];
+            this.category = _data["category"];
         }
     }
 
@@ -1022,6 +1079,7 @@ export class UserLink implements IUserLink {
         data["order"] = this.order;
         data["image"] = this.image;
         data["followCount"] = this.followCount;
+        data["category"] = this.category;
         return data;
     }
 }
@@ -1033,6 +1091,7 @@ export interface IUserLink {
     order: number;
     image: string;
     followCount: number;
+    category: string;
 }
 
 export interface FileResponse {

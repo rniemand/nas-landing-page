@@ -8,7 +8,8 @@ import { ClientConfig, ConfigClient, UserLink, UserLinksClient } from 'src/app/n
 })
 export class HomeComponent implements OnInit {
   clientConfig?: ClientConfig = undefined;
-  userLinks: UserLink[] = [];
+  links: { [category: string]: UserLink[] } = {};
+  categories: string[] = [];
   
   constructor(private _config: ConfigClient, private _links: UserLinksClient) { }
 
@@ -18,7 +19,22 @@ export class HomeComponent implements OnInit {
     });
 
     this._links.getAll().toPromise().then((links: UserLink[]) => {
-      this.userLinks = links;
+      (links || []).forEach(link => {
+        if(!this.links[link.category]) {
+          this.links[link.category] = [];
+          this.categories.push(link.category);
+        }
+
+        this.links[link.category].push(link);
+      });
     });
+  }
+
+  getLinks = (category: string) => {
+    if(!this.links[category]) {
+      return [];
+    }
+
+    return this.links[category];
   }
 }

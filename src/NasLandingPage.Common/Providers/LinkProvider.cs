@@ -14,6 +14,7 @@ public interface ILinkProvider
   Task<List<UserLink>> GetAll();
   Task<UserLink?> GetById(string linkId);
   Task Update(UserLink link);
+  Task<List<string>> GetLinkCategories();
 }
 
 public class LinkProvider : ILinkProvider
@@ -125,6 +126,32 @@ public class LinkProvider : ILinkProvider
         resolvedLink.FollowCount = link.FollowCount;
         var filePath = GenerateLinkFilePath(link.LinkId);
         _fsHelper.SaveJsonFile(filePath, link, true);
+      }
+    }
+    catch (Exception ex)
+    {
+      builder.WithException(ex);
+      throw;
+    }
+    finally
+    {
+      await _metrics.SubmitBuilderAsync(builder);
+    }
+  }
+
+  public async Task<List<string>> GetLinkCategories()
+  {
+    var builder = GetMetricBuilder(nameof(GetLinkCategories));
+
+    try
+    {
+      using (builder.WithTiming())
+      {
+        var links = await GetAll();
+        return links
+          .Select(x => x.Category)
+          .Distinct()
+          .ToList();
       }
     }
     catch (Exception ex)

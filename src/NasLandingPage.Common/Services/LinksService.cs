@@ -9,6 +9,7 @@ public interface IUserLinkService
 {
   Task<List<UserLink>> GetAll();
   Task RegisterFollow(string linkId);
+  Task<List<string>> GetCategories();
 }
 
 public class UserLinkService : IUserLinkService
@@ -40,4 +41,7 @@ public class UserLinkService : IUserLinkService
     await _linkProvider.Update(link);
     _logger.LogDebug("Updated follow count for: {name}", link.Name);
   }
+
+  public async Task<List<string>> GetCategories() =>
+    await _linkProvider.GetLinkCategories();
 }
