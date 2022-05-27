@@ -1,1 +1,1 @@
-<user-links [config]="clientConfig" [links]="userLinks"></user-links>
+<link-category [category]="category" [links]="getLinks(category)" [config]="clientConfig" *ngFor="let category of categories"></link-category>

@@ -26,6 +26,18 @@ public class UserLinksController : ControllerBase
     return await _linkService.GetAll();
   }
 
+  [HttpPut, Route("followed/{linkId}")]
+  public async Task RegisterLinkFollow([FromRoute] string linkId)
+  {
+    await _linkService.RegisterFollow(linkId);
+  }
+
+  [HttpGet, Route("categories")]
+  public async Task<List<string>> GetCategories()
+  {
+    return await _linkService.GetCategories();
+  }
+
   [HttpGet, Route("image/{image}")]
   public async Task<IActionResult> GetImage([FromRoute] string image)
   {
