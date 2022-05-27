@@ -11,10 +11,10 @@ public interface IUserLinkService
 
 public class UserLinkService : IUserLinkService
 {
-  private readonly IUserLinkProvider _linkProvider;
+  private readonly ILinkProvider _linkProvider;
 
   public UserLinkService(IServiceProvider serviceProvider) =>
-    _linkProvider = serviceProvider.GetRequiredService<IUserLinkProvider>();
+    _linkProvider = serviceProvider.GetRequiredService<ILinkProvider>();
 
   public async Task<List<UserLink>> GetAll() =>
     await _linkProvider.GetAll();

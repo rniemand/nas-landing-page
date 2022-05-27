@@ -2,7 +2,7 @@ using DevConsole;
 
 new NlpDevConsole()
   //.TestGetCredentials()
-  .TestProjectSync()
+  //.TestProjectSync()
   .DoNothing();
 
 Console.WriteLine("Fin.");

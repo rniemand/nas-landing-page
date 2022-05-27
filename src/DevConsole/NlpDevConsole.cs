@@ -75,7 +75,7 @@ public class NlpDevConsole
 
   private void AddLink()
   {
-    _services.GetRequiredService<IUserLinkProvider>().AddLink(new UserLink
+    _services.GetRequiredService<ILinkProvider>().AddLink(new UserLink
     {
       Name = "",
       Url = "",
