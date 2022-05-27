@@ -14,6 +14,8 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="Octokit" Version="0.51.0" />
     <PackageReference Include="Rn.NetCore.Common" Version="6.0.1.102" />
+    <PackageReference Include="Rn.NetCore.Metrics" Version="6.0.1.101" />
+    <PackageReference Include="Rn.NetCore.Metrics.Rabbit" Version="6.0.1.101" />
   </ItemGroup>
 
 </Project>

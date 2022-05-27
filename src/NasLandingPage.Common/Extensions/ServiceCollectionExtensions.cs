@@ -7,6 +7,8 @@ using NasLandingPage.Common.Services;
 using Rn.NetCore.Common.Abstractions;
 using Rn.NetCore.Common.Helpers;
 using Rn.NetCore.Common.Logging;
+using Rn.NetCore.Metrics.Extensions;
+using Rn.NetCore.Metrics.Rabbit.Extensions;
 
 namespace NasLandingPage.Common.Extensions;
 
@@ -38,6 +40,9 @@ public static class ServiceCollectionExtensions
       .AddSingleton<IProjectsService, ProjectsService>()
       .AddSingleton<IConfigService, ConfigService>()
       .AddSingleton<ICredentialsService, CredentialsService>()
-      .AddSingleton<IUserLinkService, UserLinkService>();
+      .AddSingleton<IUserLinkService, UserLinkService>()
+
+      .AddRnMetricsBase()
+      .AddRnRabbitMQMetrics();
   }
 }
