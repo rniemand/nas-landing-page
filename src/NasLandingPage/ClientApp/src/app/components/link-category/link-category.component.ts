@@ -17,7 +17,7 @@ export class LinkCategoryComponent implements OnInit, OnChanges {
   
   ngOnInit(): void { }
 
-  ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(_: SimpleChanges): void {
     this.canDisplay = 
       (this?.category?.length ?? 0) > 0 &&
       this.links.length > 0 &&

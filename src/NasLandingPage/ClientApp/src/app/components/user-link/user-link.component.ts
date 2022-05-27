@@ -34,9 +34,6 @@ export class UserLinkComponent implements OnInit, OnChanges {
 
     const linkUrl = this.link.url;
     const linkId = this.link.id;
-
-    console.log(linkId);
-
     this._linkClient.registerLinkFollow(linkId).toPromise().then(
       () => { window.open(linkUrl, '_blank'); },
       () => { window.open(linkUrl, '_blank'); }

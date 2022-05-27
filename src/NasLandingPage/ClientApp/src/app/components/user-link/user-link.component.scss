@@ -7,7 +7,7 @@
   cursor: pointer;
 
   .link-image {
-    max-width: 80px;
+    max-width: 70px;
     max-height: 70px;
     border: 1px;
     border-color: #8c8c8c;
@@ -19,5 +19,9 @@
     &:hover {
       box-shadow: 1px 1px 3px 1px #c9c23f;
     }
+  }
+
+  .link-id {
+    display: none;
   }
 }
