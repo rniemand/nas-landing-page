@@ -72,7 +72,7 @@ public class LinkProvider : ILinkProvider
         await Task.CompletedTask;
 
         return GetEnabledLinks(linkFiles.ToList())
-          .OrderBy(x => x.Order)
+          .OrderByDescending(x => x.FollowCount)
           .ToList();
       }
     }
