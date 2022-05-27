@@ -5,7 +5,7 @@ namespace NasLandingPage.Common.Models.Responses;
 public class UserLink
 {
   [JsonProperty("id")]
-  public Guid LinkId { get; set; } = Guid.Empty;
+  public string LinkId { get; set; } = string.Empty;
   
   [JsonProperty("name")]
   public string Name { get; set; } = string.Empty;
@@ -18,4 +18,7 @@ public class UserLink
 
   [JsonProperty("image")]
   public string Image { get; set; } = string.Empty;
+
+  [JsonProperty("followCount")]
+  public int FollowCount { get; set; } = 0;
 }

@@ -13,6 +13,7 @@ public interface ILinkProvider
   Task AddLink(UserLink link);
   Task<List<UserLink>> GetAll();
   Task<UserLink?> GetById(string linkId);
+  Task Update(UserLink link);
 }
 
 public class LinkProvider : ILinkProvider
@@ -42,7 +43,7 @@ public class LinkProvider : ILinkProvider
     {
       using (builder.WithTiming())
       {
-        link.LinkId = Guid.NewGuid();
+        link.LinkId = Guid.NewGuid().ToString("D");
         var filePath = GenerateLinkFilePath(link.LinkId);
         await Task.CompletedTask;
         _fsHelper.SaveJsonFile(filePath, link, true);
@@ -109,6 +110,34 @@ public class LinkProvider : ILinkProvider
     }
   }
 
+  public async Task Update(UserLink link)
+  {
+    var builder = GetMetricBuilder(nameof(Update));
+
+    try
+    {
+      using (builder.WithTiming())
+      {
+        var resolvedLink = await GetById(link.LinkId);
+        if (resolvedLink is null)
+          return;
+
+        resolvedLink.FollowCount = link.FollowCount;
+        var filePath = GenerateLinkFilePath(link.LinkId);
+        _fsHelper.SaveJsonFile(filePath, link, true);
+      }
+    }
+    catch (Exception ex)
+    {
+      builder.WithException(ex);
+      throw;
+    }
+    finally
+    {
+      await _metrics.SubmitBuilderAsync(builder);
+    }
+  }
+
 
   private List<UserLink> GetEnabledLinks(List<string> filePaths)
   {
@@ -144,7 +173,7 @@ public class LinkProvider : ILinkProvider
     }
   }
 
-  private ServiceMetricBuilder GetMetricBuilder(string method)
+  private static ServiceMetricBuilder GetMetricBuilder(string method)
     => new(nameof(LinkProvider), method);
 
   private string GenerateLinkFilePath(Guid linkId) =>

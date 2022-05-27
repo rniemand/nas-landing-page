@@ -46,7 +46,18 @@ public class NlpDevConsole
     Console.WriteLine(commandResponse.Success);
     return this;
   }
-  
+
+  public NlpDevConsole FollowLink()
+  {
+    _services
+      .GetRequiredService<IUserLinkService>()
+      .RegisterFollow("005b08955aea4b34b50525fc462421b0")
+      .GetAwaiter()
+      .GetResult();
+
+    return this;
+  }
+
   private static IServiceProvider BuildServiceContainer()
   {
     var services = new ServiceCollection();
