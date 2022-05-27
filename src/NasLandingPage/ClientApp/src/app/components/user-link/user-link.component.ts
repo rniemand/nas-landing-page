@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { UserLink } from 'src/app/nlp-api';
+import { UserLink, UserLinksClient } from 'src/app/nlp-api';
 
 @Component({
   selector: 'user-link',
@@ -13,7 +13,7 @@ export class UserLinkComponent implements OnInit, OnChanges {
   hasImage: boolean = false;
   linkImage: string = '';
 
-  constructor() { }
+  constructor(private _linkClient: UserLinksClient) { }
 
   ngOnInit(): void { }
 
@@ -32,6 +32,14 @@ export class UserLinkComponent implements OnInit, OnChanges {
       return;
     }
 
-    window.open(this.link.url, '_blank');
+    const linkUrl = this.link.url;
+    const linkId = this.link.id;
+
+    console.log(linkId);
+
+    this._linkClient.registerLinkFollow(linkId).toPromise().then(
+      () => { window.open(linkUrl, '_blank'); },
+      () => { window.open(linkUrl, '_blank'); }
+    );
   }
 }

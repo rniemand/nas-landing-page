@@ -260,6 +260,53 @@ export class UserLinksClient {
         return _observableOf(null as any);
     }
 
+    registerLinkFollow(linkId: string | null): Observable<void> {
+        let url_ = this.baseUrl + "/api/UserLinks/followed/{linkId}";
+        if (linkId === undefined || linkId === null)
+            throw new Error("The parameter 'linkId' must be defined.");
+        url_ = url_.replace("{linkId}", encodeURIComponent("" + linkId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processRegisterLinkFollow(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processRegisterLinkFollow(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processRegisterLinkFollow(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
     getImage(image: string | null): Observable<FileResponse | null> {
         let url_ = this.baseUrl + "/api/UserLinks/image/{image}";
         if (image === undefined || image === null)
@@ -938,6 +985,7 @@ export class UserLink implements IUserLink {
     url!: string;
     order!: number;
     image!: string;
+    followCount!: number;
 
     constructor(data?: IUserLink) {
         if (data) {
@@ -955,6 +1003,7 @@ export class UserLink implements IUserLink {
             this.url = _data["url"];
             this.order = _data["order"];
             this.image = _data["image"];
+            this.followCount = _data["followCount"];
         }
     }
 
@@ -972,6 +1021,7 @@ export class UserLink implements IUserLink {
         data["url"] = this.url;
         data["order"] = this.order;
         data["image"] = this.image;
+        data["followCount"] = this.followCount;
         return data;
     }
 }
@@ -982,6 +1032,7 @@ export interface IUserLink {
     url: string;
     order: number;
     image: string;
+    followCount: number;
 }
 
 export interface FileResponse {
