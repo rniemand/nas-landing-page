@@ -30,8 +30,7 @@ CREATE TABLE `Projects` (
 	INDEX `Deleted` (`Deleted`) USING BTREE
 )
 COLLATE='utf8mb4_general_ci'
-ENGINE=InnoDB
-;
+ENGINE=InnoDB;
 
 CREATE TABLE `Repositories` (
 	`ProjectRepoId` INT(11) NOT NULL AUTO_INCREMENT,
@@ -46,20 +45,19 @@ CREATE TABLE `Repositories` (
 	`DateAddedUtc` DATETIME NOT NULL DEFAULT utc_timestamp(6),
 	`DefaultBranch` VARCHAR(64) NOT NULL DEFAULT 'master' COLLATE 'utf8mb4_general_ci',
 	`FullName` VARCHAR(128) NOT NULL DEFAULT '' COLLATE 'utf8mb4_general_ci',
-	`RepoUrl` VARCHAR(2048) NOT NULL DEFAULT '' COLLATE 'utf8mb4_general_ci',
-	`HtmlUrl` VARCHAR(2048) NOT NULL DEFAULT '' COLLATE 'utf8mb4_general_ci',
-	`CiCdUrl` VARCHAR(2048) NOT NULL DEFAULT '' COLLATE 'utf8mb4_general_ci',
-	`GitUrl` VARCHAR(2048) NOT NULL DEFAULT '' COLLATE 'utf8mb4_general_ci',
-	`SshUrl` VARCHAR(2048) NOT NULL DEFAULT '' COLLATE 'utf8mb4_general_ci',
-	`ApiUrl` VARCHAR(2048) NOT NULL DEFAULT '' COLLATE 'utf8mb4_general_ci',
+	`RepoUrl` VARCHAR(1024) NOT NULL DEFAULT '' COLLATE 'utf8mb4_general_ci',
+	`HtmlUrl` VARCHAR(1024) NOT NULL DEFAULT '' COLLATE 'utf8mb4_general_ci',
+	`CiCdUrl` VARCHAR(1024) NOT NULL DEFAULT '' COLLATE 'utf8mb4_general_ci',
+	`GitUrl` VARCHAR(1024) NOT NULL DEFAULT '' COLLATE 'utf8mb4_general_ci',
+	`SshUrl` VARCHAR(1024) NOT NULL DEFAULT '' COLLATE 'utf8mb4_general_ci',
+	`ApiUrl` VARCHAR(1024) NOT NULL DEFAULT '' COLLATE 'utf8mb4_general_ci',
 	PRIMARY KEY (`ProjectRepoId`) USING BTREE,
 	INDEX `IsPublic` (`IsPublic`) USING BTREE,
 	INDEX `FK_ProjectRepo_Projects` (`ProjectId`) USING BTREE,
 	CONSTRAINT `FK_ProjectRepo_Projects` FOREIGN KEY (`ProjectId`) REFERENCES `Projects` (`ProjectId`) ON UPDATE NO ACTION ON DELETE NO ACTION
 )
 COLLATE='utf8mb4_general_ci'
-ENGINE=InnoDB
-;
+ENGINE=InnoDB;
 
 CREATE TABLE `SonarQubeInfo` (
 	`SonarQubeInfoId` INT(11) NOT NULL AUTO_INCREMENT,
@@ -68,15 +66,14 @@ CREATE TABLE `SonarQubeInfo` (
 	`SonarQubeId` VARCHAR(64) NOT NULL DEFAULT '' COLLATE 'utf8mb4_general_ci',
 	`BadgeToken` VARCHAR(64) NOT NULL DEFAULT '' COLLATE 'utf8mb4_general_ci',
 	`SonarQubeUrl` VARCHAR(1024) NOT NULL DEFAULT '' COLLATE 'utf8mb4_general_ci',
-	`BadgesJson` TEXT NOT NULL COLLATE 'utf8mb4_general_ci',
+	`BadgesJson` TEXT NOT NULL DEFAULT '[]' COLLATE 'utf8mb4_general_ci',
 	PRIMARY KEY (`SonarQubeInfoId`) USING BTREE,
 	INDEX `FK_SonarQubeInfo_Projects` (`ProjectId`) USING BTREE,
 	INDEX `Deleted` (`Deleted`) USING BTREE,
 	CONSTRAINT `FK_SonarQubeInfo_Projects` FOREIGN KEY (`ProjectId`) REFERENCES `Projects` (`ProjectId`) ON UPDATE NO ACTION ON DELETE NO ACTION
 )
 COLLATE='utf8mb4_general_ci'
-ENGINE=InnoDB
-;
+ENGINE=InnoDB;
 
 CREATE TABLE `SourceCodeMaturity` (
 	`ScmId` INT(11) NOT NULL AUTO_INCREMENT,
@@ -103,6 +100,4 @@ CREATE TABLE `SourceCodeMaturity` (
 	CONSTRAINT `FK_SourceCodeMaturity_Projects` FOREIGN KEY (`ProjectId`) REFERENCES `Projects` (`ProjectId`) ON UPDATE NO ACTION ON DELETE NO ACTION
 )
 COLLATE='utf8mb4_general_ci'
-ENGINE=InnoDB
-;
-
+ENGINE=InnoDB;
