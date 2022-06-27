@@ -37,7 +37,9 @@ public static class ServiceCollectionExtensions
 
       .AddRnDbMySql(configuration)
       .AddSingleton<IUserLinkRepo, UserLinkRepo>()
+      .AddSingleton<IProjectRepo, ProjectRepo>()
       .AddSingleton<IUserLinkRepoQueries, UserLinkRepoQueries>()
+      .AddSingleton<IProjectRepoQueries, ProjectRepoQueries>()
 
       .AddSingleton<INasLandingPageConfigProvider, NasLandingPageConfigProvider>()
       .AddSingleton<IProjectInfoProvider, ProjectInfoProvider>()
