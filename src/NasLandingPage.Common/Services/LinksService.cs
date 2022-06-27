@@ -1,4 +1,3 @@
-using Microsoft.Extensions.DependencyInjection;
 using NasLandingPage.Common.Models.Responses;
 using NasLandingPage.Common.Providers;
 using Rn.NetCore.Common.Logging;
