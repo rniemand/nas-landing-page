@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using NasLandingPage.Common.Database;
 using NasLandingPage.Common.Extensions;
 using NasLandingPage.Common.Models.Requests;
 using NasLandingPage.Common.Models.Responses;
@@ -52,6 +53,17 @@ public class NlpDevConsole
     _services
       .GetRequiredService<IUserLinkService>()
       .RegisterFollow("005b08955aea4b34b50525fc462421b0")
+      .GetAwaiter()
+      .GetResult();
+
+    return this;
+  }
+
+  public NlpDevConsole GetAllLinks()
+  {
+    var links = _services.GetRequiredService<IUserLinkRepo>()
+      .GetAllAsync()
+      .ConfigureAwait(false)
       .GetAwaiter()
       .GetResult();
 

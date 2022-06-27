@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NasLandingPage.Common.Clients;
+using NasLandingPage.Common.Database;
 using NasLandingPage.Common.Factories;
 using NasLandingPage.Common.Helpers;
 using NasLandingPage.Common.Providers;
@@ -8,6 +9,7 @@ using NasLandingPage.Common.Services;
 using Rn.NetCore.Common.Abstractions;
 using Rn.NetCore.Common.Helpers;
 using Rn.NetCore.Common.Logging;
+using Rn.NetCore.DbCommon;
 using Rn.NetCore.Metrics.Extensions;
 using Rn.NetCore.Metrics.Rabbit.Extensions;
 
@@ -32,6 +34,10 @@ public static class ServiceCollectionExtensions
 
       .AddSingleton<IJsonHelper, JsonHelper>()
       .AddSingleton<IFileSystemHelper, FileSystemHelper>()
+
+      .AddRnDbMySql(configuration)
+      .AddSingleton<IUserLinkRepo, UserLinkRepo>()
+      .AddSingleton<IUserLinkRepoQueries, UserLinkRepoQueries>()
 
       .AddSingleton<INasLandingPageConfigProvider, NasLandingPageConfigProvider>()
       .AddSingleton<IProjectInfoProvider, ProjectInfoProvider>()
