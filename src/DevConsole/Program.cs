@@ -4,7 +4,9 @@ new NlpDevConsole()
   //.TestGetCredentials()
   //.TestProjectSync()
   //.FollowLink()
-  .GetAllLinks()
+  //.GetAllLinks()
+  //.GetLinkCategories()
+  .UpdateFollowed(1)
   .DoNothing();
 
 Console.WriteLine("Fin.");

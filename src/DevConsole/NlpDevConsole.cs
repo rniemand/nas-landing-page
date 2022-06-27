@@ -70,6 +70,28 @@ public class NlpDevConsole
     return this;
   }
 
+  public NlpDevConsole GetLinkCategories()
+  {
+    var categories = _services.GetRequiredService<IUserLinkRepo>()
+      .GetCategoriesAsync()
+      .ConfigureAwait(false)
+      .GetAwaiter()
+      .GetResult();
+
+    return this;
+  }
+
+  public NlpDevConsole UpdateFollowed(int linkId)
+  {
+    var affectedRows = _services.GetRequiredService<IUserLinkRepo>()
+      .UpdateFollowedAsync(linkId)
+      .ConfigureAwait(false)
+      .GetAwaiter()
+      .GetResult();
+
+    return this;
+  }
+
   private static IServiceProvider BuildServiceContainer()
   {
     var services = new ServiceCollection();

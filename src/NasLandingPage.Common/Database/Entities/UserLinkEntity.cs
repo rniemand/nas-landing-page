@@ -6,6 +6,7 @@ public class UserLinkEntity
   public bool Deleted { get; set; }
   public DateTime DateAddedUtc { get; set; } = DateTime.MinValue.ToUniversalTime();
   public DateTime DateUpdatedUtc { get; set; } = DateTime.MinValue.ToUniversalTime();
+  public DateTime DateLastFollowedUtc { get; set; } = DateTime.MinValue.ToUniversalTime();
   public string LinkName { get; set; } = string.Empty;
   public string LinkUrl { get; set; } = string.Empty;
   public int LinkOrder { get; set; } = 1024;
