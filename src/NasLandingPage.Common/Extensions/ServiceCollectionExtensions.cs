@@ -41,7 +41,6 @@ public static class ServiceCollectionExtensions
 
       .AddSingleton<INasLandingPageConfigProvider, NasLandingPageConfigProvider>()
       .AddSingleton<IProjectInfoProvider, ProjectInfoProvider>()
-      .AddSingleton<ILinkProvider, LinkProvider>()
       .AddSingleton<ILinkImageProvider, LinkImageProvider>()
 
       .AddSingleton<IProjectsService, ProjectsService>()

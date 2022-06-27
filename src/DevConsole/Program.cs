@@ -3,7 +3,6 @@ using DevConsole;
 new NlpDevConsole()
   //.TestGetCredentials()
   //.TestProjectSync()
-  //.FollowLink()
   //.GetAllLinks()
   //.GetLinkCategories()
   .UpdateFollowed(1)

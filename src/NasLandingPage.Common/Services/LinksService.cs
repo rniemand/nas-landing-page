@@ -1,46 +1,34 @@
+using NasLandingPage.Common.Database;
+using NasLandingPage.Common.Extensions;
 using NasLandingPage.Common.Models.Responses;
-using NasLandingPage.Common.Providers;
-using Rn.NetCore.Common.Logging;
 
 namespace NasLandingPage.Common.Services;
 
 public interface IUserLinkService
 {
   Task<List<UserLink>> GetAll();
-  Task RegisterFollow(string linkId);
+  Task RegisterFollow(int linkId);
   Task<List<string>> GetCategories();
 }
 
 public class UserLinkService : IUserLinkService
 {
-  private readonly ILoggerAdapter<UserLinkService> _logger;
-  private readonly ILinkProvider _linkProvider;
+  private readonly IUserLinkRepo _linkRepo;
 
-  public UserLinkService(
-    ILoggerAdapter<UserLinkService> logger,
-    ILinkProvider linkProvider)
+  public UserLinkService(IUserLinkRepo linkRepo)
   {
-    _logger = logger;
-    _linkProvider = linkProvider;
+    _linkRepo = linkRepo;
   }
 
   public async Task<List<UserLink>> GetAll() =>
-    await _linkProvider.GetAll();
+    (await _linkRepo.GetAllAsync()).ToDtoList();
 
-  public async Task RegisterFollow(string linkId)
-  {
-    var link = await _linkProvider.GetById(linkId);
-    if (link is null)
-    {
-      _logger.LogWarning("Unable to find a link with id: {id}", linkId);
-      return;
-    }
-
-    link.FollowCount += 1;
-    await _linkProvider.Update(link);
-    _logger.LogDebug("Updated follow count for: {name}", link.Name);
-  }
+  public async Task RegisterFollow(int linkId) =>
+    await _linkRepo.UpdateFollowedAsync(linkId);
 
   public async Task<List<string>> GetCategories() =>
-    await _linkProvider.GetLinkCategories();
+    (await _linkRepo.GetCategoriesAsync())
+    .Where(x => !string.IsNullOrWhiteSpace(x.Value))
+    .Select(x => x.Value)
+    .ToList();
 }

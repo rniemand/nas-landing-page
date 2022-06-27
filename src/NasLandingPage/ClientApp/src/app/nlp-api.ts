@@ -260,7 +260,7 @@ export class UserLinksClient {
         return _observableOf(null as any);
     }
 
-    registerLinkFollow(linkId: string | null): Observable<void> {
+    registerLinkFollow(linkId: number): Observable<void> {
         let url_ = this.baseUrl + "/api/UserLinks/followed/{linkId}";
         if (linkId === undefined || linkId === null)
             throw new Error("The parameter 'linkId' must be defined.");
@@ -1035,7 +1035,7 @@ export interface IRunCommandRequest {
 }
 
 export class UserLink implements IUserLink {
-    id!: string;
+    id!: number;
     name!: string;
     url!: string;
     order!: number;
@@ -1085,7 +1085,7 @@ export class UserLink implements IUserLink {
 }
 
 export interface IUserLink {
-    id: string;
+    id: number;
     name: string;
     url: string;
     order: number;

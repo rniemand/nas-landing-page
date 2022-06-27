@@ -4,8 +4,6 @@ using Microsoft.Extensions.Logging;
 using NasLandingPage.Common.Database;
 using NasLandingPage.Common.Extensions;
 using NasLandingPage.Common.Models.Requests;
-using NasLandingPage.Common.Models.Responses;
-using NasLandingPage.Common.Providers;
 using NasLandingPage.Common.Services;
 using NLog.Extensions.Logging;
 
@@ -47,18 +45,7 @@ public class NlpDevConsole
     Console.WriteLine(commandResponse.Success);
     return this;
   }
-
-  public NlpDevConsole FollowLink()
-  {
-    _services
-      .GetRequiredService<IUserLinkService>()
-      .RegisterFollow("005b08955aea4b34b50525fc462421b0")
-      .GetAwaiter()
-      .GetResult();
-
-    return this;
-  }
-
+  
   public NlpDevConsole GetAllLinks()
   {
     var links = _services.GetRequiredService<IUserLinkRepo>()
@@ -116,17 +103,5 @@ public class NlpDevConsole
       });
 
     return services.BuildServiceProvider();
-  }
-
-  private void AddLink()
-  {
-    _services.GetRequiredService<ILinkProvider>().AddLink(new UserLink
-    {
-      Name = "",
-      Url = "",
-      Image = ""
-    });
-
-    Console.WriteLine();
   }
 }
