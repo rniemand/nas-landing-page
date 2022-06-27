@@ -26,8 +26,8 @@ public class UserLinksController : ControllerBase
     return await _linkService.GetAll();
   }
 
-  [HttpPut, Route("followed/{linkId}")]
-  public async Task RegisterLinkFollow([FromRoute] string linkId)
+  [HttpPut, Route("followed/{linkId:int}")]
+  public async Task RegisterLinkFollow([FromRoute] int linkId)
   {
     await _linkService.RegisterFollow(linkId);
   }

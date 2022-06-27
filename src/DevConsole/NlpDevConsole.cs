@@ -1,10 +1,9 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using NasLandingPage.Common.Database;
 using NasLandingPage.Common.Extensions;
 using NasLandingPage.Common.Models.Requests;
-using NasLandingPage.Common.Models.Responses;
-using NasLandingPage.Common.Providers;
 using NasLandingPage.Common.Services;
 using NLog.Extensions.Logging;
 
@@ -46,12 +45,34 @@ public class NlpDevConsole
     Console.WriteLine(commandResponse.Success);
     return this;
   }
-
-  public NlpDevConsole FollowLink()
+  
+  public NlpDevConsole GetAllLinks()
   {
-    _services
-      .GetRequiredService<IUserLinkService>()
-      .RegisterFollow("005b08955aea4b34b50525fc462421b0")
+    var links = _services.GetRequiredService<IUserLinkRepo>()
+      .GetAllAsync()
+      .ConfigureAwait(false)
+      .GetAwaiter()
+      .GetResult();
+
+    return this;
+  }
+
+  public NlpDevConsole GetLinkCategories()
+  {
+    var categories = _services.GetRequiredService<IUserLinkRepo>()
+      .GetCategoriesAsync()
+      .ConfigureAwait(false)
+      .GetAwaiter()
+      .GetResult();
+
+    return this;
+  }
+
+  public NlpDevConsole UpdateFollowed(int linkId)
+  {
+    var affectedRows = _services.GetRequiredService<IUserLinkRepo>()
+      .UpdateFollowedAsync(linkId)
+      .ConfigureAwait(false)
       .GetAwaiter()
       .GetResult();
 
@@ -70,7 +91,7 @@ public class NlpDevConsole
     services
       // Configuration
       .AddSingleton<IConfiguration>(config)
-      .AddNasLandingPage()
+      .AddNasLandingPage(config)
 
       // Logging
       .AddLogging(loggingBuilder =>
@@ -82,17 +103,5 @@ public class NlpDevConsole
       });
 
     return services.BuildServiceProvider();
-  }
-
-  private void AddLink()
-  {
-    _services.GetRequiredService<ILinkProvider>().AddLink(new UserLink
-    {
-      Name = "",
-      Url = "",
-      Image = ""
-    });
-
-    Console.WriteLine();
   }
 }
