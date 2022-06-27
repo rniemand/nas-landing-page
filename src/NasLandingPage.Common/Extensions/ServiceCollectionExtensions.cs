@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NasLandingPage.Common.Clients;
 using NasLandingPage.Common.Factories;
@@ -14,7 +15,7 @@ namespace NasLandingPage.Common.Extensions;
 
 public static class ServiceCollectionExtensions
 {
-  public static IServiceCollection AddNasLandingPage(this IServiceCollection serviceCollection)
+  public static IServiceCollection AddNasLandingPage(this IServiceCollection serviceCollection, IConfiguration configuration)
   {
     return serviceCollection
       .AddSingleton<IDirectoryAbstraction, DirectoryAbstraction>()
@@ -42,7 +43,7 @@ public static class ServiceCollectionExtensions
       .AddSingleton<ICredentialsService, CredentialsService>()
       .AddSingleton<IUserLinkService, UserLinkService>()
 
-      .AddRnMetricsBase()
-      .AddRnRabbitMQMetrics();
+      .AddRnMetricsBase(configuration)
+      .AddRnMetricRabbitMQ();
   }
 }

@@ -12,7 +12,7 @@ try
 
   // Add services to the container.
   builder.Services.AddControllersWithViews().AddNewtonsoftJson();
-  builder.Services.AddNasLandingPage();
+  builder.Services.AddNasLandingPage(builder.Configuration);
   builder.Services.AddSwaggerDocument();
 
   builder.Logging.ClearProviders();

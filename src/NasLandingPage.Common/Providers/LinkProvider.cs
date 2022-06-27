@@ -5,6 +5,7 @@ using NasLandingPage.Common.Models.Responses;
 using Rn.NetCore.Common.Extensions;
 using Rn.NetCore.Metrics;
 using Rn.NetCore.Metrics.Builders;
+using Rn.NetCore.Metrics.Extensions;
 
 namespace NasLandingPage.Common.Providers;
 
@@ -23,7 +24,6 @@ public class LinkProvider : ILinkProvider
   private readonly IMetricService _metrics;
   private readonly NlpConfig _config;
   private readonly string _dataDir;
-  private readonly string _backupDir;
 
   public LinkProvider(IServiceProvider serviceProvider)
   {
@@ -32,17 +32,16 @@ public class LinkProvider : ILinkProvider
     _config = serviceProvider.GetRequiredService<INasLandingPageConfigProvider>().Provide();
 
     _dataDir = GenerateDataDirPath();
-    _backupDir = GenerateBackupDirPath();
   }
 
 
   public async Task AddLink(UserLink link)
   {
-    var builder = GetMetricBuilder(nameof(AddLink));
+    var metricBuilder = new ServiceMetricBuilder(nameof(LinkProvider), nameof(AddLink));
 
     try
     {
-      using (builder.WithTiming())
+      using (metricBuilder.WithTiming())
       {
         link.LinkId = Guid.NewGuid().ToString("D");
         var filePath = GenerateLinkFilePath(link.LinkId);
@@ -52,18 +51,18 @@ public class LinkProvider : ILinkProvider
     }
     catch (Exception ex)
     {
-      builder.WithException(ex);
+      metricBuilder.WithException(ex);
       throw;
     }
     finally
     {
-      await _metrics.SubmitBuilderAsync(builder);
+      await _metrics.SubmitAsync(metricBuilder);
     }
   }
 
   public async Task<List<UserLink>> GetAll()
   {
-    var builder = GetMetricBuilder(nameof(GetAll));
+    var builder = new ServiceMetricBuilder(nameof(LinkProvider), nameof(GetAll));
 
     try
     {
@@ -84,13 +83,13 @@ public class LinkProvider : ILinkProvider
     }
     finally
     {
-      await _metrics.SubmitBuilderAsync(builder);
+      await _metrics.SubmitAsync(builder);
     }
   }
 
   public async Task<UserLink?> GetById(string linkId)
   {
-    var builder = GetMetricBuilder(nameof(GetById));
+    var builder = new ServiceMetricBuilder(nameof(LinkProvider), nameof(GetById));
 
     try
     {
@@ -107,13 +106,13 @@ public class LinkProvider : ILinkProvider
     }
     finally
     {
-      await _metrics.SubmitBuilderAsync(builder);
+      await _metrics.SubmitAsync(builder);
     }
   }
 
   public async Task Update(UserLink link)
   {
-    var builder = GetMetricBuilder(nameof(Update));
+    var builder = new ServiceMetricBuilder(nameof(LinkProvider), nameof(Update));
 
     try
     {
@@ -135,13 +134,13 @@ public class LinkProvider : ILinkProvider
     }
     finally
     {
-      await _metrics.SubmitBuilderAsync(builder);
+      await _metrics.SubmitAsync(builder);
     }
   }
 
   public async Task<List<string>> GetLinkCategories()
   {
-    var builder = GetMetricBuilder(nameof(GetLinkCategories));
+    var builder = new ServiceMetricBuilder(nameof(LinkProvider), nameof(GetLinkCategories));
 
     try
     {
@@ -161,14 +160,14 @@ public class LinkProvider : ILinkProvider
     }
     finally
     {
-      await _metrics.SubmitBuilderAsync(builder);
+      await _metrics.SubmitAsync(builder);
     }
   }
 
 
   private List<UserLink> GetEnabledLinks(List<string> filePaths)
   {
-    var builder = GetMetricBuilder(nameof(GetEnabledLinks));
+    var builder = new ServiceMetricBuilder(nameof(LinkProvider), nameof(GetEnabledLinks));
 
     try
     {
@@ -196,16 +195,10 @@ public class LinkProvider : ILinkProvider
     }
     finally
     {
-      _metrics.SubmitBuilder(builder);
+      _metrics.SubmitAsync(builder);
     }
   }
-
-  private static ServiceMetricBuilder GetMetricBuilder(string method)
-    => new(nameof(LinkProvider), method);
-
-  private string GenerateLinkFilePath(Guid linkId) =>
-    GenerateLinkFilePath(linkId.ToString("N"));
-
+  
   private string GenerateLinkFilePath(string linkId)
   {
     var cleanLinkId = linkId.Replace("-", "").LowerTrim();
@@ -227,26 +220,6 @@ public class LinkProvider : ILinkProvider
       processed += sep;
 
     processed += $"links{sep}";
-    _fsHelper.EnsureFolderExists(processed);
-
-    return processed;
-  }
-
-  private string GenerateBackupDirPath()
-  {
-    var sep = _config.IsLinux ? "/" : "\\";
-    var rootDir = _fsHelper.CurrentDirectory;
-
-    if (!rootDir.EndsWith(sep))
-      rootDir += sep;
-
-    var processed = _config.DataDir
-      .Replace("./", rootDir);
-
-    if (!processed.EndsWith(sep))
-      processed += sep;
-
-    processed += $"links-backup{sep}";
     _fsHelper.EnsureFolderExists(processed);
 
     return processed;

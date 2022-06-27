@@ -70,7 +70,7 @@ public class NlpDevConsole
     services
       // Configuration
       .AddSingleton<IConfiguration>(config)
-      .AddNasLandingPage()
+      .AddNasLandingPage(config)
 
       // Logging
       .AddLogging(loggingBuilder =>

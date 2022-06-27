@@ -6,6 +6,7 @@ using Rn.NetCore.Common.Abstractions;
 using Rn.NetCore.Common.Helpers;
 using Rn.NetCore.Metrics;
 using Rn.NetCore.Metrics.Builders;
+using Rn.NetCore.Metrics.Extensions;
 
 namespace NasLandingPage.Common.Services;
 
@@ -36,12 +37,11 @@ public class ConfigService : IConfigService
 
   public ClientConfig GetClientConfig()
   {
-    var builder = new ServiceMetricBuilder(nameof(ConfigService),
-      nameof(GetClientConfig));
+    var metricBuilder = new ServiceMetricBuilder(nameof(ConfigService), nameof(GetClientConfig));
 
     try
     {
-      using (builder.WithTiming())
+      using (metricBuilder.WithTiming())
       {
         var configJson = _file.ReadAllText(_configFilePath);
         return _jsonHelper.DeserializeObject<ClientConfig>(configJson);
@@ -49,12 +49,12 @@ public class ConfigService : IConfigService
     }
     catch (Exception ex)
     {
-      builder.WithException(ex);
+      metricBuilder.WithException(ex);
       throw;
     }
     finally
     {
-      _metrics.SubmitBuilder(builder);
+      _metrics.SubmitAsync(metricBuilder);
     }
   }
 
