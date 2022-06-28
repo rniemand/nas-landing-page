@@ -38,8 +38,12 @@ public static class ServiceCollectionExtensions
       .AddRnDbMySql(configuration)
       .AddSingleton<IUserLinkRepo, UserLinkRepo>()
       .AddSingleton<IProjectRepo, ProjectRepo>()
+      .AddSingleton<IRepositoryRepo, RepositoryRepo>()
+      .AddSingleton<ISonarQubeInfoRepo, SonarQubeInfoRepo>()
       .AddSingleton<IUserLinkRepoQueries, UserLinkRepoQueries>()
       .AddSingleton<IProjectRepoQueries, ProjectRepoQueries>()
+      .AddSingleton<IRepositoryRepoQueries, RepositoryRepoQueries>()
+      .AddSingleton<ISonarQubeInfoRepoQueries, SonarQubeInfoRepoQueries>()
 
       .AddSingleton<INasLandingPageConfigProvider, NasLandingPageConfigProvider>()
       .AddSingleton<IProjectInfoProvider, ProjectInfoProvider>()

@@ -8,11 +8,11 @@ public interface IProjectRepo
 
 public class ProjectRepo : BaseRepo<ProjectRepo>, IProjectRepo
 {
-  private readonly IProjectRepoQueries _queries;
+  private readonly IProjectRepoQueries _repoQueries;
 
-  public ProjectRepo(IBaseRepoHelper baseRepoHelper, IProjectRepoQueries queries)
+  public ProjectRepo(IBaseRepoHelper baseRepoHelper, IProjectRepoQueries repoQueries)
     : base(baseRepoHelper)
   {
-    _queries = queries;
+    _repoQueries = repoQueries;
   }
 }
