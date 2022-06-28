@@ -40,10 +40,12 @@ public static class ServiceCollectionExtensions
       .AddSingleton<IProjectRepo, ProjectRepo>()
       .AddSingleton<IRepositoryRepo, RepositoryRepo>()
       .AddSingleton<ISonarQubeInfoRepo, SonarQubeInfoRepo>()
+      .AddSingleton<IScmRepo, ScmRepo>()
       .AddSingleton<IUserLinkRepoQueries, UserLinkRepoQueries>()
       .AddSingleton<IProjectRepoQueries, ProjectRepoQueries>()
       .AddSingleton<IRepositoryRepoQueries, RepositoryRepoQueries>()
       .AddSingleton<ISonarQubeInfoRepoQueries, SonarQubeInfoRepoQueries>()
+      .AddSingleton<IScmRepoQueries, ScmRepoQueries>()
 
       .AddSingleton<INasLandingPageConfigProvider, NasLandingPageConfigProvider>()
       .AddSingleton<IProjectInfoProvider, ProjectInfoProvider>()
