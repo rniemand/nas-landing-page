@@ -1,9 +1,7 @@
-[Home](/README.md) / Docs
+# nas-landing-page
+Links and project information overview
 
-# Documentation
-Starter documentation for `nas-landing-page`.
-
-More to come...
+Source code for the project can be found [here](https://github.com/rniemand/nas-landing-page).
 
 <!--(Rn.BuildScriptHelper){
 	"version": "1.0.107",
