@@ -4,6 +4,13 @@
 
 ## Development
 
+## UI Development
+
+```shell
+cd ui
+npm run dev
+```
+
 ### Docker Environment
 
 ```shell
