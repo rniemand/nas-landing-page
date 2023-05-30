@@ -10,3 +10,9 @@
 cd docker
 docker-compose up
 ```
+
+#### Maria DB
+
+- Host: `localhost`
+- User: `nlp`
+- Password: `password`
