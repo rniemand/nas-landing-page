@@ -1,5 +1,5 @@
 version: '3.6'
-
+name: nas-landing-page
 services:
   db:
     image: mariadb:latest
