@@ -8,7 +8,7 @@
       "configuration": null,
       "runtime": null,
       "targetFramework": null,
-      "noBuild": false,
+      "noBuild": true,
       "msBuildOutputPath": null,
       "verbose": true,
       "workingDirectory": null,
@@ -121,7 +121,7 @@
       "enumNameGeneratorType": null,
       "serviceHost": null,
       "serviceSchemes": null,
-      "output": null,
+      "output": "../../ui/src/nlp-api.ts",
       "newLineBehavior": "Auto"
     }
   }
