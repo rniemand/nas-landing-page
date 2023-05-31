@@ -1,8 +1,11 @@
 <script lang="ts">
-	import type { UserLinkDto } from '../nlp-api';
+	import { UserLinksClient, type UserLinkDto } from '../nlp-api';
 	export let link: UserLinkDto;
 
 	const handleClick = () => {
+		new UserLinksClient().recordLinkFollow(link.linkID).then((success: boolean) => {
+			if(success) link.followCount += 1;
+		});
 		window.open(link.linkUrl, '_blank');
 	};
 </script>

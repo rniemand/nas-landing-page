@@ -6,6 +6,7 @@ namespace NasLandingPage.Services;
 public interface IUserLinkService
 {
   Task<List<UserLinkDto>> GetAllLinksAsync();
+  Task<bool> RecordLinkFollow(int linkId);
 }
 
 public class UserLinkService : IUserLinkService
@@ -22,4 +23,6 @@ public class UserLinkService : IUserLinkService
     var dbLinks = await _linksRepo.GetAllAsync();
     return dbLinks.Select(UserLinkDto.FromEntity).ToList();
   }
+
+  public async Task<bool> RecordLinkFollow(int linkId) => (await _linksRepo.RecordFollowAsync(linkId)) == 1;
 }

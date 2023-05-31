@@ -17,4 +17,7 @@ public class UserLinksController : ControllerBase
 
   [HttpGet("all")]
   public async Task<List<UserLinkDto>> GetAllLinks() => await _linkService.GetAllLinksAsync();
+
+  [HttpPut("follow/{linkId:int}")]
+  public async Task<bool> RecordLinkFollow([FromRoute] int linkId) => await _linkService.RecordLinkFollow(linkId);
 }
