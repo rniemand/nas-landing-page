@@ -23,3 +23,9 @@ docker-compose up
 - Host: `localhost`
 - User: `nlp`
 - Password: `password`
+
+### Misc
+
+```shell
+.\ci-build.ps1 -project NasLandingPage
+```
