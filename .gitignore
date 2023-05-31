@@ -7,3 +7,5 @@ tools/
 
 *.ncrunchsolution
 *.ncrunchsolution.user
+
+.github/.sonarqube/
