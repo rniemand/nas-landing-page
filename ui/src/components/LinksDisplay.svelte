@@ -2,9 +2,16 @@
 	import type { UserLinkDto } from '../nlp-api';
   import LinkCategories from './LinkCategories.svelte';
   import LinkEntry from './LinkEntry.svelte';
+  import LinkSearch from './LinkSearch.svelte';
 
 	export let links: UserLinkDto[];
-
+	
+	const linkLookup: { [key:string]:UserLinkDto } = links.reduce((pv: { [key:string]:UserLinkDto }, cv) => {
+		let key = `${cv.linkName}|${cv.linkCategory}|${cv.linkImage}`.toLowerCase();
+		pv[key] = cv;
+		return pv;
+	}, {});
+	
 	const categorizeLinks = (links: UserLinkDto[]): { [key: string]: UserLinkDto[] } =>
 		links.reduce((pv: { [key: string]: UserLinkDto[] }, cv) => {
 			if (pv[cv.linkCategory] === void 0) pv[cv.linkCategory] = [];
@@ -12,15 +19,28 @@
 			return pv;
 		}, {});
 
+	const searchKeys = Object.keys(linkLookup);
 	const categories = categorizeLinks(links);
 	const categoryNames = Object.keys(categories);
 	categoryNames.sort();
 	let selectedCategory = categoryNames[0];
 	let currentLinks: UserLinkDto[] = links.filter(x => x.linkCategory === selectedCategory);
-
+	
 	const onCategorySelectedHandler = (category: string) => {
 		selectedCategory = category;
 		currentLinks = links.filter(x => x.linkCategory === category);
+	};
+
+	const onSearchChangeHandler = (term: string) => {
+		const safeTerm = (term || '').toLowerCase().trim();
+		currentLinks = searchKeys.reduce((pv: UserLinkDto[], cv) => {
+			if(cv.indexOf(safeTerm) != -1) pv.push(linkLookup[cv]);
+			return pv;
+		}, []);
+	};
+
+	const onClearSearchHandler = () => {
+		onCategorySelectedHandler(selectedCategory);
 	};
 </script>
 
@@ -41,6 +61,7 @@
 </style>
 
 <LinkCategories categories={categoryNames} onCategorySelected={onCategorySelectedHandler} {selectedCategory} />
+<LinkSearch onSearchChange={onSearchChangeHandler} onClearSearch={onClearSearchHandler} />
 
 <div class="link-category">
 	<h2>{selectedCategory}</h2>
