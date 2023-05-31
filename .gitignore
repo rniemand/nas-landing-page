@@ -4,3 +4,6 @@ obj/
 bin/
 artifacts/
 tools/
+
+*.ncrunchsolution
+*.ncrunchsolution.user
