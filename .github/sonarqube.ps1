@@ -1,6 +1,6 @@
 param (
   [Parameter(Mandatory=$false)]
-  [string] $project = "NasLandingPage",
+  [string] $project = "nas-landing-page",
 
   [Parameter(Mandatory=$false)]
   [string] $sqUrl = "http://localhost:9000",

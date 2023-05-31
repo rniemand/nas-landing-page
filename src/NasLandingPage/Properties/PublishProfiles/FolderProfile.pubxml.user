@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+https://go.microsoft.com/fwlink/?LinkID=208121.
+-->
+<Project>
+  <PropertyGroup>
+    <_PublishTargetUrl>C:\Dev\personal\nas-landing-page\src\NasLandingPage\bin\Release\net7.0\publish\</_PublishTargetUrl>
+    <History>True|2023-05-30T23:44:50.4590662Z;</History>
+    <LastFailureDetails />
+  </PropertyGroup>
+</Project>

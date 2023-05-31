@@ -1,46 +1,38 @@
-using NasLandingPage.Common.Extensions;
-using NLog;
-using NLog.Web;
 
-// https://github.com/NLog/NLog/wiki/Getting-started-with-ASP.NET-Core-6
-var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
-logger.Debug("init main");
+using NasLandingPage.Extensions;
 
-try
+namespace NasLandingPage;
+
+public class Program
 {
-  var builder = WebApplication.CreateBuilder(args);
+  public static void Main(string[] args)
+  {
+    var builder = WebApplication.CreateBuilder(args);
+    builder.Services.AddControllers();
+    builder.Services.AddEndpointsApiExplorer();
+    builder.Services.AddSwaggerGen();
+    builder.Services.AddSwaggerDocument();
+    builder.Services.AddNasLandingPage(builder.Configuration);
 
-  // Add services to the container.
-  builder.Services.AddControllersWithViews().AddNewtonsoftJson();
-  builder.Services.AddNasLandingPage(builder.Configuration);
-  builder.Services.AddSwaggerDocument();
+    var app = builder.Build();
 
-  builder.Logging.ClearProviders();
-  builder.Logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
-  builder.Host.UseNLog();
+    app.UseOpenApi();
+    app.UseSwaggerUi3();
+    app.MapControllers();
+    app.UseRouting();
+    app.UseAuthorization();
+    app.UseEndpoints(_ => { });
 
-  var app = builder.Build();
+#if DEBUG
+    app.UseSpa(spa =>
+    {
+      spa.UseProxyToSpaDevelopmentServer("http://localhost:5173");
+    });
+#else
+    app.UseStaticFiles();
+    app.MapFallbackToFile("index.html");
+#endif
 
-  app.UseStaticFiles();
-
-  app.UseRouting();
-
-  app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller}/{action=Index}/{id?}");
-
-  app.MapFallbackToFile("index.html");
-
-  app.Run();
-}
-catch (Exception exception)
-{
-  // NLog: catch setup errors
-  logger.Error(exception, "Stopped program because of exception");
-  throw;
-}
-finally
-{
-  // Ensure to flush and stop internal timers/threads before application-exit (Avoid segmentation fault on Linux)
-  LogManager.Shutdown();
+    app.Run();
+  }
 }
