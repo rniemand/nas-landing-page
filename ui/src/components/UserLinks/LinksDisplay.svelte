@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { UserLinkDto } from '../nlp-api';
+	import type { UserLinkDto } from '../../nlp-api';
   import LinkCategories from './LinkCategories.svelte';
   import LinkEntry from './LinkEntry.svelte';
   import LinkSearch from './LinkSearch.svelte';

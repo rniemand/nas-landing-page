@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { UserLinksClient, type UserLinkDto } from '../nlp-api';
+	import { UserLinksClient, type UserLinkDto } from '../../nlp-api';
 	export let link: UserLinkDto;
 
 	const handleClick = () => {

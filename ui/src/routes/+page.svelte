@@ -1,18 +1,5 @@
 <script lang="ts">
-	import LinksDisplay from '../components/LinksDisplay.svelte';
-	import { UserLinksClient, type UserLinkDto } from '../nlp-api';
-
-	let links: UserLinkDto[] = [];
-	let linksLoaded = false;
-
-	new UserLinksClient().getAllLinks().then((responseLinks: UserLinkDto[]) => {
-		links = responseLinks;
-		linksLoaded = true;
-	});
+  import UserLinks from "../components/UserLinks/UserLinks.svelte";
 </script>
 
-{#if !linksLoaded}
-	<div>Loading...</div>
-{:else}
-	<LinksDisplay {links} />
-{/if}
+<UserLinks />
