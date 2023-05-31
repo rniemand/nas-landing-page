@@ -24,6 +24,7 @@
 	const categoryNames = Object.keys(categories);
 	categoryNames.sort();
 	let selectedCategory = categoryNames[0];
+	let lastCategory = '';
 	let currentLinks: UserLinkDto[] = links.filter(x => x.linkCategory === selectedCategory);
 	
 	const onCategorySelectedHandler = (category: string) => {
@@ -32,6 +33,8 @@
 	};
 
 	const onSearchChangeHandler = (term: string) => {
+		if(selectedCategory.toLowerCase() != 'search') lastCategory = selectedCategory;
+		selectedCategory = 'Search';
 		const safeTerm = (term || '').toLowerCase().trim();
 		currentLinks = searchKeys.reduce((pv: UserLinkDto[], cv) => {
 			if(cv.indexOf(safeTerm) != -1) pv.push(linkLookup[cv]);
@@ -40,6 +43,7 @@
 	};
 
 	const onClearSearchHandler = () => {
+		selectedCategory = lastCategory;
 		onCategorySelectedHandler(selectedCategory);
 	};
 </script>
