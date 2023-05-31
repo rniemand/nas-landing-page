@@ -150,6 +150,97 @@ export class UserLinksClient {
     }
 }
 
+export class UserTasksClient {
+    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+        this.http = http ? http : window as any;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    getAllTasks(): Promise<UserTaskDto[]> {
+        let url_ = this.baseUrl + "/UserTasks/all";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processGetAllTasks(_response);
+        });
+    }
+
+    protected processGetAllTasks(response: Response): Promise<UserTaskDto[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(UserTaskDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<UserTaskDto[]>(null as any);
+    }
+
+    addTask(task: UserTaskDto): Promise<boolean> {
+        let url_ = this.baseUrl + "/UserTasks/add";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(task);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processAddTask(_response);
+        });
+    }
+
+    protected processAddTask(response: Response): Promise<boolean> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<boolean>(null as any);
+    }
+}
+
 export class UserLinkDto implements IUserLinkDto {
     linkID!: number;
     deleted!: boolean;
@@ -224,6 +315,74 @@ export interface IUserLinkDto {
     linkCategory: string;
     linkUrl: string;
     linkImage: string;
+}
+
+export class UserTaskDto implements IUserTaskDto {
+    taskID!: number;
+    deleted!: boolean;
+    completed!: boolean;
+    taskPriority!: number;
+    dateAddedUtc!: Date;
+    dateCompletedUtc!: Date;
+    taskName!: string;
+    taskCategory!: string;
+    taskDescription!: string;
+
+    constructor(data?: IUserTaskDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.taskID = _data["taskID"];
+            this.deleted = _data["deleted"];
+            this.completed = _data["completed"];
+            this.taskPriority = _data["taskPriority"];
+            this.dateAddedUtc = _data["dateAddedUtc"] ? new Date(_data["dateAddedUtc"].toString()) : <any>undefined;
+            this.dateCompletedUtc = _data["dateCompletedUtc"] ? new Date(_data["dateCompletedUtc"].toString()) : <any>undefined;
+            this.taskName = _data["taskName"];
+            this.taskCategory = _data["taskCategory"];
+            this.taskDescription = _data["taskDescription"];
+        }
+    }
+
+    static fromJS(data: any): UserTaskDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new UserTaskDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["taskID"] = this.taskID;
+        data["deleted"] = this.deleted;
+        data["completed"] = this.completed;
+        data["taskPriority"] = this.taskPriority;
+        data["dateAddedUtc"] = this.dateAddedUtc ? this.dateAddedUtc.toISOString() : <any>undefined;
+        data["dateCompletedUtc"] = this.dateCompletedUtc ? this.dateCompletedUtc.toISOString() : <any>undefined;
+        data["taskName"] = this.taskName;
+        data["taskCategory"] = this.taskCategory;
+        data["taskDescription"] = this.taskDescription;
+        return data;
+    }
+}
+
+export interface IUserTaskDto {
+    taskID: number;
+    deleted: boolean;
+    completed: boolean;
+    taskPriority: number;
+    dateAddedUtc: Date;
+    dateCompletedUtc: Date;
+    taskName: string;
+    taskCategory: string;
+    taskDescription: string;
 }
 
 export interface FileResponse {

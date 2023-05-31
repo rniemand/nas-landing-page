@@ -14,8 +14,10 @@ public static class ServiceCollectionExtensions
       // Database
       .AddSingleton<IConnectionHelper, ConnectionHelper>()
       .AddSingleton<IUserLinksRepo, UserUserLinksRepo>()
+      .AddSingleton<IUserTasksRepo, UserTasksRepo>()
       // Services
-      .AddSingleton<IUserLinkService, UserLinkService>();
+      .AddSingleton<IUserLinkService, UserLinkService>()
+      .AddSingleton<IUserTaskService, UserTaskService>();
   }
 
   private static AppConfig BindAppConfig(IConfiguration configuration)
