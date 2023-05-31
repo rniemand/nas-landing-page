@@ -1,4 +1,6 @@
 
+using NasLandingPage.Extensions;
+
 namespace NasLandingPage;
 
 public class Program
@@ -10,6 +12,7 @@ public class Program
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
     builder.Services.AddSwaggerDocument();
+    builder.Services.AddNasLandingPage();
 
     var app = builder.Build();
 

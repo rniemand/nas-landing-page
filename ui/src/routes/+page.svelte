@@ -1,9 +1,11 @@
 <script lang="ts">
-  import { WeatherForecast, WeatherForecastClient } from "../nlp-api";
+	import { UserLinksClient, type UserLinkDto } from '../nlp-api';
 
-  new WeatherForecastClient().get().then((forecast: WeatherForecast[]) => {
-    console.log('x', forecast);
-  });
+	let links: UserLinkDto[] = [];
+
+	new UserLinksClient().getAllLinks().then((links: UserLinkDto[]) => {
+		console.log('links', links);
+	});
 </script>
 
 <h1>Welcome to SvelteKit</h1>
