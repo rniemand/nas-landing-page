@@ -12,7 +12,7 @@ public class Program
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
     builder.Services.AddSwaggerDocument();
-    builder.Services.AddNasLandingPage();
+    builder.Services.AddNasLandingPage(builder.Configuration);
 
     var app = builder.Build();
 
