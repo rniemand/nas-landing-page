@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { UserLinkDto } from '../nlp-api';
-	import LinkCategoryDisplay from './LinkCategoryDisplay.svelte';
+  import LinkCategories from './LinkCategories.svelte';
+  import LinkEntry from './LinkEntry.svelte';
 
 	export let links: UserLinkDto[];
 
@@ -13,8 +14,39 @@
 
 	const categories = categorizeLinks(links);
 	const categoryNames = Object.keys(categories);
+	categoryNames.sort();
+	let selectedCategory = categoryNames[0];
+	let currentLinks: UserLinkDto[] = links.filter(x => x.linkCategory === selectedCategory);
+
+	const onCategorySelectedHandler = (category: string) => {
+		selectedCategory = category;
+		currentLinks = links.filter(x => x.linkCategory === category);
+	};
 </script>
 
-{#each categoryNames as categoryName}
-	<LinkCategoryDisplay name={categoryName} links={categories[categoryName]} />
-{/each}
+<style>
+	.links {
+		display: flex;
+		padding: 6px;
+		flex-direction: row;
+		justify-content: center;
+		flex-wrap: wrap;
+	}
+	h2 {
+		text-align: center;
+		margin: 12px 2px;
+		font-size: 2em;
+		text-transform: capitalize;
+	}
+</style>
+
+<LinkCategories categories={categoryNames} onCategorySelected={onCategorySelectedHandler} {selectedCategory} />
+
+<div class="link-category">
+	<h2>{selectedCategory}</h2>
+	<div class="links">
+		{#each currentLinks as link}
+			<LinkEntry {link} />
+		{/each}
+	</div>
+</div>
