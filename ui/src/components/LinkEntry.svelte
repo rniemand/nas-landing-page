@@ -31,6 +31,7 @@
 		background-color: #323232;
 		color: #fff;
 		cursor: pointer;
+		margin-bottom: 12px;
 	}
 	.link:hover {
 		background-color: #2e373a;

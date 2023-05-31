@@ -16,9 +16,6 @@
 </div>
 
 <style>
-	.link-category {
-		margin-bottom: 6px;
-	}
 	h2 {
 		text-align: center;
 		margin: 12px 2px;
@@ -30,5 +27,6 @@
 		padding: 6px;
 		flex-direction: row;
 		justify-content: center;
+		flex-wrap: wrap;
 	}
 </style>
