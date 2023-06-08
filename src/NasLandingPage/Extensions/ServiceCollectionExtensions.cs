@@ -1,6 +1,7 @@
 using NasLandingPage.Models;
 using NasLandingPage.Repos;
 using NasLandingPage.Services;
+using RnCore.Abstractions;
 
 namespace NasLandingPage.Extensions;
 
@@ -15,6 +16,9 @@ public static class ServiceCollectionExtensions
       .AddSingleton<IConnectionHelper, ConnectionHelper>()
       .AddSingleton<IUserLinksRepo, UserUserLinksRepo>()
       .AddSingleton<IUserTasksRepo, UserTasksRepo>()
+      .AddSingleton<IGitHubRepoRepo, GitHubRepoRepo>()
+      // Helpers
+      .AddSingleton<IJsonHelper, JsonHelper>()
       // Services
       .AddSingleton<IUserLinkService, UserLinkService>()
       .AddSingleton<IUserTaskService, UserTaskService>();
