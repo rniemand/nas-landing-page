@@ -2,6 +2,7 @@ using Microsoft.Extensions.DependencyInjection;
 using NasLandingPage.Models;
 using NasLandingPage.Models.Entities;
 using NasLandingPage.Repos;
+using NasLandingPage.Services;
 using Octokit;
 using Octokit.Internal;
 
@@ -11,6 +12,11 @@ internal class Program
 {
   static async Task Main(string[] args)
   {
+    var ghService = DIContainer.Services.GetRequiredService<IGitHubService>();
+
+
+    await ghService.SyncCoreRepoInformationAsync();
+
     // https://octokitnet.readthedocs.io/en/latest/
     var ghClient = GetGitHubClient();
 

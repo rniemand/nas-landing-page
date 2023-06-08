@@ -1,7 +1,8 @@
-﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NasLandingPage.Extensions;
+using NLog.Extensions.Logging;
 
 namespace DevConsole;
 
@@ -26,7 +27,7 @@ internal static class DIContainer
       {
         loggingBuilder.ClearProviders();
         loggingBuilder.SetMinimumLevel(LogLevel.Trace);
-        //loggingBuilder.AddNLog(config);
+        loggingBuilder.AddNLog(config);
       });
 
     Services = services.BuildServiceProvider();
