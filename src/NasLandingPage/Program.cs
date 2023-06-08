@@ -1,4 +1,3 @@
-
 using NasLandingPage.Extensions;
 using NLog.Web;
 

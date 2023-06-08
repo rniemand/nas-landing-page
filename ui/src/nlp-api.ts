@@ -8,6 +8,93 @@
 /* eslint-disable */
 // ReSharper disable InconsistentNaming
 
+export class GitHubClient {
+    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+        this.http = http ? http : window as any;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    triggerRepoIndex(): Promise<string> {
+        let url_ = this.baseUrl + "/api/GitHub/trigger-index";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processTriggerRepoIndex(_response);
+        });
+    }
+
+    protected processTriggerRepoIndex(response: Response): Promise<string> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<string>(null as any);
+    }
+
+    listRepos(): Promise<GitHubRepoDto[]> {
+        let url_ = this.baseUrl + "/api/GitHub/repo/list";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processListRepos(_response);
+        });
+    }
+
+    protected processListRepos(response: Response): Promise<GitHubRepoDto[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(GitHubRepoDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<GitHubRepoDto[]>(null as any);
+    }
+}
+
 export class ImagesClient {
     private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
@@ -239,6 +326,134 @@ export class UserTasksClient {
         }
         return Promise.resolve<boolean>(null as any);
     }
+}
+
+export class GitHubRepoDto implements IGitHubRepoDto {
+    repoID!: number;
+    repoSize!: number;
+    isTemplate!: boolean;
+    isPrivate!: boolean;
+    isFork!: boolean;
+    hasIssues!: boolean;
+    hasWiki!: boolean;
+    hasDownloads!: boolean;
+    hasPages!: boolean;
+    isArchived!: boolean;
+    forksCount!: number;
+    stargazersCount!: number;
+    openIssuesCount!: number;
+    subscribersCount!: number;
+    pushedAt?: Date | undefined;
+    createdAt!: Date;
+    updatedAt!: Date;
+    license!: string;
+    defaultBranch!: string;
+    gitUrl!: string;
+    sshUrl!: string;
+    name!: string;
+    fullName!: string;
+    description!: string;
+
+    constructor(data?: IGitHubRepoDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.repoID = _data["repoID"];
+            this.repoSize = _data["repoSize"];
+            this.isTemplate = _data["isTemplate"];
+            this.isPrivate = _data["isPrivate"];
+            this.isFork = _data["isFork"];
+            this.hasIssues = _data["hasIssues"];
+            this.hasWiki = _data["hasWiki"];
+            this.hasDownloads = _data["hasDownloads"];
+            this.hasPages = _data["hasPages"];
+            this.isArchived = _data["isArchived"];
+            this.forksCount = _data["forksCount"];
+            this.stargazersCount = _data["stargazersCount"];
+            this.openIssuesCount = _data["openIssuesCount"];
+            this.subscribersCount = _data["subscribersCount"];
+            this.pushedAt = _data["pushedAt"] ? new Date(_data["pushedAt"].toString()) : <any>undefined;
+            this.createdAt = _data["createdAt"] ? new Date(_data["createdAt"].toString()) : <any>undefined;
+            this.updatedAt = _data["updatedAt"] ? new Date(_data["updatedAt"].toString()) : <any>undefined;
+            this.license = _data["license"];
+            this.defaultBranch = _data["defaultBranch"];
+            this.gitUrl = _data["gitUrl"];
+            this.sshUrl = _data["sshUrl"];
+            this.name = _data["name"];
+            this.fullName = _data["fullName"];
+            this.description = _data["description"];
+        }
+    }
+
+    static fromJS(data: any): GitHubRepoDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GitHubRepoDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["repoID"] = this.repoID;
+        data["repoSize"] = this.repoSize;
+        data["isTemplate"] = this.isTemplate;
+        data["isPrivate"] = this.isPrivate;
+        data["isFork"] = this.isFork;
+        data["hasIssues"] = this.hasIssues;
+        data["hasWiki"] = this.hasWiki;
+        data["hasDownloads"] = this.hasDownloads;
+        data["hasPages"] = this.hasPages;
+        data["isArchived"] = this.isArchived;
+        data["forksCount"] = this.forksCount;
+        data["stargazersCount"] = this.stargazersCount;
+        data["openIssuesCount"] = this.openIssuesCount;
+        data["subscribersCount"] = this.subscribersCount;
+        data["pushedAt"] = this.pushedAt ? this.pushedAt.toISOString() : <any>undefined;
+        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : <any>undefined;
+        data["updatedAt"] = this.updatedAt ? this.updatedAt.toISOString() : <any>undefined;
+        data["license"] = this.license;
+        data["defaultBranch"] = this.defaultBranch;
+        data["gitUrl"] = this.gitUrl;
+        data["sshUrl"] = this.sshUrl;
+        data["name"] = this.name;
+        data["fullName"] = this.fullName;
+        data["description"] = this.description;
+        return data;
+    }
+}
+
+export interface IGitHubRepoDto {
+    repoID: number;
+    repoSize: number;
+    isTemplate: boolean;
+    isPrivate: boolean;
+    isFork: boolean;
+    hasIssues: boolean;
+    hasWiki: boolean;
+    hasDownloads: boolean;
+    hasPages: boolean;
+    isArchived: boolean;
+    forksCount: number;
+    stargazersCount: number;
+    openIssuesCount: number;
+    subscribersCount: number;
+    pushedAt?: Date | undefined;
+    createdAt: Date;
+    updatedAt: Date;
+    license: string;
+    defaultBranch: string;
+    gitUrl: string;
+    sshUrl: string;
+    name: string;
+    fullName: string;
+    description: string;
 }
 
 export class UserLinkDto implements IUserLinkDto {

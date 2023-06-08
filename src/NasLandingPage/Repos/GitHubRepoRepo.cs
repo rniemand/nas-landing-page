@@ -6,6 +6,8 @@ namespace NasLandingPage.Repos;
 public interface IGitHubRepoRepo
 {
   Task<int> AddRepoAsync(GitHubRepoEntity entity);
+  Task<int> UpdateRepoAsync(GitHubRepoEntity entity);
+  Task<List<GitHubRepoEntity>> GetReposAsync();
 }
 
 public class GitHubRepoRepo : IGitHubRepoRepo
@@ -39,5 +41,47 @@ public class GitHubRepoRepo : IGitHubRepoRepo
 
     await using var connection = _connectionHelper.GetCoreConnection();
     return await connection.ExecuteAsync(query, entity);
+  }
+
+  public async Task<int> UpdateRepoAsync(GitHubRepoEntity entity)
+  {
+    const string query = $@"UPDATE {TableName}
+    SET
+      `RepoSize` = @RepoSize,
+      `IsTemplate` = @IsTemplate,
+      `IsPrivate` = @IsPrivate,
+      `HasIssues` = @HasIssues,
+      `HasWiki` = @HasWiki,
+      `HasDownloads` = @HasDownloads,
+      `HasPages` = @HasPages,
+      `IsArchived` = @IsArchived,
+      `ForksCount` = @ForksCount,
+      `StargazersCount` = @StargazersCount,
+      `OpenIssuesCount` = @OpenIssuesCount,
+      `SubscribersCount` = @SubscribersCount,
+      `UpdatedAt` = @UpdatedAt,
+      `License` = @License,
+      `DefaultBranch` = @DefaultBranch,
+      `GitUrl` = @GitUrl,
+      `SshUrl` = @SshUrl,
+      `Name` = @Name,
+      `FullName` = @FullName,
+      `Description` = @Description
+    WHERE `RepoID` = @RepoID";
+    await using var connection = _connectionHelper.GetCoreConnection();
+    return await connection.ExecuteAsync(query, entity);
+  }
+
+  public async Task<List<GitHubRepoEntity>> GetReposAsync()
+  {
+    const string query = $@"SELECT
+      `RepoID`,`RepoSize`,`IsTemplate`,`IsPrivate`,`IsFork`,`HasIssues`,
+		  `HasWiki`,`HasDownloads`,`HasPages`,`IsArchived`,`ForksCount`,
+		  `StargazersCount`,`OpenIssuesCount`,`SubscribersCount`,
+		  `PushedAt`,`CreatedAt`,`UpdatedAt`,`License`,`DefaultBranch`,`GitUrl`,
+		  `SshUrl`,`Name`,`FullName`,`Description`
+    FROM {TableName}";
+    await using var connection = _connectionHelper.GetCoreConnection();
+    return (await connection.QueryAsync<GitHubRepoEntity>(query)).AsList();
   }
 }

@@ -7,4 +7,7 @@ public class AppConfig
 
   [ConfigurationKeyName("GithubTokenFilePath")]
   public string GithubTokenFilePath { get; set; } = string.Empty;
+
+  [ConfigurationKeyName("GitHubClientName")]
+  public string GitHubClientName { get; set; } = "nasLandingPage";
 }

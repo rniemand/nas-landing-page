@@ -1,3 +1,4 @@
+using NasLandingPage.Factories;
 using NasLandingPage.Models;
 using NasLandingPage.Repos;
 using NasLandingPage.Services;
@@ -14,11 +15,15 @@ public static class ServiceCollectionExtensions
       // Configuration & Logging
       .AddSingleton(BindAppConfig(configuration))
       .AddSingleton(typeof(ILoggerAdapter<>), typeof(LoggerAdapter<>))
+      // Abstractions
+      .AddSingleton<IFileAbstraction, FileAbstraction>()
       // Database
       .AddSingleton<IConnectionHelper, ConnectionHelper>()
       .AddSingleton<IUserLinksRepo, UserUserLinksRepo>()
       .AddSingleton<IUserTasksRepo, UserTasksRepo>()
       .AddSingleton<IGitHubRepoRepo, GitHubRepoRepo>()
+      // Factories
+      .AddSingleton<IGitHubClientFactory, GitHubClientFactory>()
       // Helpers
       .AddSingleton<IJsonHelper, JsonHelper>()
       // Services
