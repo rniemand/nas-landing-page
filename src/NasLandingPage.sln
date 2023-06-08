@@ -5,7 +5,11 @@ VisualStudioVersion = 17.6.33723.286
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NasLandingPage", "NasLandingPage\NasLandingPage.csproj", "{989ACC6C-582A-455F-94EC-6F35BD27A390}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NasLandingPage.Tests", "..\tests\NasLandingPageTests\NasLandingPage.Tests.csproj", "{8241EECC-6D53-4180-8684-BF64AE0A9E6F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NasLandingPage.Tests", "..\tests\NasLandingPageTests\NasLandingPage.Tests.csproj", "{8241EECC-6D53-4180-8684-BF64AE0A9E6F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{C0BA60F4-8626-4EB1-AB58-A0D34238135F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevConsole", "DevConsole\DevConsole.csproj", "{0749E639-3E2B-40F5-979C-0138E7ADA71E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,9 +25,16 @@ Global
 		{8241EECC-6D53-4180-8684-BF64AE0A9E6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8241EECC-6D53-4180-8684-BF64AE0A9E6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8241EECC-6D53-4180-8684-BF64AE0A9E6F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0749E639-3E2B-40F5-979C-0138E7ADA71E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0749E639-3E2B-40F5-979C-0138E7ADA71E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0749E639-3E2B-40F5-979C-0138E7ADA71E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0749E639-3E2B-40F5-979C-0138E7ADA71E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8241EECC-6D53-4180-8684-BF64AE0A9E6F} = {C0BA60F4-8626-4EB1-AB58-A0D34238135F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {ED92A2CF-17B5-42FB-BF43-7F8D84F481CE}

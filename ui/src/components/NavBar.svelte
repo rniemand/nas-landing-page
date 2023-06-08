@@ -34,5 +34,6 @@
 
 <ul>
   <li><a class="nav-link" href="/" class:active={path==='/'}>Home</a></li>
+  <li><a class="nav-link" href="/github" class:active={path==='/github'}>GitHub</a></li>
   <li><a class="nav-link" href="/tasks" class:active={path==='/tasks'}>Tasks</a></li>
 </ul>

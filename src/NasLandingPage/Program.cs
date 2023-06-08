@@ -1,5 +1,5 @@
-
 using NasLandingPage.Extensions;
+using NLog.Web;
 
 namespace NasLandingPage;
 
@@ -13,6 +13,7 @@ public class Program
     builder.Services.AddSwaggerGen();
     builder.Services.AddSwaggerDocument();
     builder.Services.AddNasLandingPage(builder.Configuration);
+    builder.Host.UseNLog();
 
     var app = builder.Build();
 
