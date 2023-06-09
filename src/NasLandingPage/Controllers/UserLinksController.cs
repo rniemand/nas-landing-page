@@ -5,7 +5,7 @@ using NasLandingPage.Services;
 namespace NasLandingPage.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class UserLinksController : ControllerBase
 {
   private readonly IUserLinkService _linkService;
