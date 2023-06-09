@@ -24,16 +24,39 @@
   li a:hover { background-color: #111; }
   .active { background-color: #04AA6D; }
   li:last-child { border-right: none; }
+
+  .logout { float: right; background-color: rgb(145, 10, 39); }
+  .logout a:hover { background-color: rgb(131, 7, 34); }
 </style>
 
 <script lang="ts">
   import {navigating} from '$app/stores';
+  import { AuthClient } from '../nlp-api';
+
   let path = (window.location.pathname || '/').toLowerCase();
+  let signedIn = false;
   $: path = (($navigating && $navigating.to?.url.pathname) || path).toLowerCase();
+
+  const runLogout = () => {
+    signedIn = false;
+    new AuthClient().logout().then(() => {
+      location.href = '/';
+    });
+  };
+
+  (async () => {
+    const resp = await new AuthClient().challenge(false);
+    signedIn = resp.signedIn || false;
+  })();
 </script>
 
 <ul>
-  <li><a class="nav-link" href="/" class:active={path==='/'}>Home</a></li>
-  <li><a class="nav-link" href="/github" class:active={path==='/github'}>GitHub</a></li>
-  <li><a class="nav-link" href="/tasks" class:active={path==='/tasks'}>Tasks</a></li>
+  {#if signedIn}
+    <li><a class="nav-link" href="/" class:active={path==='/'}>Home</a></li>
+    <li><a class="nav-link" href="/github" class:active={path==='/github'}>GitHub</a></li>
+    <li><a class="nav-link" href="/tasks" class:active={path==='/tasks'}>Tasks</a></li>
+    <li class="logout"><a class="nav-link" href="javascript:void 0" on:click={runLogout}>Logout</a></li>
+  {:else}
+    <li><a class="nav-link" href="/login" class:active={path==='/login'}>Login</a></li>
+  {/if}
 </ul>

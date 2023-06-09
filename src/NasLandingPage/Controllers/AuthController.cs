@@ -47,18 +47,18 @@ public class AuthController : ControllerBase
       await Challenge();
       return;
     }
-    string? email = User.FindFirstValue(ClaimTypes.Email);
+    var email = User.FindFirstValue(ClaimTypes.Email);
     if (email is null)
       throw new Exception("User principal is authenticated, but has no Email claim!");
 
-    UserEntity? entity = await userRepo.GetByEmailAsync(email);
+    var entity = await userRepo.GetByEmailAsync(email);
     if (entity is null)
     {
       HttpContext.Response.StatusCode = 401;
       return;
     }
 
-    PasswordVerificationResult pvr = entity.VerifyPassword(password);
+    var pvr = entity.VerifyPassword(password);
     if (pvr == PasswordVerificationResult.Failed)
     {
       HttpContext.Response.StatusCode = 401;

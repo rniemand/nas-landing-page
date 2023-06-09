@@ -1,3 +1,4 @@
+using Dapper;
 using Microsoft.AspNetCore.Identity;
 using NasLandingPage.Models.Entities;
 
@@ -10,20 +11,25 @@ public interface IUserRepo
 
 public class UserRepo : IUserRepo
 {
+  public const string TableName = "Users";
+  private readonly IConnectionHelper _connectionHelper;
+
+  public UserRepo(IConnectionHelper connectionHelper)
+  {
+    _connectionHelper = connectionHelper;
+  }
+
   public async Task<UserEntity?> GetByEmailAsync(string email)
   {
-    await Task.CompletedTask;
+    const string query = $@"SELECT
+      `UserID`,
+      `Email`,
+      `PasswordHash`
+    FROM {TableName}
+    WHERE `Email` = @Email";
 
-    var userEntity = new UserEntity
-    {
-      Email = "niemand.richard@gmail.com",
-      Role = "user",
-      UserID = 1
-    };
-
-    userEntity.PasswordHash = new PasswordHasher<UserEntity>().HashPassword(userEntity, "pass");
-
-    return userEntity;
+    await using var connection = _connectionHelper.GetCoreConnection();
+    return await connection.QuerySingleOrDefaultAsync<UserEntity>(query, new { Email = email });
   }
 
   public async Task<bool> UpdatePasswordHash(UserEntity user)

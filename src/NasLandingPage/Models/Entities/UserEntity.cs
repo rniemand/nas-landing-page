@@ -6,7 +6,6 @@ public class UserEntity
 {
   public long UserID { get; set; }
   public string Email { get; set; } = string.Empty;
-  public string Role { get; set; } = string.Empty;
   public string PasswordHash { get; set; } = string.Empty;
 
   public void SetPassword(string password) =>
@@ -14,9 +13,12 @@ public class UserEntity
 
   public PasswordVerificationResult VerifyPassword(string password)
   {
-    PasswordVerificationResult pvr = new PasswordHasher<UserEntity>().VerifyHashedPassword(this, PasswordHash, password);
+    var pvr = new PasswordHasher<UserEntity>()
+      .VerifyHashedPassword(this, PasswordHash, password);
+
     if (pvr == PasswordVerificationResult.SuccessRehashNeeded)
       SetPassword(password);
+
     return pvr;
   }
 }
