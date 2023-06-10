@@ -14,7 +14,7 @@
 <div class="link" on:click={handleClick}>
 	<div class="title">{link.linkName}</div>
 	<div class="img">
-		<img src={`images/link/${link.linkImage}`} alt={link.linkName} />
+		<img src={`api/images/link/${link.linkImage}`} alt={link.linkName} />
 	</div>
 	<div class="info">
 		<span class="id"># {link.linkID}</span>

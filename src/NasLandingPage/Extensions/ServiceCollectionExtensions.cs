@@ -1,3 +1,4 @@
+using NasLandingPage.Controllers;
 using NasLandingPage.Factories;
 using NasLandingPage.Models;
 using NasLandingPage.Repos;
@@ -22,6 +23,7 @@ public static class ServiceCollectionExtensions
       .AddSingleton<IUserLinksRepo, UserUserLinksRepo>()
       .AddSingleton<IUserTasksRepo, UserTasksRepo>()
       .AddSingleton<IGitHubRepoRepo, GitHubRepoRepo>()
+      .AddSingleton<IUserRepo, UserRepo>()
       // Factories
       .AddSingleton<IGitHubClientFactory, GitHubClientFactory>()
       // Helpers
@@ -29,7 +31,8 @@ public static class ServiceCollectionExtensions
       // Services
       .AddSingleton<IUserLinkService, UserLinkService>()
       .AddSingleton<IUserTaskService, UserTaskService>()
-      .AddSingleton<IGitHubService, GitHubService>();
+      .AddSingleton<IGitHubService, GitHubService>()
+      .AddSingleton<IAuthService, AuthService>();
   }
 
   private static AppConfig BindAppConfig(IConfiguration configuration)

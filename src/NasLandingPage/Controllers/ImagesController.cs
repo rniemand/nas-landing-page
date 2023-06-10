@@ -5,7 +5,7 @@ using NasLandingPage.Models;
 namespace NasLandingPage.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class ImagesController : ControllerBase
 {
   private readonly AppConfig _config;

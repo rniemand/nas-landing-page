@@ -8,12 +8,260 @@
 /* eslint-disable */
 // ReSharper disable InconsistentNaming
 
-export class GitHubClient {
+export class NlpBaseClient {
+    static URL_START = /^[^:]*:\/\/[^/]*\/?/.exec(location.href)![0];
+
+  async transformOptions(options: RequestInit) {
+        if (!options.credentials) options.credentials = 'same-origin';
+        if (!options.headers) options.headers = {};
+        if(Array.isArray(options.headers)) {
+            if(!options.headers.some(r => r[0].localeCompare('Accept',void 0, {sensitivity: 'base'}) === 0))
+                options.headers.push(['Accept','application/json']);
+        }
+        else if (typeof(options.headers.has) === 'function' && options.headers.has('Accept'))
+            (<Headers>options.headers).set('Accept','application/json');
+        else if (!(<Record<string, string>>options.headers).Accept)
+            (<Record<string, string>>options.headers).Accept = 'application/json';
+        return options;
+  }
+
+  async transformResult(url: string, response: Response, /** @type {(Response) => Promise} */processor: ((r: Response) => Promise<any>)) {
+        if (response.status !== 401 || !response.url.startsWith(NlpBaseClient.URL_START) || response.headers.get('Content-Type') !== 'application/json')
+            return await processor(response);
+
+        location.href = (await response.json()).redirectTo;
+        throw new Error('NLP server requested authentication.');
+    }
+}
+
+export interface IAuthClient {
+
+    whoAmI(includeClaims: boolean | undefined): Promise<WhoAmIResponse>;
+
+    challenge(requestGoogleSelectAccount: boolean | undefined): Promise<WhoAmIResponse>;
+
+    login(password: string | undefined): Promise<void>;
+
+    logout(): Promise<void>;
+
+    setNewPassword(request: SetNewPasswordRequest): Promise<string>;
+}
+
+export class AuthClient extends NlpBaseClient implements IAuthClient {
     private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+        super();
+        this.http = http ? http : window as any;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    whoAmI(includeClaims: boolean | undefined): Promise<WhoAmIResponse> {
+        let url_ = this.baseUrl + "/api/Auth/whoami?";
+        if (includeClaims === null)
+            throw new Error("The parameter 'includeClaims' cannot be null.");
+        else if (includeClaims !== undefined)
+            url_ += "includeClaims=" + encodeURIComponent("" + includeClaims) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processWhoAmI(_response));
+        });
+    }
+
+    protected processWhoAmI(response: Response): Promise<WhoAmIResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = WhoAmIResponse.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<WhoAmIResponse>(null as any);
+    }
+
+    challenge(requestGoogleSelectAccount: boolean | undefined): Promise<WhoAmIResponse> {
+        let url_ = this.baseUrl + "/api/Auth/authenticate?";
+        if (requestGoogleSelectAccount === null)
+            throw new Error("The parameter 'requestGoogleSelectAccount' cannot be null.");
+        else if (requestGoogleSelectAccount !== undefined)
+            url_ += "requestGoogleSelectAccount=" + encodeURIComponent("" + requestGoogleSelectAccount) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processChallenge(_response));
+        });
+    }
+
+    protected processChallenge(response: Response): Promise<WhoAmIResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = WhoAmIResponse.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<WhoAmIResponse>(null as any);
+    }
+
+    login(password: string | undefined): Promise<void> {
+        let url_ = this.baseUrl + "/api/Auth/login?";
+        if (password === null)
+            throw new Error("The parameter 'password' cannot be null.");
+        else if (password !== undefined)
+            url_ += "password=" + encodeURIComponent("" + password) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "POST",
+            headers: {
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processLogin(_response));
+        });
+    }
+
+    protected processLogin(response: Response): Promise<void> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            return;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<void>(null as any);
+    }
+
+    logout(): Promise<void> {
+        let url_ = this.baseUrl + "/api/Auth/logout";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "POST",
+            headers: {
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processLogout(_response));
+        });
+    }
+
+    protected processLogout(response: Response): Promise<void> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            return;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<void>(null as any);
+    }
+
+    setNewPassword(request: SetNewPasswordRequest): Promise<string> {
+        let url_ = this.baseUrl + "/api/Auth/set-new-password";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(request);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processSetNewPassword(_response));
+        });
+    }
+
+    protected processSetNewPassword(response: Response): Promise<string> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<string>(null as any);
+    }
+}
+
+export interface IGitHubClient {
+
+    triggerRepoIndex(): Promise<string>;
+
+    listRepos(): Promise<GitHubRepoDto[]>;
+}
+
+export class GitHubClient extends NlpBaseClient implements IGitHubClient {
+    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+        super();
         this.http = http ? http : window as any;
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
@@ -29,8 +277,10 @@ export class GitHubClient {
             }
         };
 
-        return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processTriggerRepoIndex(_response);
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processTriggerRepoIndex(_response));
         });
     }
 
@@ -64,8 +314,10 @@ export class GitHubClient {
             }
         };
 
-        return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processListRepos(_response);
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processListRepos(_response));
         });
     }
 
@@ -95,18 +347,24 @@ export class GitHubClient {
     }
 }
 
-export class ImagesClient {
+export interface IImagesClient {
+
+    getImage(path: string): Promise<FileResponse | null>;
+}
+
+export class ImagesClient extends NlpBaseClient implements IImagesClient {
     private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+        super();
         this.http = http ? http : window as any;
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
     getImage(path: string): Promise<FileResponse | null> {
-        let url_ = this.baseUrl + "/Images/link/{path}";
+        let url_ = this.baseUrl + "/api/Images/link/{path}";
         if (path === undefined || path === null)
             throw new Error("The parameter 'path' must be defined.");
         url_ = url_.replace("{path}", encodeURIComponent("" + path));
@@ -119,8 +377,10 @@ export class ImagesClient {
             }
         };
 
-        return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processGetImage(_response);
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processGetImage(_response));
         });
     }
 
@@ -147,18 +407,26 @@ export class ImagesClient {
     }
 }
 
-export class UserLinksClient {
+export interface IUserLinksClient {
+
+    getAllLinks(): Promise<UserLinkDto[]>;
+
+    recordLinkFollow(linkId: number): Promise<boolean>;
+}
+
+export class UserLinksClient extends NlpBaseClient implements IUserLinksClient {
     private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+        super();
         this.http = http ? http : window as any;
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
     getAllLinks(): Promise<UserLinkDto[]> {
-        let url_ = this.baseUrl + "/UserLinks/all";
+        let url_ = this.baseUrl + "/api/UserLinks/all";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: RequestInit = {
@@ -168,8 +436,10 @@ export class UserLinksClient {
             }
         };
 
-        return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processGetAllLinks(_response);
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processGetAllLinks(_response));
         });
     }
 
@@ -199,7 +469,7 @@ export class UserLinksClient {
     }
 
     recordLinkFollow(linkId: number): Promise<boolean> {
-        let url_ = this.baseUrl + "/UserLinks/follow/{linkId}";
+        let url_ = this.baseUrl + "/api/UserLinks/follow/{linkId}";
         if (linkId === undefined || linkId === null)
             throw new Error("The parameter 'linkId' must be defined.");
         url_ = url_.replace("{linkId}", encodeURIComponent("" + linkId));
@@ -212,8 +482,10 @@ export class UserLinksClient {
             }
         };
 
-        return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processRecordLinkFollow(_response);
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processRecordLinkFollow(_response));
         });
     }
 
@@ -237,18 +509,26 @@ export class UserLinksClient {
     }
 }
 
-export class UserTasksClient {
+export interface IUserTasksClient {
+
+    getAllTasks(): Promise<UserTaskDto[]>;
+
+    addTask(task: UserTaskDto): Promise<boolean>;
+}
+
+export class UserTasksClient extends NlpBaseClient implements IUserTasksClient {
     private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+        super();
         this.http = http ? http : window as any;
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
     getAllTasks(): Promise<UserTaskDto[]> {
-        let url_ = this.baseUrl + "/UserTasks/all";
+        let url_ = this.baseUrl + "/api/UserTasks/all";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: RequestInit = {
@@ -258,8 +538,10 @@ export class UserTasksClient {
             }
         };
 
-        return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processGetAllTasks(_response);
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processGetAllTasks(_response));
         });
     }
 
@@ -289,7 +571,7 @@ export class UserTasksClient {
     }
 
     addTask(task: UserTaskDto): Promise<boolean> {
-        let url_ = this.baseUrl + "/UserTasks/add";
+        let url_ = this.baseUrl + "/api/UserTasks/add";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(task);
@@ -303,8 +585,10 @@ export class UserTasksClient {
             }
         };
 
-        return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processAddTask(_response);
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processAddTask(_response));
         });
     }
 
@@ -328,6 +612,109 @@ export class UserTasksClient {
     }
 }
 
+export class WhoAmIResponse implements IWhoAmIResponse {
+    name?: string | null;
+    email?: string | null;
+    signedIn!: boolean;
+    claims?: { [key: string]: string; } | null;
+
+    constructor(data?: IWhoAmIResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.name = _data["name"] !== undefined ? _data["name"] : <any>null;
+            this.email = _data["email"] !== undefined ? _data["email"] : <any>null;
+            this.signedIn = _data["signedIn"] !== undefined ? _data["signedIn"] : <any>null;
+            if (_data["claims"]) {
+                this.claims = {} as any;
+                for (let key in _data["claims"]) {
+                    if (_data["claims"].hasOwnProperty(key))
+                        (<any>this.claims)![key] = _data["claims"][key] !== undefined ? _data["claims"][key] : <any>null;
+                }
+            }
+            else {
+                this.claims = <any>null;
+            }
+        }
+    }
+
+    static fromJS(data: any): WhoAmIResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new WhoAmIResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name !== undefined ? this.name : <any>null;
+        data["email"] = this.email !== undefined ? this.email : <any>null;
+        data["signedIn"] = this.signedIn !== undefined ? this.signedIn : <any>null;
+        if (this.claims) {
+            data["claims"] = {};
+            for (let key in this.claims) {
+                if (this.claims.hasOwnProperty(key))
+                    (<any>data["claims"])[key] = this.claims[key] !== undefined ? this.claims[key] : <any>null;
+            }
+        }
+        return data;
+    }
+}
+
+export interface IWhoAmIResponse {
+    name?: string | null;
+    email?: string | null;
+    signedIn: boolean;
+    claims?: { [key: string]: string; } | null;
+}
+
+export class SetNewPasswordRequest implements ISetNewPasswordRequest {
+    email!: string;
+    password!: string;
+
+    constructor(data?: ISetNewPasswordRequest) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.email = _data["email"] !== undefined ? _data["email"] : <any>null;
+            this.password = _data["password"] !== undefined ? _data["password"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): SetNewPasswordRequest {
+        data = typeof data === 'object' ? data : {};
+        let result = new SetNewPasswordRequest();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["email"] = this.email !== undefined ? this.email : <any>null;
+        data["password"] = this.password !== undefined ? this.password : <any>null;
+        return data;
+    }
+}
+
+export interface ISetNewPasswordRequest {
+    email: string;
+    password: string;
+}
+
 export class GitHubRepoDto implements IGitHubRepoDto {
     repoID!: number;
     repoSize!: number;
@@ -343,7 +730,7 @@ export class GitHubRepoDto implements IGitHubRepoDto {
     stargazersCount!: number;
     openIssuesCount!: number;
     subscribersCount!: number;
-    pushedAt?: Date | undefined;
+    pushedAt?: Date | null;
     createdAt!: Date;
     updatedAt!: Date;
     license!: string;
@@ -365,30 +752,30 @@ export class GitHubRepoDto implements IGitHubRepoDto {
 
     init(_data?: any) {
         if (_data) {
-            this.repoID = _data["repoID"];
-            this.repoSize = _data["repoSize"];
-            this.isTemplate = _data["isTemplate"];
-            this.isPrivate = _data["isPrivate"];
-            this.isFork = _data["isFork"];
-            this.hasIssues = _data["hasIssues"];
-            this.hasWiki = _data["hasWiki"];
-            this.hasDownloads = _data["hasDownloads"];
-            this.hasPages = _data["hasPages"];
-            this.isArchived = _data["isArchived"];
-            this.forksCount = _data["forksCount"];
-            this.stargazersCount = _data["stargazersCount"];
-            this.openIssuesCount = _data["openIssuesCount"];
-            this.subscribersCount = _data["subscribersCount"];
-            this.pushedAt = _data["pushedAt"] ? new Date(_data["pushedAt"].toString()) : <any>undefined;
-            this.createdAt = _data["createdAt"] ? new Date(_data["createdAt"].toString()) : <any>undefined;
-            this.updatedAt = _data["updatedAt"] ? new Date(_data["updatedAt"].toString()) : <any>undefined;
-            this.license = _data["license"];
-            this.defaultBranch = _data["defaultBranch"];
-            this.gitUrl = _data["gitUrl"];
-            this.sshUrl = _data["sshUrl"];
-            this.name = _data["name"];
-            this.fullName = _data["fullName"];
-            this.description = _data["description"];
+            this.repoID = _data["repoID"] !== undefined ? _data["repoID"] : <any>null;
+            this.repoSize = _data["repoSize"] !== undefined ? _data["repoSize"] : <any>null;
+            this.isTemplate = _data["isTemplate"] !== undefined ? _data["isTemplate"] : <any>null;
+            this.isPrivate = _data["isPrivate"] !== undefined ? _data["isPrivate"] : <any>null;
+            this.isFork = _data["isFork"] !== undefined ? _data["isFork"] : <any>null;
+            this.hasIssues = _data["hasIssues"] !== undefined ? _data["hasIssues"] : <any>null;
+            this.hasWiki = _data["hasWiki"] !== undefined ? _data["hasWiki"] : <any>null;
+            this.hasDownloads = _data["hasDownloads"] !== undefined ? _data["hasDownloads"] : <any>null;
+            this.hasPages = _data["hasPages"] !== undefined ? _data["hasPages"] : <any>null;
+            this.isArchived = _data["isArchived"] !== undefined ? _data["isArchived"] : <any>null;
+            this.forksCount = _data["forksCount"] !== undefined ? _data["forksCount"] : <any>null;
+            this.stargazersCount = _data["stargazersCount"] !== undefined ? _data["stargazersCount"] : <any>null;
+            this.openIssuesCount = _data["openIssuesCount"] !== undefined ? _data["openIssuesCount"] : <any>null;
+            this.subscribersCount = _data["subscribersCount"] !== undefined ? _data["subscribersCount"] : <any>null;
+            this.pushedAt = _data["pushedAt"] ? new Date(_data["pushedAt"].toString()) : <any>null;
+            this.createdAt = _data["createdAt"] ? new Date(_data["createdAt"].toString()) : <any>null;
+            this.updatedAt = _data["updatedAt"] ? new Date(_data["updatedAt"].toString()) : <any>null;
+            this.license = _data["license"] !== undefined ? _data["license"] : <any>null;
+            this.defaultBranch = _data["defaultBranch"] !== undefined ? _data["defaultBranch"] : <any>null;
+            this.gitUrl = _data["gitUrl"] !== undefined ? _data["gitUrl"] : <any>null;
+            this.sshUrl = _data["sshUrl"] !== undefined ? _data["sshUrl"] : <any>null;
+            this.name = _data["name"] !== undefined ? _data["name"] : <any>null;
+            this.fullName = _data["fullName"] !== undefined ? _data["fullName"] : <any>null;
+            this.description = _data["description"] !== undefined ? _data["description"] : <any>null;
         }
     }
 
@@ -401,30 +788,30 @@ export class GitHubRepoDto implements IGitHubRepoDto {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["repoID"] = this.repoID;
-        data["repoSize"] = this.repoSize;
-        data["isTemplate"] = this.isTemplate;
-        data["isPrivate"] = this.isPrivate;
-        data["isFork"] = this.isFork;
-        data["hasIssues"] = this.hasIssues;
-        data["hasWiki"] = this.hasWiki;
-        data["hasDownloads"] = this.hasDownloads;
-        data["hasPages"] = this.hasPages;
-        data["isArchived"] = this.isArchived;
-        data["forksCount"] = this.forksCount;
-        data["stargazersCount"] = this.stargazersCount;
-        data["openIssuesCount"] = this.openIssuesCount;
-        data["subscribersCount"] = this.subscribersCount;
-        data["pushedAt"] = this.pushedAt ? this.pushedAt.toISOString() : <any>undefined;
-        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : <any>undefined;
-        data["updatedAt"] = this.updatedAt ? this.updatedAt.toISOString() : <any>undefined;
-        data["license"] = this.license;
-        data["defaultBranch"] = this.defaultBranch;
-        data["gitUrl"] = this.gitUrl;
-        data["sshUrl"] = this.sshUrl;
-        data["name"] = this.name;
-        data["fullName"] = this.fullName;
-        data["description"] = this.description;
+        data["repoID"] = this.repoID !== undefined ? this.repoID : <any>null;
+        data["repoSize"] = this.repoSize !== undefined ? this.repoSize : <any>null;
+        data["isTemplate"] = this.isTemplate !== undefined ? this.isTemplate : <any>null;
+        data["isPrivate"] = this.isPrivate !== undefined ? this.isPrivate : <any>null;
+        data["isFork"] = this.isFork !== undefined ? this.isFork : <any>null;
+        data["hasIssues"] = this.hasIssues !== undefined ? this.hasIssues : <any>null;
+        data["hasWiki"] = this.hasWiki !== undefined ? this.hasWiki : <any>null;
+        data["hasDownloads"] = this.hasDownloads !== undefined ? this.hasDownloads : <any>null;
+        data["hasPages"] = this.hasPages !== undefined ? this.hasPages : <any>null;
+        data["isArchived"] = this.isArchived !== undefined ? this.isArchived : <any>null;
+        data["forksCount"] = this.forksCount !== undefined ? this.forksCount : <any>null;
+        data["stargazersCount"] = this.stargazersCount !== undefined ? this.stargazersCount : <any>null;
+        data["openIssuesCount"] = this.openIssuesCount !== undefined ? this.openIssuesCount : <any>null;
+        data["subscribersCount"] = this.subscribersCount !== undefined ? this.subscribersCount : <any>null;
+        data["pushedAt"] = this.pushedAt ? this.pushedAt.toISOString() : <any>null;
+        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : <any>null;
+        data["updatedAt"] = this.updatedAt ? this.updatedAt.toISOString() : <any>null;
+        data["license"] = this.license !== undefined ? this.license : <any>null;
+        data["defaultBranch"] = this.defaultBranch !== undefined ? this.defaultBranch : <any>null;
+        data["gitUrl"] = this.gitUrl !== undefined ? this.gitUrl : <any>null;
+        data["sshUrl"] = this.sshUrl !== undefined ? this.sshUrl : <any>null;
+        data["name"] = this.name !== undefined ? this.name : <any>null;
+        data["fullName"] = this.fullName !== undefined ? this.fullName : <any>null;
+        data["description"] = this.description !== undefined ? this.description : <any>null;
         return data;
     }
 }
@@ -444,7 +831,7 @@ export interface IGitHubRepoDto {
     stargazersCount: number;
     openIssuesCount: number;
     subscribersCount: number;
-    pushedAt?: Date | undefined;
+    pushedAt?: Date | null;
     createdAt: Date;
     updatedAt: Date;
     license: string;
@@ -480,17 +867,17 @@ export class UserLinkDto implements IUserLinkDto {
 
     init(_data?: any) {
         if (_data) {
-            this.linkID = _data["linkID"];
-            this.deleted = _data["deleted"];
-            this.linkOrder = _data["linkOrder"];
-            this.followCount = _data["followCount"];
-            this.dateAddedUtc = _data["dateAddedUtc"] ? new Date(_data["dateAddedUtc"].toString()) : <any>undefined;
-            this.dateUpdatedUtc = _data["dateUpdatedUtc"] ? new Date(_data["dateUpdatedUtc"].toString()) : <any>undefined;
-            this.dateLastFollowedUtc = _data["dateLastFollowedUtc"] ? new Date(_data["dateLastFollowedUtc"].toString()) : <any>undefined;
-            this.linkName = _data["linkName"];
-            this.linkCategory = _data["linkCategory"];
-            this.linkUrl = _data["linkUrl"];
-            this.linkImage = _data["linkImage"];
+            this.linkID = _data["linkID"] !== undefined ? _data["linkID"] : <any>null;
+            this.deleted = _data["deleted"] !== undefined ? _data["deleted"] : <any>null;
+            this.linkOrder = _data["linkOrder"] !== undefined ? _data["linkOrder"] : <any>null;
+            this.followCount = _data["followCount"] !== undefined ? _data["followCount"] : <any>null;
+            this.dateAddedUtc = _data["dateAddedUtc"] ? new Date(_data["dateAddedUtc"].toString()) : <any>null;
+            this.dateUpdatedUtc = _data["dateUpdatedUtc"] ? new Date(_data["dateUpdatedUtc"].toString()) : <any>null;
+            this.dateLastFollowedUtc = _data["dateLastFollowedUtc"] ? new Date(_data["dateLastFollowedUtc"].toString()) : <any>null;
+            this.linkName = _data["linkName"] !== undefined ? _data["linkName"] : <any>null;
+            this.linkCategory = _data["linkCategory"] !== undefined ? _data["linkCategory"] : <any>null;
+            this.linkUrl = _data["linkUrl"] !== undefined ? _data["linkUrl"] : <any>null;
+            this.linkImage = _data["linkImage"] !== undefined ? _data["linkImage"] : <any>null;
         }
     }
 
@@ -503,17 +890,17 @@ export class UserLinkDto implements IUserLinkDto {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["linkID"] = this.linkID;
-        data["deleted"] = this.deleted;
-        data["linkOrder"] = this.linkOrder;
-        data["followCount"] = this.followCount;
-        data["dateAddedUtc"] = this.dateAddedUtc ? this.dateAddedUtc.toISOString() : <any>undefined;
-        data["dateUpdatedUtc"] = this.dateUpdatedUtc ? this.dateUpdatedUtc.toISOString() : <any>undefined;
-        data["dateLastFollowedUtc"] = this.dateLastFollowedUtc ? this.dateLastFollowedUtc.toISOString() : <any>undefined;
-        data["linkName"] = this.linkName;
-        data["linkCategory"] = this.linkCategory;
-        data["linkUrl"] = this.linkUrl;
-        data["linkImage"] = this.linkImage;
+        data["linkID"] = this.linkID !== undefined ? this.linkID : <any>null;
+        data["deleted"] = this.deleted !== undefined ? this.deleted : <any>null;
+        data["linkOrder"] = this.linkOrder !== undefined ? this.linkOrder : <any>null;
+        data["followCount"] = this.followCount !== undefined ? this.followCount : <any>null;
+        data["dateAddedUtc"] = this.dateAddedUtc ? this.dateAddedUtc.toISOString() : <any>null;
+        data["dateUpdatedUtc"] = this.dateUpdatedUtc ? this.dateUpdatedUtc.toISOString() : <any>null;
+        data["dateLastFollowedUtc"] = this.dateLastFollowedUtc ? this.dateLastFollowedUtc.toISOString() : <any>null;
+        data["linkName"] = this.linkName !== undefined ? this.linkName : <any>null;
+        data["linkCategory"] = this.linkCategory !== undefined ? this.linkCategory : <any>null;
+        data["linkUrl"] = this.linkUrl !== undefined ? this.linkUrl : <any>null;
+        data["linkImage"] = this.linkImage !== undefined ? this.linkImage : <any>null;
         return data;
     }
 }
@@ -554,15 +941,15 @@ export class UserTaskDto implements IUserTaskDto {
 
     init(_data?: any) {
         if (_data) {
-            this.taskID = _data["taskID"];
-            this.deleted = _data["deleted"];
-            this.completed = _data["completed"];
-            this.taskPriority = _data["taskPriority"];
-            this.dateAddedUtc = _data["dateAddedUtc"] ? new Date(_data["dateAddedUtc"].toString()) : <any>undefined;
-            this.dateCompletedUtc = _data["dateCompletedUtc"] ? new Date(_data["dateCompletedUtc"].toString()) : <any>undefined;
-            this.taskName = _data["taskName"];
-            this.taskCategory = _data["taskCategory"];
-            this.taskDescription = _data["taskDescription"];
+            this.taskID = _data["taskID"] !== undefined ? _data["taskID"] : <any>null;
+            this.deleted = _data["deleted"] !== undefined ? _data["deleted"] : <any>null;
+            this.completed = _data["completed"] !== undefined ? _data["completed"] : <any>null;
+            this.taskPriority = _data["taskPriority"] !== undefined ? _data["taskPriority"] : <any>null;
+            this.dateAddedUtc = _data["dateAddedUtc"] ? new Date(_data["dateAddedUtc"].toString()) : <any>null;
+            this.dateCompletedUtc = _data["dateCompletedUtc"] ? new Date(_data["dateCompletedUtc"].toString()) : <any>null;
+            this.taskName = _data["taskName"] !== undefined ? _data["taskName"] : <any>null;
+            this.taskCategory = _data["taskCategory"] !== undefined ? _data["taskCategory"] : <any>null;
+            this.taskDescription = _data["taskDescription"] !== undefined ? _data["taskDescription"] : <any>null;
         }
     }
 
@@ -575,15 +962,15 @@ export class UserTaskDto implements IUserTaskDto {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["taskID"] = this.taskID;
-        data["deleted"] = this.deleted;
-        data["completed"] = this.completed;
-        data["taskPriority"] = this.taskPriority;
-        data["dateAddedUtc"] = this.dateAddedUtc ? this.dateAddedUtc.toISOString() : <any>undefined;
-        data["dateCompletedUtc"] = this.dateCompletedUtc ? this.dateCompletedUtc.toISOString() : <any>undefined;
-        data["taskName"] = this.taskName;
-        data["taskCategory"] = this.taskCategory;
-        data["taskDescription"] = this.taskDescription;
+        data["taskID"] = this.taskID !== undefined ? this.taskID : <any>null;
+        data["deleted"] = this.deleted !== undefined ? this.deleted : <any>null;
+        data["completed"] = this.completed !== undefined ? this.completed : <any>null;
+        data["taskPriority"] = this.taskPriority !== undefined ? this.taskPriority : <any>null;
+        data["dateAddedUtc"] = this.dateAddedUtc ? this.dateAddedUtc.toISOString() : <any>null;
+        data["dateCompletedUtc"] = this.dateCompletedUtc ? this.dateCompletedUtc.toISOString() : <any>null;
+        data["taskName"] = this.taskName !== undefined ? this.taskName : <any>null;
+        data["taskCategory"] = this.taskCategory !== undefined ? this.taskCategory : <any>null;
+        data["taskDescription"] = this.taskDescription !== undefined ? this.taskDescription : <any>null;
         return data;
     }
 }
@@ -637,3 +1024,5 @@ function throwException(message: string, status: number, response: string, heade
     else
         throw new ApiException(message, status, response, headers, null);
 }
+
+(<any>window).NlpBaseClient = NlpBaseClient;
