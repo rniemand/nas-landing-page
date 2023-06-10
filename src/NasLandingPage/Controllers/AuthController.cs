@@ -5,9 +5,10 @@ using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using NasLandingPage.Models.Entities;
+using NasLandingPage.Models.Requests;
 using NasLandingPage.Models.Responses;
 using NasLandingPage.Repos;
+using NasLandingPage.Services;
 
 namespace NasLandingPage.Controllers;
 
@@ -16,6 +17,13 @@ namespace NasLandingPage.Controllers;
 [AllowAnonymous]
 public class AuthController : ControllerBase
 {
+  private readonly IAuthService _authService;
+
+  public AuthController(IAuthService authService)
+  {
+    _authService = authService;
+  }
+
   [HttpGet("whoami")]
   public WhoAmIResponse WhoAmI(bool includeClaims = false)
   {
@@ -74,4 +82,15 @@ public class AuthController : ControllerBase
 
   [HttpPost("logout")]
   public async Task Logout() => await HttpContext.SignOutAsync();
+
+  [HttpPost("set-new-password")]
+  [ProducesResponseType(typeof(string), 200)]
+  public async Task<ActionResult?> SetNewPassword([FromBody] SetNewPasswordRequest request)
+  {
+    if (User.Identity is null || !User.Identity.IsAuthenticated)
+      return await Challenge();
+
+    var email = User.FindFirstValue(ClaimTypes.Email);
+    return Ok(await _authService.SetNewPasswordAsync(request, email));
+  }
 }

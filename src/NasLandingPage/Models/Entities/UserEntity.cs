@@ -7,6 +7,7 @@ public class UserEntity
   public long UserID { get; set; }
   public string Email { get; set; } = string.Empty;
   public string PasswordHash { get; set; } = string.Empty;
+  public bool CanSetPass { get; set; }
 
   public void SetPassword(string password) =>
     PasswordHash = new PasswordHasher<UserEntity>().HashPassword(this, password);

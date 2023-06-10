@@ -43,6 +43,8 @@ export interface IAuthClient {
     login(password: string | undefined): Promise<void>;
 
     logout(): Promise<void>;
+
+    setNewPassword(request: SetNewPasswordRequest): Promise<string>;
 }
 
 export class AuthClient extends NlpBaseClient implements IAuthClient {
@@ -202,6 +204,47 @@ export class AuthClient extends NlpBaseClient implements IAuthClient {
             });
         }
         return Promise.resolve<void>(null as any);
+    }
+
+    setNewPassword(request: SetNewPasswordRequest): Promise<string> {
+        let url_ = this.baseUrl + "/api/Auth/set-new-password";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(request);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processSetNewPassword(_response));
+        });
+    }
+
+    protected processSetNewPassword(response: Response): Promise<string> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<string>(null as any);
     }
 }
 
@@ -630,6 +673,46 @@ export interface IWhoAmIResponse {
     email?: string | null;
     signedIn: boolean;
     claims?: { [key: string]: string; } | null;
+}
+
+export class SetNewPasswordRequest implements ISetNewPasswordRequest {
+    email!: string;
+    password!: string;
+
+    constructor(data?: ISetNewPasswordRequest) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.email = _data["email"] !== undefined ? _data["email"] : <any>null;
+            this.password = _data["password"] !== undefined ? _data["password"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): SetNewPasswordRequest {
+        data = typeof data === 'object' ? data : {};
+        let result = new SetNewPasswordRequest();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["email"] = this.email !== undefined ? this.email : <any>null;
+        data["password"] = this.password !== undefined ? this.password : <any>null;
+        return data;
+    }
+}
+
+export interface ISetNewPasswordRequest {
+    email: string;
+    password: string;
 }
 
 export class GitHubRepoDto implements IGitHubRepoDto {

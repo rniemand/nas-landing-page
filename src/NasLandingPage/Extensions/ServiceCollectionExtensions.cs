@@ -31,7 +31,8 @@ public static class ServiceCollectionExtensions
       // Services
       .AddSingleton<IUserLinkService, UserLinkService>()
       .AddSingleton<IUserTaskService, UserTaskService>()
-      .AddSingleton<IGitHubService, GitHubService>();
+      .AddSingleton<IGitHubService, GitHubService>()
+      .AddSingleton<IAuthService, AuthService>();
   }
 
   private static AppConfig BindAppConfig(IConfiguration configuration)

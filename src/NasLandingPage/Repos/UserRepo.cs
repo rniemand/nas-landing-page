@@ -1,5 +1,4 @@
 using Dapper;
-using Microsoft.AspNetCore.Identity;
 using NasLandingPage.Models.Entities;
 
 namespace NasLandingPage.Repos;
@@ -24,7 +23,8 @@ public class UserRepo : IUserRepo
     const string query = $@"SELECT
       `UserID`,
       `Email`,
-      `PasswordHash`
+      `PasswordHash`,
+      `CanSetPass`
     FROM {TableName}
     WHERE `Email` = @Email";
 
@@ -34,7 +34,13 @@ public class UserRepo : IUserRepo
 
   public async Task<bool> UpdatePasswordHash(UserEntity user)
   {
-    await Task.CompletedTask;
-    return true;
+    const string query = $@"UPDATE {TableName}
+    SET
+      `PasswordHash` = @PasswordHash,
+      `CanSetPass` = 0
+    WHERE
+      `UserID` = @UserID";
+    await using var connection = _connectionHelper.GetCoreConnection();
+    return (await connection.ExecuteAsync(query, user)) == 1;
   }
 }

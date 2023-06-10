@@ -75,6 +75,7 @@
     const resp = await authClient.challenge(false);
     username = resp.name!;
     email = resp.email!;
+    if(resp.signedIn) location.href = '/';
   })();
 
   const triggerLogin = () => {
@@ -83,9 +84,9 @@
     status = 'Validating credentials...';
     (async () => {
       try {
-        await authClient.login(password);
         status = 'Logging in...';
-        goto('/');
+        await authClient.login(password);
+        setTimeout(() => { location.reload(); }, 100);
       } catch (ex) {
         triggerWrongCredentialsMessage();
         status = '';
