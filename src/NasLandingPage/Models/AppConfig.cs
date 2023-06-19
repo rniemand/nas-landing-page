@@ -10,4 +10,7 @@ public class AppConfig
 
   [ConfigurationKeyName("GitHubClientName")]
   public string GitHubClientName { get; set; } = "nasLandingPage";
+
+  [ConfigurationKeyName("gameIndexRootDir")]
+  public string GameIndexRootDir { get; set; } = string.Empty;
 }

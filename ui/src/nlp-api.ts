@@ -248,6 +248,154 @@ export class AuthClient extends NlpBaseClient implements IAuthClient {
     }
 }
 
+export interface IGamesClient {
+
+    getPlatformGames(platformId: number): Promise<BasicGameInfoDto[]>;
+
+    update(game: BasicGameInfoDto): Promise<BasicGameInfoDto>;
+
+    addGame(game: BasicGameInfoDto): Promise<boolean>;
+}
+
+export class GamesClient extends NlpBaseClient implements IGamesClient {
+    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+        super();
+        this.http = http ? http : window as any;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    getPlatformGames(platformId: number): Promise<BasicGameInfoDto[]> {
+        let url_ = this.baseUrl + "/Games/platform/{platformId}";
+        if (platformId === undefined || platformId === null)
+            throw new Error("The parameter 'platformId' must be defined.");
+        url_ = url_.replace("{platformId}", encodeURIComponent("" + platformId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processGetPlatformGames(_response));
+        });
+    }
+
+    protected processGetPlatformGames(response: Response): Promise<BasicGameInfoDto[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(BasicGameInfoDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<BasicGameInfoDto[]>(null as any);
+    }
+
+    update(game: BasicGameInfoDto): Promise<BasicGameInfoDto> {
+        let url_ = this.baseUrl + "/Games/update";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(game);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processUpdate(_response));
+        });
+    }
+
+    protected processUpdate(response: Response): Promise<BasicGameInfoDto> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = BasicGameInfoDto.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<BasicGameInfoDto>(null as any);
+    }
+
+    addGame(game: BasicGameInfoDto): Promise<boolean> {
+        let url_ = this.baseUrl + "/Games/add";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(game);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processAddGame(_response));
+        });
+    }
+
+    protected processAddGame(response: Response): Promise<boolean> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<boolean>(null as any);
+    }
+}
+
 export interface IGitHubClient {
 
     triggerRepoIndex(): Promise<string>;
@@ -350,6 +498,10 @@ export class GitHubClient extends NlpBaseClient implements IGitHubClient {
 export interface IImagesClient {
 
     getImage(path: string): Promise<FileResponse | null>;
+
+    getImage2(platform: string, gameId: number): Promise<FileResponse | null>;
+
+    getGameImages(gameId: number): Promise<ImageDto[]>;
 }
 
 export class ImagesClient extends NlpBaseClient implements IImagesClient {
@@ -404,6 +556,539 @@ export class ImagesClient extends NlpBaseClient implements IImagesClient {
             });
         }
         return Promise.resolve<FileResponse | null>(null as any);
+    }
+
+    getImage2(platform: string, gameId: number): Promise<FileResponse | null> {
+        let url_ = this.baseUrl + "/api/Images/game/cover/{platform}/{gameId}";
+        if (platform === undefined || platform === null)
+            throw new Error("The parameter 'platform' must be defined.");
+        url_ = url_.replace("{platform}", encodeURIComponent("" + platform));
+        if (gameId === undefined || gameId === null)
+            throw new Error("The parameter 'gameId' must be defined.");
+        url_ = url_.replace("{gameId}", encodeURIComponent("" + gameId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "application/octet-stream"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processGetImage2(_response));
+        });
+    }
+
+    protected processGetImage2(response: Response): Promise<FileResponse | null> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            let fileNameMatch = contentDisposition ? /filename\*=(?:(\\?['"])(.*?)\1|(?:[^\s]+'.*?')?([^;\n]*))/g.exec(contentDisposition) : undefined;
+            let fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[3] || fileNameMatch[2] : undefined;
+            if (fileName) {
+                fileName = decodeURIComponent(fileName);
+            } else {
+                fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+                fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            }
+            return response.blob().then(blob => { return { fileName: fileName, data: blob, status: status, headers: _headers }; });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<FileResponse | null>(null as any);
+    }
+
+    getGameImages(gameId: number): Promise<ImageDto[]> {
+        let url_ = this.baseUrl + "/api/Images/game/images/{gameId}";
+        if (gameId === undefined || gameId === null)
+            throw new Error("The parameter 'gameId' must be defined.");
+        url_ = url_.replace("{gameId}", encodeURIComponent("" + gameId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processGetGameImages(_response));
+        });
+    }
+
+    protected processGetGameImages(response: Response): Promise<ImageDto[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(ImageDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<ImageDto[]>(null as any);
+    }
+}
+
+export interface ILocationsClient {
+
+    getPlatformLocations(platformId: number): Promise<LocationDto[]>;
+
+    setGameLocation(gameId: number, locationId: number): Promise<number>;
+
+    addLocation(location: LocationDto): Promise<LocationDto>;
+}
+
+export class LocationsClient extends NlpBaseClient implements ILocationsClient {
+    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+        super();
+        this.http = http ? http : window as any;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    getPlatformLocations(platformId: number): Promise<LocationDto[]> {
+        let url_ = this.baseUrl + "/Locations/list/platform-id/{platformId}";
+        if (platformId === undefined || platformId === null)
+            throw new Error("The parameter 'platformId' must be defined.");
+        url_ = url_.replace("{platformId}", encodeURIComponent("" + platformId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processGetPlatformLocations(_response));
+        });
+    }
+
+    protected processGetPlatformLocations(response: Response): Promise<LocationDto[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(LocationDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<LocationDto[]>(null as any);
+    }
+
+    setGameLocation(gameId: number, locationId: number): Promise<number> {
+        let url_ = this.baseUrl + "/Locations/set-location/game-id/{gameId}/location-id/{locationId}";
+        if (gameId === undefined || gameId === null)
+            throw new Error("The parameter 'gameId' must be defined.");
+        url_ = url_.replace("{gameId}", encodeURIComponent("" + gameId));
+        if (locationId === undefined || locationId === null)
+            throw new Error("The parameter 'locationId' must be defined.");
+        url_ = url_.replace("{locationId}", encodeURIComponent("" + locationId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "PUT",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processSetGameLocation(_response));
+        });
+    }
+
+    protected processSetGameLocation(response: Response): Promise<number> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<number>(null as any);
+    }
+
+    addLocation(location: LocationDto): Promise<LocationDto> {
+        let url_ = this.baseUrl + "/Locations/add";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(location);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processAddLocation(_response));
+        });
+    }
+
+    protected processAddLocation(response: Response): Promise<LocationDto> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = LocationDto.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<LocationDto>(null as any);
+    }
+}
+
+export interface IPlatformsClient {
+
+    getAll(): Promise<PlatformDto[]>;
+}
+
+export class PlatformsClient extends NlpBaseClient implements IPlatformsClient {
+    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+        super();
+        this.http = http ? http : window as any;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    getAll(): Promise<PlatformDto[]> {
+        let url_ = this.baseUrl + "/Platforms/list";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processGetAll(_response));
+        });
+    }
+
+    protected processGetAll(response: Response): Promise<PlatformDto[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(PlatformDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<PlatformDto[]>(null as any);
+    }
+}
+
+export interface IReceiptClient {
+
+    getOrderInformation(receiptId: number): Promise<ReceiptDto>;
+
+    updateReceipt(receipt: ReceiptDto): Promise<ReceiptDto>;
+
+    addReceipt(gameId: number): Promise<ReceiptDto>;
+
+    search(term: string): Promise<ReceiptDto[]>;
+
+    associateReceiptToGame(gameId: number, receiptId: number): Promise<ReceiptDto>;
+}
+
+export class ReceiptClient extends NlpBaseClient implements IReceiptClient {
+    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+        super();
+        this.http = http ? http : window as any;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    getOrderInformation(receiptId: number): Promise<ReceiptDto> {
+        let url_ = this.baseUrl + "/Receipt/order-info/{receiptId}";
+        if (receiptId === undefined || receiptId === null)
+            throw new Error("The parameter 'receiptId' must be defined.");
+        url_ = url_.replace("{receiptId}", encodeURIComponent("" + receiptId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processGetOrderInformation(_response));
+        });
+    }
+
+    protected processGetOrderInformation(response: Response): Promise<ReceiptDto> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ReceiptDto.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<ReceiptDto>(null as any);
+    }
+
+    updateReceipt(receipt: ReceiptDto): Promise<ReceiptDto> {
+        let url_ = this.baseUrl + "/Receipt/update";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(receipt);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processUpdateReceipt(_response));
+        });
+    }
+
+    protected processUpdateReceipt(response: Response): Promise<ReceiptDto> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ReceiptDto.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<ReceiptDto>(null as any);
+    }
+
+    addReceipt(gameId: number): Promise<ReceiptDto> {
+        let url_ = this.baseUrl + "/Receipt/create/game-id/{gameId}";
+        if (gameId === undefined || gameId === null)
+            throw new Error("The parameter 'gameId' must be defined.");
+        url_ = url_.replace("{gameId}", encodeURIComponent("" + gameId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processAddReceipt(_response));
+        });
+    }
+
+    protected processAddReceipt(response: Response): Promise<ReceiptDto> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ReceiptDto.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<ReceiptDto>(null as any);
+    }
+
+    search(term: string): Promise<ReceiptDto[]> {
+        let url_ = this.baseUrl + "/Receipt/search/term/{term}";
+        if (term === undefined || term === null)
+            throw new Error("The parameter 'term' must be defined.");
+        url_ = url_.replace("{term}", encodeURIComponent("" + term));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processSearch(_response));
+        });
+    }
+
+    protected processSearch(response: Response): Promise<ReceiptDto[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(ReceiptDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<ReceiptDto[]>(null as any);
+    }
+
+    associateReceiptToGame(gameId: number, receiptId: number): Promise<ReceiptDto> {
+        let url_ = this.baseUrl + "/Receipt/associate/game-id/{gameId}/receipt-id/{receiptId}";
+        if (gameId === undefined || gameId === null)
+            throw new Error("The parameter 'gameId' must be defined.");
+        url_ = url_.replace("{gameId}", encodeURIComponent("" + gameId));
+        if (receiptId === undefined || receiptId === null)
+            throw new Error("The parameter 'receiptId' must be defined.");
+        url_ = url_.replace("{receiptId}", encodeURIComponent("" + receiptId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "PATCH",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processAssociateReceiptToGame(_response));
+        });
+    }
+
+    protected processAssociateReceiptToGame(response: Response): Promise<ReceiptDto> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ReceiptDto.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<ReceiptDto>(null as any);
     }
 }
 
@@ -715,6 +1400,122 @@ export interface ISetNewPasswordRequest {
     password: string;
 }
 
+export class BasicGameInfoDto implements IBasicGameInfoDto {
+    gameID!: number;
+    gameName!: string;
+    platformID!: number;
+    locationID!: number;
+    gameCaseLocation!: string;
+    hasGameBox!: boolean;
+    gameRating!: number;
+    imagePath!: string;
+    locationName!: string;
+    platformName!: string;
+    hasProtection!: boolean;
+    store!: string;
+    receiptNumber!: string;
+    gamePrice!: number;
+    receiptDate?: Date | null;
+    gameSold!: boolean;
+    haveReceipt!: boolean;
+    receiptName!: string;
+    receiptScanned!: boolean;
+    receiptID!: number;
+    searchTerm!: string;
+
+    constructor(data?: IBasicGameInfoDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.gameID = _data["gameID"] !== undefined ? _data["gameID"] : <any>null;
+            this.gameName = _data["gameName"] !== undefined ? _data["gameName"] : <any>null;
+            this.platformID = _data["platformID"] !== undefined ? _data["platformID"] : <any>null;
+            this.locationID = _data["locationID"] !== undefined ? _data["locationID"] : <any>null;
+            this.gameCaseLocation = _data["gameCaseLocation"] !== undefined ? _data["gameCaseLocation"] : <any>null;
+            this.hasGameBox = _data["hasGameBox"] !== undefined ? _data["hasGameBox"] : <any>null;
+            this.gameRating = _data["gameRating"] !== undefined ? _data["gameRating"] : <any>null;
+            this.imagePath = _data["imagePath"] !== undefined ? _data["imagePath"] : <any>null;
+            this.locationName = _data["locationName"] !== undefined ? _data["locationName"] : <any>null;
+            this.platformName = _data["platformName"] !== undefined ? _data["platformName"] : <any>null;
+            this.hasProtection = _data["hasProtection"] !== undefined ? _data["hasProtection"] : <any>null;
+            this.store = _data["store"] !== undefined ? _data["store"] : <any>null;
+            this.receiptNumber = _data["receiptNumber"] !== undefined ? _data["receiptNumber"] : <any>null;
+            this.gamePrice = _data["gamePrice"] !== undefined ? _data["gamePrice"] : <any>null;
+            this.receiptDate = _data["receiptDate"] ? new Date(_data["receiptDate"].toString()) : <any>null;
+            this.gameSold = _data["gameSold"] !== undefined ? _data["gameSold"] : <any>null;
+            this.haveReceipt = _data["haveReceipt"] !== undefined ? _data["haveReceipt"] : <any>null;
+            this.receiptName = _data["receiptName"] !== undefined ? _data["receiptName"] : <any>null;
+            this.receiptScanned = _data["receiptScanned"] !== undefined ? _data["receiptScanned"] : <any>null;
+            this.receiptID = _data["receiptID"] !== undefined ? _data["receiptID"] : <any>null;
+            this.searchTerm = _data["searchTerm"] !== undefined ? _data["searchTerm"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): BasicGameInfoDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new BasicGameInfoDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["gameID"] = this.gameID !== undefined ? this.gameID : <any>null;
+        data["gameName"] = this.gameName !== undefined ? this.gameName : <any>null;
+        data["platformID"] = this.platformID !== undefined ? this.platformID : <any>null;
+        data["locationID"] = this.locationID !== undefined ? this.locationID : <any>null;
+        data["gameCaseLocation"] = this.gameCaseLocation !== undefined ? this.gameCaseLocation : <any>null;
+        data["hasGameBox"] = this.hasGameBox !== undefined ? this.hasGameBox : <any>null;
+        data["gameRating"] = this.gameRating !== undefined ? this.gameRating : <any>null;
+        data["imagePath"] = this.imagePath !== undefined ? this.imagePath : <any>null;
+        data["locationName"] = this.locationName !== undefined ? this.locationName : <any>null;
+        data["platformName"] = this.platformName !== undefined ? this.platformName : <any>null;
+        data["hasProtection"] = this.hasProtection !== undefined ? this.hasProtection : <any>null;
+        data["store"] = this.store !== undefined ? this.store : <any>null;
+        data["receiptNumber"] = this.receiptNumber !== undefined ? this.receiptNumber : <any>null;
+        data["gamePrice"] = this.gamePrice !== undefined ? this.gamePrice : <any>null;
+        data["receiptDate"] = this.receiptDate ? this.receiptDate.toISOString() : <any>null;
+        data["gameSold"] = this.gameSold !== undefined ? this.gameSold : <any>null;
+        data["haveReceipt"] = this.haveReceipt !== undefined ? this.haveReceipt : <any>null;
+        data["receiptName"] = this.receiptName !== undefined ? this.receiptName : <any>null;
+        data["receiptScanned"] = this.receiptScanned !== undefined ? this.receiptScanned : <any>null;
+        data["receiptID"] = this.receiptID !== undefined ? this.receiptID : <any>null;
+        data["searchTerm"] = this.searchTerm !== undefined ? this.searchTerm : <any>null;
+        return data;
+    }
+}
+
+export interface IBasicGameInfoDto {
+    gameID: number;
+    gameName: string;
+    platformID: number;
+    locationID: number;
+    gameCaseLocation: string;
+    hasGameBox: boolean;
+    gameRating: number;
+    imagePath: string;
+    locationName: string;
+    platformName: string;
+    hasProtection: boolean;
+    store: string;
+    receiptNumber: string;
+    gamePrice: number;
+    receiptDate?: Date | null;
+    gameSold: boolean;
+    haveReceipt: boolean;
+    receiptName: string;
+    receiptScanned: boolean;
+    receiptID: number;
+    searchTerm: string;
+}
+
 export class GitHubRepoDto implements IGitHubRepoDto {
     repoID!: number;
     repoSize!: number;
@@ -841,6 +1642,198 @@ export interface IGitHubRepoDto {
     name: string;
     fullName: string;
     description: string;
+}
+
+export class ImageDto implements IImageDto {
+    gameID!: number;
+    imageType!: string;
+    imageOrder!: number;
+    imagePath!: string;
+
+    constructor(data?: IImageDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.gameID = _data["gameID"] !== undefined ? _data["gameID"] : <any>null;
+            this.imageType = _data["imageType"] !== undefined ? _data["imageType"] : <any>null;
+            this.imageOrder = _data["imageOrder"] !== undefined ? _data["imageOrder"] : <any>null;
+            this.imagePath = _data["imagePath"] !== undefined ? _data["imagePath"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): ImageDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ImageDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["gameID"] = this.gameID !== undefined ? this.gameID : <any>null;
+        data["imageType"] = this.imageType !== undefined ? this.imageType : <any>null;
+        data["imageOrder"] = this.imageOrder !== undefined ? this.imageOrder : <any>null;
+        data["imagePath"] = this.imagePath !== undefined ? this.imagePath : <any>null;
+        return data;
+    }
+}
+
+export interface IImageDto {
+    gameID: number;
+    imageType: string;
+    imageOrder: number;
+    imagePath: string;
+}
+
+export class LocationDto implements ILocationDto {
+    locationID!: number;
+    platformID!: number;
+    locationName!: string;
+
+    constructor(data?: ILocationDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.locationID = _data["locationID"] !== undefined ? _data["locationID"] : <any>null;
+            this.platformID = _data["platformID"] !== undefined ? _data["platformID"] : <any>null;
+            this.locationName = _data["locationName"] !== undefined ? _data["locationName"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): LocationDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new LocationDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["locationID"] = this.locationID !== undefined ? this.locationID : <any>null;
+        data["platformID"] = this.platformID !== undefined ? this.platformID : <any>null;
+        data["locationName"] = this.locationName !== undefined ? this.locationName : <any>null;
+        return data;
+    }
+}
+
+export interface ILocationDto {
+    locationID: number;
+    platformID: number;
+    locationName: string;
+}
+
+export class PlatformDto implements IPlatformDto {
+    platformID!: number;
+    platformName!: string;
+
+    constructor(data?: IPlatformDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.platformID = _data["platformID"] !== undefined ? _data["platformID"] : <any>null;
+            this.platformName = _data["platformName"] !== undefined ? _data["platformName"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): PlatformDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PlatformDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["platformID"] = this.platformID !== undefined ? this.platformID : <any>null;
+        data["platformName"] = this.platformName !== undefined ? this.platformName : <any>null;
+        return data;
+    }
+}
+
+export interface IPlatformDto {
+    platformID: number;
+    platformName: string;
+}
+
+export class ReceiptDto implements IReceiptDto {
+    receiptID!: number;
+    store!: string;
+    receiptNumber!: string;
+    receiptDate!: Date;
+    receiptName!: string;
+    receiptUrl!: string;
+    receiptScanned!: boolean;
+
+    constructor(data?: IReceiptDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.receiptID = _data["receiptID"] !== undefined ? _data["receiptID"] : <any>null;
+            this.store = _data["store"] !== undefined ? _data["store"] : <any>null;
+            this.receiptNumber = _data["receiptNumber"] !== undefined ? _data["receiptNumber"] : <any>null;
+            this.receiptDate = _data["receiptDate"] ? new Date(_data["receiptDate"].toString()) : <any>null;
+            this.receiptName = _data["receiptName"] !== undefined ? _data["receiptName"] : <any>null;
+            this.receiptUrl = _data["receiptUrl"] !== undefined ? _data["receiptUrl"] : <any>null;
+            this.receiptScanned = _data["receiptScanned"] !== undefined ? _data["receiptScanned"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): ReceiptDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ReceiptDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["receiptID"] = this.receiptID !== undefined ? this.receiptID : <any>null;
+        data["store"] = this.store !== undefined ? this.store : <any>null;
+        data["receiptNumber"] = this.receiptNumber !== undefined ? this.receiptNumber : <any>null;
+        data["receiptDate"] = this.receiptDate ? this.receiptDate.toISOString() : <any>null;
+        data["receiptName"] = this.receiptName !== undefined ? this.receiptName : <any>null;
+        data["receiptUrl"] = this.receiptUrl !== undefined ? this.receiptUrl : <any>null;
+        data["receiptScanned"] = this.receiptScanned !== undefined ? this.receiptScanned : <any>null;
+        return data;
+    }
+}
+
+export interface IReceiptDto {
+    receiptID: number;
+    store: string;
+    receiptNumber: string;
+    receiptDate: Date;
+    receiptName: string;
+    receiptUrl: string;
+    receiptScanned: boolean;
 }
 
 export class UserLinkDto implements IUserLinkDto {
