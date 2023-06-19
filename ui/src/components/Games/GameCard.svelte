@@ -8,7 +8,7 @@
     box-shadow: 3px 3px 3px 0px rgb(18 18 18);
   }
   h2 { text-align: center; font-size: 1.2em; padding: 3px 2px; }
-  .image { margin: 3px; position: relative; text-align: center; }
+  .image { margin: 3px; position: relative; text-align: center; width: auto; max-width: 160px; }
   img.cover { width: auto; border-radius: 5px; max-height: 200px; }
   .sold { opacity: 0.5; background-color: #37010e; }
   .price { background-color: rgba(0,0,0,.61); border-radius: 3px; color: #00ff1f; padding: 3px; position: absolute; right: 5px; top: 5px; }
