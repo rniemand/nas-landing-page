@@ -18,6 +18,7 @@
   import GameSearch from "./GameSearch.svelte";
 
   export let selectedPlatform: PlatformDto | undefined;
+  export let triggerAction: (action: string, game: BasicGameInfoDto) => void;
   let games: BasicGameInfoDto[] = [];
   let filteredGames: BasicGameInfoDto[] = [];
   let loading = true;
@@ -50,7 +51,7 @@
     <GameSearch searchTermChanged={searchTermChangedHandler} />
     <div class="card-container">
       {#each filteredGames as game (game.gameID)}
-        <GameCard {game} />
+        <GameCard {game} {triggerAction} />
       {/each}
     </div>
   {/if}

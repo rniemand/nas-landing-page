@@ -18,6 +18,7 @@
   import type { BasicGameInfoDto } from "../../nlp-api";
 
   export let game: BasicGameInfoDto;
+  export let triggerAction: (action: string, game: BasicGameInfoDto) => void;
 </script>
 
 <div class="card" class:sold={game.gameSold}>
@@ -26,5 +27,8 @@
     {#if game.gamePrice > 0}<div class="price">{game.gamePrice}</div>{/if}
     <!-- svelte-ignore a11y-missing-attribute -->
     <img class="cover" src={`api/images/game/cover/${game.platformName}/${game.gameID}`} />
+  </div>
+  <div class="buttons">
+    {#if game.receiptID > 0}<button on:click={() => triggerAction('receipt', game)}>Receipt</button>{/if}
   </div>
 </div>
