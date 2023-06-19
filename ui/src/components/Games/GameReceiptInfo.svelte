@@ -39,7 +39,9 @@
   let receipt: ReceiptDto;
   let recDate: string;
 
-  const refreshReceiptInfo = (_game: BasicGameInfoDto) => {
+  const refreshReceiptInfo = (_game: BasicGameInfoDto | undefined) => {
+    if(!_game) return;
+
     loading = true;
     receipt = new ReceiptDto();
     recDate = '';
