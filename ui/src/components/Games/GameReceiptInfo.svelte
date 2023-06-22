@@ -36,7 +36,7 @@
   export let game: BasicGameInfoDto;
 
   let loading = true;
-  let receipt: ReceiptDto;
+  let receipt: ReceiptDto = new ReceiptDto();
   let recDate: string;
 
   const refreshReceiptInfo = (_game: BasicGameInfoDto | undefined) => {
@@ -48,8 +48,9 @@
 
     new ReceiptClient().getOrderInformation(_game.receiptID)
       .then((_receiptInfo: ReceiptDto) => {
+        if(!_receiptInfo) return;
         receipt = _receiptInfo;
-        recDate = receipt.receiptDate.toISOString().split('T')[0];
+        recDate = receipt?.receiptDate.toISOString().split('T')[0] || '';
       })
       .finally(() => {
         loading = false;
