@@ -10,16 +10,16 @@ public interface IPlatformService
 
 public class PlatformService : IPlatformService
 {
-  private readonly IPlatformsRepo _platformsRepo;
+  private readonly IGamePlatformRepo _gamePlatformRepo;
 
-  public PlatformService(IPlatformsRepo platformsRepo)
+  public PlatformService(IGamePlatformRepo gamePlatformRepo)
   {
-    _platformsRepo = platformsRepo;
+    _gamePlatformRepo = gamePlatformRepo;
   }
 
   public async Task<List<PlatformDto>> GetAllAsync()
   {
-    var dbPlatforms = await _platformsRepo.GetAllPlatformsAsync();
+    var dbPlatforms = await _gamePlatformRepo.GetAllPlatformsAsync();
     return dbPlatforms.Select(PlatformDto.FromEntity).ToList();
   }
 }

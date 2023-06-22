@@ -45,10 +45,10 @@ public class GamesRepo : IGamesRepo
       r.ReceiptScanned,
       r.ReceiptID
     FROM `{TableName}` g
-	    INNER JOIN `{PlatformsRepo.TableName}` p ON p.PlatformID = g.PlatformID
-	    INNER JOIN `{LocationRepo.TableName}` l ON l.LocationID = g.LocationID
-	    LEFT JOIN `{ImagesRepo.TableName}` i ON i.GameID = g.GameID AND i.ImageType = 'cover'
-      LEFT JOIN `{ReceiptRepo.TableName}` r ON r.ReceiptID = g.ReceiptID
+	    INNER JOIN `{GameReceiptRepo.TableName}` p ON p.PlatformID = g.PlatformID
+	    INNER JOIN `{GameLocationRepo.TableName}` l ON l.LocationID = g.LocationID
+	    LEFT JOIN `{GameImageRepo.TableName}` i ON i.GameID = g.GameID AND i.ImageType = 'cover'
+      LEFT JOIN `{GameReceiptRepo.TableName}` r ON r.ReceiptID = g.ReceiptID
     WHERE g.PlatformID = @PlatformID
     ORDER BY g.GameName";
     await using var connection = _connectionHelper.GetCoreConnection();

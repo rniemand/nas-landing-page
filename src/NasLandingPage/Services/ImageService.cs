@@ -14,21 +14,21 @@ public interface IImageService
 public class ImageService : IImageService
 {
   private readonly IAppPathHelper _pathHelper;
-  private readonly IImagesRepo _imagesRepo;
+  private readonly IGameImageRepo _gameImageRepo;
   private readonly IFileAbstraction _file;
 
   public ImageService(IAppPathHelper pathHelper,
-    IImagesRepo imagesRepo,
+    IGameImageRepo gameImageRepo,
     IFileAbstraction file)
   {
     _pathHelper = pathHelper;
-    _imagesRepo = imagesRepo;
+    _gameImageRepo = gameImageRepo;
     _file = file;
   }
 
   public async Task<string> GetGameCoverImagePathAsync(string platform, long gameId)
   {
-    var gameCoverEntity = await _imagesRepo.GetGameCoverImageAsync(gameId);
+    var gameCoverEntity = await _gameImageRepo.GetGameCoverImageAsync(gameId);
     var safePlatform = platform.ToLower();
     var fallbackPath = _pathHelper.ResolveImagePath($"covers/{safePlatform}/placeholder.png");
 
@@ -49,7 +49,7 @@ public class ImageService : IImageService
 
   public async Task<List<ImageDto>> GetGameImagesAsync(long gameId)
   {
-    var dbImages = await _imagesRepo.GetGameImagesAsync(gameId);
+    var dbImages = await _gameImageRepo.GetGameImagesAsync(gameId);
     return dbImages.Count == 0 ? new List<ImageDto>() : dbImages.Select(ImageDto.FromEntity).ToList();
   }
 }

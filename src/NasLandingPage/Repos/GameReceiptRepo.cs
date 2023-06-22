@@ -3,7 +3,7 @@ using NasLandingPage.Models.Entities;
 
 namespace NasLandingPage.Repos;
 
-public interface IReceiptRepo
+public interface IGameReceiptRepo
 {
   Task<ReceiptEntity?> GetByIDAsync(int receiptId);
   Task<int> UpdateAsync(ReceiptEntity receipt);
@@ -14,12 +14,12 @@ public interface IReceiptRepo
   Task<int> AssociateGameReceiptAsync(long gameId, int receiptId);
 }
 
-public class ReceiptRepo : IReceiptRepo
+public class GameReceiptRepo : IGameReceiptRepo
 {
-  public const string TableName = "Receipts";
+  public const string TableName = "GameReceipts";
   private readonly IConnectionHelper _connectionHelper;
 
-  public ReceiptRepo(IConnectionHelper connectionHelper)
+  public GameReceiptRepo(IConnectionHelper connectionHelper)
   {
     _connectionHelper = connectionHelper;
   }

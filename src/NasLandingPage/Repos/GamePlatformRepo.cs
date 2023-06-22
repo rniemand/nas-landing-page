@@ -3,17 +3,17 @@ using NasLandingPage.Models.Entities;
 
 namespace NasLandingPage.Repos;
 
-public interface IPlatformsRepo
+public interface IGamePlatformRepo
 {
   Task<List<PlatformEntity>> GetAllPlatformsAsync();
 }
 
-public class PlatformsRepo : IPlatformsRepo
+public class GamePlatformRepo : IGamePlatformRepo
 {
-  public const string TableName = "Platforms";
+  public const string TableName = "GamePlatforms";
   private readonly IConnectionHelper _connectionHelper;
 
-  public PlatformsRepo(IConnectionHelper connectionHelper)
+  public GamePlatformRepo(IConnectionHelper connectionHelper)
   {
     _connectionHelper = connectionHelper;
   }

@@ -14,11 +14,11 @@ public interface IGameReceiptService
 
 public class GameReceiptService : IGameReceiptService
 {
-  private readonly IReceiptRepo _receiptRepo;
+  private readonly IGameReceiptRepo _gameReceiptRepo;
 
-  public GameReceiptService(IReceiptRepo receiptRepo)
+  public GameReceiptService(IGameReceiptRepo gameReceiptRepo)
   {
-    _receiptRepo = receiptRepo;
+    _gameReceiptRepo = gameReceiptRepo;
   }
 
   public async Task<ReceiptDto?> GetByIDAsync(int receiptId) =>
@@ -27,36 +27,36 @@ public class GameReceiptService : IGameReceiptService
   public async Task<ReceiptDto?> UpdateAsync(ReceiptDto receipt)
   {
     // TODO: (GameReceiptService.UpdateAsync) [HANDLE] handle when nothing is updated
-    var numRows = await _receiptRepo.UpdateAsync(receipt.ToEntity());
+    var numRows = await _gameReceiptRepo.UpdateAsync(receipt.ToEntity());
     if (numRows < 0) throw new Exception("Failed to update receipt");
     return await GetSingleOrDefaultAsync(receipt.ReceiptID);
   }
 
   public async Task<ReceiptDto?> AddReceiptAsync(long gameId)
   {
-    var dbReceipt = await _receiptRepo.GetByGameIDAsync(gameId);
+    var dbReceipt = await _gameReceiptRepo.GetByGameIDAsync(gameId);
     if (dbReceipt is not null) return ReceiptDto.FromEntity(dbReceipt);
 
-    var numRows = await _receiptRepo.CreateNewReceiptAsync();
+    var numRows = await _gameReceiptRepo.CreateNewReceiptAsync();
     if (numRows < 1) throw new Exception("Unable to create a new receipt");
 
-    numRows = await _receiptRepo.AssociateNewReceiptWithGameAsync(gameId);
+    numRows = await _gameReceiptRepo.AssociateNewReceiptWithGameAsync(gameId);
     if (numRows < 1) throw new Exception("Unable to associate receipt with game");
 
-    dbReceipt = await _receiptRepo.GetByGameIDAsync(gameId);
+    dbReceipt = await _gameReceiptRepo.GetByGameIDAsync(gameId);
     return dbReceipt is not null ? ReceiptDto.FromEntity(dbReceipt) : null;
   }
 
   public async Task<List<ReceiptDto>> SearchAsync(string term)
   {
-    var dbReceipts = await _receiptRepo.SearchReceiptsAsync(term);
+    var dbReceipts = await _gameReceiptRepo.SearchReceiptsAsync(term);
     return dbReceipts.Select(ReceiptDto.FromEntity).ToList();
   }
 
   public async Task<ReceiptDto?> AssociateGameReceiptAsync(long gameId, int receiptId)
   {
     // TODO: (GameReceiptService.AssociateGameReceiptAsync) [HANDLE] handle this better
-    var numRows = await _receiptRepo.AssociateGameReceiptAsync(gameId, receiptId);
+    var numRows = await _gameReceiptRepo.AssociateGameReceiptAsync(gameId, receiptId);
     if (numRows < 1) throw new Exception("Unable to associate game with receipt");
     return await GetSingleOrDefaultAsync(receiptId);
   }
@@ -65,7 +65,7 @@ public class GameReceiptService : IGameReceiptService
   // Internal methods
   private async Task<ReceiptDto?> GetSingleOrDefaultAsync(int receiptId)
   {
-    var gameOrderInfoEntity = await _receiptRepo.GetByIDAsync(receiptId);
+    var gameOrderInfoEntity = await _gameReceiptRepo.GetByIDAsync(receiptId);
     return gameOrderInfoEntity is null ? null : ReceiptDto.FromEntity(gameOrderInfoEntity);
   }
 }
