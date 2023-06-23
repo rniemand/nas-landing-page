@@ -4,18 +4,18 @@ using NasLandingPage.Repos;
 
 namespace NasLandingPage.Services;
 
-public interface ILocationService
+public interface IGameLocationService
 {
   Task<List<LocationDto>> GetLocationsAsync(int platformId);
   Task<int> SetGameLocationAsync(long gameId, int locationId);
   Task<LocationDto> AddLocationAsync(LocationDto location);
 }
 
-public class LocationService : ILocationService
+public class GameLocationService : IGameLocationService
 {
   private readonly IGameLocationRepo _gameLocationRepo;
 
-  public LocationService(IGameLocationRepo gameLocationRepo)
+  public GameLocationService(IGameLocationRepo gameLocationRepo)
   {
     _gameLocationRepo = gameLocationRepo;
   }

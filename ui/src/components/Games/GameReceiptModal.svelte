@@ -8,6 +8,7 @@
 
 <script lang="ts">
   import { ReceiptClient, type BasicGameInfoDto, ReceiptDto } from "../../nlp-api";
+	import GameReceiptAdder from "./GameReceiptAdder.svelte";
 	import GameReceiptEditor from "./GameReceiptEditor.svelte";
 
   export let game: BasicGameInfoDto;
@@ -40,7 +41,7 @@
       {#if receipt}
         <GameReceiptEditor {receipt} />
       {:else}
-        Add receipt vibes here
+        <GameReceiptAdder />
       {/if}
     {/if}
 {/if}

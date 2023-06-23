@@ -3,16 +3,16 @@ using NasLandingPage.Repos;
 
 namespace NasLandingPage.Services;
 
-public interface IPlatformService
+public interface IGamePlatformService
 {
   Task<List<PlatformDto>> GetAllAsync();
 }
 
-public class PlatformService : IPlatformService
+public class GamePlatformService : IGamePlatformService
 {
   private readonly IGamePlatformRepo _gamePlatformRepo;
 
-  public PlatformService(IGamePlatformRepo gamePlatformRepo)
+  public GamePlatformService(IGamePlatformRepo gamePlatformRepo)
   {
     _gamePlatformRepo = gamePlatformRepo;
   }

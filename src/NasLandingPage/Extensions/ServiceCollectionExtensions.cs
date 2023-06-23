@@ -42,8 +42,8 @@ public static class ServiceCollectionExtensions
       .AddSingleton<IAuthService, AuthService>()
       .AddSingleton<IGamesService, GamesService>()
       .AddSingleton<IImageService, ImageService>()
-      .AddSingleton<ILocationService, LocationService>()
-      .AddSingleton<IPlatformService, PlatformService>()
+      .AddSingleton<IGameLocationService, GameLocationService>()
+      .AddSingleton<IGamePlatformService, GamePlatformService>()
       .AddSingleton<IGameReceiptService, GameReceiptService>();
   }
 
