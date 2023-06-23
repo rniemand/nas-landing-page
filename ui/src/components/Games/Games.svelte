@@ -2,7 +2,7 @@
   import { BasicGameInfoDto, PlatformDto, PlatformsClient } from "../../nlp-api";
   import Modal from "../Modal.svelte";
   import GamePlatforms from "./GamePlatforms.svelte";
-  import GameReceiptInfo from "./GameReceiptInfo.svelte";
+  import GameReceiptModal from "./GameReceiptModal.svelte";
   import PlatformGameList from "./PlatformGameList.svelte";
 
   let loading = true;
@@ -32,7 +32,7 @@
     Loading...
   {:else}
     <Modal bind:this={receiptModal}>
-      <GameReceiptInfo game={selectedGame} />
+      <GameReceiptModal game={selectedGame} />
     </Modal>
     <GamePlatforms {platforms} {selectedPlatform} onPlatformSelected={onPlatformSelectedHandler} />
     <PlatformGameList {selectedPlatform} triggerAction={triggerActionHandler} />
