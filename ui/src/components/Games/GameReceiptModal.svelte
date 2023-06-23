@@ -28,9 +28,7 @@
       .finally(() => loading = false);
   };
 
-  const receiptAdded = (addedReceipt: ReceiptDto) => {
-    receipt = addedReceipt;
-  };
+  const updateReceipt = (addedReceipt: ReceiptDto) => receipt = addedReceipt;
 
   $: refreshReceiptInfo(game);
 </script>
@@ -43,9 +41,9 @@
     {:else}
       <h2>{game.gameName}</h2>
       {#if receipt}
-        <GameReceiptEditor {receipt} />
+        <GameReceiptEditor {receipt} onReceiptChanged={updateReceipt} />
       {:else}
-        <GameReceiptAdder {game} onReceiptAdded={receiptAdded} />
+        <GameReceiptAdder {game} onReceiptAdded={updateReceipt} />
       {/if}
     {/if}
 {/if}

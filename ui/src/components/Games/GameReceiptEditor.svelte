@@ -1,5 +1,5 @@
 <style>
-.form .row {
+  .form .row {
     display: flex;
     justify-content: space-evenly;
     margin-bottom: 12px;
@@ -26,50 +26,82 @@
 </style>
 
 <script lang="ts">
-	import type { ReceiptDto } from "../../nlp-api";
+	import { GameReceiptClient, type ReceiptDto } from "../../nlp-api";
 
-    export let receipt: ReceiptDto;
-    let recDate = '';
+  export let receipt: ReceiptDto;
+  export let onReceiptChanged: (receipt: ReceiptDto) => void;
+  let recDate = '';
+  let formChanged = false;
 
-    $: recDate = receipt?.receiptDate.toISOString().split('T')[0] || '';
+  const setReceiptDate = (rec: ReceiptDto | undefined) => {
+    if(!rec) {
+      recDate = new Date().toISOString().split('T')[0];
+      return;
+    }
+
+    if(rec.receiptDate < new Date(2000,0,1)) {
+      recDate = new Date().toISOString().split('T')[0];
+      return;
+    }
+
+    recDate = rec.receiptDate.toISOString().split('T')[0];
+  };
+
+  const saveChanges = () => {
+    formChanged = false;
+    const dateParts = recDate.split('-');
+    receipt.receiptDate = new Date(parseInt(dateParts[0]), parseInt(dateParts[1])-1, parseInt(dateParts[2]));
+    new GameReceiptClient().updateReceipt(receipt)
+      .then((_response: ReceiptDto) => {
+        if(!_response) {
+          alert('Failed to save changes!');
+          return;
+        }
+        onReceiptChanged(_response);
+      });
+  };
+
+  const valueChanged = () => formChanged = true;
+
+  $: setReceiptDate(receipt);
 </script>
 
 <div class="form">
-    <div class="row">
-      <div class="field">
-        <label for="store">Store</label>
-        <input type="text" id="store" bind:value={receipt.store}>
-      </div>
-      <div class="field">
-        <label for="order">Order</label>
-        <input type="text" id="order" bind:value={receipt.receiptNumber}>
-      </div>
-      <div class="field">
-        <label for="date">Date</label>
-        <input type="date" id="date" bind:value={recDate}>
-      </div>
+  <div class="row">
+    <div class="field">
+      <label for="store">Store</label>
+      <input type="text" id="store" bind:value={receipt.store} on:keyup={valueChanged}>
     </div>
-
-    <div class="row">
-      <div class="field">
-        <label for="name">Name</label>
-        <input type="text" id="name" bind:value={receipt.receiptName}>
-      </div>
-      <div class="field">
-        <label for="url">URL</label>
-        <input type="text" id="url" bind:value={receipt.receiptUrl}>
-      </div>
+    <div class="field">
+      <label for="order">Order</label>
+      <input type="text" id="order" bind:value={receipt.receiptNumber} on:keyup={valueChanged}>
     </div>
-
-    <div class="row">
-      <div class="field">
-        <label for="scanned">Scanned</label>
-        <input type="checkbox" id="scanned" bind:value={receipt.receiptScanned}>
-        <div class="spacer"></div>
-      </div>
-    </div>
-
-    <div class="row">
-      <button disabled>Save Changes</button>
+    <div class="field">
+      <label for="date">Date</label>
+      <input type="date" id="date" bind:value={recDate} on:keyup={valueChanged} on:change={valueChanged}>
     </div>
   </div>
+
+  <div class="row">
+    <div class="field">
+      <label for="name">Name</label>
+      <input type="text" id="name" bind:value={receipt.receiptName} on:keyup={valueChanged}>
+    </div>
+    <div class="field">
+      <label for="url">URL</label>
+      <input type="text" id="url" bind:value={receipt.receiptUrl} on:keyup={valueChanged}>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="field">
+      <label for="scanned">Scanned</label>
+      <input type="checkbox" id="scanned" bind:value={receipt.receiptScanned} on:change={valueChanged}>
+      <div class="spacer"></div>
+    </div>
+  </div>
+
+  <div class="row">
+    <button disabled={!formChanged} on:click={saveChanges}>Save Changes</button>
+  </div>
+</div>
