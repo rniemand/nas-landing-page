@@ -18,7 +18,7 @@ public class BasicGameInfoEntity
   public double GamePrice { get; set; }
   public DateTime? ReceiptDate { get; set; }
   public bool GameSold { get; set; }
-  public bool HaveReceipt { get; set; }
+  public bool HasReceipt { get; set; }
   public string ReceiptName { get; set; } = string.Empty;
   public bool ReceiptScanned { get; set; }
   public int ReceiptID { get; set; }

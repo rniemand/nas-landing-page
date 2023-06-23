@@ -1,5 +1,4 @@
 using Dapper;
-using MySqlConnector;
 using NasLandingPage.Models.Entities;
 
 namespace NasLandingPage.Repos;
@@ -41,7 +40,7 @@ public class GamesRepo : IGamesRepo
 	        g.GamePrice,
 	        r.ReceiptDate,
           CASE WHEN g.SaleReceiptID IS NOT NULL THEN TRUE ELSE FALSE END AS `GameSold`,
-          CASE WHEN r.Store IS NOT NULL THEN TRUE ELSE FALSE END AS `HaveReceipt`,
+          CASE WHEN g.ReceiptID IS NOT NULL THEN TRUE ELSE FALSE END AS `HasReceipt`,
           r.ReceiptName,
           r.ReceiptScanned,
           r.ReceiptID

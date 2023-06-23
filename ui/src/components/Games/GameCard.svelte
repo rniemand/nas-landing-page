@@ -34,7 +34,7 @@
   export let triggerAction: (action: string, game: BasicGameInfoDto) => void;
 
   const onReceiptClicked = () => {
-    if(!game.haveReceipt && game.gameSold) return;
+    if(!game.hasReceipt && game.gameSold) return;
     triggerAction('receipt', game)
   };
 </script>
@@ -56,10 +56,10 @@
       {#if game.hasGameBox}<i class="bi bi-box2-fill" title="Has Box"></i>{/if}
       {#if game.hasProtection}<i class="bi bi-currency-dollar" title="Has Protection"></i>{/if}
       <!-- svelte-ignore a11y-click-events-have-key-events -->
-      <i class="bi bi-receipt receipt" class:has={game.haveReceipt} title="Has Receipt" on:click={onReceiptClicked}></i>
+      <i class="bi bi-receipt receipt" class:has={game.hasReceipt} title="Has Receipt" on:click={onReceiptClicked}></i>
       {#if game.receiptScanned}<i class="bi bi-printer" title="Receipt Scanned"></i>{/if}
     </div>
-    {#if game.haveReceipt}
+    {#if game.hasReceipt}
       <div class="receipt flex-spaced">
         <span>{game?.receiptName || '-'}</span>
         <span>{game?.receiptNumber || '-'}</span>

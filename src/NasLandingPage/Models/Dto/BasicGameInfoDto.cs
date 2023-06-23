@@ -20,7 +20,7 @@ public class BasicGameInfoDto
   public double GamePrice { get; set; }
   public DateTime? ReceiptDate { get; set; }
   public bool GameSold { get; set; }
-  public bool HaveReceipt { get; set; }
+  public bool HasReceipt { get; set; }
   public string ReceiptName { get; set; } = string.Empty;
   public bool ReceiptScanned { get; set; }
   public int ReceiptID { get; set; }
@@ -45,7 +45,7 @@ public class BasicGameInfoDto
     ReceiptNumber = entity.ReceiptNumber,
     Store = entity.Store,
     GameSold = entity.GameSold,
-    HaveReceipt = entity.HaveReceipt,
+    HasReceipt = entity.HasReceipt,
     ReceiptName = entity.ReceiptName,
     ReceiptScanned = entity.ReceiptScanned,
     ReceiptID = entity.ReceiptID,
@@ -70,7 +70,7 @@ public class BasicGameInfoDto
     ReceiptNumber = ReceiptNumber,
     ReceiptDate = ReceiptDate,
     Store = Store,
-    HaveReceipt = HaveReceipt,
+    HasReceipt = HasReceipt,
     ReceiptName = ReceiptName,
     ReceiptScanned = ReceiptScanned,
     ReceiptID = ReceiptID,

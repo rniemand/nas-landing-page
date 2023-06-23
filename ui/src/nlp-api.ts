@@ -1561,7 +1561,7 @@ export class BasicGameInfoDto implements IBasicGameInfoDto {
     gamePrice!: number;
     receiptDate?: Date | null;
     gameSold!: boolean;
-    haveReceipt!: boolean;
+    hasReceipt!: boolean;
     receiptName!: string;
     receiptScanned!: boolean;
     receiptID!: number;
@@ -1594,7 +1594,7 @@ export class BasicGameInfoDto implements IBasicGameInfoDto {
             this.gamePrice = _data["gamePrice"] !== undefined ? _data["gamePrice"] : <any>null;
             this.receiptDate = _data["receiptDate"] ? new Date(_data["receiptDate"].toString()) : <any>null;
             this.gameSold = _data["gameSold"] !== undefined ? _data["gameSold"] : <any>null;
-            this.haveReceipt = _data["haveReceipt"] !== undefined ? _data["haveReceipt"] : <any>null;
+            this.hasReceipt = _data["hasReceipt"] !== undefined ? _data["hasReceipt"] : <any>null;
             this.receiptName = _data["receiptName"] !== undefined ? _data["receiptName"] : <any>null;
             this.receiptScanned = _data["receiptScanned"] !== undefined ? _data["receiptScanned"] : <any>null;
             this.receiptID = _data["receiptID"] !== undefined ? _data["receiptID"] : <any>null;
@@ -1627,7 +1627,7 @@ export class BasicGameInfoDto implements IBasicGameInfoDto {
         data["gamePrice"] = this.gamePrice !== undefined ? this.gamePrice : <any>null;
         data["receiptDate"] = this.receiptDate ? this.receiptDate.toISOString() : <any>null;
         data["gameSold"] = this.gameSold !== undefined ? this.gameSold : <any>null;
-        data["haveReceipt"] = this.haveReceipt !== undefined ? this.haveReceipt : <any>null;
+        data["hasReceipt"] = this.hasReceipt !== undefined ? this.hasReceipt : <any>null;
         data["receiptName"] = this.receiptName !== undefined ? this.receiptName : <any>null;
         data["receiptScanned"] = this.receiptScanned !== undefined ? this.receiptScanned : <any>null;
         data["receiptID"] = this.receiptID !== undefined ? this.receiptID : <any>null;
@@ -1653,7 +1653,7 @@ export interface IBasicGameInfoDto {
     gamePrice: number;
     receiptDate?: Date | null;
     gameSold: boolean;
-    haveReceipt: boolean;
+    hasReceipt: boolean;
     receiptName: string;
     receiptScanned: boolean;
     receiptID: number;

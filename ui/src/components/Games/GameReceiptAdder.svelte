@@ -56,12 +56,23 @@
             });
     };
 
+    const addNewReceipt = () => {
+        new GameReceiptClient().addReceipt(game.gameID)
+            .then((_response: ReceiptDto) => {
+                if(!_response) {
+                    alert('Failed to add game receipt');
+                    return;
+                }
+                onReceiptAdded(_response);
+            });
+    };
+
     $: searchReceipts(searchTerm);
 </script>
 
 <div class="wrapper">
     <div class="controls">
-        <button class="add">Add new Receipt</button>
+        <button class="add" on:click={addNewReceipt}>Add new Receipt</button>
         <input type="text" placeholder="Search for existing receipt" bind:value={searchTerm}>
     </div>
     <div class="search-results">
