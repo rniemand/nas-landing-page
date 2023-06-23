@@ -20,7 +20,9 @@ public class GamesService : IGamesService
   }
 
   public async Task<List<BasicGameInfoDto>> GetPlatformGamesAsync(int platformId) =>
-    (await _gamesRepo.GetAllAsync(platformId)).Select(BasicGameInfoDto.FromEntity).ToList();
+    (await _gamesRepo.GetAllAsync(platformId))
+    .Select(BasicGameInfoDto.FromEntity)
+    .ToList();
 
   public async Task<BasicGameInfoDto?> UpdateGameInfoAsync(BasicGameInfoDto gameInfo)
   {

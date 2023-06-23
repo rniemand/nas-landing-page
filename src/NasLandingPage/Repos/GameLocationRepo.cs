@@ -3,7 +3,7 @@ using NasLandingPage.Models.Entities;
 
 namespace NasLandingPage.Repos;
 
-public interface ILocationRepo
+public interface IGameLocationRepo
 {
   Task<List<LocationEntity>> GetLocationsAsync(int platformId);
   Task<int> SetGameLocationAsync(long gameId, int locationID);
@@ -11,12 +11,12 @@ public interface ILocationRepo
   Task<LocationEntity?> GetLocationByNameAsync(int platformId, string name);
 }
 
-public class LocationRepo : ILocationRepo
+public class GameLocationRepo : IGameLocationRepo
 {
-  public const string TableName = "Locations";
+  public const string TableName = "GameLocations";
   private readonly IConnectionHelper _connectionHelper;
 
-  public LocationRepo(IConnectionHelper connectionHelper)
+  public GameLocationRepo(IConnectionHelper connectionHelper)
   {
     _connectionHelper = connectionHelper;
   }

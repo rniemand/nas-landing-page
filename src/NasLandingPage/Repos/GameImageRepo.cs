@@ -3,18 +3,18 @@ using NasLandingPage.Models.Entities;
 
 namespace NasLandingPage.Repos;
 
-public interface IImagesRepo
+public interface IGameImageRepo
 {
   Task<ImageEntity?> GetGameCoverImageAsync(long gameId);
   Task<List<ImageEntity>> GetGameImagesAsync(long gameId);
 }
 
-public class ImagesRepo : IImagesRepo
+public class GameImageRepo : IGameImageRepo
 {
-  public const string TableName = "Images";
+  public const string TableName = "GameImages";
   private readonly IConnectionHelper _connectionHelper;
 
-  public ImagesRepo(IConnectionHelper connectionHelper)
+  public GameImageRepo(IConnectionHelper connectionHelper)
   {
     _connectionHelper = connectionHelper;
   }

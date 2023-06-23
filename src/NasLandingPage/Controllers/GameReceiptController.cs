@@ -6,11 +6,11 @@ namespace NasLandingPage.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class ReceiptController : ControllerBase
+public class GameReceiptController : ControllerBase
 {
   private readonly IGameReceiptService _receiptService;
 
-  public ReceiptController(IGameReceiptService receiptService)
+  public GameReceiptController(IGameReceiptService receiptService)
   {
     _receiptService = receiptService;
   }

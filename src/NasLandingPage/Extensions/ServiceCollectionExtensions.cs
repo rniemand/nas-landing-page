@@ -26,10 +26,10 @@ public static class ServiceCollectionExtensions
       .AddSingleton<IGitHubRepoRepo, GitHubRepoRepo>()
       .AddSingleton<IUserRepo, UserRepo>()
       .AddSingleton<IGamesRepo, GamesRepo>()
-      .AddSingleton<ILocationRepo, LocationRepo>()
-      .AddSingleton<IImagesRepo, ImagesRepo>()
-      .AddSingleton<IReceiptRepo, ReceiptRepo>()
-      .AddSingleton<IPlatformsRepo, PlatformsRepo>()
+      .AddSingleton<IGameLocationRepo, GameLocationRepo>()
+      .AddSingleton<IGameImageRepo, GameImageRepo>()
+      .AddSingleton<IGameReceiptRepo, GameReceiptRepo>()
+      .AddSingleton<IGamePlatformRepo, GamePlatformRepo>()
       // Factories
       .AddSingleton<IGitHubClientFactory, GitHubClientFactory>()
       // Helpers
@@ -42,8 +42,8 @@ public static class ServiceCollectionExtensions
       .AddSingleton<IAuthService, AuthService>()
       .AddSingleton<IGamesService, GamesService>()
       .AddSingleton<IImageService, ImageService>()
-      .AddSingleton<ILocationService, LocationService>()
-      .AddSingleton<IPlatformService, PlatformService>()
+      .AddSingleton<IGameLocationService, GameLocationService>()
+      .AddSingleton<IGamePlatformService, GamePlatformService>()
       .AddSingleton<IGameReceiptService, GameReceiptService>();
   }
 
