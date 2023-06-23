@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS `Games` (
   KEY `SaleReceiptID` (`SaleReceiptID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-CREATE TABLE IF NOT EXISTS `Images` (
+CREATE TABLE IF NOT EXISTS `GameImages` (
   `GameID` bigint(20) NOT NULL,
   `ImageType` varchar(128) NOT NULL,
   `ImageOrder` smallint(6) NOT NULL DEFAULT 256,
@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS `Images` (
   KEY `GameID` (`GameID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-CREATE TABLE IF NOT EXISTS `Locations` (
+CREATE TABLE IF NOT EXISTS `GameLocations` (
   `LocationID` int(11) NOT NULL AUTO_INCREMENT,
   `PlatformID` int(11) NOT NULL,
   `LocationName` varchar(256) NOT NULL,
@@ -33,13 +33,13 @@ CREATE TABLE IF NOT EXISTS `Locations` (
   KEY `PlatformID` (`PlatformID`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-CREATE TABLE IF NOT EXISTS `Platforms` (
+CREATE TABLE IF NOT EXISTS `GamePlatforms` (
   `PlatformID` int(11) NOT NULL AUTO_INCREMENT,
   `PlatformName` varchar(128) NOT NULL,
   PRIMARY KEY (`PlatformID`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-CREATE TABLE IF NOT EXISTS `Receipts` (
+CREATE TABLE IF NOT EXISTS `GameReceipts` (
   `ReceiptID` int(11) NOT NULL AUTO_INCREMENT,
   `HaveReceipt` bit(1) NOT NULL DEFAULT b'0',
   `ReceiptScanned` bit(1) NOT NULL DEFAULT b'0',
