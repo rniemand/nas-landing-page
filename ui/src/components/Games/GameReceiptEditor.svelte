@@ -96,7 +96,7 @@
   <div class="row">
     <div class="field">
       <label for="scanned">Scanned</label>
-      <input type="checkbox" id="scanned" bind:value={receipt.receiptScanned} on:change={valueChanged}>
+      <input type="checkbox" id="scanned" bind:checked={receipt.receiptScanned} on:change={valueChanged}>
       <div class="spacer"></div>
     </div>
   </div>

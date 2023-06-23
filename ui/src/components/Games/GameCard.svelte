@@ -26,6 +26,7 @@
   .flags i:last-child { margin-right: 0; }
   i.receipt { cursor: pointer; }
   i.receipt.has { color: #00ff1f; }
+  h2.game-name { cursor: pointer; }
 </style>
 
 <script lang="ts">
@@ -35,12 +36,18 @@
 
   const onReceiptClicked = () => {
     if(!game.hasReceipt && game.gameSold) return;
-    triggerAction('receipt', game)
+    triggerAction('receipt', game);
+  };
+
+  const onGameClicked = () => {
+    if(!game.hasReceipt && game.gameSold) return;
+    triggerAction('game-info', game);
   };
 </script>
 
 <div class="card" class:sold={game.gameSold}>
-  <h2 class="ellipsis">{game.gameName}</h2>
+  <!-- svelte-ignore a11y-click-events-have-key-events -->
+  <h2 class="ellipsis game-name" on:click={onGameClicked}>{game.gameName}</h2>
   <div class="image">
     {#if game.gamePrice > 0}<div class="price">{game.gamePrice}</div>{/if}
     <!-- svelte-ignore a11y-missing-attribute -->
