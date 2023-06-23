@@ -7,7 +7,7 @@
 </style>
 
 <script lang="ts">
-  import { ReceiptClient, type BasicGameInfoDto, ReceiptDto } from "../../nlp-api";
+  import { type BasicGameInfoDto, ReceiptDto, GameReceiptClient } from "../../nlp-api";
 	import GameReceiptAdder from "./GameReceiptAdder.svelte";
 	import GameReceiptEditor from "./GameReceiptEditor.svelte";
 
@@ -20,12 +20,16 @@
     loading = true;
     receipt = undefined;
 
-    new ReceiptClient().getOrderInformation(_game.receiptID)
+    new GameReceiptClient().getOrderInformation(_game.receiptID)
       .then((_receiptInfo: ReceiptDto) => {
         if(!_receiptInfo) return;
         receipt = _receiptInfo;
       })
       .finally(() => loading = false);
+  };
+
+  const receiptAdded = (addedReceipt: ReceiptDto) => {
+    receipt = addedReceipt;
   };
 
   $: refreshReceiptInfo(game);
@@ -41,7 +45,7 @@
       {#if receipt}
         <GameReceiptEditor {receipt} />
       {:else}
-        <GameReceiptAdder />
+        <GameReceiptAdder {game} onReceiptAdded={receiptAdded} />
       {/if}
     {/if}
 {/if}

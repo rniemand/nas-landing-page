@@ -22,11 +22,20 @@
 </style>
 
 <script lang="ts">
+  let closeCallback: (() => void) | undefined = undefined;
   let visible = false;
 
-  export const open = () => visible = true;
-  export let close = () => visible = false;
   export let size: 'small' | 'medium' | 'large' = 'medium';
+
+  export const open = (onCloseCallback: (() => void) | undefined = undefined) => {
+    closeCallback = onCloseCallback;
+    visible = true;
+  };
+
+  export let close = () => {
+    visible = false;
+    if(closeCallback) closeCallback();
+  };
 </script>
 
 <div id="myModal" class="modal" class:open={visible}>

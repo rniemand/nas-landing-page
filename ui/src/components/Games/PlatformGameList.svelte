@@ -19,6 +19,7 @@
 
   export let selectedPlatform: PlatformDto | undefined;
   export let triggerAction: (action: string, game: BasicGameInfoDto) => void;
+  export const refresh = () => refreshGames(selectedPlatform);
   let games: BasicGameInfoDto[] = [];
   let filteredGames: BasicGameInfoDto[] = [];
   let loading = true;

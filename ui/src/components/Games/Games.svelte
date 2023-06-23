@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { BasicGameInfoDto, PlatformDto, PlatformsClient } from "../../nlp-api";
+  import { BasicGameInfoDto, GamePlatformsClient, PlatformDto } from "../../nlp-api";
   import Modal from "../Modal.svelte";
   import GamePlatforms from "./GamePlatforms.svelte";
   import GameReceiptModal from "./GameReceiptModal.svelte";
@@ -10,18 +10,23 @@
   let selectedPlatform: PlatformDto | undefined;
   let selectedGame: BasicGameInfoDto;
   let receiptModal: Modal;
+  let gameList: PlatformGameList;
 
   const onPlatformSelectedHandler = (platform: PlatformDto) => {
     selectedPlatform = platform;
   };
 
+  const onModalClosed = () => {
+    gameList.refresh();
+  }
+
   const triggerActionHandler = (action: string, game: BasicGameInfoDto) => {
     selectedGame = game;
-    if(action === 'receipt') { receiptModal.open(); }
+    if(action === 'receipt') { receiptModal.open(onModalClosed); }
   };
 
   (async () => {
-    platforms = await new PlatformsClient().getAll();
+    platforms = await new GamePlatformsClient().getAll();
     selectedPlatform = platforms ? platforms[0] : undefined;
     loading = false;
   })();
@@ -35,6 +40,6 @@
       <GameReceiptModal game={selectedGame} />
     </Modal>
     <GamePlatforms {platforms} {selectedPlatform} onPlatformSelected={onPlatformSelectedHandler} />
-    <PlatformGameList {selectedPlatform} triggerAction={triggerActionHandler} />
+    <PlatformGameList {selectedPlatform} triggerAction={triggerActionHandler} bind:this={gameList} />
   {/if}
 </div>
