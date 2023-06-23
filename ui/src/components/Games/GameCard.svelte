@@ -30,7 +30,6 @@
 
 <script lang="ts">
   import type { BasicGameInfoDto } from "../../nlp-api";
-
   export let game: BasicGameInfoDto;
   export let triggerAction: (action: string, game: BasicGameInfoDto) => void;
 
