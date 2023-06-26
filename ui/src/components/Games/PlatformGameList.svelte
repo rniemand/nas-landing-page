@@ -36,7 +36,8 @@
   };
 
   const searchTermChangedHandler = (term: string) => {
-    filteredGames = games.filter(x => x.searchTerm.indexOf(term) !== -1);
+    let safeTrem = (term || '').toLowerCase();
+    filteredGames = games.filter(x => x.searchTerm.indexOf(safeTrem) !== -1);
   };
 
   $: refreshGames(selectedPlatform);
