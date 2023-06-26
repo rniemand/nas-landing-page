@@ -1,6 +1,6 @@
 <style>
-    h2 { font-size: 1.6em; text-align: center; margin-bottom: 12px; }
-    .form .row {
+  h2 { font-size: 1.6em; text-align: center; margin-bottom: 12px; }
+  .form .row {
     display: flex;
     justify-content: space-evenly;
     margin-bottom: 12px;
@@ -64,7 +64,7 @@
           </div>
           <div class="field">
             <label for="rating">Rating</label>
-            <input type="text" id="rating" bind:value={game.gameRating} on:keyup={valueChanged}>
+            <input type="number" min="0" max="10" id="rating" bind:value={game.gameRating} on:keyup={valueChanged}>
           </div>
         </div>
       

@@ -8,7 +8,7 @@
     text-align: center;
     margin-top: 6px;
     margin-bottom: 6px;
-    font-size: 1.3em;
+    font-size: 1.8em;
   }
 </style>
 
@@ -18,7 +18,7 @@
   import GameSearch from "./GameSearch.svelte";
 
   export let selectedPlatform: GamePlatformDto | undefined;
-  export let triggerAction: (action: string, game: BasicGameInfoDto) => void;
+  export let triggerAction: (action: string, game: BasicGameInfoDto | undefined) => void;
   export const refresh = () => refreshGames(selectedPlatform);
   let games: BasicGameInfoDto[] = [];
   let filteredGames: BasicGameInfoDto[] = [];
@@ -40,6 +40,10 @@
     filteredGames = games.filter(x => x.searchTerm.indexOf(safeTrem) !== -1);
   };
 
+  const onAddGameClicked = () => {
+    triggerAction('add-game', undefined);
+  };
+
   $: refreshGames(selectedPlatform);
 </script>
 
@@ -50,7 +54,7 @@
     <div class="summary">
       Showing {games.length} game(s)
     </div>
-    <GameSearch searchTermChanged={searchTermChangedHandler} />
+    <GameSearch searchTermChanged={searchTermChangedHandler} onAddGame={onAddGameClicked} />
     <div class="card-container">
       {#each filteredGames as game (game.gameID)}
         <GameCard {game} {triggerAction} />

@@ -1,6 +1,7 @@
 <script lang="ts">
   import { BasicGameInfoDto, GamePlatformsClient, GamePlatformDto } from "../../nlp-api";
   import Modal from "../Modal.svelte";
+	import GameAddModal from "./GameAddModal.svelte";
 	import GameInfoModal from "./GameInfoModal.svelte";
   import GamePlatforms from "./GamePlatforms.svelte";
   import GameReceiptModal from "./GameReceiptModal.svelte";
@@ -14,16 +15,18 @@
   let receiptModal: Modal;
   let gameModal: Modal;
   let setConsoleModal: Modal;
+  let addGameModal: Modal;
   let gameList: PlatformGameList;
 
   const platformSelected = (platform: GamePlatformDto) => selectedPlatform = platform;
   const onModalClosed = () => gameList.refresh();
 
-  const triggerActionHandler = (action: string, game: BasicGameInfoDto) => {
-    selectedGame = game;
+  const triggerActionHandler = (action: string, game: BasicGameInfoDto | undefined) => {
+    if(game) selectedGame = game;
     if(action === 'receipt') { receiptModal.open(onModalClosed); }
     if(action === 'game-info') { gameModal.open(onModalClosed); }
     if(action === 'set-console') { setConsoleModal.open(onModalClosed); }
+    if(action === 'add-game') { addGameModal.open(onModalClosed); }
   };
   
   (async () => {
@@ -39,9 +42,8 @@
   {:else}
     <Modal bind:this={receiptModal}><GameReceiptModal game={selectedGame} /></Modal>
     <Modal bind:this={gameModal}><GameInfoModal game={selectedGame} /></Modal>
-    <Modal bind:this={setConsoleModal}>
-      <GameSetConsoleModal game={selectedGame} onLocationSet={() => setConsoleModal.close()} />
-    </Modal>
+    <Modal bind:this={addGameModal}><GameAddModal platform={selectedPlatform} onGameAdded={() => addGameModal.close()} /></Modal>
+    <Modal bind:this={setConsoleModal}><GameSetConsoleModal game={selectedGame} onLocationSet={() => setConsoleModal.close()} /></Modal>
     <GamePlatforms {platforms} {selectedPlatform} onPlatformSelected={platformSelected} />
     <PlatformGameList {selectedPlatform} triggerAction={triggerActionHandler} bind:this={gameList} />
   {/if}
