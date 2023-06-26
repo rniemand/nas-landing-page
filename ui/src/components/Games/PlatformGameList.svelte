@@ -13,18 +13,18 @@
 </style>
 
 <script lang="ts">
-  import { BasicGameInfoDto, GamesClient, PlatformDto } from "../../nlp-api";
+  import { BasicGameInfoDto, GamesClient, GamePlatformDto } from "../../nlp-api";
   import GameCard from "./GameCard.svelte";
   import GameSearch from "./GameSearch.svelte";
 
-  export let selectedPlatform: PlatformDto | undefined;
+  export let selectedPlatform: GamePlatformDto | undefined;
   export let triggerAction: (action: string, game: BasicGameInfoDto) => void;
   export const refresh = () => refreshGames(selectedPlatform);
   let games: BasicGameInfoDto[] = [];
   let filteredGames: BasicGameInfoDto[] = [];
   let loading = true;
 
-  const refreshGames = (platform: PlatformDto | undefined) => {
+  const refreshGames = (platform: GamePlatformDto | undefined) => {
     games = [];
     if(!platform) { loading = false; return; }
     new GamesClient().getPlatformGames(platform?.platformID)

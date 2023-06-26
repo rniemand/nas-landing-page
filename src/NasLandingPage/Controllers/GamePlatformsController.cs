@@ -16,6 +16,6 @@ public class GamePlatformsController : ControllerBase
   }
 
   [Route("list")]
-  public async Task<List<PlatformDto>> GetAll() =>
+  public async Task<List<GamePlatformDto>> GetAll() =>
     await _gamePlatformService.GetAllAsync();
 }

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { BasicGameInfoDto, GamePlatformsClient, PlatformDto } from "../../nlp-api";
+  import { BasicGameInfoDto, GamePlatformsClient, GamePlatformDto } from "../../nlp-api";
   import Modal from "../Modal.svelte";
 	import GameInfoModal from "./GameInfoModal.svelte";
   import GamePlatforms from "./GamePlatforms.svelte";
@@ -8,15 +8,15 @@
   import PlatformGameList from "./PlatformGameList.svelte";
 
   let loading = true;
-  let platforms: PlatformDto[];
-  let selectedPlatform: PlatformDto | undefined;
+  let platforms: GamePlatformDto[];
+  let selectedPlatform: GamePlatformDto | undefined;
   let selectedGame: BasicGameInfoDto;
   let receiptModal: Modal;
   let gameModal: Modal;
   let setConsoleModal: Modal;
   let gameList: PlatformGameList;
 
-  const platformSelected = (platform: PlatformDto) => selectedPlatform = platform;
+  const platformSelected = (platform: GamePlatformDto) => selectedPlatform = platform;
   const onModalClosed = () => gameList.refresh();
 
   const triggerActionHandler = (action: string, game: BasicGameInfoDto) => {

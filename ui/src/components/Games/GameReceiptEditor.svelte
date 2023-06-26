@@ -26,14 +26,14 @@
 </style>
 
 <script lang="ts">
-	import { GameReceiptClient, type ReceiptDto } from "../../nlp-api";
+	import { GameReceiptClient, type GameReceiptDto } from "../../nlp-api";
 
-  export let receipt: ReceiptDto;
-  export let onReceiptChanged: (receipt: ReceiptDto) => void;
+  export let receipt: GameReceiptDto;
+  export let onReceiptChanged: (receipt: GameReceiptDto) => void;
   let recDate = '';
   let formChanged = false;
 
-  const setReceiptDate = (rec: ReceiptDto | undefined) => {
+  const setReceiptDate = (rec: GameReceiptDto | undefined) => {
     if(!rec) {
       recDate = new Date().toISOString().split('T')[0];
       return;
@@ -52,7 +52,7 @@
     const dateParts = recDate.split('-');
     receipt.receiptDate = new Date(parseInt(dateParts[0]), parseInt(dateParts[1])-1, parseInt(dateParts[2]));
     new GameReceiptClient().updateReceipt(receipt)
-      .then((_response: ReceiptDto) => {
+      .then((_response: GameReceiptDto) => {
         if(!_response) {
           alert('Failed to save changes!');
           return;

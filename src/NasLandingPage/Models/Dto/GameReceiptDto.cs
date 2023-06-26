@@ -2,7 +2,7 @@ using NasLandingPage.Models.Entities;
 
 namespace NasLandingPage.Models.Dto;
 
-public class ReceiptDto
+public class GameReceiptDto
 {
   public int ReceiptID { get; set; }
   public string Store { get; set; } = string.Empty;
@@ -12,7 +12,7 @@ public class ReceiptDto
   public string ReceiptUrl { get; set; } = string.Empty;
   public bool ReceiptScanned { get; set; }
 
-  public static ReceiptDto FromEntity(ReceiptEntity entity) => new()
+  public static GameReceiptDto FromEntity(GameReceiptEntity entity) => new()
   {
     ReceiptDate = entity.ReceiptDate,
     ReceiptNumber = entity.ReceiptNumber,
@@ -23,7 +23,7 @@ public class ReceiptDto
     ReceiptID = entity.ReceiptID,
   };
 
-  public ReceiptEntity ToEntity() => new()
+  public GameReceiptEntity ToEntity() => new()
   {
     ReceiptDate = ReceiptDate,
     ReceiptNumber = ReceiptNumber,

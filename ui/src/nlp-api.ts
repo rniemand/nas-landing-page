@@ -400,7 +400,7 @@ export class GameLocationsClient extends NlpBaseClient implements IGameLocations
 
 export interface IGamePlatformsClient {
 
-    getAll(): Promise<PlatformDto[]>;
+    getAll(): Promise<GamePlatformDto[]>;
 }
 
 export class GamePlatformsClient extends NlpBaseClient implements IGamePlatformsClient {
@@ -414,7 +414,7 @@ export class GamePlatformsClient extends NlpBaseClient implements IGamePlatforms
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
-    getAll(): Promise<PlatformDto[]> {
+    getAll(): Promise<GamePlatformDto[]> {
         let url_ = this.baseUrl + "/GamePlatforms/list";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -432,7 +432,7 @@ export class GamePlatformsClient extends NlpBaseClient implements IGamePlatforms
         });
     }
 
-    protected processGetAll(response: Response): Promise<PlatformDto[]> {
+    protected processGetAll(response: Response): Promise<GamePlatformDto[]> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
@@ -442,7 +442,7 @@ export class GamePlatformsClient extends NlpBaseClient implements IGamePlatforms
             if (Array.isArray(resultData200)) {
                 result200 = [] as any;
                 for (let item of resultData200)
-                    result200!.push(PlatformDto.fromJS(item));
+                    result200!.push(GamePlatformDto.fromJS(item));
             }
             else {
                 result200 = <any>null;
@@ -454,21 +454,21 @@ export class GamePlatformsClient extends NlpBaseClient implements IGamePlatforms
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<PlatformDto[]>(null as any);
+        return Promise.resolve<GamePlatformDto[]>(null as any);
     }
 }
 
 export interface IGameReceiptClient {
 
-    getOrderInformation(receiptId: number): Promise<ReceiptDto>;
+    getOrderInformation(receiptId: number): Promise<GameReceiptDto>;
 
-    updateReceipt(receipt: ReceiptDto): Promise<ReceiptDto>;
+    updateReceipt(gameReceipt: GameReceiptDto): Promise<GameReceiptDto>;
 
-    addReceipt(gameId: number): Promise<ReceiptDto>;
+    addReceipt(gameId: number): Promise<GameReceiptDto>;
 
-    search(term: string): Promise<ReceiptDto[]>;
+    search(term: string): Promise<GameReceiptDto[]>;
 
-    associateReceiptToGame(gameId: number, receiptId: number): Promise<ReceiptDto>;
+    associateReceiptToGame(gameId: number, receiptId: number): Promise<GameReceiptDto>;
 }
 
 export class GameReceiptClient extends NlpBaseClient implements IGameReceiptClient {
@@ -482,7 +482,7 @@ export class GameReceiptClient extends NlpBaseClient implements IGameReceiptClie
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
-    getOrderInformation(receiptId: number): Promise<ReceiptDto> {
+    getOrderInformation(receiptId: number): Promise<GameReceiptDto> {
         let url_ = this.baseUrl + "/GameReceipt/order-info/{receiptId}";
         if (receiptId === undefined || receiptId === null)
             throw new Error("The parameter 'receiptId' must be defined.");
@@ -503,14 +503,14 @@ export class GameReceiptClient extends NlpBaseClient implements IGameReceiptClie
         });
     }
 
-    protected processGetOrderInformation(response: Response): Promise<ReceiptDto> {
+    protected processGetOrderInformation(response: Response): Promise<GameReceiptDto> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ReceiptDto.fromJS(resultData200);
+            result200 = GameReceiptDto.fromJS(resultData200);
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -518,14 +518,14 @@ export class GameReceiptClient extends NlpBaseClient implements IGameReceiptClie
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<ReceiptDto>(null as any);
+        return Promise.resolve<GameReceiptDto>(null as any);
     }
 
-    updateReceipt(receipt: ReceiptDto): Promise<ReceiptDto> {
+    updateReceipt(gameReceipt: GameReceiptDto): Promise<GameReceiptDto> {
         let url_ = this.baseUrl + "/GameReceipt/update";
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(receipt);
+        const content_ = JSON.stringify(gameReceipt);
 
         let options_: RequestInit = {
             body: content_,
@@ -543,14 +543,14 @@ export class GameReceiptClient extends NlpBaseClient implements IGameReceiptClie
         });
     }
 
-    protected processUpdateReceipt(response: Response): Promise<ReceiptDto> {
+    protected processUpdateReceipt(response: Response): Promise<GameReceiptDto> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ReceiptDto.fromJS(resultData200);
+            result200 = GameReceiptDto.fromJS(resultData200);
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -558,10 +558,10 @@ export class GameReceiptClient extends NlpBaseClient implements IGameReceiptClie
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<ReceiptDto>(null as any);
+        return Promise.resolve<GameReceiptDto>(null as any);
     }
 
-    addReceipt(gameId: number): Promise<ReceiptDto> {
+    addReceipt(gameId: number): Promise<GameReceiptDto> {
         let url_ = this.baseUrl + "/GameReceipt/create/game-id/{gameId}";
         if (gameId === undefined || gameId === null)
             throw new Error("The parameter 'gameId' must be defined.");
@@ -582,14 +582,14 @@ export class GameReceiptClient extends NlpBaseClient implements IGameReceiptClie
         });
     }
 
-    protected processAddReceipt(response: Response): Promise<ReceiptDto> {
+    protected processAddReceipt(response: Response): Promise<GameReceiptDto> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ReceiptDto.fromJS(resultData200);
+            result200 = GameReceiptDto.fromJS(resultData200);
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -597,10 +597,10 @@ export class GameReceiptClient extends NlpBaseClient implements IGameReceiptClie
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<ReceiptDto>(null as any);
+        return Promise.resolve<GameReceiptDto>(null as any);
     }
 
-    search(term: string): Promise<ReceiptDto[]> {
+    search(term: string): Promise<GameReceiptDto[]> {
         let url_ = this.baseUrl + "/GameReceipt/search/term/{term}";
         if (term === undefined || term === null)
             throw new Error("The parameter 'term' must be defined.");
@@ -621,7 +621,7 @@ export class GameReceiptClient extends NlpBaseClient implements IGameReceiptClie
         });
     }
 
-    protected processSearch(response: Response): Promise<ReceiptDto[]> {
+    protected processSearch(response: Response): Promise<GameReceiptDto[]> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
@@ -631,7 +631,7 @@ export class GameReceiptClient extends NlpBaseClient implements IGameReceiptClie
             if (Array.isArray(resultData200)) {
                 result200 = [] as any;
                 for (let item of resultData200)
-                    result200!.push(ReceiptDto.fromJS(item));
+                    result200!.push(GameReceiptDto.fromJS(item));
             }
             else {
                 result200 = <any>null;
@@ -643,10 +643,10 @@ export class GameReceiptClient extends NlpBaseClient implements IGameReceiptClie
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<ReceiptDto[]>(null as any);
+        return Promise.resolve<GameReceiptDto[]>(null as any);
     }
 
-    associateReceiptToGame(gameId: number, receiptId: number): Promise<ReceiptDto> {
+    associateReceiptToGame(gameId: number, receiptId: number): Promise<GameReceiptDto> {
         let url_ = this.baseUrl + "/GameReceipt/associate/game-id/{gameId}/receipt-id/{receiptId}";
         if (gameId === undefined || gameId === null)
             throw new Error("The parameter 'gameId' must be defined.");
@@ -670,14 +670,14 @@ export class GameReceiptClient extends NlpBaseClient implements IGameReceiptClie
         });
     }
 
-    protected processAssociateReceiptToGame(response: Response): Promise<ReceiptDto> {
+    protected processAssociateReceiptToGame(response: Response): Promise<GameReceiptDto> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ReceiptDto.fromJS(resultData200);
+            result200 = GameReceiptDto.fromJS(resultData200);
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -685,7 +685,7 @@ export class GameReceiptClient extends NlpBaseClient implements IGameReceiptClie
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<ReceiptDto>(null as any);
+        return Promise.resolve<GameReceiptDto>(null as any);
     }
 }
 
@@ -1444,11 +1444,11 @@ export interface IGameLocationDto {
     locationName: string;
 }
 
-export class PlatformDto implements IPlatformDto {
+export class GamePlatformDto implements IGamePlatformDto {
     platformID!: number;
     platformName!: string;
 
-    constructor(data?: IPlatformDto) {
+    constructor(data?: IGamePlatformDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -1464,9 +1464,9 @@ export class PlatformDto implements IPlatformDto {
         }
     }
 
-    static fromJS(data: any): PlatformDto {
+    static fromJS(data: any): GamePlatformDto {
         data = typeof data === 'object' ? data : {};
-        let result = new PlatformDto();
+        let result = new GamePlatformDto();
         result.init(data);
         return result;
     }
@@ -1479,12 +1479,12 @@ export class PlatformDto implements IPlatformDto {
     }
 }
 
-export interface IPlatformDto {
+export interface IGamePlatformDto {
     platformID: number;
     platformName: string;
 }
 
-export class ReceiptDto implements IReceiptDto {
+export class GameReceiptDto implements IGameReceiptDto {
     receiptID!: number;
     store!: string;
     receiptNumber!: string;
@@ -1493,7 +1493,7 @@ export class ReceiptDto implements IReceiptDto {
     receiptUrl!: string;
     receiptScanned!: boolean;
 
-    constructor(data?: IReceiptDto) {
+    constructor(data?: IGameReceiptDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -1514,9 +1514,9 @@ export class ReceiptDto implements IReceiptDto {
         }
     }
 
-    static fromJS(data: any): ReceiptDto {
+    static fromJS(data: any): GameReceiptDto {
         data = typeof data === 'object' ? data : {};
-        let result = new ReceiptDto();
+        let result = new GameReceiptDto();
         result.init(data);
         return result;
     }
@@ -1534,7 +1534,7 @@ export class ReceiptDto implements IReceiptDto {
     }
 }
 
-export interface IReceiptDto {
+export interface IGameReceiptDto {
     receiptID: number;
     store: string;
     receiptNumber: string;

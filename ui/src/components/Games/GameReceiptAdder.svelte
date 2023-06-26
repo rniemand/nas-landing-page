@@ -32,22 +32,22 @@
 </style>
 
 <script lang="ts">
-	import { GameReceiptClient, type BasicGameInfoDto, ReceiptDto } from "../../nlp-api";
+	import { GameReceiptClient, type BasicGameInfoDto, GameReceiptDto } from "../../nlp-api";
 
     export let game: BasicGameInfoDto;
-    export let onReceiptAdded: (receipt: ReceiptDto) => void;
+    export let onReceiptAdded: (receipt: GameReceiptDto) => void;
     let searchTerm = '';
-    let receipts: ReceiptDto[] = [];
+    let receipts: GameReceiptDto[] = [];
 
     const searchReceipts = (term: string) => {
         if(term.length < 2) return;
         receipts = [];
-        new GameReceiptClient().search(term).then((_results: ReceiptDto[]) => receipts = _results);
+        new GameReceiptClient().search(term).then((_results: GameReceiptDto[]) => receipts = _results);
     };
 
-    const associateReceipt = (receipt: ReceiptDto) => {
+    const associateReceipt = (receipt: GameReceiptDto) => {
         new GameReceiptClient().associateReceiptToGame(game.gameID, receipt.receiptID)
-            .then((_response: ReceiptDto) => {
+            .then((_response: GameReceiptDto) => {
                 if(!_response) {
                     alert('Failed to associate receipt!');
                     return;
@@ -58,7 +58,7 @@
 
     const addNewReceipt = () => {
         new GameReceiptClient().addReceipt(game.gameID)
-            .then((_response: ReceiptDto) => {
+            .then((_response: GameReceiptDto) => {
                 if(!_response) {
                     alert('Failed to add game receipt');
                     return;

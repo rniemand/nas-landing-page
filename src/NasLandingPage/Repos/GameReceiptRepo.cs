@@ -5,12 +5,12 @@ namespace NasLandingPage.Repos;
 
 public interface IGameReceiptRepo
 {
-  Task<ReceiptEntity?> GetByIDAsync(int receiptId);
-  Task<int> UpdateAsync(ReceiptEntity receipt);
-  Task<ReceiptEntity?> GetByGameIDAsync(long gameId);
+  Task<GameReceiptEntity?> GetByIDAsync(int receiptId);
+  Task<int> UpdateAsync(GameReceiptEntity gameReceipt);
+  Task<GameReceiptEntity?> GetByGameIDAsync(long gameId);
   Task<int> CreateNewReceiptAsync();
   Task<int> AssociateNewReceiptWithGameAsync(long gameId);
-  Task<List<ReceiptEntity>> SearchReceiptsAsync(string term);
+  Task<List<GameReceiptEntity>> SearchReceiptsAsync(string term);
   Task<int> AssociateGameReceiptAsync(long gameId, int receiptId);
 }
 
@@ -24,7 +24,7 @@ public class GameReceiptRepo : IGameReceiptRepo
     _connectionHelper = connectionHelper;
   }
 
-  public async Task<ReceiptEntity?> GetByIDAsync(int receiptId)
+  public async Task<GameReceiptEntity?> GetByIDAsync(int receiptId)
   {
     const string query = @$"SELECT
 	    o.ReceiptID,
@@ -38,10 +38,10 @@ public class GameReceiptRepo : IGameReceiptRepo
     WHERE o.ReceiptID = @ReceiptID
     LIMIT 1";
     await using var connection = _connectionHelper.GetCoreConnection();
-    return await connection.QuerySingleOrDefaultAsync<ReceiptEntity>(query, new { ReceiptID = receiptId });
+    return await connection.QuerySingleOrDefaultAsync<GameReceiptEntity>(query, new { ReceiptID = receiptId });
   }
 
-  public async Task<int> UpdateAsync(ReceiptEntity receipt)
+  public async Task<int> UpdateAsync(GameReceiptEntity gameReceipt)
   {
     const string query = @$"UPDATE `{TableName}`
     SET
@@ -54,17 +54,17 @@ public class GameReceiptRepo : IGameReceiptRepo
     WHERE
       `ReceiptID` = @ReceiptID";
     await using var connection = _connectionHelper.GetCoreConnection();
-    return await connection.ExecuteAsync(query, receipt);
+    return await connection.ExecuteAsync(query, gameReceipt);
   }
 
-  public async Task<ReceiptEntity?> GetByGameIDAsync(long gameId)
+  public async Task<GameReceiptEntity?> GetByGameIDAsync(long gameId)
   {
     const string query = @$"SELECT r.*
     FROM `{GamesRepo.TableName}` g
     INNER JOIN `{TableName}` r ON g.ReceiptID = r.ReceiptID
     WHERE g.GameID = @GameID";
     await using var connection = _connectionHelper.GetCoreConnection();
-    return await connection.QuerySingleOrDefaultAsync<ReceiptEntity>(query, new { GameID = gameId });
+    return await connection.QuerySingleOrDefaultAsync<GameReceiptEntity>(query, new { GameID = gameId });
   }
 
   public async Task<int> CreateNewReceiptAsync()
@@ -107,7 +107,7 @@ public class GameReceiptRepo : IGameReceiptRepo
     return await connection.ExecuteAsync(query, new { GameID = gameId });
   }
 
-  public async Task<List<ReceiptEntity>> SearchReceiptsAsync(string term)
+  public async Task<List<GameReceiptEntity>> SearchReceiptsAsync(string term)
   {
     var query = @$"SELECT *
     FROM `{TableName}` r
@@ -119,7 +119,7 @@ public class GameReceiptRepo : IGameReceiptRepo
     ORDER BY r.ReceiptID
     LIMIT 10";
     await using var connection = _connectionHelper.GetCoreConnection();
-    return (await connection.QueryAsync<ReceiptEntity>(query)).ToList();
+    return (await connection.QueryAsync<GameReceiptEntity>(query)).ToList();
   }
 
   public async Task<int> AssociateGameReceiptAsync(long gameId, int receiptId)

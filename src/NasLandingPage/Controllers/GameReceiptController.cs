@@ -16,23 +16,23 @@ public class GameReceiptController : ControllerBase
   }
 
   [HttpGet("order-info/{receiptId:int}")]
-  public async Task<ReceiptDto?> GetOrderInformation([FromRoute] int receiptId) =>
+  public async Task<GameReceiptDto?> GetOrderInformation([FromRoute] int receiptId) =>
     await _receiptService.GetByIDAsync(receiptId);
 
   [HttpPost("update")]
-  public async Task<ReceiptDto?> UpdateReceipt([FromBody] ReceiptDto receipt) =>
-    await _receiptService.UpdateAsync(receipt);
+  public async Task<GameReceiptDto?> UpdateReceipt([FromBody] GameReceiptDto gameReceipt) =>
+    await _receiptService.UpdateAsync(gameReceipt);
 
   [HttpGet("create/game-id/{gameId:long}")]
-  public async Task<ReceiptDto?> AddReceipt([FromRoute] long gameId) =>
+  public async Task<GameReceiptDto?> AddReceipt([FromRoute] long gameId) =>
     await _receiptService.AddReceiptAsync(gameId);
 
   [HttpGet("search/term/{term}")]
-  public async Task<List<ReceiptDto>> Search([FromRoute] string term) =>
+  public async Task<List<GameReceiptDto>> Search([FromRoute] string term) =>
     await _receiptService.SearchAsync(term);
 
   [HttpPatch("associate/game-id/{gameId:long}/receipt-id/{receiptId:int}")]
-  public async Task<ReceiptDto?> AssociateReceiptToGame(
+  public async Task<GameReceiptDto?> AssociateReceiptToGame(
     [FromRoute] long gameId,
     [FromRoute] int receiptId) =>
     await _receiptService.AssociateGameReceiptAsync(gameId, receiptId);

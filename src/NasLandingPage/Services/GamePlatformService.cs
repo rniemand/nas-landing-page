@@ -5,7 +5,7 @@ namespace NasLandingPage.Services;
 
 public interface IGamePlatformService
 {
-  Task<List<PlatformDto>> GetAllAsync();
+  Task<List<GamePlatformDto>> GetAllAsync();
 }
 
 public class GamePlatformService : IGamePlatformService
@@ -17,9 +17,9 @@ public class GamePlatformService : IGamePlatformService
     _gamePlatformRepo = gamePlatformRepo;
   }
 
-  public async Task<List<PlatformDto>> GetAllAsync()
+  public async Task<List<GamePlatformDto>> GetAllAsync()
   {
     var dbPlatforms = await _gamePlatformRepo.GetAllPlatformsAsync();
-    return dbPlatforms.Select(PlatformDto.FromEntity).ToList();
+    return dbPlatforms.Select(GamePlatformDto.FromEntity).ToList();
   }
 }

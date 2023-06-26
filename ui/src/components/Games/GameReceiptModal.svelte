@@ -7,13 +7,13 @@
 </style>
 
 <script lang="ts">
-  import { type BasicGameInfoDto, ReceiptDto, GameReceiptClient } from "../../nlp-api";
+  import { type BasicGameInfoDto, GameReceiptDto, GameReceiptClient } from "../../nlp-api";
 	import GameReceiptAdder from "./GameReceiptAdder.svelte";
 	import GameReceiptEditor from "./GameReceiptEditor.svelte";
 
   export let game: BasicGameInfoDto;
   let loading = true;
-  let receipt: ReceiptDto | undefined;
+  let receipt: GameReceiptDto | undefined;
 
   const refreshReceiptInfo = (_game: BasicGameInfoDto | undefined) => {
     if(!_game) return;
@@ -21,14 +21,14 @@
     receipt = undefined;
 
     new GameReceiptClient().getOrderInformation(_game.receiptID)
-      .then((_receiptInfo: ReceiptDto) => {
+      .then((_receiptInfo: GameReceiptDto) => {
         if(!_receiptInfo) return;
         receipt = _receiptInfo;
       })
       .finally(() => loading = false);
   };
 
-  const updateReceipt = (addedReceipt: ReceiptDto) => receipt = addedReceipt;
+  const updateReceipt = (addedReceipt: GameReceiptDto) => receipt = addedReceipt;
 
   $: refreshReceiptInfo(game);
 </script>

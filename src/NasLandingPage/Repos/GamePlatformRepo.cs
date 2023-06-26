@@ -5,7 +5,7 @@ namespace NasLandingPage.Repos;
 
 public interface IGamePlatformRepo
 {
-  Task<List<PlatformEntity>> GetAllPlatformsAsync();
+  Task<List<GamePlatformEntity>> GetAllPlatformsAsync();
 }
 
 public class GamePlatformRepo : IGamePlatformRepo
@@ -18,13 +18,13 @@ public class GamePlatformRepo : IGamePlatformRepo
     _connectionHelper = connectionHelper;
   }
 
-  public async Task<List<PlatformEntity>> GetAllPlatformsAsync()
+  public async Task<List<GamePlatformEntity>> GetAllPlatformsAsync()
   {
     const string query = $@"SELECT
 	    p.PlatformID,
 	    p.PlatformName
     FROM `{TableName}` p";
     await using var connection = _connectionHelper.GetCoreConnection();
-    return (await connection.QueryAsync<PlatformEntity>(query)).AsList();
+    return (await connection.QueryAsync<GamePlatformEntity>(query)).AsList();
   }
 }

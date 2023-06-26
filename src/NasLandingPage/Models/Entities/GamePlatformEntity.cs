@@ -1,6 +1,6 @@
 namespace NasLandingPage.Models.Entities;
 
-public class PlatformEntity
+public class GamePlatformEntity
 {
   public int PlatformID { get; set; }
   public string PlatformName { get; set; } = string.Empty;

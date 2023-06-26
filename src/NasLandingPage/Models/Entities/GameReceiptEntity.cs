@@ -1,6 +1,6 @@
 namespace NasLandingPage.Models.Entities;
 
-public class ReceiptEntity
+public class GameReceiptEntity
 {
   public int ReceiptID { get; set; }
   public string Store { get; set; } = string.Empty;

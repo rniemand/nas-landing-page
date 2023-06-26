@@ -25,11 +25,11 @@
 </style>
 
 <script lang="ts">
-  import type { PlatformDto } from "../../nlp-api";
+  import type { GamePlatformDto } from "../../nlp-api";
 
-  export let platforms: PlatformDto[];
-  export let selectedPlatform: PlatformDto | undefined;
-  export let onPlatformSelected: (platform: PlatformDto) => void;
+  export let platforms: GamePlatformDto[];
+  export let selectedPlatform: GamePlatformDto | undefined;
+  export let onPlatformSelected: (platform: GamePlatformDto) => void;
 </script>
 
 {#if platforms}
