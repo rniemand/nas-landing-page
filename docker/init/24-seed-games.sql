@@ -1,7 +1,7 @@
 -- ========================================================================================================
 -- Platforms
 -- ========================================================================================================
-INSERT INTO `Platforms` (`PlatformName`) VALUES
+INSERT INTO `GamePlatforms` (`PlatformName`) VALUES
 	('Switch'),
 	('XBox'),
 	('PS5'),
@@ -10,7 +10,7 @@ INSERT INTO `Platforms` (`PlatformName`) VALUES
 -- ========================================================================================================
 -- Locations
 -- ========================================================================================================
-INSERT INTO `Locations` (`PlatformID`, `LocationName`) VALUES
+INSERT INTO `GameLocations` (`PlatformID`, `LocationName`) VALUES
 	(1, 'Home'),
 	(1, 'Richard Switch'),
 	(1, 'Kelsies Switch'),
@@ -24,7 +24,7 @@ INSERT INTO `Locations` (`PlatformID`, `LocationName`) VALUES
 -- ========================================================================================================
 -- Receipts
 -- ========================================================================================================
-INSERT INTO `Receipts` (`HaveReceipt`, `ReceiptScanned`, `ReceiptAssociated`, `ReceiptDate`, `Store`, `ReceiptNumber`, `ReceiptUrl`, `ReceiptName`) VALUES
+INSERT INTO `GameReceipts` (`HaveReceipt`, `ReceiptScanned`, `ReceiptAssociated`, `ReceiptDate`, `Store`, `ReceiptNumber`, `ReceiptUrl`, `ReceiptName`) VALUES
 	(b'1', b'0', b'1', '2023-05-12', 'GameStop', '47431831', 'https://www.gamestop.ca/MyAccount/OrdersInStoreDetail/47431831', 'REC-020'),
 	(b'1', b'0', b'1', '2023-05-11', 'GameStop', '47362903', 'https://www.gamestop.ca/MyAccount/OrdersInStoreDetail/47362903', 'REC-009A'),
 	(b'0', b'0', b'1', '2023-04-18', 'GameStop', '47141771', 'https://www.gamestop.ca/MyAccount/OrdersInStoreDetail/47141771', ''),
@@ -200,7 +200,7 @@ INSERT INTO `Games` (`ReceiptID`, `SaleReceiptID`, `PlatformID`, `LocationID`, `
 -- ========================================================================================================
 -- Images
 -- ========================================================================================================
-INSERT INTO `Images` (`GameID`, `ImageType`, `ImageOrder`, `ImagePath`) VALUES
+INSERT INTO `GameImages` (`GameID`, `ImageType`, `ImageOrder`, `ImagePath`) VALUES
 	(1, 'cover', 1, 'covers/switch/c/civ-vi.jpg'),
 	(2, 'cover', 1, 'covers/switch/h/hello-neighbor.jpg'),
 	(3, 'cover', 1, 'covers/switch/m/mario-bowser-fury.jpg'),
