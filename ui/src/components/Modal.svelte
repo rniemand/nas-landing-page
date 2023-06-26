@@ -32,7 +32,7 @@
     visible = true;
   };
 
-  export let close = () => {
+  export const close = () => {
     visible = false;
     if(closeCallback) closeCallback();
   };
