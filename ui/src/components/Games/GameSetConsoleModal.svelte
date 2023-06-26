@@ -32,11 +32,11 @@
 </style>
 
 <script lang="ts">
-	import { GameLocationsClient, type BasicGameInfoDto, LocationDto } from "../../nlp-api";
+	import { GameLocationsClient, type BasicGameInfoDto, GameLocationDto } from "../../nlp-api";
 
     export let game: BasicGameInfoDto;
-    export let onLocationSet: (location: LocationDto) => void;
-    let locations: LocationDto[] = [];
+    export let onLocationSet: (location: GameLocationDto) => void;
+    let locations: GameLocationDto[] = [];
     let loading = true;
 
     const refreshLocations = (_game: BasicGameInfoDto) => {
@@ -47,11 +47,11 @@
         
         loading = true;
         new GameLocationsClient().getPlatformLocations(_game.platformID)
-            .then((_locations: LocationDto[]) => locations = _locations || [])
+            .then((_locations: GameLocationDto[]) => locations = _locations || [])
             .finally(() => loading = false);
     };
 
-    const setCurrentLocation = (location: LocationDto) => {
+    const setCurrentLocation = (location: GameLocationDto) => {
         loading = true;
         new GameLocationsClient().setGameLocation(game.gameID, location.locationID)
             .then(() => onLocationSet(location))

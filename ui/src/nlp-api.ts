@@ -250,11 +250,11 @@ export class AuthClient extends NlpBaseClient implements IAuthClient {
 
 export interface IGameLocationsClient {
 
-    getPlatformLocations(platformId: number): Promise<LocationDto[]>;
+    getPlatformLocations(platformId: number): Promise<GameLocationDto[]>;
 
     setGameLocation(gameId: number, locationId: number): Promise<number>;
 
-    addLocation(location: LocationDto): Promise<LocationDto>;
+    addLocation(gameLocation: GameLocationDto): Promise<GameLocationDto>;
 }
 
 export class GameLocationsClient extends NlpBaseClient implements IGameLocationsClient {
@@ -268,7 +268,7 @@ export class GameLocationsClient extends NlpBaseClient implements IGameLocations
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
-    getPlatformLocations(platformId: number): Promise<LocationDto[]> {
+    getPlatformLocations(platformId: number): Promise<GameLocationDto[]> {
         let url_ = this.baseUrl + "/GameLocations/list/platform-id/{platformId}";
         if (platformId === undefined || platformId === null)
             throw new Error("The parameter 'platformId' must be defined.");
@@ -289,7 +289,7 @@ export class GameLocationsClient extends NlpBaseClient implements IGameLocations
         });
     }
 
-    protected processGetPlatformLocations(response: Response): Promise<LocationDto[]> {
+    protected processGetPlatformLocations(response: Response): Promise<GameLocationDto[]> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
@@ -299,7 +299,7 @@ export class GameLocationsClient extends NlpBaseClient implements IGameLocations
             if (Array.isArray(resultData200)) {
                 result200 = [] as any;
                 for (let item of resultData200)
-                    result200!.push(LocationDto.fromJS(item));
+                    result200!.push(GameLocationDto.fromJS(item));
             }
             else {
                 result200 = <any>null;
@@ -311,7 +311,7 @@ export class GameLocationsClient extends NlpBaseClient implements IGameLocations
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<LocationDto[]>(null as any);
+        return Promise.resolve<GameLocationDto[]>(null as any);
     }
 
     setGameLocation(gameId: number, locationId: number): Promise<number> {
@@ -357,11 +357,11 @@ export class GameLocationsClient extends NlpBaseClient implements IGameLocations
         return Promise.resolve<number>(null as any);
     }
 
-    addLocation(location: LocationDto): Promise<LocationDto> {
+    addLocation(gameLocation: GameLocationDto): Promise<GameLocationDto> {
         let url_ = this.baseUrl + "/GameLocations/add";
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(location);
+        const content_ = JSON.stringify(gameLocation);
 
         let options_: RequestInit = {
             body: content_,
@@ -379,14 +379,14 @@ export class GameLocationsClient extends NlpBaseClient implements IGameLocations
         });
     }
 
-    protected processAddLocation(response: Response): Promise<LocationDto> {
+    protected processAddLocation(response: Response): Promise<GameLocationDto> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = LocationDto.fromJS(resultData200);
+            result200 = GameLocationDto.fromJS(resultData200);
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -394,7 +394,7 @@ export class GameLocationsClient extends NlpBaseClient implements IGameLocations
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<LocationDto>(null as any);
+        return Promise.resolve<GameLocationDto>(null as any);
     }
 }
 
@@ -1400,12 +1400,12 @@ export interface ISetNewPasswordRequest {
     password: string;
 }
 
-export class LocationDto implements ILocationDto {
+export class GameLocationDto implements IGameLocationDto {
     locationID!: number;
     platformID!: number;
     locationName!: string;
 
-    constructor(data?: ILocationDto) {
+    constructor(data?: IGameLocationDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -1422,9 +1422,9 @@ export class LocationDto implements ILocationDto {
         }
     }
 
-    static fromJS(data: any): LocationDto {
+    static fromJS(data: any): GameLocationDto {
         data = typeof data === 'object' ? data : {};
-        let result = new LocationDto();
+        let result = new GameLocationDto();
         result.init(data);
         return result;
     }
@@ -1438,7 +1438,7 @@ export class LocationDto implements ILocationDto {
     }
 }
 
-export interface ILocationDto {
+export interface IGameLocationDto {
     locationID: number;
     platformID: number;
     locationName: string;

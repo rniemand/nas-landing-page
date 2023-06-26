@@ -16,7 +16,7 @@ public class GameLocationsController : ControllerBase
   }
 
   [HttpGet("list/platform-id/{platformId:int}")]
-  public async Task<List<LocationDto>> GetPlatformLocations([FromRoute] int platformId) =>
+  public async Task<List<GameLocationDto>> GetPlatformLocations([FromRoute] int platformId) =>
     await _gameLocationService.GetLocationsAsync(platformId);
 
   [HttpPut("set-location/game-id/{gameId:long}/location-id/{locationId:int}")]
@@ -24,6 +24,6 @@ public class GameLocationsController : ControllerBase
     await _gameLocationService.SetGameLocationAsync(gameId, locationId);
 
   [HttpPost("add")]
-  public async Task<LocationDto> AddLocation([FromBody] LocationDto location) =>
-    await _gameLocationService.AddLocationAsync(location);
+  public async Task<GameLocationDto> AddLocation([FromBody] GameLocationDto gameLocation) =>
+    await _gameLocationService.AddLocationAsync(gameLocation);
 }

@@ -5,10 +5,10 @@ namespace NasLandingPage.Repos;
 
 public interface IGameLocationRepo
 {
-  Task<List<LocationEntity>> GetLocationsAsync(int platformId);
+  Task<List<GameLocationEntity>> GetLocationsAsync(int platformId);
   Task<int> SetGameLocationAsync(long gameId, int locationID);
-  Task<int> AddLocationAsync(LocationEntity entity);
-  Task<LocationEntity?> GetLocationByNameAsync(int platformId, string name);
+  Task<int> AddLocationAsync(GameLocationEntity entity);
+  Task<GameLocationEntity?> GetLocationByNameAsync(int platformId, string name);
 }
 
 public class GameLocationRepo : IGameLocationRepo
@@ -21,7 +21,7 @@ public class GameLocationRepo : IGameLocationRepo
     _connectionHelper = connectionHelper;
   }
 
-  public async Task<List<LocationEntity>> GetLocationsAsync(int platformId)
+  public async Task<List<GameLocationEntity>> GetLocationsAsync(int platformId)
   {
     const string query = $@"SELECT
 	    l.LocationID,
@@ -30,7 +30,7 @@ public class GameLocationRepo : IGameLocationRepo
     FROM `{TableName}` l
     WHERE l.PlatformID = @PlatformID";
     await using var connection = _connectionHelper.GetCoreConnection();
-    return (await connection.QueryAsync<LocationEntity>(query, new { PlatformID = platformId })).AsList();
+    return (await connection.QueryAsync<GameLocationEntity>(query, new { PlatformID = platformId })).AsList();
   }
 
   public async Task<int> SetGameLocationAsync(long gameId, int locationID)
@@ -58,7 +58,7 @@ public class GameLocationRepo : IGameLocationRepo
     });
   }
 
-  public async Task<int> AddLocationAsync(LocationEntity entity)
+  public async Task<int> AddLocationAsync(GameLocationEntity entity)
   {
     const string query = $@"INSERT INTO `{TableName}`
       (`PlatformID`, `LocationName`)
@@ -68,7 +68,7 @@ public class GameLocationRepo : IGameLocationRepo
     return await connection.ExecuteAsync(query, entity);
   }
 
-  public async Task<LocationEntity?> GetLocationByNameAsync(int platformId, string name)
+  public async Task<GameLocationEntity?> GetLocationByNameAsync(int platformId, string name)
   {
     const string query = $@"SELECT *
     FROM `{TableName}`
@@ -76,7 +76,7 @@ public class GameLocationRepo : IGameLocationRepo
       `PlatformID` = @PlatformID
       AND `LocationName` = @LocationName";
     await using var connection = _connectionHelper.GetCoreConnection();
-    return await connection.QueryFirstOrDefaultAsync<LocationEntity>(query, new
+    return await connection.QueryFirstOrDefaultAsync<GameLocationEntity>(query, new
     {
       PlatformID = platformId,
       LocationName = name

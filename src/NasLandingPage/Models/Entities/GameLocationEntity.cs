@@ -1,6 +1,6 @@
 namespace NasLandingPage.Models.Entities;
 
-public class LocationEntity
+public class GameLocationEntity
 {
   public int LocationID { get; set; }
   public int PlatformID { get; set; }

@@ -6,9 +6,9 @@ namespace NasLandingPage.Services;
 
 public interface IGameLocationService
 {
-  Task<List<LocationDto>> GetLocationsAsync(int platformId);
+  Task<List<GameLocationDto>> GetLocationsAsync(int platformId);
   Task<int> SetGameLocationAsync(long gameId, int locationId);
-  Task<LocationDto> AddLocationAsync(LocationDto location);
+  Task<GameLocationDto> AddLocationAsync(GameLocationDto gameLocation);
 }
 
 public class GameLocationService : IGameLocationService
@@ -20,29 +20,29 @@ public class GameLocationService : IGameLocationService
     _gameLocationRepo = gameLocationRepo;
   }
 
-  public async Task<List<LocationDto>> GetLocationsAsync(int platformId)
+  public async Task<List<GameLocationDto>> GetLocationsAsync(int platformId)
   {
     var dbLocations = await _gameLocationRepo.GetLocationsAsync(platformId);
-    return dbLocations.Count == 0 ? new List<LocationDto>() : dbLocations.Select(LocationDto.FromEntity).ToList();
+    return dbLocations.Count == 0 ? new List<GameLocationDto>() : dbLocations.Select(GameLocationDto.FromEntity).ToList();
   }
 
   public async Task<int> SetGameLocationAsync(long gameId, int locationId) =>
     await _gameLocationRepo.SetGameLocationAsync(gameId, locationId);
 
-  public async Task<LocationDto> AddLocationAsync(LocationDto location)
+  public async Task<GameLocationDto> AddLocationAsync(GameLocationDto gameLocation)
   {
-    var dbLocation = await _gameLocationRepo.GetLocationByNameAsync(location.PlatformID, location.LocationName);
-    if (dbLocation is not null) return LocationDto.FromEntity(dbLocation);
+    var dbLocation = await _gameLocationRepo.GetLocationByNameAsync(gameLocation.PlatformID, gameLocation.LocationName);
+    if (dbLocation is not null) return GameLocationDto.FromEntity(dbLocation);
 
-    var rowCount = await _gameLocationRepo.AddLocationAsync(new LocationEntity
+    var rowCount = await _gameLocationRepo.AddLocationAsync(new GameLocationEntity
     {
-      LocationName = location.LocationName,
-      PlatformID = location.PlatformID,
+      LocationName = gameLocation.LocationName,
+      PlatformID = gameLocation.PlatformID,
     });
     if (rowCount < 0) throw new Exception("Failed to add location");
 
-    dbLocation = await _gameLocationRepo.GetLocationByNameAsync(location.PlatformID, location.LocationName);
+    dbLocation = await _gameLocationRepo.GetLocationByNameAsync(gameLocation.PlatformID, gameLocation.LocationName);
     if (dbLocation is null) throw new Exception("Failed to add location");
-    return LocationDto.FromEntity(dbLocation);
+    return GameLocationDto.FromEntity(dbLocation);
   }
 }
