@@ -56,7 +56,7 @@
     <li><a class="nav-link" href="/github" class:active={path==='/github'}>GitHub</a></li>
     <li><a class="nav-link" href="/games" class:active={path==='/games'}>Games</a></li>
     <li><a class="nav-link" href="/tasks" class:active={path==='/tasks'}>Tasks</a></li>
-    <li class="logout"><a class="nav-link" href="javascript:void 0" on:click={runLogout}>Logout</a></li>
+    <li class="logout"><a class="nav-link" href="#!" on:click={runLogout}>Logout</a></li>
   {:else}
     <li><a class="nav-link" href="/login" class:active={path==='/login'}>Login</a></li>
   {/if}

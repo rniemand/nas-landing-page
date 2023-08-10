@@ -1,7 +1,8 @@
 <script>
   import NavBar from "../components/NavBar.svelte";
   import 'bootstrap/dist/css/bootstrap.min.css';
-	import TopNavigation from "../components/TopNavigation.svelte";
+  import 'bootstrap-icons/font/bootstrap-icons.min.css';
+  import TopNavigation from "../components/TopNavigation.svelte";
 </script>
 
 <style>
