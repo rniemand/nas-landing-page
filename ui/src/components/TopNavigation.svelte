@@ -1,7 +1,21 @@
 <script lang="ts">
-	import { navigating } from "$app/stores";
+  import { navigating } from "$app/stores";
+  import { AuthClient, WhoAmIResponse } from "../nlp-api";
+	import { authContext, updateAuthContext } from "../utils/AppStore";
 
   let path = (window.location.pathname || '/').toLowerCase();
+  let loggedIn: boolean = false;
+
+  const runLogout = () => {
+    new AuthClient().logout().then(() => {
+      updateAuthContext(undefined);
+      location.href = '/';
+    });
+  };
+
+  authContext.subscribe((_whoAmI: WhoAmIResponse | undefined) => {
+    loggedIn = _whoAmI?.signedIn || false;
+  });
 
   $: path = (($navigating && $navigating.to?.url.pathname) || path).toLowerCase();
 </script>
@@ -28,28 +42,21 @@
         </li>
       </ul>
       <div class="d-flex">
-        <!-- <div class="dropdown">
-          <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Account
-          </button>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
-          </ul>
-        </div> -->
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#!" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              <i class="bi bi-0-circle-fill"></i> Account
-            </a>
-            <ul class="dropdown-menu dropdown-menu-end">
-              <li><a class="dropdown-item" href="#">Action</a></li>
-              <li><a class="dropdown-item" href="#">Another action</a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="#">Something else here</a></li>
-            </ul>
-          </li>
+          {#if loggedIn}
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#!" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Account
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li><a class="dropdown-item" href="#!">Action</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="#!" on:click={runLogout}>
+                  <i class="bi bi-lock-fill"></i> Sign Out
+                </a></li>
+              </ul>
+            </li>
+          {/if}
         </ul>
       </div>
     </div>

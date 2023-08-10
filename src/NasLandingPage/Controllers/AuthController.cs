@@ -25,8 +25,9 @@ public class AuthController : ControllerBase
   }
 
   [HttpGet("whoami")]
-  public WhoAmIResponse WhoAmI(bool includeClaims = false)
+  public async Task<WhoAmIResponse> WhoAmI(bool includeClaims = false)
   {
+    await Task.CompletedTask;
     var whoAmI = new WhoAmIResponse(HttpContext.User, includeClaims);
     return whoAmI;
   }
@@ -43,7 +44,7 @@ public class AuthController : ControllerBase
     else if (HttpContext.User.Identity is null || !HttpContext.User.Identity.IsAuthenticated)
       await HttpContext.ChallengeAsync();
     else
-      return Ok(WhoAmI());
+      return Ok(await WhoAmI());
     return new EmptyResult();
   }
 

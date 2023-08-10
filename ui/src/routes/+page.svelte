@@ -1,20 +1,16 @@
 <script lang="ts">
   import UserLinks from "../components/UserLinks/UserLinks.svelte";
-  import { AuthClient } from "../nlp-api";
+	import type { WhoAmIResponse } from "../nlp-api";
+  import { authContext } from "../utils/AppStore";
 
-  let loading = true;
+  let loggedIn = true;
 
-  (async () => {
-    const resp = await new AuthClient().challenge(false);
-    if(!resp.signedIn) {
-      setTimeout(() => { location.href = '/login'; }, 100);
-      return;
-    }
-    loading = false;
-  })();
+  authContext.subscribe((_whoAmI: WhoAmIResponse | undefined) => {
+    loggedIn = _whoAmI?.signedIn || false;
+  });
 </script>
 
-{#if loading}
+{#if !loggedIn}
   Loading...
 {:else}
   <UserLinks />
