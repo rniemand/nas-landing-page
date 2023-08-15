@@ -79,8 +79,6 @@
 		<LinkSearch onSearchChange={onSearchChangeHandler} onClearSearch={onClearSearchHandler} />
 	</div>
 	<div class="row row-cols-6 g-4">
-		{#each currentLinks as link}
-			<LinkEntry {link} />
-		{/each}
+		{#each currentLinks as link}<LinkEntry {link} />{/each}
 	</div>
 {/if}

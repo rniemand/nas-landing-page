@@ -8,7 +8,7 @@
   {#each categories as category}
     <!-- svelte-ignore a11y-click-events-have-key-events -->
     <li class="nav-item">
-      <a class="nav-link" href="#!" class:active={selectedCategory===category} on:click={() => onCategorySelected(category)}>{category}</a>
+      <a class="nav-link text-capitalize" href="#!" class:active={selectedCategory===category} on:click={() => onCategorySelected(category)}>{category}</a>
     </li>
   {/each}
 </ul>
