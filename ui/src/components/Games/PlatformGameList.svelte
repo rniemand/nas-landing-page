@@ -1,15 +1,5 @@
 <style>
-  .card-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  .summary {
-    text-align: center;
-    margin-top: 6px;
-    margin-bottom: 6px;
-    font-size: 1.8em;
-  }
+  h2 { flex: auto; }
 </style>
 
 <script lang="ts">
@@ -51,14 +41,12 @@
   {#if loading}
     Loading...
   {:else}
-    <div class="summary">
-      Showing {games.length} game(s)
+    <div class="d-flex my-2">
+      <h2>Showing {games.length} game(s)</h2>
+      <GameSearch searchTermChanged={searchTermChangedHandler} onAddGame={onAddGameClicked} />
     </div>
-    <GameSearch searchTermChanged={searchTermChangedHandler} onAddGame={onAddGameClicked} />
-    <div class="card-container">
-      {#each filteredGames as game (game.gameID)}
-        <GameCard {game} {triggerAction} />
-      {/each}
+    <div class="row row-cols-5 g-4">
+      {#each filteredGames as game (game.gameID)}<GameCard {game} {triggerAction} />{/each}
     </div>
   {/if}
 </div>
