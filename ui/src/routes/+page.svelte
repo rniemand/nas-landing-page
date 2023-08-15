@@ -9,9 +9,6 @@
     loggedIn = _whoAmI?.signedIn || false;
   });
 </script>
-
-{#if !loggedIn}
-  Loading...
-{:else}
-  <UserLinks />
-{/if}
+<div class="container text-center">
+  {#if loggedIn}<UserLinks />{/if}
+</div>
