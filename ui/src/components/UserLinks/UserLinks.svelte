@@ -83,5 +83,4 @@
 			<LinkEntry {link} />
 		{/each}
 	</div>
-	<!-- <LinksDisplay {links} /> -->
 {/if}
