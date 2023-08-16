@@ -1,26 +1,6 @@
 <style>
-  /* .card {
-    border: 1px solid #2d2d2d;
-    margin: 6px;
-    border-radius: 6px;
-    background-color: #161616;
-    box-shadow: 0px 0px 5px 1px rgb(95 91 91);
-    width: 50%;
-    max-width: 180px;
-  }
-  h2 { text-align: center; font-size: 1.1em; padding: 6px 2px 6px 2px; background-color: #023b00; border-bottom: 1px solid #777; }
-  .card.sold h2 { background-color: #830000; }
-  .image { position: relative; text-align: center; margin-top: 4px; margin-bottom: 4px; }
-  img.cover { border-radius: 5px; max-height: 200px; width: auto; max-width: 160px; }
-  .sold { opacity: 0.25; }
-  
-  .flex-spaced { display: flex; }
-  .flex-spaced span { flex: auto; padding: 0 4px; }
-  
-  h2.game-name { cursor: pointer; }
-   */
-
   .card { font-size: 0.85em;}
+  .sold { opacity: 0.25; }
   .price { background-color: rgba(0,0,0,.61); border-radius: 3px; color: #00ff1f; padding: 3px; position: absolute; right: 5px; top: 5px; }
   .flex-spaced span { flex: auto; padding: 0 4px; }
   .game-id { color: #0e701a; }
@@ -33,6 +13,7 @@
   i.receipt { cursor: pointer; }
   i.receipt.has { color: #379aeb; }
   .receipt .none { font-style: italic; }
+  .cover, .card-title { cursor: pointer; }
 </style>
 
 <script lang="ts">
@@ -66,26 +47,20 @@
   $: setGameInfo(game);
 </script>
 
-<!-- <div class="card" class:sold={game.gameSold}>
-  <h2 class="ellipsis game-name" on:click={onGameClicked}>{game.gameName}</h2>
-  <div class="attributes">
-    <GameCardCurrentConsole {game} onClick={onConsoleClicked} />
-  </div>
-</div> -->
-
 <div class="col">
-	<div class="card h-100">
-    <img class="cover" src={`api/images/game/cover/${game.platformName}/${game.gameID}`} alt="game cover" />
+	<div class="card h-100" class:sold={game.gameSold}>
+    <!-- svelte-ignore a11y-click-events-have-key-events -->
+    <img class="cover" src={`api/images/game/cover/${game.platformName}/${game.gameID}`} alt="game cover" on:click={onGameClicked} />
     {#if game.gamePrice > 0}<div class="price">{game.gamePrice}</div>{/if}
 		<!-- <div class="title">Title</div> -->
 		<div class="card-body mb-0 p-1">
-
+      <!-- svelte-ignore a11y-click-events-have-key-events -->
+      <h5 class="card-title text-truncate" on:click={onGameClicked}>{game.gameName}</h5>
       <div class="d-flex flex-spaced">
         <span class="game-id">#{game.gameID}</span>
         <span class="location">{game?.gameCaseLocation || '-'}</span>
         <span class="rating">{game?.gameRating || 0}/10</span>
       </div>
-
       <div class="flags">
         {#if game.hasGameBox}<i class="bi bi-box2-fill" title="Has Box"></i>{/if}
         {#if game.hasProtection}<i class="bi bi-currency-dollar" title="Has Protection"></i>{/if}
@@ -93,7 +68,6 @@
         <i class="bi bi-receipt receipt" class:has={game.hasReceipt} title="Has Receipt" on:click={onReceiptClicked}></i>
         {#if game.receiptScanned}<i class="bi bi-printer" title="Receipt Scanned"></i>{/if}
       </div>
-
       <div class="receipt d-flex flex-spaced">
         {#if game.hasReceipt}
           <span class="text-truncate">{receiptName}</span>
@@ -102,7 +76,6 @@
           <span class="none">No receipt information</span>
         {/if}
       </div>
-
       <GameCardCurrentConsole {game} onClick={onConsoleClicked} />
     </div>
   </div>
