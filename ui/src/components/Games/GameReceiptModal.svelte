@@ -1,16 +1,8 @@
-<style>
-  h2 {
-    font-size: 2em;
-    text-align: center;
-    margin-bottom: 12px;
-  }
-</style>
-
 <script lang="ts">
   import { type BasicGameInfoDto, GameReceiptDto, GameReceiptClient } from "../../nlp-api";
 	import GameReceiptAdder from "./GameReceiptAdder.svelte";
 	import GameReceiptEditor from "./GameReceiptEditor.svelte";
-
+  export let onReceiptAssociated: () => void;
   export let game: BasicGameInfoDto;
   let loading = true;
   let receipt: GameReceiptDto | undefined;
@@ -28,7 +20,10 @@
       .finally(() => loading = false);
   };
 
-  const updateReceipt = (addedReceipt: GameReceiptDto) => receipt = addedReceipt;
+  const updateReceipt = (addedReceipt: GameReceiptDto) => {
+    receipt = addedReceipt;
+    onReceiptAssociated();
+  };
 
   $: refreshReceiptInfo(game);
 </script>
@@ -39,7 +34,6 @@
     {#if loading}
       Loading...
     {:else}
-      <h2>{game.gameName}</h2>
       {#if receipt}
         <GameReceiptEditor {receipt} onReceiptChanged={updateReceipt} />
       {:else}

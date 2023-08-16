@@ -91,7 +91,6 @@
 
 {#if platform}
     <div>
-        <h2>Add Game: {platform.platformName}</h2>
         <div class="form">
             <div class="row">
               <div class="field">

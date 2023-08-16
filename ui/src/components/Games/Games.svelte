@@ -51,7 +51,6 @@
     genericModal = BSModal.getOrCreateInstance('#gameReceiptModal');
     return () => genericModal.dispose();
   });
-
 </script>
 
 <div class="wrapper">
@@ -71,8 +70,8 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        {#if modalType === MODAL_RECEIPT}<GameReceiptModal game={selectedGame} />{/if}
-        {#if modalType === MODAL_GAME_INFO}<GameInfoModal game={selectedGame} />{/if}
+        {#if modalType === MODAL_RECEIPT}<GameReceiptModal game={selectedGame} onReceiptAssociated={closeModal} />{/if}
+        {#if modalType === MODAL_GAME_INFO}<GameInfoModal game={selectedGame} onGameUpdated={closeModal} />{/if}
         {#if modalType === MODAL_ADD_GAME}<GameAddModal platform={selectedPlatform} onGameAdded={closeModal} />{/if}
         {#if modalType === MODAL_SET_CONSOLE}<GameSetConsoleModal game={selectedGame} onLocationSet={closeModal} />{/if}
       </div>
