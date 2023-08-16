@@ -41,18 +41,10 @@
     $: refreshLocations(platform);
 </script>
 
-{#if !platform}
-    No platform provided
-{/if}
-
-{#if loading}
-    Loading...
-{/if}
-
+{#if !platform}No platform provided{/if}
+{#if loading}Loading...{/if}
 {#if platformLocations.length > 0}
-    <select bind:value={locationId} on:change={onLocationChangedHandler}>
-        {#each platformLocations as loc (loc.locationID)}
-            <option value={loc.locationID}>{loc.locationName}</option>
-        {/each}
-    </select>
+  <select bind:value={locationId} on:change={onLocationChangedHandler} class="form-select">
+    {#each platformLocations as loc (loc.locationID)}<option value={loc.locationID}>{loc.locationName}</option>{/each}
+  </select>
 {/if}
