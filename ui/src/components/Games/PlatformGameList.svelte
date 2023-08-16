@@ -1,5 +1,6 @@
 <style>
   h2 { flex: auto; }
+  .refresh { cursor: pointer; }
 </style>
 
 <script lang="ts">
@@ -42,10 +43,14 @@
     Loading...
   {:else}
     <div class="d-flex my-2">
-      <h2>Showing {games.length} game(s)</h2>
+      <h2>
+        <!-- svelte-ignore a11y-click-events-have-key-events -->
+        <i class="bi bi-arrow-clockwise refresh" on:click={() => refreshGames(selectedPlatform)}></i>
+        Showing {games.length} game(s)
+      </h2>
       <GameSearch searchTermChanged={searchTermChangedHandler} onAddGame={onAddGameClicked} />
     </div>
-    <div class="row row-cols-5 g-4">
+    <div class="row row-cols-6 g-4">
       {#each filteredGames as game (game.gameID)}<GameCard {game} {triggerAction} />{/each}
     </div>
   {/if}
