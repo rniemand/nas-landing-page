@@ -1,30 +1,3 @@
-<style>
-  .form .row {
-    display: flex;
-    justify-content: space-evenly;
-    margin-bottom: 12px;
-  }
-  .form .field label {
-    font-weight: bold;
-    padding-top: 2px;
-    margin-right: 4px;
-  }
-  .form .field {
-    flex: auto;
-    display: flex;
-  }
-  .form .field .spacer {
-    flex: 120;
-  }
-  .form .field input {
-    flex: auto;
-    margin-right: 6px;
-    padding: 2px;
-    border-radius: 4px;
-    border: 1px solid #b9b5b5;
-  }
-</style>
-
 <script lang="ts">
 	import { GameReceiptClient, type GameReceiptDto } from "../../nlp-api";
 
@@ -66,42 +39,32 @@
   $: setReceiptDate(receipt);
 </script>
 
-<div class="form">
-  <div class="row">
-    <div class="field">
-      <label for="store">Store</label>
-      <input type="text" id="store" bind:value={receipt.store} on:keyup={valueChanged}>
-    </div>
-    <div class="field">
-      <label for="order">Order</label>
-      <input type="text" id="order" bind:value={receipt.receiptNumber} on:keyup={valueChanged}>
-    </div>
-    <div class="field">
-      <label for="date">Date</label>
-      <input type="date" id="date" bind:value={recDate} on:keyup={valueChanged} on:change={valueChanged}>
+<form class="row g-3">
+  <div class="col-md-4">
+    <label for="store" class="form-label">Store</label>
+    <input type="text" class="form-control" id="store" bind:value={receipt.store} on:keyup={valueChanged}>
+  </div>
+  <div class="col-md-4">
+    <label for="order" class="form-label">Order</label>
+    <input type="text" class="form-control" id="order" bind:value={receipt.receiptNumber} on:keyup={valueChanged}>
+  </div>
+  <div class="col-md-4">
+    <label for="date" class="form-label">Date</label>
+    <input type="date" class="form-control" id="date" bind:value={recDate} on:keyup={valueChanged} on:change={valueChanged}>
+  </div>
+  <div class="col-6">
+    <label for="name" class="form-label">Name</label>
+    <input type="text" class="form-control" id="name" bind:value={receipt.receiptName} on:keyup={valueChanged}>
+  </div>
+  <div class="col-6">
+    <label for="url" class="form-label">URL</label>
+    <input type="text" class="form-control" id="url" bind:value={receipt.receiptUrl} on:keyup={valueChanged}>
+  </div>
+  <div class="col-6">
+    <div class="form-check form-switch form-check-inline">
+      <input class="form-check-input" type="checkbox" role="switch" id="scanned" bind:checked={receipt.receiptScanned} on:change={valueChanged}>
+      <label class="form-check-label" for="scanned">Scanned</label>
     </div>
   </div>
-
-  <div class="row">
-    <div class="field">
-      <label for="name">Name</label>
-      <input type="text" id="name" bind:value={receipt.receiptName} on:keyup={valueChanged}>
-    </div>
-    <div class="field">
-      <label for="url">URL</label>
-      <input type="text" id="url" bind:value={receipt.receiptUrl} on:keyup={valueChanged}>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="field">
-      <label for="scanned">Scanned</label>
-      <input type="checkbox" id="scanned" bind:checked={receipt.receiptScanned} on:change={valueChanged}>
-      <div class="spacer"></div>
-    </div>
-  </div>
-
-  <div class="row">
-    <button disabled={!formChanged} on:click={saveChanges}>Save Changes</button>
-  </div>
-</div>
+  <button type="button" class="btn btn-primary" disabled={!formChanged} on:click={saveChanges}>Save Changes</button>
+</form>

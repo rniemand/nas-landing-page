@@ -1,4 +1,5 @@
 using NasLandingPage.Factories;
+using NasLandingPage.Helpers;
 using NasLandingPage.Models.Dto;
 using NasLandingPage.Models.Entities;
 using NasLandingPage.Repos;
@@ -11,6 +12,7 @@ public interface IGitHubService
 {
   Task SyncCoreRepoInformationAsync();
   Task<List<GitHubRepoDto>> ListReposAsync();
+  Task<bool> SyncRepoFilesAsync(GitHubRepoEntity repo);
 }
 
 public class GitHubService : IGitHubService
@@ -18,14 +20,17 @@ public class GitHubService : IGitHubService
   private readonly ILoggerAdapter<GitHubService> _logger;
   private readonly IGitHubClientFactory _ghClientFactory;
   private readonly IGitHubRepoRepo _ghRepoRepo;
+  private readonly IServiceProvider _serviceProvider;
 
   public GitHubService(ILoggerAdapter<GitHubService> logger,
     IGitHubClientFactory ghClientFactory,
-    IGitHubRepoRepo ghRepoRepo)
+    IGitHubRepoRepo ghRepoRepo,
+    IServiceProvider serviceProvider)
   {
     _logger = logger;
     _ghClientFactory = ghClientFactory;
     _ghRepoRepo = ghRepoRepo;
+    _serviceProvider = serviceProvider;
   }
 
   public async Task SyncCoreRepoInformationAsync()
@@ -45,6 +50,13 @@ public class GitHubService : IGitHubService
   {
     var dbRepos = await _ghRepoRepo.GetReposAsync();
     return dbRepos.Select(GitHubRepoDto.FromEntity).ToList();
+  }
+
+  public async Task<bool> SyncRepoFilesAsync(GitHubRepoEntity repo)
+  {
+    await new RepoFileIndexer(_serviceProvider, repo.RepoID).IndexAsync();
+
+    return true;
   }
 
   // Internal methods

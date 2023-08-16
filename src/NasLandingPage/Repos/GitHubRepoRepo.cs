@@ -8,6 +8,7 @@ public interface IGitHubRepoRepo
   Task<int> AddRepoAsync(GitHubRepoEntity entity);
   Task<int> UpdateRepoAsync(GitHubRepoEntity entity);
   Task<List<GitHubRepoEntity>> GetReposAsync();
+  Task<GitHubRepoEntity> GetByIdAsync(long repoId);
 }
 
 public class GitHubRepoRepo : IGitHubRepoRepo
@@ -83,5 +84,19 @@ public class GitHubRepoRepo : IGitHubRepoRepo
     FROM {TableName}";
     await using var connection = _connectionHelper.GetCoreConnection();
     return (await connection.QueryAsync<GitHubRepoEntity>(query)).AsList();
+  }
+
+  public async Task<GitHubRepoEntity> GetByIdAsync(long repoId)
+  {
+    const string query = $@"SELECT
+      `RepoID`,`RepoSize`,`IsTemplate`,`IsPrivate`,`IsFork`,`HasIssues`,
+		  `HasWiki`,`HasDownloads`,`HasPages`,`IsArchived`,`ForksCount`,
+		  `StargazersCount`,`OpenIssuesCount`,`SubscribersCount`,
+		  `PushedAt`,`CreatedAt`,`UpdatedAt`,`License`,`DefaultBranch`,`GitUrl`,
+		  `SshUrl`,`Name`,`FullName`,`Description`
+    FROM `{TableName}`
+    WHERE `RepoID` = @RepoID";
+    var connection = _connectionHelper.GetCoreConnection();
+    return await connection.QuerySingleAsync<GitHubRepoEntity>(query, new { RepoID = repoId });
   }
 }

@@ -26,6 +26,7 @@
 
 <div class="repo">
   <div class="name">{repo.fullName}</div>
+  <div class="link"><a href="/github/{repo.name}">More</a></div>
   <div class="link"><a href={`https://github.com/${repo.fullName}`} target="_blank">Open</a></div>
   <div class="branch">{repo.defaultBranch}</div>
   <div class="size">{humanFileSize(repo.repoSize * 1024)}</div>

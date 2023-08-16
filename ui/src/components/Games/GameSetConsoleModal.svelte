@@ -63,7 +63,6 @@
 
 {#if game}
     <div>
-        <h2>Set Game Console</h2>
         <h3>{game.gameName}</h3>
         {#if loading}
             Loading...

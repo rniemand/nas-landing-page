@@ -31,3 +31,20 @@ CREATE TABLE `GitHubRepos` (
 COLLATE='utf8mb4_general_ci'
 ENGINE=InnoDB;
 
+CREATE TABLE `GitHubRepoContent` (
+	`RepoId` BIGINT(20) NOT NULL,
+	`Deleted` BIT(1) NOT NULL DEFAULT b'0',
+	`ContentSize` BIGINT(20) NOT NULL DEFAULT '0',
+	`ContentType` VARCHAR(8) NOT NULL COLLATE 'utf8mb4_general_ci',
+	`DateAddedUtc` DATETIME NOT NULL DEFAULT utc_timestamp(6),
+	`DateUpdatedUtc` DATETIME NULL DEFAULT NULL,
+	`ContentSha` VARCHAR(64) NOT NULL COLLATE 'utf8mb4_general_ci',
+	`ContentName` VARCHAR(128) NOT NULL COLLATE 'utf8mb4_general_ci',
+	`ContentPath` VARCHAR(256) NOT NULL COLLATE 'utf8mb4_general_ci',
+	`HtmlUrl` VARCHAR(512) NOT NULL COLLATE 'utf8mb4_general_ci',
+	INDEX `RepoId` (`RepoId`) USING BTREE,
+	INDEX `Deleted` (`Deleted`) USING BTREE,
+	INDEX `ContentType` (`ContentType`) USING BTREE
+)
+COLLATE='utf8mb4_general_ci'
+ENGINE=InnoDB;

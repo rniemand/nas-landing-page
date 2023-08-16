@@ -1,60 +1,34 @@
 <style>
-    .add {
-        border: 2px solid #15ad15;
-        padding: 6px;
-        color: #044f07;
-        background-color: #bdd3c7;
-        border-radius: 6px;
-        cursor: pointer;
-        font-weight: bold;
-        margin-right: 4px;
-    }
-    .controls {
-        display: flex;
-    }
-    .controls input { flex: auto; }
-    .search-results { margin-top: 12px; }
-    .result { display: flex; margin-bottom: 2px; padding: 2px 7px; }
-    .result:hover { background-color: #beff005c; border-radius: 4px; }
-    .result span { flex: auto; padding-top: 7px; }
-    span.name { width: 80px; text-align: left; }
-    span.number { text-align: center; }
-    span.store { text-align: right; }
-    button.select {
-        border: 1px solid #2020f9;
-        margin-left: 4px;
-        padding: 4px 9px;
-        border-radius: 5px;
-        background-color: #276da9;
-        color: #fff;
-        cursor: pointer;
-    }
+  .add-btn { width: 120px; margin-right: 6px; }
+  .name { flex: auto; text-align: left; }
+  .number { text-align: center; width: 20%; color: rgb(74, 185, 250); }
+  .store { text-align: right; width: 20%; color: rgb(9, 172, 49); }
+  .select { margin-left: 4px; }
+  .result span { margin: auto; }
+  .result:hover { background-color: rgb(241, 241, 241); }
 </style>
 
 <script lang="ts">
-	import { GameReceiptClient, type BasicGameInfoDto, GameReceiptDto } from "../../nlp-api";
-
-    export let game: BasicGameInfoDto;
-    export let onReceiptAdded: (receipt: GameReceiptDto) => void;
-    let searchTerm = '';
-    let receipts: GameReceiptDto[] = [];
-
-    const searchReceipts = (term: string) => {
-        if(term.length < 2) return;
-        receipts = [];
-        new GameReceiptClient().search(term).then((_results: GameReceiptDto[]) => receipts = _results);
-    };
-
-    const associateReceipt = (receipt: GameReceiptDto) => {
-        new GameReceiptClient().associateReceiptToGame(game.gameID, receipt.receiptID)
-            .then((_response: GameReceiptDto) => {
-                if(!_response) {
-                    alert('Failed to associate receipt!');
-                    return;
-                }
-                onReceiptAdded(receipt);
-            });
-    };
+  import { GameReceiptClient, type BasicGameInfoDto, GameReceiptDto } from "../../nlp-api";
+  export let game: BasicGameInfoDto;
+  export let onReceiptAdded: (receipt: GameReceiptDto) => void;
+  let searchTerm = '';
+  let receipts: GameReceiptDto[] = [];
+  
+  const searchReceipts = (term: string) => {
+    if(term.length < 2) return;
+    receipts = [];
+    new GameReceiptClient().search(term).then((_results: GameReceiptDto[]) => receipts = _results);
+  };
+  
+  const associateReceipt = (receipt: GameReceiptDto) => {
+    new GameReceiptClient()
+      .associateReceiptToGame(game.gameID, receipt.receiptID)
+      .then((_response: GameReceiptDto) => {
+        if(!_response) { alert('Failed to associate receipt!'); return; }
+        onReceiptAdded(receipt);
+      });
+  };
 
     const addNewReceipt = () => {
         new GameReceiptClient().addReceipt(game.gameID)
@@ -71,20 +45,20 @@
 </script>
 
 <div class="wrapper">
-    <div class="controls">
-        <button class="add" on:click={addNewReceipt}>Add new Receipt</button>
-        <input type="text" placeholder="Search for existing receipt" bind:value={searchTerm}>
+    <div class="controls d-flex">
+        <button class="btn btn-success add-btn" on:click={addNewReceipt}>Add New</button>
+        <input type="text" class="form-control" placeholder="Search for existing receipt" bind:value={searchTerm}>
     </div>
-    <div class="search-results">
+    <div class="search-results mt-3">
         {#if searchTerm === ''}
-            Enter in a search term to find a receipt.
+            <p>Enter in a search term to find a receipt.</p>
         {/if}
         {#each receipts as receipt}
-            <div class="result">
+            <div class="result d-flex mb-1">
                 <span class="name">{receipt.receiptName}</span>
                 <span class="number">{receipt.receiptNumber}</span>
                 <span class="store">{receipt.store}</span>
-                <button class="select" on:click={() => associateReceipt(receipt)}>Select</button>
+                <button class="select btn btn-primary" on:click={() => associateReceipt(receipt)}>Select</button>
             </div>
         {/each}
     </div>
