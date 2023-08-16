@@ -1,32 +1,3 @@
-<style>
-    /* h2 {
-        font-size: 2em;
-        text-align: center;
-        margin-bottom: 12px;
-    }
-    .form .row {
-        display: flex;
-        justify-content: space-evenly;
-        margin-bottom: 12px;
-    }
-    .form .field label {
-        font-weight: bold;
-        padding-top: 2px;
-        margin-right: 4px;
-    }
-    .form .field {
-        flex: auto;
-        display: flex;
-    }
-    .form .field input {
-        flex: auto;
-        margin-right: 6px;
-        padding: 2px;
-        border-radius: 4px;
-        border: 1px solid #b9b5b5;
-    } */
-</style>
-
 <script lang="ts">
 	import { BasicGameInfoDto, GamesClient, type GamePlatformDto, GameLocationDto } from "../../nlp-api";
 	import GameLocationSelector from "./GameLocationSelector.svelte";

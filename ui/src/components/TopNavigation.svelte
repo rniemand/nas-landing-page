@@ -1,9 +1,14 @@
+<style>
+  .fix { right: 5px; }
+</style>
+
 <script lang="ts">
   import { navigating } from "$app/stores";
   import { AuthClient, WhoAmIResponse } from "../nlp-api";
 	import { authContext, updateAuthContext } from "../utils/AppStore";
 
   let path = (window.location.pathname || '/').toLowerCase();
+  let showAccountDropdown: boolean = false;
   let loggedIn: boolean = false;
 
   const runLogout = () => {
@@ -45,10 +50,10 @@
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           {#if loggedIn}
             <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#!" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <a class="nav-link dropdown-toggle" href="#!" role="button" class:show={showAccountDropdown} on:click={() => showAccountDropdown = !showAccountDropdown}>
                 Account
               </a>
-              <ul class="dropdown-menu dropdown-menu-end">
+              <ul class="dropdown-menu fix" class:show={showAccountDropdown}>
                 <li><a class="dropdown-item" href="#!">Action</a></li>
                 <li><hr class="dropdown-divider"></li>
                 <li><a class="dropdown-item" href="#!" on:click={runLogout}>
