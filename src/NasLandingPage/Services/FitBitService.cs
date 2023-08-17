@@ -7,22 +7,24 @@ namespace NasLandingPage.Services;
 
 public interface IFitBitService
 {
-  Task<FitbitActivitySummaryResponse.SummaryNode> GetFitbitActivitySummaryAsync(DateOnly date);
+  Task SyncFitbitActivitySummaryAsync(int userId, DateOnly date);
 }
 
 public class FitBitService : IFitBitService
 {
   private readonly IOAuthRepo _oAuthRepo;
+  private readonly IFitBitSummaryDataRepo _fitBitSummaryDataRepo;
   private const string BaseUrl = "https://api.fitbit.com";
   private OAuthEntity? _oAuthEntity;
   private readonly HttpClient _httpClient = new();
 
-  public FitBitService(IOAuthRepo oAuthRepo)
+  public FitBitService(IOAuthRepo oAuthRepo, IFitBitSummaryDataRepo fitBitSummaryDataRepo)
   {
     _oAuthRepo = oAuthRepo;
+    _fitBitSummaryDataRepo = fitBitSummaryDataRepo;
   }
 
-  public async Task<FitbitActivitySummaryResponse.SummaryNode> GetFitbitActivitySummaryAsync(DateOnly date)
+  public async Task SyncFitbitActivitySummaryAsync(int userId, DateOnly date)
   {
     await InitializeClientAsync();
     
@@ -36,7 +38,23 @@ public class FitBitService : IFitBitService
     var responseJson = await response.Content.ReadAsStringAsync();
     var parsed = JsonConvert.DeserializeObject<FitbitActivitySummaryResponse>(responseJson);
     if (parsed is null) throw new Exception("Failed to parse response");
-    return parsed.Summary;
+
+    await _fitBitSummaryDataRepo.DeleteDatedEntryAsync(userId, date);
+    await _fitBitSummaryDataRepo.AddEntryAsync(new FitBitSummaryDataEntity
+    {
+      CaloriesOut = parsed.Summary.CaloriesOut,
+      Date = date.ToDateTime(TimeOnly.MinValue),
+      Distance = parsed.Summary.Distances.FirstOrDefault(x=>x.Activity== "total")?.Distance ?? 0,
+      Elevation = parsed.Summary.Elevation,
+      Floors = parsed.Summary.Floors,
+      LightlyActiveMinutes = parsed.Summary.LightlyActiveMinutes,
+      MarginalCalories = parsed.Summary.MarginalCalories,
+      RestingHeartRate = parsed.Summary.RestingHeartRate,
+      SedentaryMinutes = parsed.Summary.SedentaryMinutes,
+      Steps = parsed.Summary.Steps,
+      UserId = userId,
+      VeryActiveMinutes = parsed.Summary.VeryActiveMinutes,
+    });
   }
 
   private async Task InitializeClientAsync()
