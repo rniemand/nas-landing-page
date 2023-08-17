@@ -19,7 +19,7 @@ internal class Program
     //await ghService.SyncCoreRepoInformationAsync();
 
     var fitBitService = DIContainer.Services.GetRequiredService<IFitBitService>();
-    var response = await fitBitService.GetFitbitActivitySummaryAsync(DateOnly.Parse("2023-08-10"));
+    await fitBitService.SyncFitbitActivitySummaryAsync(1, DateOnly.Parse("2023-08-10"));
 
 
     Console.WriteLine();
