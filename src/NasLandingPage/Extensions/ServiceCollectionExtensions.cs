@@ -30,6 +30,7 @@ public static class ServiceCollectionExtensions
       .AddSingleton<IGameImageRepo, GameImageRepo>()
       .AddSingleton<IGameReceiptRepo, GameReceiptRepo>()
       .AddSingleton<IGamePlatformRepo, GamePlatformRepo>()
+      .AddSingleton<IOAuthRepo, OAuthRepo>()
       // Factories
       .AddSingleton<IGitHubClientFactory, GitHubClientFactory>()
       // Helpers
