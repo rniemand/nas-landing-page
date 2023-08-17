@@ -45,7 +45,8 @@ public static class ServiceCollectionExtensions
       .AddSingleton<IImageService, ImageService>()
       .AddSingleton<IGameLocationService, GameLocationService>()
       .AddSingleton<IGamePlatformService, GamePlatformService>()
-      .AddSingleton<IGameReceiptService, GameReceiptService>();
+      .AddSingleton<IGameReceiptService, GameReceiptService>()
+      .AddSingleton<IFitBitService, FitBitService>();
   }
 
   private static AppConfig BindAppConfig(IConfiguration configuration)
