@@ -69,4 +69,3 @@ public class GameReceiptService : IGameReceiptService
     return gameOrderInfoEntity is null ? null : GameReceiptDto.FromEntity(gameOrderInfoEntity);
   }
 }
-
