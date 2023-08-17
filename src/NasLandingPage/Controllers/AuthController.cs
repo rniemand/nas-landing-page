@@ -167,6 +167,49 @@ public class AuthController : ControllerBase
 
     return Ok("NOTHING HAPPENED");
   }
+
+  [HttpGet("fitbit-refresh")]
+  public async Task<ActionResult> RefreshFitBitToken([FromServices] IOAuthRepo oAuthRepo)
+  {
+    var entry = await oAuthRepo.GetOAuthEntryAsync("FitBit");
+    if (entry is null) throw new Exception("Missing FitBit OAuth entry");
+
+    var request = new HttpRequestMessage(HttpMethod.Post, entry.TokenUrl);
+    request.Content = new FormUrlEncodedContent(new List<KeyValuePair<string, string>>
+    {
+      new("grant_type", "refresh_token"),
+      new("client_id", entry.ClientID),
+      new("refresh_token", entry.RefreshToken),
+    });
+
+    var userName = entry.ClientID;
+    var userPassword = entry.ClientSecret;
+    var authenticationString = $"{userName}:{userPassword}";
+    var base64String = Convert.ToBase64String(Encoding.ASCII.GetBytes(authenticationString));
+    request.Headers.Authorization = new AuthenticationHeaderValue("Basic", base64String);
+
+    var httpClient = new HttpClient();
+    var response = await httpClient.SendAsync(request);
+    response.EnsureSuccessStatusCode();
+    var jsonResponse = await response.Content.ReadAsStringAsync();
+    var fitbitResponse = JsonConvert.DeserializeObject<GetTokensResponse>(jsonResponse);
+    if (fitbitResponse is null) throw new Exception("Unable to parse fitbit response");
+
+    await oAuthRepo.SetAccessTokensAsync("FitBit",
+      fitbitResponse.AccessToken,
+      fitbitResponse.RefreshToken,
+      fitbitResponse.ExpiresIn
+    );
+
+    return Ok("ALL DONE");
+  }
+
+  [HttpGet("fitbit-load/{date}")]
+  public async Task<ActionResult> FitbitLoadDate([FromRoute] string date, [FromServices] IFitBitService fitBitService)
+  {
+    await fitBitService.SyncFitbitActivitySummaryAsync(1, DateOnly.Parse(date));
+    return Ok("DONE");
+  }
 }
 
 public class GetTokensResponse
