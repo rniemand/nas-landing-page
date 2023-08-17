@@ -203,6 +203,13 @@ public class AuthController : ControllerBase
 
     return Ok("ALL DONE");
   }
+
+  [HttpGet("fitbit-load/{date}")]
+  public async Task<ActionResult> FitbitLoadDate([FromRoute] string date, [FromServices] IFitBitService fitBitService)
+  {
+    await fitBitService.SyncFitbitActivitySummaryAsync(1, DateOnly.Parse(date));
+    return Ok("DONE");
+  }
 }
 
 public class GetTokensResponse
