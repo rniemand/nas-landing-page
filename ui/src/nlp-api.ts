@@ -1268,6 +1268,8 @@ export interface INetworkClient {
     getAllDevices(): Promise<NetworkDeviceDto[]>;
 
     addDevice(request: AddNetworkDeviceRequest): Promise<BoolResponse>;
+
+    classifyDevice(request: ClassifyNetworkDeviceRequest): Promise<BoolResponse>;
 }
 
 export class NetworkClient extends NlpBaseClient implements INetworkClient {
@@ -1347,6 +1349,46 @@ export class NetworkClient extends NlpBaseClient implements INetworkClient {
     }
 
     protected processAddDevice(response: Response): Promise<BoolResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = BoolResponse.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<BoolResponse>(null as any);
+    }
+
+    classifyDevice(request: ClassifyNetworkDeviceRequest): Promise<BoolResponse> {
+        let url_ = this.baseUrl + "/Network/device/classify";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(request);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processClassifyDevice(_response));
+        });
+    }
+
+    protected processClassifyDevice(response: Response): Promise<BoolResponse> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
@@ -2381,6 +2423,58 @@ export interface IAddNetworkDeviceRequest {
     floor?: string | null;
     room?: string | null;
     roomLocation?: string | null;
+}
+
+export class ClassifyNetworkDeviceRequest implements IClassifyNetworkDeviceRequest {
+    deviceID!: number;
+    category!: string;
+    subCategory?: string | null;
+    manufacturer?: string | null;
+    model?: string | null;
+
+    constructor(data?: IClassifyNetworkDeviceRequest) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.deviceID = _data["deviceID"] !== undefined ? _data["deviceID"] : <any>null;
+            this.category = _data["category"] !== undefined ? _data["category"] : <any>null;
+            this.subCategory = _data["subCategory"] !== undefined ? _data["subCategory"] : <any>null;
+            this.manufacturer = _data["manufacturer"] !== undefined ? _data["manufacturer"] : <any>null;
+            this.model = _data["model"] !== undefined ? _data["model"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): ClassifyNetworkDeviceRequest {
+        data = typeof data === 'object' ? data : {};
+        let result = new ClassifyNetworkDeviceRequest();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["deviceID"] = this.deviceID !== undefined ? this.deviceID : <any>null;
+        data["category"] = this.category !== undefined ? this.category : <any>null;
+        data["subCategory"] = this.subCategory !== undefined ? this.subCategory : <any>null;
+        data["manufacturer"] = this.manufacturer !== undefined ? this.manufacturer : <any>null;
+        data["model"] = this.model !== undefined ? this.model : <any>null;
+        return data;
+    }
+}
+
+export interface IClassifyNetworkDeviceRequest {
+    deviceID: number;
+    category: string;
+    subCategory?: string | null;
+    manufacturer?: string | null;
+    model?: string | null;
 }
 
 export class UserLinkDto implements IUserLinkDto {

@@ -1,9 +1,15 @@
+<style>
+  .bi { cursor: pointer; }
+</style>
+
 <script lang="ts">
   import { NetworkClient, NetworkDeviceDto } from "../../nlp-api";
+  import AddClassificationModal from "./AddClassificationModal.svelte";
   import AddDevice from "./AddDevice.svelte";
   import IPv4Info from "./IPv4Info.svelte";
   
   let devices: NetworkDeviceDto[] = [];
+  let addClassificationModal: AddClassificationModal;
 
   const refreshDevices = async () => {
     devices = await new NetworkClient().getAllDevices();
@@ -15,6 +21,7 @@
 <div class="mb-3">
   <button class="btn btn-success" on:click={refreshDevices}>Refresh</button>
   <AddDevice />
+  <AddClassificationModal bind:this={addClassificationModal} />
 </div>
 
 <table class="table table-striped table-hover table-bordered table-sm">
@@ -66,7 +73,8 @@
         </td>
         <td>
           {#if !device.classification}
-            <i class="bi bi-tag-fill"></i>
+            <!-- svelte-ignore a11y-click-events-have-key-events -->
+            <i class="bi bi-tag-fill" on:click={() => addClassificationModal.open(device)}></i>
           {/if}
           <i class="bi bi-ethernet"></i>
         </td>

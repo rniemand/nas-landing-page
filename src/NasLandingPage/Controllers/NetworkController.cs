@@ -24,4 +24,8 @@ public class NetworkController : ControllerBase
   [HttpPost("add-device")]
   public async Task<BoolResponse> AddDevice([FromBody] AddNetworkDeviceRequest request) =>
     await _networkService.AddDeviceAsync(request);
+
+  [HttpPost("device/classify")]
+  public async Task<BoolResponse> ClassifyDevice([FromBody] ClassifyNetworkDeviceRequest request) =>
+    await _networkService.ClassifyDeviceAsync(request);
 }

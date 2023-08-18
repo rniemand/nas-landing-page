@@ -8,6 +8,7 @@ public interface INetworkRepo
 {
   Task<List<NetworkDeviceInfoEntity>> GetEnabledDevicesAsync();
   Task<int> AddDeviceAsync(AddNetworkDeviceRequest request);
+  Task<int> AddDeviceClassificationAsync(ClassifyNetworkDeviceRequest request);
 }
 
 public class NetworkRepo : INetworkRepo
@@ -56,6 +57,16 @@ public class NetworkRepo : INetworkRepo
       (`IsPhysical`, `IsActive`, `DeviceName`, `Floor`, `Room`, `RoomLocation`)
     VALUES
       (@IsPhysical, TRUE, @DeviceName, @Floor, @Room, @RoomLocation)";
+    await using var connection = _connectionHelper.GetCoreConnection();
+    return await connection.ExecuteAsync(query, request);
+  }
+
+  public async Task<int> AddDeviceClassificationAsync(ClassifyNetworkDeviceRequest request)
+  {
+    const string query = @"INSERT INTO `NetworkClassification`
+      (`DeviceID`, `Category`, `SubCategory`, `Manufacturer`, `Model`)
+    VALUES
+      (@DeviceID, @Category, @SubCategory, @Manufacturer, @Model)";
     await using var connection = _connectionHelper.GetCoreConnection();
     return await connection.ExecuteAsync(query, request);
   }
