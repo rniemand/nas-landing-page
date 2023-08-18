@@ -2117,7 +2117,7 @@ export class NetworkDeviceDto implements INetworkDeviceDto {
     floor?: string | null;
     room?: string | null;
     roomLocation?: string | null;
-    classification!: NetworkDeviceClassificationDto;
+    classification?: NetworkDeviceClassificationDto | null;
     ipv4!: NetworkDeviceIPv4EntryDto[];
 
     constructor(data?: INetworkDeviceDto) {
@@ -2128,7 +2128,6 @@ export class NetworkDeviceDto implements INetworkDeviceDto {
             }
         }
         if (!data) {
-            this.classification = new NetworkDeviceClassificationDto();
             this.ipv4 = [];
         }
     }
@@ -2142,7 +2141,7 @@ export class NetworkDeviceDto implements INetworkDeviceDto {
             this.floor = _data["floor"] !== undefined ? _data["floor"] : <any>null;
             this.room = _data["room"] !== undefined ? _data["room"] : <any>null;
             this.roomLocation = _data["roomLocation"] !== undefined ? _data["roomLocation"] : <any>null;
-            this.classification = _data["classification"] ? NetworkDeviceClassificationDto.fromJS(_data["classification"]) : new NetworkDeviceClassificationDto();
+            this.classification = _data["classification"] ? NetworkDeviceClassificationDto.fromJS(_data["classification"]) : <any>null;
             if (Array.isArray(_data["ipv4"])) {
                 this.ipv4 = [] as any;
                 for (let item of _data["ipv4"])
@@ -2188,7 +2187,7 @@ export interface INetworkDeviceDto {
     floor?: string | null;
     room?: string | null;
     roomLocation?: string | null;
-    classification: NetworkDeviceClassificationDto;
+    classification?: NetworkDeviceClassificationDto | null;
     ipv4: NetworkDeviceIPv4EntryDto[];
 }
 

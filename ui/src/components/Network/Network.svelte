@@ -4,6 +4,7 @@
   import IPv4Info from "./IPv4Info.svelte";
   
   let devices: NetworkDeviceDto[] = [];
+
   const refreshDevices = async () => {
     devices = await new NetworkClient().getAllDevices();
   };
@@ -12,6 +13,7 @@
 </script>
 
 <div class="mb-3">
+  <button class="btn btn-success" on:click={refreshDevices}>Refresh</button>
   <AddDevice />
 </div>
 
@@ -26,6 +28,7 @@
       <th scope="col">Manufacturer</th>
       <th scope="col">Model</th>
       <th scope="col">IPv4</th>
+      <th scope="col">Add</th>
     </tr>
   </thead>
   <tbody>
@@ -39,18 +42,20 @@
           {#if device.roomLocation}({device.roomLocation}){/if}
         </td>
         <td>
-          {device.classification.category}
-          {#if device.classification.subCategory}
-            - {device.classification.subCategory}
+          {#if device.classification}
+            {device.classification.category}
+            {#if device.classification.subCategory}
+              - {device.classification.subCategory}
+            {/if}
           {/if}
         </td>
         <td>
-          {#if device.classification.manufacturer}
+          {#if device.classification?.manufacturer}
             {device.classification.manufacturer}
           {/if}
         </td>
         <td>
-          {#if device.classification.model}
+          {#if device.classification?.model}
             {device.classification.model}
           {/if}
         </td>
@@ -58,6 +63,12 @@
           {#each device.ipv4 as entry}
             <IPv4Info info={entry} />
           {/each}
+        </td>
+        <td>
+          {#if !device.classification}
+            <i class="bi bi-tag-fill"></i>
+          {/if}
+          <i class="bi bi-ethernet"></i>
         </td>
       </tr>
     {/each}

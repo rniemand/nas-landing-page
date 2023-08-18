@@ -28,7 +28,7 @@ public class NetworkDeviceDto
   public string? RoomLocation { get; set; }
 
   [JsonProperty("classification"), JsonPropertyName("classification")]
-  public NetworkDeviceClassificationDto Classification { get; set; } = new();
+  public NetworkDeviceClassificationDto? Classification { get; set; }
 
   [JsonProperty("ipv4"), JsonPropertyName("ipv4")]
   public List<NetworkDeviceIPv4EntryDto> IPv4 { get; set; } = new();
@@ -42,7 +42,6 @@ public class NetworkDeviceDto
     Room = entity.Room,
     RoomLocation = entity.RoomLocation,
     IsPhysical = entity.IsPhysical,
-    Classification = NetworkDeviceClassificationDto.FromEntity(entity),
   };
 }
 

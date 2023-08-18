@@ -28,7 +28,11 @@ public class NetworkService : INetworkService
     foreach (var dbEntry in dbEntries)
     {
       if (!mappedDevices.ContainsKey(dbEntry.DeviceID))
+      {
         mappedDevices[dbEntry.DeviceID] = NetworkDeviceDto.FromEntity(dbEntry);
+        if (!string.IsNullOrWhiteSpace(dbEntry.Category))
+          mappedDevices[dbEntry.DeviceID].Classification = NetworkDeviceClassificationDto.FromEntity(dbEntry);
+      }
 
       if (!string.IsNullOrWhiteSpace(dbEntry.IPv4))
         mappedDevices[dbEntry.DeviceID].IPv4.Add(NetworkDeviceIPv4EntryDto.FromEntity(dbEntry));
