@@ -71,20 +71,20 @@
         {#if error}<div class="alert alert-danger" role="alert">{error}</div>{/if}
         <form class="row g-3">
           <div class="col-md-6">
-            <label for="name" class="form-label">Name</label>
-            <input type="text" class="form-control" id="name" bind:value={request.category} on:keyup={validate}>
+            <label for="category" class="form-label">Category</label>
+            <input type="text" class="form-control" id="category" bind:value={request.category} on:keyup={validate}>
           </div>
           <div class="col-md-6">
-            <label for="floor" class="form-label">Floor</label>
-            <input type="text" class="form-control" id="floor" bind:value={request.subCategory} on:keyup={validate}>
+            <label for="subCategory" class="form-label">SubCategory</label>
+            <input type="text" class="form-control" id="subCategory" bind:value={request.subCategory} on:keyup={validate}>
           </div>
           <div class="col-md-6">
-            <label for="room" class="form-label">Room</label>
-            <input type="text" class="form-control" id="room" bind:value={request.manufacturer} on:keyup={validate}>
+            <label for="manufacturer" class="form-label">Manufacturer</label>
+            <input type="text" class="form-control" id="manufacturer" bind:value={request.manufacturer} on:keyup={validate}>
           </div>
           <div class="col-md-6">
-            <label for="roomLocation" class="form-label">Room Location</label>
-            <input type="text" class="form-control" id="roomLocation" bind:value={request.model} on:keyup={validate}>
+            <label for="model" class="form-label">Model</label>
+            <input type="text" class="form-control" id="model" bind:value={request.model} on:keyup={validate}>
           </div>
           <div class="col-12" style="text-align: right;">
             <button type="button" class="btn btn-primary" disabled={!canAdd} on:click={classifyDevice}>Classify</button>

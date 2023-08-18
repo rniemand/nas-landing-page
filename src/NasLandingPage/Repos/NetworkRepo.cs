@@ -9,6 +9,7 @@ public interface INetworkRepo
   Task<List<NetworkDeviceInfoEntity>> GetEnabledDevicesAsync();
   Task<int> AddDeviceAsync(AddNetworkDeviceRequest request);
   Task<int> AddDeviceClassificationAsync(ClassifyNetworkDeviceRequest request);
+  Task<int> AddIPv4AddressAsync(AddNetworkIPv4Request request);
 }
 
 public class NetworkRepo : INetworkRepo
@@ -67,6 +68,16 @@ public class NetworkRepo : INetworkRepo
       (`DeviceID`, `Category`, `SubCategory`, `Manufacturer`, `Model`)
     VALUES
       (@DeviceID, @Category, @SubCategory, @Manufacturer, @Model)";
+    await using var connection = _connectionHelper.GetCoreConnection();
+    return await connection.ExecuteAsync(query, request);
+  }
+
+  public async Task<int> AddIPv4AddressAsync(AddNetworkIPv4Request request)
+  {
+    const string query = @"INSERT INTO `NetworkIPv4`
+      (`DeviceID`, `MacAddress`, `IPv4`, `IPv4Int`, `Connection`, `NetworkName`)
+    VALUES
+      (@DeviceID, @MacAddress, @IPv4, INET_ATON(@IPv4), @Connection, @NetworkName)";
     await using var connection = _connectionHelper.GetCoreConnection();
     return await connection.ExecuteAsync(query, request);
   }

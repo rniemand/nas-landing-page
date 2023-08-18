@@ -28,4 +28,8 @@ public class NetworkController : ControllerBase
   [HttpPost("device/classify")]
   public async Task<BoolResponse> ClassifyDevice([FromBody] ClassifyNetworkDeviceRequest request) =>
     await _networkService.ClassifyDeviceAsync(request);
+
+  [HttpPost("device/add-ipv4")]
+  public async Task<BoolResponse> AddIPv4Address([FromBody] AddNetworkIPv4Request request) =>
+    await _networkService.AddIPv4AddressAsync(request);
 }

@@ -10,6 +10,7 @@ public interface INetworkService
   Task<List<NetworkDeviceDto>> GetNetworkDevicesAsync();
   Task<BoolResponse> AddDeviceAsync(AddNetworkDeviceRequest request);
   Task<BoolResponse> ClassifyDeviceAsync(ClassifyNetworkDeviceRequest request);
+  Task<BoolResponse> AddIPv4AddressAsync(AddNetworkIPv4Request request);
 }
 
 public class NetworkService : INetworkService
@@ -54,5 +55,12 @@ public class NetworkService : INetworkService
     var response = new BoolResponse();
     var rowCount = await _networkRepo.AddDeviceClassificationAsync(request);
     return rowCount == 1 ? response : response.AsError("Failed to classify device");
+  }
+
+  public async Task<BoolResponse> AddIPv4AddressAsync(AddNetworkIPv4Request request)
+  {
+    var response = new BoolResponse();
+    var rowCount = await _networkRepo.AddIPv4AddressAsync(request);
+    return rowCount == 1 ? response : response.AsError("Failed to add IPv4 address");
   }
 }

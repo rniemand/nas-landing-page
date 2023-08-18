@@ -1270,6 +1270,8 @@ export interface INetworkClient {
     addDevice(request: AddNetworkDeviceRequest): Promise<BoolResponse>;
 
     classifyDevice(request: ClassifyNetworkDeviceRequest): Promise<BoolResponse>;
+
+    addIPv4Address(request: AddNetworkIPv4Request): Promise<BoolResponse>;
 }
 
 export class NetworkClient extends NlpBaseClient implements INetworkClient {
@@ -1389,6 +1391,46 @@ export class NetworkClient extends NlpBaseClient implements INetworkClient {
     }
 
     protected processClassifyDevice(response: Response): Promise<BoolResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = BoolResponse.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<BoolResponse>(null as any);
+    }
+
+    addIPv4Address(request: AddNetworkIPv4Request): Promise<BoolResponse> {
+        let url_ = this.baseUrl + "/Network/device/add-ipv4";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(request);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processAddIPv4Address(_response));
+        });
+    }
+
+    protected processAddIPv4Address(response: Response): Promise<BoolResponse> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
@@ -2475,6 +2517,58 @@ export interface IClassifyNetworkDeviceRequest {
     subCategory?: string | null;
     manufacturer?: string | null;
     model?: string | null;
+}
+
+export class AddNetworkIPv4Request implements IAddNetworkIPv4Request {
+    deviceID!: number;
+    macAddress?: string | null;
+    iPv4?: string | null;
+    connection!: string;
+    networkName?: string | null;
+
+    constructor(data?: IAddNetworkIPv4Request) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.deviceID = _data["deviceID"] !== undefined ? _data["deviceID"] : <any>null;
+            this.macAddress = _data["macAddress"] !== undefined ? _data["macAddress"] : <any>null;
+            this.iPv4 = _data["iPv4"] !== undefined ? _data["iPv4"] : <any>null;
+            this.connection = _data["connection"] !== undefined ? _data["connection"] : <any>null;
+            this.networkName = _data["networkName"] !== undefined ? _data["networkName"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): AddNetworkIPv4Request {
+        data = typeof data === 'object' ? data : {};
+        let result = new AddNetworkIPv4Request();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["deviceID"] = this.deviceID !== undefined ? this.deviceID : <any>null;
+        data["macAddress"] = this.macAddress !== undefined ? this.macAddress : <any>null;
+        data["iPv4"] = this.iPv4 !== undefined ? this.iPv4 : <any>null;
+        data["connection"] = this.connection !== undefined ? this.connection : <any>null;
+        data["networkName"] = this.networkName !== undefined ? this.networkName : <any>null;
+        return data;
+    }
+}
+
+export interface IAddNetworkIPv4Request {
+    deviceID: number;
+    macAddress?: string | null;
+    iPv4?: string | null;
+    connection: string;
+    networkName?: string | null;
 }
 
 export class UserLinkDto implements IUserLinkDto {
