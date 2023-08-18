@@ -5,8 +5,6 @@
 
   const refreshDevices = async () => {
     devices = await new NetworkClient().getAllDevices();
-
-    console.log('devices', JSON.stringify(devices, null, 2));
   };
 
   refreshDevices();
@@ -44,8 +42,8 @@
         <td>{device.classification.manufacturer}</td>
         <td>{device.classification.model}</td>
         <td>
-          {#each device.iPv4 as entry}
-            <IPv4Info />
+          {#each device.ipv4 as entry}
+            <IPv4Info info={entry} />
           {/each}
         </td>
       </tr>

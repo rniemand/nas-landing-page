@@ -2076,7 +2076,7 @@ export class NetworkDeviceDto implements INetworkDeviceDto {
     room?: string | null;
     roomLocation?: string | null;
     classification!: NetworkDeviceClassificationDto;
-    iPv4!: NetworkDeviceIPv4EntryDto[];
+    ipv4!: NetworkDeviceIPv4EntryDto[];
 
     constructor(data?: INetworkDeviceDto) {
         if (data) {
@@ -2087,7 +2087,7 @@ export class NetworkDeviceDto implements INetworkDeviceDto {
         }
         if (!data) {
             this.classification = new NetworkDeviceClassificationDto();
-            this.iPv4 = [];
+            this.ipv4 = [];
         }
     }
 
@@ -2101,13 +2101,13 @@ export class NetworkDeviceDto implements INetworkDeviceDto {
             this.room = _data["room"] !== undefined ? _data["room"] : <any>null;
             this.roomLocation = _data["roomLocation"] !== undefined ? _data["roomLocation"] : <any>null;
             this.classification = _data["classification"] ? NetworkDeviceClassificationDto.fromJS(_data["classification"]) : new NetworkDeviceClassificationDto();
-            if (Array.isArray(_data["iPv4"])) {
-                this.iPv4 = [] as any;
-                for (let item of _data["iPv4"])
-                    this.iPv4!.push(NetworkDeviceIPv4EntryDto.fromJS(item));
+            if (Array.isArray(_data["ipv4"])) {
+                this.ipv4 = [] as any;
+                for (let item of _data["ipv4"])
+                    this.ipv4!.push(NetworkDeviceIPv4EntryDto.fromJS(item));
             }
             else {
-                this.iPv4 = <any>null;
+                this.ipv4 = <any>null;
             }
         }
     }
@@ -2129,10 +2129,10 @@ export class NetworkDeviceDto implements INetworkDeviceDto {
         data["room"] = this.room !== undefined ? this.room : <any>null;
         data["roomLocation"] = this.roomLocation !== undefined ? this.roomLocation : <any>null;
         data["classification"] = this.classification ? this.classification.toJSON() : <any>null;
-        if (Array.isArray(this.iPv4)) {
-            data["iPv4"] = [];
-            for (let item of this.iPv4)
-                data["iPv4"].push(item.toJSON());
+        if (Array.isArray(this.ipv4)) {
+            data["ipv4"] = [];
+            for (let item of this.ipv4)
+                data["ipv4"].push(item.toJSON());
         }
         return data;
     }
@@ -2147,7 +2147,7 @@ export interface INetworkDeviceDto {
     room?: string | null;
     roomLocation?: string | null;
     classification: NetworkDeviceClassificationDto;
-    iPv4: NetworkDeviceIPv4EntryDto[];
+    ipv4: NetworkDeviceIPv4EntryDto[];
 }
 
 export class NetworkDeviceClassificationDto implements INetworkDeviceClassificationDto {
@@ -2200,8 +2200,8 @@ export interface INetworkDeviceClassificationDto {
 
 export class NetworkDeviceIPv4EntryDto implements INetworkDeviceIPv4EntryDto {
     macAddress?: string | null;
-    iPv4?: string | null;
-    iPv4Int!: number;
+    ipv4?: string | null;
+    ipv4Int!: number;
     connection!: string;
     networkName?: string | null;
 
@@ -2217,8 +2217,8 @@ export class NetworkDeviceIPv4EntryDto implements INetworkDeviceIPv4EntryDto {
     init(_data?: any) {
         if (_data) {
             this.macAddress = _data["macAddress"] !== undefined ? _data["macAddress"] : <any>null;
-            this.iPv4 = _data["iPv4"] !== undefined ? _data["iPv4"] : <any>null;
-            this.iPv4Int = _data["iPv4Int"] !== undefined ? _data["iPv4Int"] : <any>null;
+            this.ipv4 = _data["ipv4"] !== undefined ? _data["ipv4"] : <any>null;
+            this.ipv4Int = _data["ipv4Int"] !== undefined ? _data["ipv4Int"] : <any>null;
             this.connection = _data["connection"] !== undefined ? _data["connection"] : <any>null;
             this.networkName = _data["networkName"] !== undefined ? _data["networkName"] : <any>null;
         }
@@ -2234,8 +2234,8 @@ export class NetworkDeviceIPv4EntryDto implements INetworkDeviceIPv4EntryDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["macAddress"] = this.macAddress !== undefined ? this.macAddress : <any>null;
-        data["iPv4"] = this.iPv4 !== undefined ? this.iPv4 : <any>null;
-        data["iPv4Int"] = this.iPv4Int !== undefined ? this.iPv4Int : <any>null;
+        data["ipv4"] = this.ipv4 !== undefined ? this.ipv4 : <any>null;
+        data["ipv4Int"] = this.ipv4Int !== undefined ? this.ipv4Int : <any>null;
         data["connection"] = this.connection !== undefined ? this.connection : <any>null;
         data["networkName"] = this.networkName !== undefined ? this.networkName : <any>null;
         return data;
@@ -2244,8 +2244,8 @@ export class NetworkDeviceIPv4EntryDto implements INetworkDeviceIPv4EntryDto {
 
 export interface INetworkDeviceIPv4EntryDto {
     macAddress?: string | null;
-    iPv4?: string | null;
-    iPv4Int: number;
+    ipv4?: string | null;
+    ipv4Int: number;
     connection: string;
     networkName?: string | null;
 }
