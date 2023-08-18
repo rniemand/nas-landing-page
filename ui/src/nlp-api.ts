@@ -1263,6 +1263,66 @@ export class ImagesClient extends NlpBaseClient implements IImagesClient {
     }
 }
 
+export interface INetworkClient {
+
+    getAllDevices(): Promise<NetworkDeviceDto[]>;
+}
+
+export class NetworkClient extends NlpBaseClient implements INetworkClient {
+    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+        super();
+        this.http = http ? http : window as any;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    getAllDevices(): Promise<NetworkDeviceDto[]> {
+        let url_ = this.baseUrl + "/Network/devices";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processGetAllDevices(_response));
+        });
+    }
+
+    protected processGetAllDevices(response: Response): Promise<NetworkDeviceDto[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(NetworkDeviceDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<NetworkDeviceDto[]>(null as any);
+    }
+}
+
 export interface IUserLinksClient {
 
     getAllLinks(): Promise<UserLinkDto[]>;
@@ -2005,6 +2065,189 @@ export interface IImageDto {
     imageType: string;
     imageOrder: number;
     imagePath: string;
+}
+
+export class NetworkDeviceDto implements INetworkDeviceDto {
+    deviceID!: number;
+    isPhysical!: boolean;
+    isActive!: boolean;
+    deviceName!: string;
+    floor?: string | null;
+    room?: string | null;
+    roomLocation?: string | null;
+    classification!: NetworkDeviceClassificationDto;
+    iPv4!: NetworkDeviceIPv4EntryDto[];
+
+    constructor(data?: INetworkDeviceDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.classification = new NetworkDeviceClassificationDto();
+            this.iPv4 = [];
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.deviceID = _data["deviceID"] !== undefined ? _data["deviceID"] : <any>null;
+            this.isPhysical = _data["isPhysical"] !== undefined ? _data["isPhysical"] : <any>null;
+            this.isActive = _data["isActive"] !== undefined ? _data["isActive"] : <any>null;
+            this.deviceName = _data["deviceName"] !== undefined ? _data["deviceName"] : <any>null;
+            this.floor = _data["floor"] !== undefined ? _data["floor"] : <any>null;
+            this.room = _data["room"] !== undefined ? _data["room"] : <any>null;
+            this.roomLocation = _data["roomLocation"] !== undefined ? _data["roomLocation"] : <any>null;
+            this.classification = _data["classification"] ? NetworkDeviceClassificationDto.fromJS(_data["classification"]) : new NetworkDeviceClassificationDto();
+            if (Array.isArray(_data["iPv4"])) {
+                this.iPv4 = [] as any;
+                for (let item of _data["iPv4"])
+                    this.iPv4!.push(NetworkDeviceIPv4EntryDto.fromJS(item));
+            }
+            else {
+                this.iPv4 = <any>null;
+            }
+        }
+    }
+
+    static fromJS(data: any): NetworkDeviceDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new NetworkDeviceDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["deviceID"] = this.deviceID !== undefined ? this.deviceID : <any>null;
+        data["isPhysical"] = this.isPhysical !== undefined ? this.isPhysical : <any>null;
+        data["isActive"] = this.isActive !== undefined ? this.isActive : <any>null;
+        data["deviceName"] = this.deviceName !== undefined ? this.deviceName : <any>null;
+        data["floor"] = this.floor !== undefined ? this.floor : <any>null;
+        data["room"] = this.room !== undefined ? this.room : <any>null;
+        data["roomLocation"] = this.roomLocation !== undefined ? this.roomLocation : <any>null;
+        data["classification"] = this.classification ? this.classification.toJSON() : <any>null;
+        if (Array.isArray(this.iPv4)) {
+            data["iPv4"] = [];
+            for (let item of this.iPv4)
+                data["iPv4"].push(item.toJSON());
+        }
+        return data;
+    }
+}
+
+export interface INetworkDeviceDto {
+    deviceID: number;
+    isPhysical: boolean;
+    isActive: boolean;
+    deviceName: string;
+    floor?: string | null;
+    room?: string | null;
+    roomLocation?: string | null;
+    classification: NetworkDeviceClassificationDto;
+    iPv4: NetworkDeviceIPv4EntryDto[];
+}
+
+export class NetworkDeviceClassificationDto implements INetworkDeviceClassificationDto {
+    category!: string;
+    subCategory?: string | null;
+    manufacturer?: string | null;
+    model?: string | null;
+
+    constructor(data?: INetworkDeviceClassificationDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.category = _data["category"] !== undefined ? _data["category"] : <any>null;
+            this.subCategory = _data["subCategory"] !== undefined ? _data["subCategory"] : <any>null;
+            this.manufacturer = _data["manufacturer"] !== undefined ? _data["manufacturer"] : <any>null;
+            this.model = _data["model"] !== undefined ? _data["model"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): NetworkDeviceClassificationDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new NetworkDeviceClassificationDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["category"] = this.category !== undefined ? this.category : <any>null;
+        data["subCategory"] = this.subCategory !== undefined ? this.subCategory : <any>null;
+        data["manufacturer"] = this.manufacturer !== undefined ? this.manufacturer : <any>null;
+        data["model"] = this.model !== undefined ? this.model : <any>null;
+        return data;
+    }
+}
+
+export interface INetworkDeviceClassificationDto {
+    category: string;
+    subCategory?: string | null;
+    manufacturer?: string | null;
+    model?: string | null;
+}
+
+export class NetworkDeviceIPv4EntryDto implements INetworkDeviceIPv4EntryDto {
+    macAddress?: string | null;
+    iPv4?: string | null;
+    iPv4Int!: number;
+    connection!: string;
+    networkName?: string | null;
+
+    constructor(data?: INetworkDeviceIPv4EntryDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.macAddress = _data["macAddress"] !== undefined ? _data["macAddress"] : <any>null;
+            this.iPv4 = _data["iPv4"] !== undefined ? _data["iPv4"] : <any>null;
+            this.iPv4Int = _data["iPv4Int"] !== undefined ? _data["iPv4Int"] : <any>null;
+            this.connection = _data["connection"] !== undefined ? _data["connection"] : <any>null;
+            this.networkName = _data["networkName"] !== undefined ? _data["networkName"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): NetworkDeviceIPv4EntryDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new NetworkDeviceIPv4EntryDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["macAddress"] = this.macAddress !== undefined ? this.macAddress : <any>null;
+        data["iPv4"] = this.iPv4 !== undefined ? this.iPv4 : <any>null;
+        data["iPv4Int"] = this.iPv4Int !== undefined ? this.iPv4Int : <any>null;
+        data["connection"] = this.connection !== undefined ? this.connection : <any>null;
+        data["networkName"] = this.networkName !== undefined ? this.networkName : <any>null;
+        return data;
+    }
+}
+
+export interface INetworkDeviceIPv4EntryDto {
+    macAddress?: string | null;
+    iPv4?: string | null;
+    iPv4Int: number;
+    connection: string;
+    networkName?: string | null;
 }
 
 export class UserLinkDto implements IUserLinkDto {

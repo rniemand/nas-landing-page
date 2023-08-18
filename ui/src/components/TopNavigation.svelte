@@ -45,6 +45,9 @@
         <li class="nav-item">
           <a class="nav-link active" href="/tasks" class:active={path === '/tasks'}>Tasks</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="/network" class:active={path === '/network'}>Network</a>
+        </li>
       </ul>
       <div class="d-flex">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
