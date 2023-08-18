@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using NasLandingPage.Models.Dto;
+using NasLandingPage.Models.Requests;
+using NasLandingPage.Models.Responses;
 using NasLandingPage.Services;
 
 namespace NasLandingPage.Controllers;
@@ -18,4 +20,8 @@ public class NetworkController : ControllerBase
   [HttpGet("devices")]
   public async Task<List<NetworkDeviceDto>> GetAllDevices() =>
     await _networkService.GetNetworkDevicesAsync();
+
+  [HttpPost("add-device")]
+  public async Task<BoolResponse> AddDevice([FromBody] AddNetworkDeviceRequest request) =>
+    await _networkService.AddDeviceAsync(request);
 }

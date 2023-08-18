@@ -1,4 +1,6 @@
 using NasLandingPage.Models.Dto;
+using NasLandingPage.Models.Requests;
+using NasLandingPage.Models.Responses;
 using NasLandingPage.Repos;
 
 namespace NasLandingPage.Services;
@@ -6,6 +8,7 @@ namespace NasLandingPage.Services;
 public interface INetworkService
 {
   Task<List<NetworkDeviceDto>> GetNetworkDevicesAsync();
+  Task<BoolResponse> AddDeviceAsync(AddNetworkDeviceRequest request);
 }
 
 public class NetworkService : INetworkService
@@ -26,9 +29,18 @@ public class NetworkService : INetworkService
     {
       if (!mappedDevices.ContainsKey(dbEntry.DeviceID))
         mappedDevices[dbEntry.DeviceID] = NetworkDeviceDto.FromEntity(dbEntry);
-      mappedDevices[dbEntry.DeviceID].IPv4.Add(NetworkDeviceIPv4EntryDto.FromEntity(dbEntry));
+
+      if (!string.IsNullOrWhiteSpace(dbEntry.IPv4))
+        mappedDevices[dbEntry.DeviceID].IPv4.Add(NetworkDeviceIPv4EntryDto.FromEntity(dbEntry));
     }
 
     return mappedDevices.Select(device => device.Value).ToList();
+  }
+
+  public async Task<BoolResponse> AddDeviceAsync(AddNetworkDeviceRequest request)
+  {
+    var response = new BoolResponse();
+    var rowCount = await _networkRepo.AddDeviceAsync(request);
+    return rowCount == 1 ? response : response.AsError("Failed to add device");
   }
 }

@@ -1266,6 +1266,8 @@ export class ImagesClient extends NlpBaseClient implements IImagesClient {
 export interface INetworkClient {
 
     getAllDevices(): Promise<NetworkDeviceDto[]>;
+
+    addDevice(request: AddNetworkDeviceRequest): Promise<BoolResponse>;
 }
 
 export class NetworkClient extends NlpBaseClient implements INetworkClient {
@@ -1320,6 +1322,46 @@ export class NetworkClient extends NlpBaseClient implements INetworkClient {
             });
         }
         return Promise.resolve<NetworkDeviceDto[]>(null as any);
+    }
+
+    addDevice(request: AddNetworkDeviceRequest): Promise<BoolResponse> {
+        let url_ = this.baseUrl + "/Network/add-device";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(request);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processAddDevice(_response));
+        });
+    }
+
+    protected processAddDevice(response: Response): Promise<BoolResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = BoolResponse.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<BoolResponse>(null as any);
     }
 }
 
@@ -2248,6 +2290,98 @@ export interface INetworkDeviceIPv4EntryDto {
     ipv4Int: number;
     connection: string;
     networkName?: string | null;
+}
+
+export class BoolResponse implements IBoolResponse {
+    success!: boolean;
+    error?: string | null;
+
+    constructor(data?: IBoolResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.success = _data["success"] !== undefined ? _data["success"] : <any>null;
+            this.error = _data["error"] !== undefined ? _data["error"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): BoolResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new BoolResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["success"] = this.success !== undefined ? this.success : <any>null;
+        data["error"] = this.error !== undefined ? this.error : <any>null;
+        return data;
+    }
+}
+
+export interface IBoolResponse {
+    success: boolean;
+    error?: string | null;
+}
+
+export class AddNetworkDeviceRequest implements IAddNetworkDeviceRequest {
+    isPhysical!: boolean;
+    deviceName!: string;
+    floor?: string | null;
+    room?: string | null;
+    roomLocation?: string | null;
+
+    constructor(data?: IAddNetworkDeviceRequest) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.isPhysical = _data["isPhysical"] !== undefined ? _data["isPhysical"] : <any>null;
+            this.deviceName = _data["deviceName"] !== undefined ? _data["deviceName"] : <any>null;
+            this.floor = _data["floor"] !== undefined ? _data["floor"] : <any>null;
+            this.room = _data["room"] !== undefined ? _data["room"] : <any>null;
+            this.roomLocation = _data["roomLocation"] !== undefined ? _data["roomLocation"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): AddNetworkDeviceRequest {
+        data = typeof data === 'object' ? data : {};
+        let result = new AddNetworkDeviceRequest();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["isPhysical"] = this.isPhysical !== undefined ? this.isPhysical : <any>null;
+        data["deviceName"] = this.deviceName !== undefined ? this.deviceName : <any>null;
+        data["floor"] = this.floor !== undefined ? this.floor : <any>null;
+        data["room"] = this.room !== undefined ? this.room : <any>null;
+        data["roomLocation"] = this.roomLocation !== undefined ? this.roomLocation : <any>null;
+        return data;
+    }
+}
+
+export interface IAddNetworkDeviceRequest {
+    isPhysical: boolean;
+    deviceName: string;
+    floor?: string | null;
+    room?: string | null;
+    roomLocation?: string | null;
 }
 
 export class UserLinkDto implements IUserLinkDto {

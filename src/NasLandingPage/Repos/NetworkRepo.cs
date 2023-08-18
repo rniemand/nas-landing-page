@@ -1,11 +1,13 @@
 using Dapper;
 using NasLandingPage.Models.Entities;
+using NasLandingPage.Models.Requests;
 
 namespace NasLandingPage.Repos;
 
 public interface INetworkRepo
 {
   Task<List<NetworkDeviceInfoEntity>> GetEnabledDevicesAsync();
+  Task<int> AddDeviceAsync(AddNetworkDeviceRequest request);
 }
 
 public class NetworkRepo : INetworkRepo
@@ -46,5 +48,15 @@ public class NetworkRepo : INetworkRepo
     ORDER BY ip4.IPv4Int";
     await using var connection = _connectionHelper.GetCoreConnection();
     return (await connection.QueryAsync<NetworkDeviceInfoEntity>(query)).AsList();
+  }
+
+  public async Task<int> AddDeviceAsync(AddNetworkDeviceRequest request)
+  {
+    const string query = @"INSERT INTO `NetworkDevices`
+      (`IsPhysical`, `IsActive`, `DeviceName`, `Floor`, `Room`, `RoomLocation`)
+    VALUES
+      (@IsPhysical, TRUE, @DeviceName, @Floor, @Room, @RoomLocation)";
+    await using var connection = _connectionHelper.GetCoreConnection();
+    return await connection.ExecuteAsync(query, request);
   }
 }
