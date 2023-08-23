@@ -4,9 +4,11 @@
 	import { ContainerClient, ContainerDto, ContainerItemDto } from '../../nlp-api';
 	import { ContainerHelper } from './ContainerHelper';
 	import Spinner from '../Spinner.svelte';
+	import ContainerCategoryInput from './ContainerCategoryInput.svelte';
+	import { error } from '@sveltejs/kit';
 
-  // export let onContainerAdded: () => void = () => {};
   export let container: ContainerDto | undefined = undefined;
+  export let onItemAdded: () => void = () => {};
 
   let _modal: BSModal;
   let _modalVisible: boolean = false;
@@ -18,28 +20,27 @@
   const onModalShown = () => _modalVisible = true;
   const onModalHidden = () => _modalVisible = false;
 
-  // const addContainer = async () => {
-  //   saving = true;
-  //   const response = await new ContainerClient().addContainer(request);
-  //   saving = false;
+  const addItem = async () => {
+    saving = true;
+    const response = await new ContainerClient().addContainerItem(request);
+    saving = false;
 
-  //   if(!response.success) {
-  //     message = response.error!;
-  //     return;
-  //   }
-
-  //   onContainerAdded();
-  //   resetRequest();
-  //   _modal.hide();
-  // };
+    if(response.success) {
+      onItemAdded();
+      resetRequest();
+      _modal.hide();
+      return;
+    }
+    
+    message = response.error || '';
+  };
 
   const syncRequest = () => {
     canAdd = false;
-    // request.containerLabel = ContainerHelper.generateLabel(request);
-    // if(request.containerName.length < 2) return;
-    // checkIfContainerExists();
-
-    console.log('r', request);
+    if(request.category?.length < 2) return;
+    if(request.subCategory?.length < 2) return;
+    if(request.inventoryName?.length < 2) return;
+    canAdd = true;
   };
 
   const resetRequest = () => {
@@ -60,14 +61,7 @@
     });
     syncRequest();
   };
-
-  // const checkIfContainerExists = async () => {
-  //   canAdd = false;
-  //   const response = await new ContainerClient().checkContainerExists(request);
-  //   canAdd = !response.success;
-  //   message = canAdd ? '' : `A container already exists with the name: ${request.containerLabel}`;
-  // };
-
+  
   const updateModal = (_visible: boolean) => {
     if(!_visible) return;
     resetRequest();
@@ -106,49 +100,49 @@
           <form class="row g-3">
             <div class="col-md-4">
               <label for="quantity" class="form-label">Quantity</label>
-              <input type="number" class="form-control" min="0" id="quantity" bind:value={request.quantity}>
+              <input type="number" class="form-control" min="0" id="quantity" bind:value={request.quantity} on:keyup={syncRequest} on:change={syncRequest}>
             </div>
             <div class="col-md-4">
               <label for="orderMoreQty" class="form-label">Order More Qty</label>
-              <input type="number" class="form-control" min="0" id="orderMoreQty" bind:value={request.orderMoreMinQty}>
+              <input type="number" class="form-control" min="0" id="orderMoreQty" bind:value={request.orderMoreMinQty} on:keyup={syncRequest} on:change={syncRequest}>
             </div>
             <div class="col-md-4">
               <label for="orderUrl" class="form-label">Order URL</label>
-              <input type="text" class="form-control" min="0" id="orderUrl" bind:value={request.orderUrl}>
+              <input type="text" class="form-control" id="orderUrl" bind:value={request.orderUrl} on:keyup={syncRequest} on:change={syncRequest}>
             </div>
             
             <div class="col-md-6">
               <label for="category" class="form-label">Category</label>
-              <input type="text" class="form-control" min="0" id="category" bind:value={request.category}>
+              <ContainerCategoryInput bind:value={request.category} onChange={syncRequest} />
             </div>
             <div class="col-md-6">
               <label for="subCategory" class="form-label">Sub subCategory</label>
-              <input type="text" class="form-control" min="0" id="subCategory" bind:value={request.subCategory}>
+              <input type="text" class="form-control" id="subCategory" bind:value={request.subCategory} on:keyup={syncRequest} on:change={syncRequest}>
             </div>
 
             <div class="col-md-12">
               <label for="itemName" class="form-label">Item Name</label>
-              <input type="text" class="form-control" min="0" id="itemName" bind:value={request.inventoryName}>
+              <input type="text" class="form-control" id="itemName" bind:value={request.inventoryName} on:keyup={syncRequest} on:change={syncRequest}>
             </div>
 
             <div class="d-flex">
               <div class="form-check form-switch form-check-inline">
-                <input class="form-check-input" type="checkbox" role="switch" id="orderMore" bind:checked={request.orderMore}>
+                <input class="form-check-input" type="checkbox" role="switch" id="orderMore" bind:checked={request.orderMore} on:change={syncRequest}>
                 <label class="form-check-label" for="orderMore">Order More</label>
               </div>
               <div class="form-check form-switch form-check-inline">
-                <input class="form-check-input" type="checkbox" role="switch" id="orderPlaced" bind:checked={request.orderPlaced}>
+                <input class="form-check-input" type="checkbox" role="switch" id="orderPlaced" bind:checked={request.orderPlaced} on:change={syncRequest}>
                 <label class="form-check-label" for="orderPlaced">Order Placed</label>
               </div>
               <div class="form-check form-switch form-check-inline">
-                <input class="form-check-input" type="checkbox" role="switch" id="autoFlagOrderMore" bind:checked={request.autoFlagOrderMore}>
+                <input class="form-check-input" type="checkbox" role="switch" id="autoFlagOrderMore" bind:checked={request.autoFlagOrderMore} on:change={syncRequest}>
                 <label class="form-check-label" for="autoFlagOrderMore">Auto Flag Order</label>
               </div>
             </div>
 
             {#if message.length > 0}<div class="alert alert-warning" role="alert">{message}</div>{/if}
             <div class="col-12" style="text-align: right;">
-              <button type="button" class="btn btn-primary" disabled={!canAdd}>Add Item(s)</button>
+              <button type="button" class="btn btn-primary" disabled={!canAdd} on:click={addItem}>Add Item(s)</button>
             </div>
           </form>
         {/if}

@@ -11,6 +11,7 @@ public interface IContainerRepo
   Task<int> ContainerExistsAsync(ContainerEntity container);
   Task<ContainerEntity> GetContainerAsync(int containerId);
   Task<int> AddContainerItemAsync(ContainerItemEntity item);
+  Task<string[]> GetItemCategoriesAsync(string term);
 }
 
 public class ContainerRepo : IContainerRepo
@@ -92,15 +93,26 @@ public class ContainerRepo : IContainerRepo
   {
     const string query = @"INSERT INTO `ContainerItems`
       (
-        `ContainerId`, `Quantity`, `OrderMoreMinQty`, `Deleted`, `OrderMore`, `OrderPlaced`,
+        `ContainerId`, `Quantity`, `OrderMoreMinQty`, `OrderMore`, `OrderPlaced`,
         `AutoFlagOrderMore`, `Category`, `SubCategory`, `InventoryName`, `OrderUrl`
       )
     VALUES
       (
-        @ContainerId, @Quantity, @OrderMoreMinQty, @Deleted, @OrderMore, @OrderPlaced,
+        @ContainerId, @Quantity, @OrderMoreMinQty, @OrderMore, @OrderPlaced,
         @AutoFlagOrderMore, @Category, @SubCategory, @InventoryName, @OrderUrl
       )";
     await using var connection = _connectionHelper.GetCoreConnection();
     return await connection.ExecuteAsync(query, item);
+  }
+
+  public async Task<string[]> GetItemCategoriesAsync(string term)
+  {
+    var query = @$"SELECT distinct ci.`Category`
+    FROM `ContainerItems` ci
+    WHERE ci.Deleted = 0
+	    AND ci.Category LIKE '%{term}%'
+    ORDER BY ci.Category";
+    await using var connection = _connectionHelper.GetCoreConnection();
+    return (await connection.QueryAsync<string>(query)).ToArray();
   }
 }
