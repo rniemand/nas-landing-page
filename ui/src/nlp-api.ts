@@ -431,7 +431,9 @@ export interface IContainerClient {
 
     addContainerItem(item: ContainerItemDto): Promise<BoolResponse>;
 
-    getItemCategories(term: string): Promise<string[]>;
+    getItemCategories(request: CategoryRequest): Promise<string[]>;
+
+    getItemSubCategories(request: CategoryRequest): Promise<string[]>;
 }
 
 export class ContainerClient extends NlpBaseClient implements IContainerClient {
@@ -647,11 +649,11 @@ export class ContainerClient extends NlpBaseClient implements IContainerClient {
         return Promise.resolve<BoolResponse>(null as any);
     }
 
-    getItemCategories(term: string): Promise<string[]> {
+    getItemCategories(request: CategoryRequest): Promise<string[]> {
         let url_ = this.baseUrl + "/Container/item/categories/list";
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(term);
+        const content_ = JSON.stringify(request);
 
         let options_: RequestInit = {
             body: content_,
@@ -670,6 +672,53 @@ export class ContainerClient extends NlpBaseClient implements IContainerClient {
     }
 
     protected processGetItemCategories(response: Response): Promise<string[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(item);
+            }
+            else {
+                result200 = <any>null;
+            }
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<string[]>(null as any);
+    }
+
+    getItemSubCategories(request: CategoryRequest): Promise<string[]> {
+        let url_ = this.baseUrl + "/Container/item/sub-categories/list";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(request);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processGetItemSubCategories(_response));
+        });
+    }
+
+    protected processGetItemSubCategories(response: Response): Promise<string[]> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
@@ -2231,6 +2280,46 @@ export interface IContainerItemDto {
     subCategory: string;
     inventoryName: string;
     orderUrl: string;
+}
+
+export class CategoryRequest implements ICategoryRequest {
+    category!: string;
+    subCategory!: string;
+
+    constructor(data?: ICategoryRequest) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.category = _data["category"] !== undefined ? _data["category"] : <any>null;
+            this.subCategory = _data["subCategory"] !== undefined ? _data["subCategory"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): CategoryRequest {
+        data = typeof data === 'object' ? data : {};
+        let result = new CategoryRequest();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["category"] = this.category !== undefined ? this.category : <any>null;
+        data["subCategory"] = this.subCategory !== undefined ? this.subCategory : <any>null;
+        return data;
+    }
+}
+
+export interface ICategoryRequest {
+    category: string;
+    subCategory: string;
 }
 
 export class GameLocationDto implements IGameLocationDto {

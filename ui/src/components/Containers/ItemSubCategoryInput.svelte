@@ -4,19 +4,8 @@
     font-size: 1em;
     position: relative;
     display: block;
-    /* font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif; */
   }
-  .search .input {
-    display: flex;
-  }
-  /* .search .input input {
-    flex: 1 0 auto;
-    line-height: 1.2em;
-    padding: 0.6em 1em;
-    border: 1px solid rgba(34,36,38,.15);
-    border-radius: 500rem;
-    overflow: visible;
-  } */
+  .search .input { display: flex; }
   .results {
     display: none;
     position: absolute;
@@ -60,22 +49,27 @@
 </style>
 
 <script lang="ts">
-	import { ContainerClient } from "../../nlp-api";
+	import { CategoryRequest, ContainerClient } from "../../nlp-api";
 	import Spinner from "../Spinner.svelte";
 	import { SearchResult } from "./ContainerHelper";
 
   export let value: string = '';
+  export let category: string = '';
   export let onChange: () => void = () => {};
   let hasResults = false;
   let loading: boolean = false;
   let results: SearchResult[] = [];
   let canSearch: boolean = false;
 
-  const refreshSuggestions = async (_term: string | undefined) => {
+  const refreshSuggestions = async (_term: string | undefined, _category: string) => {
     if(!canSearch) return;
     onChange();
     loading = true;
-    const response = await new ContainerClient().getItemCategories(_term || '') || [];
+    const itemRequest = new CategoryRequest({
+      category: _category,
+      subCategory: _term || '',
+    });
+    const response = await new ContainerClient().getItemSubCategories(itemRequest) || [];
     results = response.map((cat: string) => new SearchResult(cat));
     hasResults = results.length > 0;
     loading = false;
@@ -86,16 +80,22 @@
     value = item.value || item.title;
   };
 
-  $: refreshSuggestions(value);
+  const onBlur = () => {
+    canSearch = false;
+    setTimeout(() => { hasResults = false; }, 100);
+  };
+
+  const onFocus = () => {
+    canSearch = true;
+    if(category.length > 0) refreshSuggestions(value, category);
+  };
+
+  $: refreshSuggestions(value, category);
 </script>
 
 <div class="search">
   <div class="input">
-    <input type="text" class="form-control" placeholder="Search" 
-      bind:value={value}
-      on:focus={() => canSearch = true}
-      on:blur={() => canSearch = false}
-    />
+    <input type="text" class="form-control" placeholder="Search" bind:value={value} on:focus={onFocus} on:blur={onBlur} />
     <Spinner show={loading} />
   </div>
   <div class="results" class:visible={hasResults}>

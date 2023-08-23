@@ -2,10 +2,9 @@
   import { Modal as BSModal } from 'bootstrap';
   import { onMount } from "svelte";
 	import { ContainerClient, ContainerDto, ContainerItemDto } from '../../nlp-api';
-	import { ContainerHelper } from './ContainerHelper';
 	import Spinner from '../Spinner.svelte';
-	import ContainerCategoryInput from './ContainerCategoryInput.svelte';
-	import { error } from '@sveltejs/kit';
+	import ItemCategoryInput from './ItemCategoryInput.svelte';
+	import ItemSubCategoryInput from './ItemSubCategoryInput.svelte';
 
   export let container: ContainerDto | undefined = undefined;
   export let onItemAdded: () => void = () => {};
@@ -113,11 +112,12 @@
             
             <div class="col-md-6">
               <label for="category" class="form-label">Category</label>
-              <ContainerCategoryInput bind:value={request.category} onChange={syncRequest} />
+              <ItemCategoryInput bind:value={request.category} onChange={syncRequest} />
             </div>
             <div class="col-md-6">
               <label for="subCategory" class="form-label">Sub subCategory</label>
-              <input type="text" class="form-control" id="subCategory" bind:value={request.subCategory} on:keyup={syncRequest} on:change={syncRequest}>
+              <!-- <input type="text" class="form-control" id="subCategory" bind:value={request.subCategory} on:keyup={syncRequest} on:change={syncRequest}> -->
+              <ItemSubCategoryInput bind:value={request.subCategory} bind:category={request.category} onChange={syncRequest} />
             </div>
 
             <div class="col-md-12">

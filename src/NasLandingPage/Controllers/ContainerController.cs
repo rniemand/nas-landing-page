@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using NasLandingPage.Models.Dto;
+using NasLandingPage.Models.Requests;
 using NasLandingPage.Models.Responses;
 using NasLandingPage.Services;
 
@@ -37,6 +38,10 @@ public class ContainerController : ControllerBase
     await _containerService.AddContainerItemAsync(item);
 
   [HttpPost("item/categories/list")]
-  public async Task<string[]> GetItemCategories([FromBody] string term) =>
-    await _containerService.GetItemCategoriesAsync(term);
+  public async Task<string[]> GetItemCategories([FromBody] CategoryRequest request) =>
+    await _containerService.GetItemCategoriesAsync(request);
+
+  [HttpPost("item/sub-categories/list")]
+  public async Task<string[]> GetItemSubCategories([FromBody] CategoryRequest request) =>
+    await _containerService.GetItemSubCategoriesAsync(request);
 }

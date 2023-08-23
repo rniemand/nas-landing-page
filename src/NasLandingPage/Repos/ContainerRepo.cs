@@ -12,6 +12,7 @@ public interface IContainerRepo
   Task<ContainerEntity> GetContainerAsync(int containerId);
   Task<int> AddContainerItemAsync(ContainerItemEntity item);
   Task<string[]> GetItemCategoriesAsync(string term);
+  Task<string[]> GetItemSubCategoriesAsync(string category, string term);
 }
 
 public class ContainerRepo : IContainerRepo
@@ -111,6 +112,18 @@ public class ContainerRepo : IContainerRepo
     FROM `ContainerItems` ci
     WHERE ci.Deleted = 0
 	    AND ci.Category LIKE '%{term}%'
+    ORDER BY ci.Category";
+    await using var connection = _connectionHelper.GetCoreConnection();
+    return (await connection.QueryAsync<string>(query)).ToArray();
+  }
+
+  public async Task<string[]> GetItemSubCategoriesAsync(string category, string term)
+  {
+    var query = @$"SELECT distinct ci.`SubCategory`
+    FROM `ContainerItems` ci
+    WHERE ci.Deleted = 0
+	    AND ci.Category = '{category}'
+      AND ci.SubCategory LIKE '%{term}%'
     ORDER BY ci.Category";
     await using var connection = _connectionHelper.GetCoreConnection();
     return (await connection.QueryAsync<string>(query)).ToArray();

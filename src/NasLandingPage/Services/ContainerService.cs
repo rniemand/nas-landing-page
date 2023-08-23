@@ -1,4 +1,5 @@
 using NasLandingPage.Models.Dto;
+using NasLandingPage.Models.Requests;
 using NasLandingPage.Models.Responses;
 using NasLandingPage.Repos;
 
@@ -11,7 +12,8 @@ public interface IContainerService
   Task<BoolResponse> ContainerExistsAsync(ContainerDto containerDto);
   Task<ContainerDto> GetContainerAsync(int containerId);
   Task<BoolResponse> AddContainerItemAsync(ContainerItemDto itemDto);
-  Task<string[]> GetItemCategoriesAsync(string term);
+  Task<string[]> GetItemCategoriesAsync(CategoryRequest request);
+  Task<string[]> GetItemSubCategoriesAsync(CategoryRequest request);
 }
 
 public class ContainerService : IContainerService
@@ -52,6 +54,9 @@ public class ContainerService : IContainerService
     return rowCount == 1 ? response : response.AsError("Failed to add container item");
   }
 
-  public async Task<string[]> GetItemCategoriesAsync(string term) =>
-    await _containerRepo.GetItemCategoriesAsync(term);
+  public async Task<string[]> GetItemCategoriesAsync(CategoryRequest request) =>
+    await _containerRepo.GetItemCategoriesAsync(request.Category);
+
+  public async Task<string[]> GetItemSubCategoriesAsync(CategoryRequest request) =>
+    await _containerRepo.GetItemSubCategoriesAsync(request.Category, request.SubCategory);
 }
