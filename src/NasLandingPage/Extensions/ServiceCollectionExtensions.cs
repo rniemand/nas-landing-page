@@ -33,6 +33,7 @@ public static class ServiceCollectionExtensions
       .AddSingleton<IOAuthRepo, OAuthRepo>()
       .AddSingleton<IFitBitSummaryDataRepo, FitBitSummaryDataRepo>()
       .AddSingleton<INetworkRepo, NetworkRepo>()
+      .AddSingleton<IContainerRepo, ContainerRepo>()
       // Factories
       .AddSingleton<IGitHubClientFactory, GitHubClientFactory>()
       // Helpers
@@ -49,7 +50,8 @@ public static class ServiceCollectionExtensions
       .AddSingleton<IGamePlatformService, GamePlatformService>()
       .AddSingleton<IGameReceiptService, GameReceiptService>()
       .AddSingleton<IFitBitService, FitBitService>()
-      .AddSingleton<INetworkService, NetworkService>();
+      .AddSingleton<INetworkService, NetworkService>()
+      .AddSingleton<IContainerService, ContainerService>();
   }
 
   private static AppConfig BindAppConfig(IConfiguration configuration)
