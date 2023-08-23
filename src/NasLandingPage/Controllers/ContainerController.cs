@@ -44,4 +44,8 @@ public class ContainerController : ControllerBase
   [HttpPost("item/sub-categories/list")]
   public async Task<string[]> GetItemSubCategories([FromBody] CategoryRequest request) =>
     await _containerService.GetItemSubCategoriesAsync(request);
+
+  [HttpGet("items/container-id/{containerId:int}")]
+  public async Task<List<ContainerItemDto>> GetContainerItems([FromRoute] int containerId) =>
+    await _containerService.GetContainerItemsAsync(containerId);
 }

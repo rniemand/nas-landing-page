@@ -14,6 +14,7 @@ public interface IContainerService
   Task<BoolResponse> AddContainerItemAsync(ContainerItemDto itemDto);
   Task<string[]> GetItemCategoriesAsync(CategoryRequest request);
   Task<string[]> GetItemSubCategoriesAsync(CategoryRequest request);
+  Task<List<ContainerItemDto>> GetContainerItemsAsync(int containerId);
 }
 
 public class ContainerService : IContainerService
@@ -59,4 +60,10 @@ public class ContainerService : IContainerService
 
   public async Task<string[]> GetItemSubCategoriesAsync(CategoryRequest request) =>
     await _containerRepo.GetItemSubCategoriesAsync(request.Category, request.SubCategory);
+
+  public async Task<List<ContainerItemDto>> GetContainerItemsAsync(int containerId)
+  {
+    var dbItems = await _containerRepo.GetContainerItemsAsync(containerId);
+    return dbItems.Select(ContainerItemDto.FromEntity).ToList();
+  }
 }

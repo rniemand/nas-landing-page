@@ -116,7 +116,6 @@
             </div>
             <div class="col-md-6">
               <label for="subCategory" class="form-label">Sub subCategory</label>
-              <!-- <input type="text" class="form-control" id="subCategory" bind:value={request.subCategory} on:keyup={syncRequest} on:change={syncRequest}> -->
               <ItemSubCategoryInput bind:value={request.subCategory} bind:category={request.category} onChange={syncRequest} />
             </div>
 

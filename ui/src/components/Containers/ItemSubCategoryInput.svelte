@@ -90,7 +90,12 @@
     if(category.length > 0) refreshSuggestions(value, category);
   };
 
+  const onCategoryChange = (_category: string) => {
+    value = '';
+  };
+
   $: refreshSuggestions(value, category);
+  $: onCategoryChange(category);
 </script>
 
 <div class="search">

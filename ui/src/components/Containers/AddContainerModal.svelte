@@ -82,7 +82,7 @@
   $: updateModal(_modalVisible);
 </script>
 
-<button class="btn btn-success" on:click={() => _modal.show()}>Add</button>
+<button class="btn btn-success" on:click={() => _modal.show()}>Add Container</button>
 
 <div class="modal fade" id="addContainerModal" tabindex="-1" aria-labelledby="addContainerModalLabel" aria-hidden="true">
   <div class="modal-dialog">

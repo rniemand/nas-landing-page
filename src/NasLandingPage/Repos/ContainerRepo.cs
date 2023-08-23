@@ -1,6 +1,5 @@
 using Dapper;
 using NasLandingPage.Models.Entities;
-using System.ComponentModel;
 
 namespace NasLandingPage.Repos;
 
@@ -13,6 +12,7 @@ public interface IContainerRepo
   Task<int> AddContainerItemAsync(ContainerItemEntity item);
   Task<string[]> GetItemCategoriesAsync(string term);
   Task<string[]> GetItemSubCategoriesAsync(string category, string term);
+  Task<List<ContainerItemEntity>> GetContainerItemsAsync(int containerId);
 }
 
 public class ContainerRepo : IContainerRepo
@@ -127,5 +127,19 @@ public class ContainerRepo : IContainerRepo
     ORDER BY ci.Category";
     await using var connection = _connectionHelper.GetCoreConnection();
     return (await connection.QueryAsync<string>(query)).ToArray();
+  }
+
+  public async Task<List<ContainerItemEntity>> GetContainerItemsAsync(int containerId)
+  {
+    var query = $@"SELECT
+      ci.*
+    FROM `Containers` con
+    INNER JOIN `ContainerItems` ci
+	    ON ci.ContainerId = con.ContainerId
+    WHERE con.ContainerId = {containerId}
+	    AND ci.Deleted = 0
+    ORDER BY ci.Category, ci.SubCategory, ci.InventoryName";
+    await using var connection = _connectionHelper.GetCoreConnection();
+    return (await connection.QueryAsync<ContainerItemEntity>(query)).ToList();
   }
 }
