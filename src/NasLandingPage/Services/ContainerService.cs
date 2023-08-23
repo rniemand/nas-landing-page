@@ -52,6 +52,7 @@ public class ContainerService : IContainerService
   {
     var response = new BoolResponse();
     var rowCount = await _containerRepo.AddContainerItemAsync(itemDto.ToEntity());
+    await _containerRepo.UpdateContainerItemCountAsync(itemDto.ContainerId);
     return rowCount == 1 ? response : response.AsError("Failed to add container item");
   }
 

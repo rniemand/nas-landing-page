@@ -13,6 +13,7 @@ public interface IContainerRepo
   Task<string[]> GetItemCategoriesAsync(string term);
   Task<string[]> GetItemSubCategoriesAsync(string category, string term);
   Task<List<ContainerItemEntity>> GetContainerItemsAsync(int containerId);
+  Task<int> UpdateContainerItemCountAsync(int containerId);
 }
 
 public class ContainerRepo : IContainerRepo
@@ -141,5 +142,19 @@ public class ContainerRepo : IContainerRepo
     ORDER BY ci.Category, ci.SubCategory, ci.InventoryName";
     await using var connection = _connectionHelper.GetCoreConnection();
     return (await connection.QueryAsync<ContainerItemEntity>(query)).ToList();
+  }
+
+  public async Task<int> UpdateContainerItemCountAsync(int containerId)
+  {
+    var query = $@"UPDATE `Containers` c
+    SET c.`ItemCount` = (
+	    SELECT SUM(ci.Quantity)
+	    FROM `ContainerItems` ci
+	    WHERE ci.ContainerId = {containerId}
+	    AND ci.Deleted = 0
+    )
+    WHERE c.ContainerId = {containerId}";
+    await using var connection = _connectionHelper.GetCoreConnection();
+    return await connection.ExecuteAsync(query);
   }
 }
