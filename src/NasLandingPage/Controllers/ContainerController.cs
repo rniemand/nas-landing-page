@@ -27,4 +27,12 @@ public class ContainerController : ControllerBase
   [HttpPost("exists")]
   public async Task<BoolResponse> CheckContainerExists([FromBody] ContainerDto container) =>
     await _containerService.ContainerExistsAsync(container);
+
+  [HttpGet("id/{containerId:int}")]
+  public async Task<ContainerDto> GetContainer([FromRoute] int containerId) =>
+    await _containerService.GetContainerAsync(containerId);
+
+  [HttpPost("items/add")]
+  public async Task<BoolResponse> AddContainerItem([FromBody] ContainerItemDto item) =>
+    await _containerService.AddContainerItemAsync(item);
 }

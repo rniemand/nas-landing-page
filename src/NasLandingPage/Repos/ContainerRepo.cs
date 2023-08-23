@@ -1,5 +1,6 @@
 using Dapper;
 using NasLandingPage.Models.Entities;
+using System.ComponentModel;
 
 namespace NasLandingPage.Repos;
 
@@ -8,6 +9,8 @@ public interface IContainerRepo
   Task<int> AddContainerAsync(ContainerEntity container);
   Task<List<ContainerEntity>> GetAllContainersAsync();
   Task<int> ContainerExistsAsync(ContainerEntity container);
+  Task<ContainerEntity> GetContainerAsync(int containerId);
+  Task<int> AddContainerItemAsync(ContainerItemEntity item);
 }
 
 public class ContainerRepo : IContainerRepo
@@ -62,5 +65,42 @@ public class ContainerRepo : IContainerRepo
 	    AND c.Deleted = 0";
     await using var connection = _connectionHelper.GetCoreConnection();
     return await connection.ExecuteScalarAsync<int>(query, container);
+  }
+
+  public async Task<ContainerEntity> GetContainerAsync(int containerId)
+  {
+    var query = @"SELECT
+	    con.`ContainerId`,
+	    con.`Deleted`,
+	    con.`ShelfNumber`,
+	    con.`ShelfLevel`,
+	    con.`ShelfRow`,
+	    con.`ShelfRowPosition`,
+	    con.`ItemCount`,
+	    con.`DateAddedUtc`,
+	    con.`DateUpdatedUtc`,
+	    con.`ContainerLabel`,
+	    con.`ContainerName`,
+	    con.`Notes`
+    FROM `Containers` con
+    WHERE con.`ContainerId` = @ContainerId";
+    await using var connection = _connectionHelper.GetCoreConnection();
+    return await connection.QuerySingleAsync<ContainerEntity>(query, new { ContainerId = containerId });
+  }
+
+  public async Task<int> AddContainerItemAsync(ContainerItemEntity item)
+  {
+    const string query = @"INSERT INTO `ContainerItems`
+      (
+        `ContainerId`, `Quantity`, `OrderMoreMinQty`, `Deleted`, `OrderMore`, `OrderPlaced`,
+        `AutoFlagOrderMore`, `Category`, `SubCategory`, `InventoryName`, `OrderUrl`
+      )
+    VALUES
+      (
+        @ContainerId, @Quantity, @OrderMoreMinQty, @Deleted, @OrderMore, @OrderPlaced,
+        @AutoFlagOrderMore, @Category, @SubCategory, @InventoryName, @OrderUrl
+      )";
+    await using var connection = _connectionHelper.GetCoreConnection();
+    return await connection.ExecuteAsync(query, item);
   }
 }

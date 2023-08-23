@@ -9,6 +9,8 @@ public interface IContainerService
   Task<BoolResponse> AddContainerAsync(ContainerDto containerDto);
   Task<List<ContainerDto>> GetAllContainersAsync();
   Task<BoolResponse> ContainerExistsAsync(ContainerDto containerDto);
+  Task<ContainerDto> GetContainerAsync(int containerId);
+  Task<BoolResponse> AddContainerItemAsync(ContainerItemDto itemDto);
 }
 
 public class ContainerService : IContainerService
@@ -37,5 +39,15 @@ public class ContainerService : IContainerService
   {
     var containerCount = await _containerRepo.ContainerExistsAsync(containerDto.AsEntity());
     return new BoolResponse(containerCount != 0);
+  }
+
+  public async Task<ContainerDto> GetContainerAsync(int containerId) =>
+    ContainerDto.FromEntity(await _containerRepo.GetContainerAsync(containerId));
+
+  public async Task<BoolResponse> AddContainerItemAsync(ContainerItemDto itemDto)
+  {
+    var response = new BoolResponse();
+    var rowCount = await _containerRepo.AddContainerItemAsync(itemDto.ToEntity());
+    return rowCount == 1 ? response : response.AsError("Failed to add container item");
   }
 }

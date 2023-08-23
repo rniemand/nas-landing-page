@@ -426,6 +426,10 @@ export interface IContainerClient {
     getAllContainers(): Promise<ContainerDto[]>;
 
     checkContainerExists(container: ContainerDto): Promise<BoolResponse>;
+
+    getContainer(containerId: number): Promise<ContainerDto>;
+
+    addContainerItem(item: ContainerItemDto): Promise<BoolResponse>;
 }
 
 export class ContainerClient extends NlpBaseClient implements IContainerClient {
@@ -545,6 +549,85 @@ export class ContainerClient extends NlpBaseClient implements IContainerClient {
     }
 
     protected processCheckContainerExists(response: Response): Promise<BoolResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = BoolResponse.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<BoolResponse>(null as any);
+    }
+
+    getContainer(containerId: number): Promise<ContainerDto> {
+        let url_ = this.baseUrl + "/Container/id/{containerId}";
+        if (containerId === undefined || containerId === null)
+            throw new Error("The parameter 'containerId' must be defined.");
+        url_ = url_.replace("{containerId}", encodeURIComponent("" + containerId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processGetContainer(_response));
+        });
+    }
+
+    protected processGetContainer(response: Response): Promise<ContainerDto> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ContainerDto.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<ContainerDto>(null as any);
+    }
+
+    addContainerItem(item: ContainerItemDto): Promise<BoolResponse> {
+        let url_ = this.baseUrl + "/Container/items/add";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(item);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processAddContainerItem(_response));
+        });
+    }
+
+    protected processAddContainerItem(response: Response): Promise<BoolResponse> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
@@ -2015,6 +2098,90 @@ export interface IContainerDto {
     containerLabel: string;
     containerName: string;
     notes: string;
+}
+
+export class ContainerItemDto implements IContainerItemDto {
+    itemId!: number;
+    containerId!: number;
+    quantity!: number;
+    orderMoreMinQty!: number;
+    orderMore!: boolean;
+    orderPlaced!: boolean;
+    autoFlagOrderMore!: boolean;
+    dateAddedUtc!: Date;
+    dateUpdatedUtc!: Date;
+    category!: string;
+    subCategory!: string;
+    inventoryName!: string;
+    orderUrl!: string;
+
+    constructor(data?: IContainerItemDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.itemId = _data["itemId"] !== undefined ? _data["itemId"] : <any>null;
+            this.containerId = _data["containerId"] !== undefined ? _data["containerId"] : <any>null;
+            this.quantity = _data["quantity"] !== undefined ? _data["quantity"] : <any>null;
+            this.orderMoreMinQty = _data["orderMoreMinQty"] !== undefined ? _data["orderMoreMinQty"] : <any>null;
+            this.orderMore = _data["orderMore"] !== undefined ? _data["orderMore"] : <any>null;
+            this.orderPlaced = _data["orderPlaced"] !== undefined ? _data["orderPlaced"] : <any>null;
+            this.autoFlagOrderMore = _data["autoFlagOrderMore"] !== undefined ? _data["autoFlagOrderMore"] : <any>null;
+            this.dateAddedUtc = _data["dateAddedUtc"] ? new Date(_data["dateAddedUtc"].toString()) : <any>null;
+            this.dateUpdatedUtc = _data["dateUpdatedUtc"] ? new Date(_data["dateUpdatedUtc"].toString()) : <any>null;
+            this.category = _data["category"] !== undefined ? _data["category"] : <any>null;
+            this.subCategory = _data["subCategory"] !== undefined ? _data["subCategory"] : <any>null;
+            this.inventoryName = _data["inventoryName"] !== undefined ? _data["inventoryName"] : <any>null;
+            this.orderUrl = _data["orderUrl"] !== undefined ? _data["orderUrl"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): ContainerItemDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ContainerItemDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["itemId"] = this.itemId !== undefined ? this.itemId : <any>null;
+        data["containerId"] = this.containerId !== undefined ? this.containerId : <any>null;
+        data["quantity"] = this.quantity !== undefined ? this.quantity : <any>null;
+        data["orderMoreMinQty"] = this.orderMoreMinQty !== undefined ? this.orderMoreMinQty : <any>null;
+        data["orderMore"] = this.orderMore !== undefined ? this.orderMore : <any>null;
+        data["orderPlaced"] = this.orderPlaced !== undefined ? this.orderPlaced : <any>null;
+        data["autoFlagOrderMore"] = this.autoFlagOrderMore !== undefined ? this.autoFlagOrderMore : <any>null;
+        data["dateAddedUtc"] = this.dateAddedUtc ? this.dateAddedUtc.toISOString() : <any>null;
+        data["dateUpdatedUtc"] = this.dateUpdatedUtc ? this.dateUpdatedUtc.toISOString() : <any>null;
+        data["category"] = this.category !== undefined ? this.category : <any>null;
+        data["subCategory"] = this.subCategory !== undefined ? this.subCategory : <any>null;
+        data["inventoryName"] = this.inventoryName !== undefined ? this.inventoryName : <any>null;
+        data["orderUrl"] = this.orderUrl !== undefined ? this.orderUrl : <any>null;
+        return data;
+    }
+}
+
+export interface IContainerItemDto {
+    itemId: number;
+    containerId: number;
+    quantity: number;
+    orderMoreMinQty: number;
+    orderMore: boolean;
+    orderPlaced: boolean;
+    autoFlagOrderMore: boolean;
+    dateAddedUtc: Date;
+    dateUpdatedUtc: Date;
+    category: string;
+    subCategory: string;
+    inventoryName: string;
+    orderUrl: string;
 }
 
 export class GameLocationDto implements IGameLocationDto {
