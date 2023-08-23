@@ -1,6 +1,5 @@
 using Dapper;
 using NasLandingPage.Models.Entities;
-using Octokit;
 
 namespace NasLandingPage.Repos;
 
@@ -8,6 +7,7 @@ public interface IContainerRepo
 {
   Task<int> AddContainerAsync(ContainerEntity container);
   Task<List<ContainerEntity>> GetAllContainersAsync();
+  Task<int> ContainerExistsAsync(ContainerEntity container);
 }
 
 public class ContainerRepo : IContainerRepo
@@ -49,5 +49,18 @@ public class ContainerRepo : IContainerRepo
     ORDER BY con.`ShelfNumber`, con.`ShelfLevel`, con.`ShelfRow`, con.`ShelfRowPosition`";
     await using var connection = _connectionHelper.GetCoreConnection();
     return (await connection.QueryAsync<ContainerEntity>(query)).ToList();
+  }
+
+  public async Task<int> ContainerExistsAsync(ContainerEntity container)
+  {
+    const string query = @"SELECT COUNT(1)
+    FROM `Containers` c
+    WHERE c.ShelfNumber = @ShelfNumber
+	    AND c.ShelfLevel = @ShelfLevel
+	    AND c.ShelfRow = @ShelfRow
+	    AND c.ShelfRowPosition = @ShelfRowPosition
+	    AND c.Deleted = 0";
+    await using var connection = _connectionHelper.GetCoreConnection();
+    return await connection.ExecuteScalarAsync<int>(query, container);
   }
 }

@@ -7,6 +7,11 @@ public class BoolResponse
 
   public BoolResponse() { }
 
+  public BoolResponse(bool success)
+  {
+    Success = success;
+  }
+
   public BoolResponse AsError(string message)
   {
     Success = false;

@@ -419,6 +419,150 @@ export class AuthClient extends NlpBaseClient implements IAuthClient {
     }
 }
 
+export interface IContainerClient {
+
+    addContainer(container: ContainerDto): Promise<BoolResponse>;
+
+    getAllContainers(): Promise<ContainerDto[]>;
+
+    checkContainerExists(container: ContainerDto): Promise<BoolResponse>;
+}
+
+export class ContainerClient extends NlpBaseClient implements IContainerClient {
+    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+        super();
+        this.http = http ? http : window as any;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    addContainer(container: ContainerDto): Promise<BoolResponse> {
+        let url_ = this.baseUrl + "/Container/add";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(container);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processAddContainer(_response));
+        });
+    }
+
+    protected processAddContainer(response: Response): Promise<BoolResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = BoolResponse.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<BoolResponse>(null as any);
+    }
+
+    getAllContainers(): Promise<ContainerDto[]> {
+        let url_ = this.baseUrl + "/Container/list";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processGetAllContainers(_response));
+        });
+    }
+
+    protected processGetAllContainers(response: Response): Promise<ContainerDto[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(ContainerDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<ContainerDto[]>(null as any);
+    }
+
+    checkContainerExists(container: ContainerDto): Promise<BoolResponse> {
+        let url_ = this.baseUrl + "/Container/exists";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(container);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processCheckContainerExists(_response));
+        });
+    }
+
+    protected processCheckContainerExists(response: Response): Promise<BoolResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = BoolResponse.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<BoolResponse>(null as any);
+    }
+}
+
 export interface IGameLocationsClient {
 
     getPlatformLocations(platformId: number): Promise<GameLocationDto[]>;
@@ -1757,6 +1901,122 @@ export interface ISetNewPasswordRequest {
     password: string;
 }
 
+export class BoolResponse implements IBoolResponse {
+    success!: boolean;
+    error?: string | null;
+
+    constructor(data?: IBoolResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.success = _data["success"] !== undefined ? _data["success"] : <any>null;
+            this.error = _data["error"] !== undefined ? _data["error"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): BoolResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new BoolResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["success"] = this.success !== undefined ? this.success : <any>null;
+        data["error"] = this.error !== undefined ? this.error : <any>null;
+        return data;
+    }
+}
+
+export interface IBoolResponse {
+    success: boolean;
+    error?: string | null;
+}
+
+export class ContainerDto implements IContainerDto {
+    containerId!: number;
+    shelfNumber!: number;
+    shelfLevel!: number;
+    shelfRow!: number;
+    shelfRowPosition!: number;
+    itemCount!: number;
+    dateAddedUtc!: Date;
+    dateUpdatedUtc!: Date;
+    containerLabel!: string;
+    containerName!: string;
+    notes!: string;
+
+    constructor(data?: IContainerDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.containerId = _data["containerId"] !== undefined ? _data["containerId"] : <any>null;
+            this.shelfNumber = _data["shelfNumber"] !== undefined ? _data["shelfNumber"] : <any>null;
+            this.shelfLevel = _data["shelfLevel"] !== undefined ? _data["shelfLevel"] : <any>null;
+            this.shelfRow = _data["shelfRow"] !== undefined ? _data["shelfRow"] : <any>null;
+            this.shelfRowPosition = _data["shelfRowPosition"] !== undefined ? _data["shelfRowPosition"] : <any>null;
+            this.itemCount = _data["itemCount"] !== undefined ? _data["itemCount"] : <any>null;
+            this.dateAddedUtc = _data["dateAddedUtc"] ? new Date(_data["dateAddedUtc"].toString()) : <any>null;
+            this.dateUpdatedUtc = _data["dateUpdatedUtc"] ? new Date(_data["dateUpdatedUtc"].toString()) : <any>null;
+            this.containerLabel = _data["containerLabel"] !== undefined ? _data["containerLabel"] : <any>null;
+            this.containerName = _data["containerName"] !== undefined ? _data["containerName"] : <any>null;
+            this.notes = _data["notes"] !== undefined ? _data["notes"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): ContainerDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ContainerDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["containerId"] = this.containerId !== undefined ? this.containerId : <any>null;
+        data["shelfNumber"] = this.shelfNumber !== undefined ? this.shelfNumber : <any>null;
+        data["shelfLevel"] = this.shelfLevel !== undefined ? this.shelfLevel : <any>null;
+        data["shelfRow"] = this.shelfRow !== undefined ? this.shelfRow : <any>null;
+        data["shelfRowPosition"] = this.shelfRowPosition !== undefined ? this.shelfRowPosition : <any>null;
+        data["itemCount"] = this.itemCount !== undefined ? this.itemCount : <any>null;
+        data["dateAddedUtc"] = this.dateAddedUtc ? this.dateAddedUtc.toISOString() : <any>null;
+        data["dateUpdatedUtc"] = this.dateUpdatedUtc ? this.dateUpdatedUtc.toISOString() : <any>null;
+        data["containerLabel"] = this.containerLabel !== undefined ? this.containerLabel : <any>null;
+        data["containerName"] = this.containerName !== undefined ? this.containerName : <any>null;
+        data["notes"] = this.notes !== undefined ? this.notes : <any>null;
+        return data;
+    }
+}
+
+export interface IContainerDto {
+    containerId: number;
+    shelfNumber: number;
+    shelfLevel: number;
+    shelfRow: number;
+    shelfRowPosition: number;
+    itemCount: number;
+    dateAddedUtc: Date;
+    dateUpdatedUtc: Date;
+    containerLabel: string;
+    containerName: string;
+    notes: string;
+}
+
 export class GameLocationDto implements IGameLocationDto {
     locationID!: number;
     platformID!: number;
@@ -2373,46 +2633,6 @@ export interface INetworkDeviceIPv4EntryDto {
     ipv4Int: number;
     connection: string;
     networkName?: string | null;
-}
-
-export class BoolResponse implements IBoolResponse {
-    success!: boolean;
-    error?: string | null;
-
-    constructor(data?: IBoolResponse) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.success = _data["success"] !== undefined ? _data["success"] : <any>null;
-            this.error = _data["error"] !== undefined ? _data["error"] : <any>null;
-        }
-    }
-
-    static fromJS(data: any): BoolResponse {
-        data = typeof data === 'object' ? data : {};
-        let result = new BoolResponse();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["success"] = this.success !== undefined ? this.success : <any>null;
-        data["error"] = this.error !== undefined ? this.error : <any>null;
-        return data;
-    }
-}
-
-export interface IBoolResponse {
-    success: boolean;
-    error?: string | null;
 }
 
 export class AddNetworkDeviceRequest implements IAddNetworkDeviceRequest {

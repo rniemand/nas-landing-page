@@ -23,4 +23,8 @@ public class ContainerController : ControllerBase
   [HttpGet("list")]
   public async Task<List<ContainerDto>> GetAllContainers() =>
     await _containerService.GetAllContainersAsync();
+
+  [HttpPost("exists")]
+  public async Task<BoolResponse> CheckContainerExists([FromBody] ContainerDto container) =>
+    await _containerService.ContainerExistsAsync(container);
 }
