@@ -12,11 +12,15 @@ public interface IContainerService
   Task<List<ContainerDto>> GetAllContainersAsync();
   Task<BoolResponse> ContainerExistsAsync(ContainerDto containerDto);
   Task<ContainerDto> GetContainerAsync(int containerId);
+  Task<List<IntSelectOptionDto>> GetContainerDropdownOptionsAsync();
   Task<BoolResponse> AddContainerItemAsync(ContainerItemDto itemDto);
   Task<BoolResponse> UpdateContainerItemAsync(ContainerItemDto itemDto);
   Task<string[]> GetItemCategoriesAsync(CategoryRequest request);
   Task<string[]> GetItemSubCategoriesAsync(CategoryRequest request);
   Task<List<ContainerItemDto>> GetContainerItemsAsync(int containerId);
+  Task<BoolResponse> DecrementItemQuantityAsync(int itemId, int decrementAmount);
+  Task<BoolResponse> IncrementItemQuantityAsync(int itemId, int incrementAmount);
+  Task<BoolResponse> SetItemQuantityAsync(int itemId, int quantity);
 }
 
 public class ContainerService : IContainerService
@@ -58,6 +62,12 @@ public class ContainerService : IContainerService
   public async Task<ContainerDto> GetContainerAsync(int containerId) =>
     ContainerDto.FromEntity(await _containerRepo.GetContainerAsync(containerId));
 
+  public async Task<List<IntSelectOptionDto>> GetContainerDropdownOptionsAsync()
+  {
+    var dbOptions = await _containerRepo.GetContainerDropdownOptionsAsync();
+    return dbOptions.Select(IntSelectOptionDto.FromEntity).ToList();
+  }
+
   public async Task<BoolResponse> AddContainerItemAsync(ContainerItemDto itemDto)
   {
     var response = new BoolResponse();
@@ -84,5 +94,29 @@ public class ContainerService : IContainerService
   {
     var dbItems = await _containerRepo.GetContainerItemsAsync(containerId);
     return dbItems.Select(ContainerItemDto.FromEntity).ToList();
+  }
+
+  public async Task<BoolResponse> DecrementItemQuantityAsync(int itemId, int decrementAmount)
+  {
+    var response = new BoolResponse();
+    var rowCount = await _containerRepo.DecrementItemQuantityAsync(itemId, decrementAmount);
+    await _containerRepo.UpdateContainerItemCountFromItemIdAsync(itemId);
+    return rowCount == 1 ? response : response.AsError("Failed to update quantity");
+  }
+
+  public async Task<BoolResponse> IncrementItemQuantityAsync(int itemId, int incrementAmount)
+  {
+    var response = new BoolResponse();
+    var rowCount = await _containerRepo.IncrementItemQuantityAsync(itemId, incrementAmount);
+    await _containerRepo.UpdateContainerItemCountFromItemIdAsync(itemId);
+    return rowCount == 1 ? response : response.AsError("Failed to update quantity");
+  }
+
+  public async Task<BoolResponse> SetItemQuantityAsync(int itemId, int quantity)
+  {
+    var response = new BoolResponse();
+    var rowCount = await _containerRepo.SetItemQuantityAsync(itemId, quantity);
+    await _containerRepo.UpdateContainerItemCountFromItemIdAsync(itemId);
+    return rowCount == 1 ? response : response.AsError("Failed to update quantity");
   }
 }

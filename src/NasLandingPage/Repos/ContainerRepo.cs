@@ -1,5 +1,6 @@
 using Dapper;
 using NasLandingPage.Models.Entities;
+using System.ComponentModel;
 
 namespace NasLandingPage.Repos;
 
@@ -10,12 +11,17 @@ public interface IContainerRepo
   Task<List<ContainerEntity>> GetAllContainersAsync();
   Task<int> ContainerExistsAsync(ContainerEntity container);
   Task<ContainerEntity> GetContainerAsync(int containerId);
+  Task<List<IntSelectOptionEntity>> GetContainerDropdownOptionsAsync();
   Task<int> AddContainerItemAsync(ContainerItemEntity item);
   Task<int> UpdateContainerItemAsync(ContainerItemEntity item);
   Task<string[]> GetItemCategoriesAsync(string term);
   Task<string[]> GetItemSubCategoriesAsync(string category, string term);
   Task<List<ContainerItemEntity>> GetContainerItemsAsync(int containerId);
   Task<int> UpdateContainerItemCountAsync(int containerId);
+  Task<int> UpdateContainerItemCountFromItemIdAsync(int itemId);
+  Task<int> DecrementItemQuantityAsync(int itemId, int decrementAmount);
+  Task<int> IncrementItemQuantityAsync(int itemId, int incrementAmount);
+  Task<int> SetItemQuantityAsync(int itemId, int quantity);
 }
 
 public class ContainerRepo : IContainerRepo
@@ -105,6 +111,18 @@ public class ContainerRepo : IContainerRepo
     return await connection.QuerySingleAsync<ContainerEntity>(query, new { ContainerId = containerId });
   }
 
+  public async Task<List<IntSelectOptionEntity>> GetContainerDropdownOptionsAsync()
+  {
+    var query = @"SELECT
+	    c.ContainerId AS `Value`,
+	    CONCAT('(', c.ContainerLabel, ') ', c.ContainerName) AS `Title`
+    FROM `Containers` c
+    WHERE c.Deleted = 0
+    ORDER BY c.ShelfNumber, c.ShelfLevel, c.ShelfRow, c.ShelfRowPosition";
+    await using var connection = _connectionHelper.GetCoreConnection();
+    return (await connection.QueryAsync<IntSelectOptionEntity>(query)).ToList();
+  }
+
   public async Task<int> AddContainerItemAsync(ContainerItemEntity item)
   {
     const string query = @"INSERT INTO `ContainerItems`
@@ -185,6 +203,47 @@ public class ContainerRepo : IContainerRepo
 	    AND ci.Deleted = 0
     )
     WHERE c.ContainerId = {containerId}";
+    await using var connection = _connectionHelper.GetCoreConnection();
+    return await connection.ExecuteAsync(query);
+  }
+
+  public async Task<int> UpdateContainerItemCountFromItemIdAsync(int itemId)
+  {
+    var query = $@"UPDATE `Containers` c
+    SET c.`ItemCount` = (
+	    SELECT SUM(ci.Quantity)
+	    FROM `ContainerItems` ci
+	    WHERE ci.ContainerId = (SELECT ContainerId FROM `ContainerItems` WHERE ItemId = {itemId})
+	    AND ci.Deleted = 0
+    )
+    WHERE c.ContainerId = (SELECT ContainerId FROM `ContainerItems` WHERE ItemId = {itemId})";
+    await using var connection = _connectionHelper.GetCoreConnection();
+    return await connection.ExecuteAsync(query);
+  }
+
+  public async Task<int> DecrementItemQuantityAsync(int itemId, int decrementAmount)
+  {
+    var query = $@"UPDATE `ContainerItems`
+    SET `Quantity` = `Quantity` - {decrementAmount}
+    WHERE `ItemId` = {itemId}";
+    await using var connection = _connectionHelper.GetCoreConnection();
+    return await connection.ExecuteAsync(query);
+  }
+
+  public async Task<int> IncrementItemQuantityAsync(int itemId, int incrementAmount)
+  {
+    var query = $@"UPDATE `ContainerItems`
+    SET `Quantity` = `Quantity` + {incrementAmount}
+    WHERE `ItemId` = {itemId}";
+    await using var connection = _connectionHelper.GetCoreConnection();
+    return await connection.ExecuteAsync(query);
+  }
+
+  public async Task<int> SetItemQuantityAsync(int itemId, int quantity)
+  {
+    var query = $@"UPDATE `ContainerItems`
+    SET `Quantity` = {quantity}
+    WHERE `ItemId` = {itemId}";
     await using var connection = _connectionHelper.GetCoreConnection();
     return await connection.ExecuteAsync(query);
   }

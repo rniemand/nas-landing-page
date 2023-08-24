@@ -29,6 +29,10 @@ public class ContainerController : ControllerBase
   public async Task<List<ContainerDto>> GetAllContainers() =>
     await _containerService.GetAllContainersAsync();
 
+  [HttpGet("list/as-dropdown")]
+  public async Task<List<IntSelectOptionDto>> GetContainerDropdownOptions() =>
+    await _containerService.GetContainerDropdownOptionsAsync();
+
   [HttpPost("exists")]
   public async Task<BoolResponse> CheckContainerExists([FromBody] ContainerDto container) =>
     await _containerService.ContainerExistsAsync(container);
@@ -56,4 +60,16 @@ public class ContainerController : ControllerBase
   [HttpGet("items/container-id/{containerId:int}")]
   public async Task<List<ContainerItemDto>> GetContainerItems([FromRoute] int containerId) =>
     await _containerService.GetContainerItemsAsync(containerId);
+
+  [HttpPatch("item/id/{itemId:int}/decrement/{amount:int}")]
+  public async Task<BoolResponse> DecrementItemQuantity([FromRoute] int itemId, [FromRoute] int amount) =>
+    await _containerService.DecrementItemQuantityAsync(itemId, amount);
+
+  [HttpPatch("item/id/{itemId:int}/increment/{amount:int}")]
+  public async Task<BoolResponse> IncrementItemQuantity([FromRoute] int itemId, [FromRoute] int amount) =>
+    await _containerService.IncrementItemQuantityAsync(itemId, amount);
+
+  [HttpPatch("item/id/{itemId:int}/set-qty/{quantity:int}")]
+  public async Task<BoolResponse> SetItemQuantity([FromRoute] int itemId, [FromRoute] int quantity) =>
+    await _containerService.SetItemQuantityAsync(itemId, quantity);
 }

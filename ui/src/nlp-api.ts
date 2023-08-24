@@ -427,6 +427,8 @@ export interface IContainerClient {
 
     getAllContainers(): Promise<ContainerDto[]>;
 
+    getContainerDropdownOptions(): Promise<IntSelectOptionDto[]>;
+
     checkContainerExists(container: ContainerDto): Promise<BoolResponse>;
 
     getContainer(containerId: number): Promise<ContainerDto>;
@@ -440,6 +442,12 @@ export interface IContainerClient {
     getItemSubCategories(request: CategoryRequest): Promise<string[]>;
 
     getContainerItems(containerId: number): Promise<ContainerItemDto[]>;
+
+    decrementItemQuantity(itemId: number, amount: number): Promise<BoolResponse>;
+
+    incrementItemQuantity(itemId: number, amount: number): Promise<BoolResponse>;
+
+    setItemQuantity(itemId: number, quantity: number): Promise<BoolResponse>;
 }
 
 export class ContainerClient extends NlpBaseClient implements IContainerClient {
@@ -574,6 +582,49 @@ export class ContainerClient extends NlpBaseClient implements IContainerClient {
             });
         }
         return Promise.resolve<ContainerDto[]>(null as any);
+    }
+
+    getContainerDropdownOptions(): Promise<IntSelectOptionDto[]> {
+        let url_ = this.baseUrl + "/Container/list/as-dropdown";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processGetContainerDropdownOptions(_response));
+        });
+    }
+
+    protected processGetContainerDropdownOptions(response: Response): Promise<IntSelectOptionDto[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(IntSelectOptionDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<IntSelectOptionDto[]>(null as any);
     }
 
     checkContainerExists(container: ContainerDto): Promise<BoolResponse> {
@@ -873,6 +924,132 @@ export class ContainerClient extends NlpBaseClient implements IContainerClient {
             });
         }
         return Promise.resolve<ContainerItemDto[]>(null as any);
+    }
+
+    decrementItemQuantity(itemId: number, amount: number): Promise<BoolResponse> {
+        let url_ = this.baseUrl + "/Container/item/id/{itemId}/decrement/{amount}";
+        if (itemId === undefined || itemId === null)
+            throw new Error("The parameter 'itemId' must be defined.");
+        url_ = url_.replace("{itemId}", encodeURIComponent("" + itemId));
+        if (amount === undefined || amount === null)
+            throw new Error("The parameter 'amount' must be defined.");
+        url_ = url_.replace("{amount}", encodeURIComponent("" + amount));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "PATCH",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processDecrementItemQuantity(_response));
+        });
+    }
+
+    protected processDecrementItemQuantity(response: Response): Promise<BoolResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = BoolResponse.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<BoolResponse>(null as any);
+    }
+
+    incrementItemQuantity(itemId: number, amount: number): Promise<BoolResponse> {
+        let url_ = this.baseUrl + "/Container/item/id/{itemId}/increment/{amount}";
+        if (itemId === undefined || itemId === null)
+            throw new Error("The parameter 'itemId' must be defined.");
+        url_ = url_.replace("{itemId}", encodeURIComponent("" + itemId));
+        if (amount === undefined || amount === null)
+            throw new Error("The parameter 'amount' must be defined.");
+        url_ = url_.replace("{amount}", encodeURIComponent("" + amount));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "PATCH",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processIncrementItemQuantity(_response));
+        });
+    }
+
+    protected processIncrementItemQuantity(response: Response): Promise<BoolResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = BoolResponse.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<BoolResponse>(null as any);
+    }
+
+    setItemQuantity(itemId: number, quantity: number): Promise<BoolResponse> {
+        let url_ = this.baseUrl + "/Container/item/id/{itemId}/set-qty/{quantity}";
+        if (itemId === undefined || itemId === null)
+            throw new Error("The parameter 'itemId' must be defined.");
+        url_ = url_.replace("{itemId}", encodeURIComponent("" + itemId));
+        if (quantity === undefined || quantity === null)
+            throw new Error("The parameter 'quantity' must be defined.");
+        url_ = url_.replace("{quantity}", encodeURIComponent("" + quantity));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "PATCH",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processSetItemQuantity(_response));
+        });
+    }
+
+    protected processSetItemQuantity(response: Response): Promise<BoolResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = BoolResponse.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<BoolResponse>(null as any);
     }
 }
 
@@ -2328,6 +2505,46 @@ export interface IContainerDto {
     containerLabel: string;
     containerName: string;
     notes: string;
+}
+
+export class IntSelectOptionDto implements IIntSelectOptionDto {
+    value!: number;
+    title!: string;
+
+    constructor(data?: IIntSelectOptionDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.value = _data["value"] !== undefined ? _data["value"] : <any>null;
+            this.title = _data["title"] !== undefined ? _data["title"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): IntSelectOptionDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new IntSelectOptionDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["value"] = this.value !== undefined ? this.value : <any>null;
+        data["title"] = this.title !== undefined ? this.title : <any>null;
+        return data;
+    }
+}
+
+export interface IIntSelectOptionDto {
+    value: number;
+    title: string;
 }
 
 export class ContainerItemDto implements IContainerItemDto {
