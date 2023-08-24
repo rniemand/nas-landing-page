@@ -12,6 +12,7 @@ public interface IContainerService
   Task<List<ContainerDto>> GetAllContainersAsync();
   Task<BoolResponse> ContainerExistsAsync(ContainerDto containerDto);
   Task<ContainerDto> GetContainerAsync(int containerId);
+  Task<List<IntSelectOptionDto>> GetContainerDropdownOptionsAsync();
   Task<BoolResponse> AddContainerItemAsync(ContainerItemDto itemDto);
   Task<BoolResponse> UpdateContainerItemAsync(ContainerItemDto itemDto);
   Task<string[]> GetItemCategoriesAsync(CategoryRequest request);
@@ -60,6 +61,12 @@ public class ContainerService : IContainerService
 
   public async Task<ContainerDto> GetContainerAsync(int containerId) =>
     ContainerDto.FromEntity(await _containerRepo.GetContainerAsync(containerId));
+
+  public async Task<List<IntSelectOptionDto>> GetContainerDropdownOptionsAsync()
+  {
+    var dbOptions = await _containerRepo.GetContainerDropdownOptionsAsync();
+    return dbOptions.Select(IntSelectOptionDto.FromEntity).ToList();
+  }
 
   public async Task<BoolResponse> AddContainerItemAsync(ContainerItemDto itemDto)
   {

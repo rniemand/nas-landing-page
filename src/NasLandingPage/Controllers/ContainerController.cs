@@ -29,6 +29,10 @@ public class ContainerController : ControllerBase
   public async Task<List<ContainerDto>> GetAllContainers() =>
     await _containerService.GetAllContainersAsync();
 
+  [HttpGet("list/as-dropdown")]
+  public async Task<List<IntSelectOptionDto>> GetContainerDropdownOptions() =>
+    await _containerService.GetContainerDropdownOptionsAsync();
+
   [HttpPost("exists")]
   public async Task<BoolResponse> CheckContainerExists([FromBody] ContainerDto container) =>
     await _containerService.ContainerExistsAsync(container);

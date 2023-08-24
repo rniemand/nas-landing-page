@@ -11,6 +11,7 @@ public interface IContainerRepo
   Task<List<ContainerEntity>> GetAllContainersAsync();
   Task<int> ContainerExistsAsync(ContainerEntity container);
   Task<ContainerEntity> GetContainerAsync(int containerId);
+  Task<List<IntSelectOptionEntity>> GetContainerDropdownOptionsAsync();
   Task<int> AddContainerItemAsync(ContainerItemEntity item);
   Task<int> UpdateContainerItemAsync(ContainerItemEntity item);
   Task<string[]> GetItemCategoriesAsync(string term);
@@ -108,6 +109,18 @@ public class ContainerRepo : IContainerRepo
     WHERE con.`ContainerId` = @ContainerId";
     await using var connection = _connectionHelper.GetCoreConnection();
     return await connection.QuerySingleAsync<ContainerEntity>(query, new { ContainerId = containerId });
+  }
+
+  public async Task<List<IntSelectOptionEntity>> GetContainerDropdownOptionsAsync()
+  {
+    var query = @"SELECT
+	    c.ContainerId AS `Value`,
+	    CONCAT('(', c.ContainerLabel, ') ', c.ContainerName) AS `Title`
+    FROM `Containers` c
+    WHERE c.Deleted = 0
+    ORDER BY c.ShelfNumber, c.ShelfLevel, c.ShelfRow, c.ShelfRowPosition";
+    await using var connection = _connectionHelper.GetCoreConnection();
+    return (await connection.QueryAsync<IntSelectOptionEntity>(query)).ToList();
   }
 
   public async Task<int> AddContainerItemAsync(ContainerItemEntity item)

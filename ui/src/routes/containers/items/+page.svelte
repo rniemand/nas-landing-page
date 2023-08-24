@@ -12,13 +12,16 @@
 </style>
 
 <script lang="ts">
+	import { goto } from "$app/navigation";
 	import { page } from "$app/stores";
 	import AddContainerItem from "../../../components/Containers/AddContainerItem.svelte";
+	import ContainerSelect from "../../../components/Containers/ContainerSelect.svelte";
 	import UpdateContainerItem from "../../../components/Containers/UpdateContainerItem.svelte";
 	import Spinner from "../../../components/Spinner.svelte";
 	import VisualBool from "../../../components/VisualBool.svelte";
 	import { ContainerClient, ContainerDto, ContainerItemDto } from "../../../nlp-api";
 
+  let containerId: number = parseInt($page.url.searchParams.get('id') || '0');
   let container: ContainerDto | undefined = undefined;
   let items: ContainerItemDto[] = [];
   let loading: boolean = true;
@@ -82,12 +85,18 @@
     }
   };
 
-  $: refreshContainerInfo(parseInt($page.url.searchParams.get('id') || '0'));
+  const syncContainerId = (_id: number) => {
+    if(parseInt($page.url.searchParams.get('id') || '0') === _id) return;
+    $page.url.searchParams.set('id', `${_id}`);
+    goto(`?${$page.url.searchParams.toString()}`);
+  };
+
+  $: syncContainerId(containerId);
+  $: refreshContainerInfo(containerId);
 </script>
 
 <div class="mb-3">
-  <a href="/containers">Containers</a>
-  &nbsp;
+  <ContainerSelect bind:value={containerId} />
   <AddContainerItem {container} onItemAdded={refreshContainerItems} />
   <UpdateContainerItem bind:this={_updateModal} onItemSaved={refreshContainerItems} />
 </div>
