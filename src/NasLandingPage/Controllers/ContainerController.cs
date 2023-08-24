@@ -21,6 +21,10 @@ public class ContainerController : ControllerBase
   public async Task<BoolResponse> AddContainer([FromBody] ContainerDto container) =>
     await _containerService.AddContainerAsync(container);
 
+  [HttpPatch("update")]
+  public async Task<BoolResponse> UpdateContainer([FromBody] ContainerDto container) =>
+    await _containerService.UpdateContainerAsync(container);
+
   [HttpGet("list")]
   public async Task<List<ContainerDto>> GetAllContainers() =>
     await _containerService.GetAllContainersAsync();

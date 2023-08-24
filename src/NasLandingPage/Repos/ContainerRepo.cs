@@ -6,6 +6,7 @@ namespace NasLandingPage.Repos;
 public interface IContainerRepo
 {
   Task<int> AddContainerAsync(ContainerEntity container);
+  Task<int> UpdateContainerAsync(ContainerEntity container);
   Task<List<ContainerEntity>> GetAllContainersAsync();
   Task<int> ContainerExistsAsync(ContainerEntity container);
   Task<ContainerEntity> GetContainerAsync(int containerId);
@@ -31,6 +32,18 @@ public class ContainerRepo : IContainerRepo
 	    (`ShelfNumber`, `ShelfLevel`, `ShelfRow`, `ShelfRowPosition`, `ItemCount`, `ContainerLabel`, `ContainerName`, `Notes`)
     VALUES
 	    (@ShelfNumber, @ShelfLevel, @ShelfRow, @ShelfRowPosition, @ItemCount, @ContainerLabel, @ContainerName, @Notes)";
+    await using var connection = _connectionHelper.GetCoreConnection();
+    return await connection.ExecuteAsync(query, container);
+  }
+
+  public async Task<int> UpdateContainerAsync(ContainerEntity container)
+  {
+    const string query = @"UPDATE `Containers`
+    SET
+	    `DateUpdatedUtc` = utc_timestamp(6),
+	    `ContainerName` = @ContainerName,
+	    `Notes` = @Notes
+    WHERE `ContainerId` = @ContainerId";
     await using var connection = _connectionHelper.GetCoreConnection();
     return await connection.ExecuteAsync(query, container);
   }

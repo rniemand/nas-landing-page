@@ -8,6 +8,7 @@ namespace NasLandingPage.Services;
 public interface IContainerService
 {
   Task<BoolResponse> AddContainerAsync(ContainerDto containerDto);
+  Task<BoolResponse> UpdateContainerAsync(ContainerDto containerDto);
   Task<List<ContainerDto>> GetAllContainersAsync();
   Task<BoolResponse> ContainerExistsAsync(ContainerDto containerDto);
   Task<ContainerDto> GetContainerAsync(int containerId);
@@ -31,6 +32,13 @@ public class ContainerService : IContainerService
     var response = new BoolResponse();
     var rowCount = await _containerRepo.AddContainerAsync(containerDto.AsEntity());
     return rowCount == 1 ? response : response.AsError("Failed to add container");
+  }
+
+  public async Task<BoolResponse> UpdateContainerAsync(ContainerDto containerDto)
+  {
+    var response = new BoolResponse();
+    var rowCount = await _containerRepo.UpdateContainerAsync(containerDto.AsEntity());
+    return rowCount == 1 ? response : response.AsError("Failed to update container");
   }
 
   public async Task<List<ContainerDto>> GetAllContainersAsync()
