@@ -1,12 +1,14 @@
 <script lang="ts">
 	import { page } from "$app/stores";
 	import AddContainerItem from "../../../components/Containers/AddContainerItem.svelte";
+	import UpdateContainerItem from "../../../components/Containers/UpdateContainerItem.svelte";
 	import Spinner from "../../../components/Spinner.svelte";
 	import { ContainerClient, ContainerDto, ContainerItemDto } from "../../../nlp-api";
 
   let container: ContainerDto | undefined = undefined;
   let items: ContainerItemDto[] = [];
   let loading: boolean = true;
+  let _updateModal: UpdateContainerItem;
 
   const refreshContainerItems = async () => {
     if(!container) return;
@@ -29,6 +31,7 @@
   <a href="/containers">Containers</a>
   &nbsp;
   <AddContainerItem {container} onItemAdded={refreshContainerItems} />
+  <UpdateContainerItem bind:this={_updateModal} onItemSaved={refreshContainerItems} />
 </div>
 
 <Spinner show={!container || loading} />
@@ -63,7 +66,9 @@
           <td>{item.inventoryName}</td>
           <td>{item.orderUrl}</td>
           <td>
-            -
+            <a href="#!" on:click={() => _updateModal.show(item)}>
+              <i class="bi bi-pencil-square"></i>
+            </a>
           </td>
         </tr>
       {/each}

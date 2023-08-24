@@ -1,10 +1,12 @@
 <script lang="ts">
   import { ContainerClient, ContainerDto } from "../../nlp-api";
 	import Spinner from "../Spinner.svelte";
-	import AddContainerModal from "./AddContainerModal.svelte";
+	import AddContainer from "./AddContainer.svelte";
+	import EditContainer from "./EditContainer.svelte";
 
   let containers: ContainerDto[] = [];
   let loading: boolean = false;
+  let _editContainer: EditContainer;
 
   const refreshContainers = async () => {
     loading = true;
@@ -17,7 +19,8 @@
 </script>
 
 <div class="mb-3">
-  <AddContainerModal onContainerAdded={refreshContainers} />
+  <AddContainer onContainerAdded={refreshContainers} />
+  <EditContainer bind:this={_editContainer} onContainerModified={refreshContainers} />
 </div>
 
 <Spinner show={loading} />
@@ -41,6 +44,9 @@
           <td>{container.notes}</td>
           <td>
             <a href="/containers/items?id={container.containerId}">
+              <i class="bi bi-binoculars-fill"></i>
+            </a>
+            <a href="#!" on:click={() => _editContainer.show(container)}>
               <i class="bi bi-pencil-square"></i>
             </a>
           </td>

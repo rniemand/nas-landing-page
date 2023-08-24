@@ -21,6 +21,10 @@ public class ContainerController : ControllerBase
   public async Task<BoolResponse> AddContainer([FromBody] ContainerDto container) =>
     await _containerService.AddContainerAsync(container);
 
+  [HttpPatch("update")]
+  public async Task<BoolResponse> UpdateContainer([FromBody] ContainerDto container) =>
+    await _containerService.UpdateContainerAsync(container);
+
   [HttpGet("list")]
   public async Task<List<ContainerDto>> GetAllContainers() =>
     await _containerService.GetAllContainersAsync();
@@ -36,6 +40,10 @@ public class ContainerController : ControllerBase
   [HttpPost("items/add")]
   public async Task<BoolResponse> AddContainerItem([FromBody] ContainerItemDto item) =>
     await _containerService.AddContainerItemAsync(item);
+
+  [HttpPatch("items/update")]
+  public async Task<BoolResponse> UpdateContainerItem([FromBody] ContainerItemDto item) =>
+    await _containerService.UpdateContainerItemAsync(item);
 
   [HttpPost("item/categories/list")]
   public async Task<string[]> GetItemCategories([FromBody] CategoryRequest request) =>

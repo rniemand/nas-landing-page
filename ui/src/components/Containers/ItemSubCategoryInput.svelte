@@ -91,6 +91,7 @@
   };
 
   const onCategoryChange = (_category: string) => {
+    if(category === _category) return;
     value = '';
   };
 
