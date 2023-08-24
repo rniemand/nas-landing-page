@@ -1,7 +1,7 @@
 <script lang="ts">
   import { ContainerClient, ContainerDto } from "../../nlp-api";
 	import Spinner from "../Spinner.svelte";
-	import AddContainerModal from "./AddContainerModal.svelte";
+	import AddContainer from "./AddContainer.svelte";
 
   let containers: ContainerDto[] = [];
   let loading: boolean = false;
@@ -17,7 +17,7 @@
 </script>
 
 <div class="mb-3">
-  <AddContainerModal onContainerAdded={refreshContainers} />
+  <AddContainer onContainerAdded={refreshContainers} />
 </div>
 
 <Spinner show={loading} />
