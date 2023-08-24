@@ -11,6 +11,7 @@ public interface IContainerRepo
   Task<int> ContainerExistsAsync(ContainerEntity container);
   Task<ContainerEntity> GetContainerAsync(int containerId);
   Task<int> AddContainerItemAsync(ContainerItemEntity item);
+  Task<int> UpdateContainerItemAsync(ContainerItemEntity item);
   Task<string[]> GetItemCategoriesAsync(string term);
   Task<string[]> GetItemSubCategoriesAsync(string category, string term);
   Task<List<ContainerItemEntity>> GetContainerItemsAsync(int containerId);
@@ -116,6 +117,23 @@ public class ContainerRepo : IContainerRepo
         @ContainerId, @Quantity, @OrderMoreMinQty, @OrderMore, @OrderPlaced,
         @AutoFlagOrderMore, @Category, @SubCategory, @InventoryName, @OrderUrl
       )";
+    await using var connection = _connectionHelper.GetCoreConnection();
+    return await connection.ExecuteAsync(query, item);
+  }
+
+  public async Task<int> UpdateContainerItemAsync(ContainerItemEntity item)
+  {
+    const string query = @"UPDATE `ContainerItems`
+    SET
+	    `Quantity` = @Quantity,
+	    `OrderMoreMinQty` = @OrderMoreMinQty,
+	    `AutoFlagOrderMore` = @AutoFlagOrderMore,
+	    `DateUpdatedUtc` = utc_timestamp(6),
+	    `Category` = @Category,
+	    `SubCategory` = @SubCategory,
+	    `InventoryName` = @InventoryName,
+	    `OrderUrl` = @OrderUrl
+    WHERE `ItemId` = @ItemId";
     await using var connection = _connectionHelper.GetCoreConnection();
     return await connection.ExecuteAsync(query, item);
   }

@@ -13,6 +13,7 @@ public interface IContainerService
   Task<BoolResponse> ContainerExistsAsync(ContainerDto containerDto);
   Task<ContainerDto> GetContainerAsync(int containerId);
   Task<BoolResponse> AddContainerItemAsync(ContainerItemDto itemDto);
+  Task<BoolResponse> UpdateContainerItemAsync(ContainerItemDto itemDto);
   Task<string[]> GetItemCategoriesAsync(CategoryRequest request);
   Task<string[]> GetItemSubCategoriesAsync(CategoryRequest request);
   Task<List<ContainerItemDto>> GetContainerItemsAsync(int containerId);
@@ -38,6 +39,7 @@ public class ContainerService : IContainerService
   {
     var response = new BoolResponse();
     var rowCount = await _containerRepo.UpdateContainerAsync(containerDto.AsEntity());
+    await _containerRepo.UpdateContainerItemCountAsync(containerDto.ContainerId);
     return rowCount == 1 ? response : response.AsError("Failed to update container");
   }
 
@@ -62,6 +64,14 @@ public class ContainerService : IContainerService
     var rowCount = await _containerRepo.AddContainerItemAsync(itemDto.ToEntity());
     await _containerRepo.UpdateContainerItemCountAsync(itemDto.ContainerId);
     return rowCount == 1 ? response : response.AsError("Failed to add container item");
+  }
+
+  public async Task<BoolResponse> UpdateContainerItemAsync(ContainerItemDto itemDto)
+  {
+    var response = new BoolResponse();
+    var rowCount = await _containerRepo.UpdateContainerItemAsync(itemDto.ToEntity());
+    await _containerRepo.UpdateContainerItemCountAsync(itemDto.ContainerId);
+    return rowCount == 1 ? response : response.AsError("Failed to update item");
   }
 
   public async Task<string[]> GetItemCategoriesAsync(CategoryRequest request) =>

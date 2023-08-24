@@ -41,6 +41,10 @@ public class ContainerController : ControllerBase
   public async Task<BoolResponse> AddContainerItem([FromBody] ContainerItemDto item) =>
     await _containerService.AddContainerItemAsync(item);
 
+  [HttpPatch("items/update")]
+  public async Task<BoolResponse> UpdateContainerItem([FromBody] ContainerItemDto item) =>
+    await _containerService.UpdateContainerItemAsync(item);
+
   [HttpPost("item/categories/list")]
   public async Task<string[]> GetItemCategories([FromBody] CategoryRequest request) =>
     await _containerService.GetItemCategoriesAsync(request);
