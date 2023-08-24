@@ -1,5 +1,6 @@
 using Dapper;
 using NasLandingPage.Models.Entities;
+using System.ComponentModel;
 
 namespace NasLandingPage.Repos;
 
@@ -16,6 +17,10 @@ public interface IContainerRepo
   Task<string[]> GetItemSubCategoriesAsync(string category, string term);
   Task<List<ContainerItemEntity>> GetContainerItemsAsync(int containerId);
   Task<int> UpdateContainerItemCountAsync(int containerId);
+  Task<int> UpdateContainerItemCountFromItemIdAsync(int itemId);
+  Task<int> DecrementItemQuantityAsync(int itemId, int decrementAmount);
+  Task<int> IncrementItemQuantityAsync(int itemId, int incrementAmount);
+  Task<int> SetItemQuantityAsync(int itemId, int quantity);
 }
 
 public class ContainerRepo : IContainerRepo
@@ -185,6 +190,47 @@ public class ContainerRepo : IContainerRepo
 	    AND ci.Deleted = 0
     )
     WHERE c.ContainerId = {containerId}";
+    await using var connection = _connectionHelper.GetCoreConnection();
+    return await connection.ExecuteAsync(query);
+  }
+
+  public async Task<int> UpdateContainerItemCountFromItemIdAsync(int itemId)
+  {
+    var query = $@"UPDATE `Containers` c
+    SET c.`ItemCount` = (
+	    SELECT SUM(ci.Quantity)
+	    FROM `ContainerItems` ci
+	    WHERE ci.ContainerId = (SELECT ContainerId FROM `ContainerItems` WHERE ItemId = {itemId})
+	    AND ci.Deleted = 0
+    )
+    WHERE c.ContainerId = (SELECT ContainerId FROM `ContainerItems` WHERE ItemId = {itemId})";
+    await using var connection = _connectionHelper.GetCoreConnection();
+    return await connection.ExecuteAsync(query);
+  }
+
+  public async Task<int> DecrementItemQuantityAsync(int itemId, int decrementAmount)
+  {
+    var query = $@"UPDATE `ContainerItems`
+    SET `Quantity` = `Quantity` - {decrementAmount}
+    WHERE `ItemId` = {itemId}";
+    await using var connection = _connectionHelper.GetCoreConnection();
+    return await connection.ExecuteAsync(query);
+  }
+
+  public async Task<int> IncrementItemQuantityAsync(int itemId, int incrementAmount)
+  {
+    var query = $@"UPDATE `ContainerItems`
+    SET `Quantity` = `Quantity` + {incrementAmount}
+    WHERE `ItemId` = {itemId}";
+    await using var connection = _connectionHelper.GetCoreConnection();
+    return await connection.ExecuteAsync(query);
+  }
+
+  public async Task<int> SetItemQuantityAsync(int itemId, int quantity)
+  {
+    var query = $@"UPDATE `ContainerItems`
+    SET `Quantity` = {quantity}
+    WHERE `ItemId` = {itemId}";
     await using var connection = _connectionHelper.GetCoreConnection();
     return await connection.ExecuteAsync(query);
   }

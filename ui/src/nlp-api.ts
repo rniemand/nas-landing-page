@@ -440,6 +440,12 @@ export interface IContainerClient {
     getItemSubCategories(request: CategoryRequest): Promise<string[]>;
 
     getContainerItems(containerId: number): Promise<ContainerItemDto[]>;
+
+    decrementItemQuantity(itemId: number, amount: number): Promise<BoolResponse>;
+
+    incrementItemQuantity(itemId: number, amount: number): Promise<BoolResponse>;
+
+    setItemQuantity(itemId: number, quantity: number): Promise<BoolResponse>;
 }
 
 export class ContainerClient extends NlpBaseClient implements IContainerClient {
@@ -873,6 +879,132 @@ export class ContainerClient extends NlpBaseClient implements IContainerClient {
             });
         }
         return Promise.resolve<ContainerItemDto[]>(null as any);
+    }
+
+    decrementItemQuantity(itemId: number, amount: number): Promise<BoolResponse> {
+        let url_ = this.baseUrl + "/Container/item/id/{itemId}/decrement/{amount}";
+        if (itemId === undefined || itemId === null)
+            throw new Error("The parameter 'itemId' must be defined.");
+        url_ = url_.replace("{itemId}", encodeURIComponent("" + itemId));
+        if (amount === undefined || amount === null)
+            throw new Error("The parameter 'amount' must be defined.");
+        url_ = url_.replace("{amount}", encodeURIComponent("" + amount));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "PATCH",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processDecrementItemQuantity(_response));
+        });
+    }
+
+    protected processDecrementItemQuantity(response: Response): Promise<BoolResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = BoolResponse.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<BoolResponse>(null as any);
+    }
+
+    incrementItemQuantity(itemId: number, amount: number): Promise<BoolResponse> {
+        let url_ = this.baseUrl + "/Container/item/id/{itemId}/increment/{amount}";
+        if (itemId === undefined || itemId === null)
+            throw new Error("The parameter 'itemId' must be defined.");
+        url_ = url_.replace("{itemId}", encodeURIComponent("" + itemId));
+        if (amount === undefined || amount === null)
+            throw new Error("The parameter 'amount' must be defined.");
+        url_ = url_.replace("{amount}", encodeURIComponent("" + amount));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "PATCH",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processIncrementItemQuantity(_response));
+        });
+    }
+
+    protected processIncrementItemQuantity(response: Response): Promise<BoolResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = BoolResponse.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<BoolResponse>(null as any);
+    }
+
+    setItemQuantity(itemId: number, quantity: number): Promise<BoolResponse> {
+        let url_ = this.baseUrl + "/Container/item/id/{itemId}/set-qty/{quantity}";
+        if (itemId === undefined || itemId === null)
+            throw new Error("The parameter 'itemId' must be defined.");
+        url_ = url_.replace("{itemId}", encodeURIComponent("" + itemId));
+        if (quantity === undefined || quantity === null)
+            throw new Error("The parameter 'quantity' must be defined.");
+        url_ = url_.replace("{quantity}", encodeURIComponent("" + quantity));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "PATCH",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processSetItemQuantity(_response));
+        });
+    }
+
+    protected processSetItemQuantity(response: Response): Promise<BoolResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = BoolResponse.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<BoolResponse>(null as any);
     }
 }
 

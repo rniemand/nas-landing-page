@@ -4,6 +4,11 @@
   .small { font-size: 0.9em; }
   .cat { color: #282cdf; }
   .subCat { color: #f15555; }
+  .qty-btns button {
+    margin-bottom: 2px;
+    margin-right: 2px;
+  }
+  .qty-btns button:last-child { margin-right: 0; }
 </style>
 
 <script lang="ts">
@@ -17,6 +22,7 @@
   let container: ContainerDto | undefined = undefined;
   let items: ContainerItemDto[] = [];
   let loading: boolean = true;
+  let runningQuery: boolean = false;
   let _updateModal: UpdateContainerItem;
 
   const refreshContainerItems = async () => {
@@ -33,6 +39,49 @@
     refreshContainerItems();
   };
 
+  const incrementQty = async (item: ContainerItemDto) => {
+    runningQuery = true;
+    const response = await new ContainerClient().incrementItemQuantity(item.itemId, 1);
+    runningQuery = false;
+    if(!response.success) {
+      alert(response.error || 'Something went wrong!');
+    } else {
+      item.quantity += 1;
+      items = items;
+    }
+  };
+
+  const decrementQty = async (item: ContainerItemDto) => {
+    runningQuery = true;
+    const response = await new ContainerClient().decrementItemQuantity(item.itemId, 1);
+    runningQuery = false;
+    if(!response.success) {
+      alert(response.error || 'Something went wrong!');
+    } else {
+      item.quantity -= 1;
+      items = items;
+    }
+  };
+
+  const setQty = async (item: ContainerItemDto) => {
+    let value = prompt('Set new quantity', `${item.quantity}`);
+    if(!value) return;
+    const parsedInt = parseInt(value);
+    if(isNaN(parsedInt)) {
+      alert('You need to enter in a NUMBER here!');
+      return;
+    }
+    runningQuery = true;
+    const response = await new ContainerClient().setItemQuantity(item.itemId, parsedInt);
+    runningQuery = false;
+    if(!response.success) {
+      alert(response.error || 'Something went wrong!');
+    } else {
+      item.quantity = parsedInt;
+      items = items;
+    }
+  };
+
   $: refreshContainerInfo(parseInt($page.url.searchParams.get('id') || '0'));
 </script>
 
@@ -46,13 +95,14 @@
 <Spinner show={!container || loading} />
 
 {#if container}
+<div class="table-responsive">
   <table class="table table-striped table-hover table-bordered table-sm">
     <thead>
       <tr>
-        <th scope="col">Qty</th>
+        <th scope="col">Name</th>
+        <th scope="col" colspan="2">Qty</th>
         <th scope="col">Order</th>
         <th scope="col">Categorization</th>
-        <th scope="col">Name</th>
         <th scope="col">URL</th>
         <th scope="col">&nbsp;</th>
       </tr>
@@ -60,6 +110,12 @@
     <tbody>
       {#each items as item}
         <tr>
+          <td>{item.inventoryName}</td>
+          <td class="qty-btns">
+            <button class="btn btn-danger" disabled={runningQuery} on:click={() => decrementQty(item)}>-</button>
+            <button class="btn btn-dark" disabled={runningQuery} on:click={() => setQty(item)}>set</button>
+            <button class="btn btn-success" disabled={runningQuery} on:click={() => incrementQty(item)}>+</button>
+          </td>
           <td>
             {item.quantity}
             {#if item.orderMoreMinQty > 0}
@@ -75,7 +131,6 @@
             <span class="cat">{item.category}</span>
             {#if item.subCategory}<span class="subCat">{item.subCategory}</span>{/if}
           </td>
-          <td>{item.inventoryName}</td>
           <td>{item.orderUrl}</td>
           <td class="buttons">
             <a href="#!" on:click={() => _updateModal.show(item)}>
@@ -86,4 +141,5 @@
       {/each}
     </tbody>
   </table>
+</div>
 {/if}
