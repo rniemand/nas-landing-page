@@ -1,3 +1,7 @@
+<style>
+  .buttons { font-size: 1.2em; }
+</style>
+
 <script lang="ts">
   import { ContainerClient, ContainerDto } from "../../nlp-api";
 	import Spinner from "../Spinner.svelte";
@@ -42,7 +46,7 @@
           <td>{container.containerName}</td>
           <td>{container.itemCount}</td>
           <td>{container.notes}</td>
-          <td>
+          <td class="buttons">
             <a href="/containers/items?id={container.containerId}">
               <i class="bi bi-binoculars-fill"></i>
             </a>
