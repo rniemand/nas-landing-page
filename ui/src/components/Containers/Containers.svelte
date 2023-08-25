@@ -7,6 +7,7 @@
 	import Spinner from "../Spinner.svelte";
 	import AddContainer from "./AddContainer.svelte";
 	import EditContainer from "./EditContainer.svelte";
+	import ItemSearch from "./ItemSearch.svelte";
 
   let containers: ContainerDto[] = [];
   let loading: boolean = false;
@@ -27,6 +28,10 @@
   <EditContainer bind:this={_editContainer} onContainerModified={refreshContainers} />
 </div>
 
+<div class="mb-3">
+  <ItemSearch />
+</div>
+
 <Spinner show={loading} />
 {#if !loading}
   <table class="table table-striped table-hover table-bordered table-sm">
@@ -42,7 +47,7 @@
     <tbody>
       {#each containers as container}
         <tr>
-          <th>{container.containerLabel}</th>
+          <td>{container.containerLabel}</td>
           <td>{container.containerName}</td>
           <td>{container.itemCount}</td>
           <td>{container.notes}</td>

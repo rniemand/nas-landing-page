@@ -18,6 +18,7 @@ public interface IContainerService
   Task<string[]> GetItemCategoriesAsync(CategoryRequest request);
   Task<string[]> GetItemSubCategoriesAsync(CategoryRequest request);
   Task<List<ContainerItemDto>> GetContainerItemsAsync(int containerId);
+  Task<List<ContainerItemDto>> SearchContainerItemsAsync(SearchContainerItemsRequest request);
   Task<BoolResponse> DecrementItemQuantityAsync(int itemId, int decrementAmount);
   Task<BoolResponse> IncrementItemQuantityAsync(int itemId, int incrementAmount);
   Task<BoolResponse> SetItemQuantityAsync(int itemId, int quantity);
@@ -94,6 +95,12 @@ public class ContainerService : IContainerService
   {
     var dbItems = await _containerRepo.GetContainerItemsAsync(containerId);
     return dbItems.Select(ContainerItemDto.FromEntity).ToList();
+  }
+
+  public async Task<List<ContainerItemDto>> SearchContainerItemsAsync(SearchContainerItemsRequest request)
+  {
+    var dbResults = await _containerRepo.SearchContainerItemsAsync(request);
+    return dbResults.Select(ContainerItemDto.FromEntity).ToList();
   }
 
   public async Task<BoolResponse> DecrementItemQuantityAsync(int itemId, int decrementAmount)

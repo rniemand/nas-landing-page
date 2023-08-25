@@ -2,7 +2,7 @@ using NasLandingPage.Models.Entities;
 
 namespace NasLandingPage.Models.Dto;
 
-public class ContainerItemDto
+public class ContainerItemDto : ContainerDto
 {
   public int ItemId { get; set; }
   public int ContainerId { get; set; }
@@ -11,8 +11,6 @@ public class ContainerItemDto
   public bool OrderMore { get; set; }
   public bool OrderPlaced { get; set; }
   public bool AutoFlagOrderMore { get; set; }
-  public DateTimeOffset DateAddedUtc { get; set; } = DateTimeOffset.Now;
-  public DateTimeOffset DateUpdatedUtc { get; set; } = DateTimeOffset.Now;
   public string Category { get; set; } = string.Empty;
   public string SubCategory { get; set; } = string.Empty;
   public string InventoryName { get; set; } = string.Empty;
@@ -20,8 +18,6 @@ public class ContainerItemDto
 
   public static ContainerItemDto FromEntity(ContainerItemEntity entity) => new()
   {
-    DateAddedUtc = entity.DateAddedUtc,
-    DateUpdatedUtc = entity.DateUpdatedUtc,
     ContainerId = entity.ContainerId,
     Quantity = entity.Quantity,
     Category = entity.Category,
@@ -33,13 +29,19 @@ public class ContainerItemDto
     ItemId = entity.ItemId,
     AutoFlagOrderMore = entity.AutoFlagOrderMore,
     OrderMoreMinQty = entity.OrderMoreMinQty,
+    ContainerLabel = entity.ContainerLabel,
+    ContainerName = entity.ContainerName,
+    ItemCount = entity.ItemCount,
+    Notes = entity.Notes,
+    ShelfLevel = entity.ShelfLevel,
+    ShelfNumber = entity.ShelfNumber,
+    ShelfRow = entity.ShelfRow,
+    ShelfRowPosition = entity.ShelfRowPosition,
   };
 
   public ContainerItemEntity ToEntity() => new()
   {
     ContainerId = ContainerId,
-    DateAddedUtc = DateAddedUtc,
-    DateUpdatedUtc = DateUpdatedUtc,
     Quantity = Quantity,
     OrderMoreMinQty = OrderMoreMinQty,
     OrderPlaced = OrderPlaced,
@@ -50,5 +52,13 @@ public class ContainerItemDto
     OrderUrl = OrderUrl,
     ItemId = ItemId,
     OrderMore = OrderMore,
+    ContainerLabel = ContainerLabel,
+    ItemCount = ItemCount,
+    Notes = Notes,
+    ShelfNumber = ShelfNumber,
+    ShelfRow = ShelfRow,
+    ShelfRowPosition = ShelfRowPosition,
+    ContainerName = ContainerName,
+    ShelfLevel = ShelfLevel,
   };
 }

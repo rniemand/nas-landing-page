@@ -1,5 +1,6 @@
 using Dapper;
 using NasLandingPage.Models.Entities;
+using NasLandingPage.Models.Requests;
 using System.ComponentModel;
 
 namespace NasLandingPage.Repos;
@@ -17,6 +18,7 @@ public interface IContainerRepo
   Task<string[]> GetItemCategoriesAsync(string term);
   Task<string[]> GetItemSubCategoriesAsync(string category, string term);
   Task<List<ContainerItemEntity>> GetContainerItemsAsync(int containerId);
+  Task<List<ContainerItemEntity>> SearchContainerItemsAsync(SearchContainerItemsRequest request);
   Task<int> UpdateContainerItemCountAsync(int containerId);
   Task<int> UpdateContainerItemCountFromItemIdAsync(int itemId);
   Task<int> DecrementItemQuantityAsync(int itemId, int decrementAmount);
@@ -189,6 +191,19 @@ public class ContainerRepo : IContainerRepo
     WHERE con.ContainerId = {containerId}
 	    AND ci.Deleted = 0
     ORDER BY ci.Category, ci.SubCategory, ci.InventoryName";
+    await using var connection = _connectionHelper.GetCoreConnection();
+    return (await connection.QueryAsync<ContainerItemEntity>(query)).ToList();
+  }
+
+  public async Task<List<ContainerItemEntity>> SearchContainerItemsAsync(SearchContainerItemsRequest request)
+  {
+    var query = $@"SELECT *
+    FROM `ContainerItems` ci
+    INNER JOIN `Containers` c ON c.ContainerId = ci.ContainerId
+    WHERE ci.Deleted = 0
+	    {(!string.IsNullOrWhiteSpace(request.Category) ? $"AND ci.Category = '{request.Category}'" : "")}
+      {(!string.IsNullOrWhiteSpace(request.SubCategory) ? $"AND ci.SubCategory = '{request.SubCategory}'" : "")}
+	    AND ci.InventoryName LIKE '%{request.Term}%'";
     await using var connection = _connectionHelper.GetCoreConnection();
     return (await connection.QueryAsync<ContainerItemEntity>(query)).ToList();
   }

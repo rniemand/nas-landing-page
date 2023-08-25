@@ -433,6 +433,8 @@ export interface IContainerClient {
 
     getContainer(containerId: number): Promise<ContainerDto>;
 
+    searchContainerItems(request: SearchContainerItemsRequest): Promise<ContainerItemDto[]>;
+
     addContainerItem(item: ContainerItemDto): Promise<BoolResponse>;
 
     updateContainerItem(item: ContainerItemDto): Promise<BoolResponse>;
@@ -704,6 +706,53 @@ export class ContainerClient extends NlpBaseClient implements IContainerClient {
             });
         }
         return Promise.resolve<ContainerDto>(null as any);
+    }
+
+    searchContainerItems(request: SearchContainerItemsRequest): Promise<ContainerItemDto[]> {
+        let url_ = this.baseUrl + "/Container";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(request);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processSearchContainerItems(_response));
+        });
+    }
+
+    protected processSearchContainerItems(response: Response): Promise<ContainerItemDto[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(ContainerItemDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<ContainerItemDto[]>(null as any);
     }
 
     addContainerItem(item: ContainerItemDto): Promise<BoolResponse> {
@@ -2438,8 +2487,6 @@ export class ContainerDto implements IContainerDto {
     shelfRow!: number;
     shelfRowPosition!: number;
     itemCount!: number;
-    dateAddedUtc!: Date;
-    dateUpdatedUtc!: Date;
     containerLabel!: string;
     containerName!: string;
     notes!: string;
@@ -2461,8 +2508,6 @@ export class ContainerDto implements IContainerDto {
             this.shelfRow = _data["shelfRow"] !== undefined ? _data["shelfRow"] : <any>null;
             this.shelfRowPosition = _data["shelfRowPosition"] !== undefined ? _data["shelfRowPosition"] : <any>null;
             this.itemCount = _data["itemCount"] !== undefined ? _data["itemCount"] : <any>null;
-            this.dateAddedUtc = _data["dateAddedUtc"] ? new Date(_data["dateAddedUtc"].toString()) : <any>null;
-            this.dateUpdatedUtc = _data["dateUpdatedUtc"] ? new Date(_data["dateUpdatedUtc"].toString()) : <any>null;
             this.containerLabel = _data["containerLabel"] !== undefined ? _data["containerLabel"] : <any>null;
             this.containerName = _data["containerName"] !== undefined ? _data["containerName"] : <any>null;
             this.notes = _data["notes"] !== undefined ? _data["notes"] : <any>null;
@@ -2484,8 +2529,6 @@ export class ContainerDto implements IContainerDto {
         data["shelfRow"] = this.shelfRow !== undefined ? this.shelfRow : <any>null;
         data["shelfRowPosition"] = this.shelfRowPosition !== undefined ? this.shelfRowPosition : <any>null;
         data["itemCount"] = this.itemCount !== undefined ? this.itemCount : <any>null;
-        data["dateAddedUtc"] = this.dateAddedUtc ? this.dateAddedUtc.toISOString() : <any>null;
-        data["dateUpdatedUtc"] = this.dateUpdatedUtc ? this.dateUpdatedUtc.toISOString() : <any>null;
         data["containerLabel"] = this.containerLabel !== undefined ? this.containerLabel : <any>null;
         data["containerName"] = this.containerName !== undefined ? this.containerName : <any>null;
         data["notes"] = this.notes !== undefined ? this.notes : <any>null;
@@ -2500,8 +2543,6 @@ export interface IContainerDto {
     shelfRow: number;
     shelfRowPosition: number;
     itemCount: number;
-    dateAddedUtc: Date;
-    dateUpdatedUtc: Date;
     containerLabel: string;
     containerName: string;
     notes: string;
@@ -2547,7 +2588,7 @@ export interface IIntSelectOptionDto {
     title: string;
 }
 
-export class ContainerItemDto implements IContainerItemDto {
+export class ContainerItemDto extends ContainerDto implements IContainerItemDto {
     itemId!: number;
     containerId!: number;
     quantity!: number;
@@ -2555,14 +2596,77 @@ export class ContainerItemDto implements IContainerItemDto {
     orderMore!: boolean;
     orderPlaced!: boolean;
     autoFlagOrderMore!: boolean;
-    dateAddedUtc!: Date;
-    dateUpdatedUtc!: Date;
     category!: string;
     subCategory!: string;
     inventoryName!: string;
     orderUrl!: string;
 
     constructor(data?: IContainerItemDto) {
+        super(data);
+    }
+
+    override init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.itemId = _data["itemId"] !== undefined ? _data["itemId"] : <any>null;
+            this.containerId = _data["containerId"] !== undefined ? _data["containerId"] : <any>null;
+            this.quantity = _data["quantity"] !== undefined ? _data["quantity"] : <any>null;
+            this.orderMoreMinQty = _data["orderMoreMinQty"] !== undefined ? _data["orderMoreMinQty"] : <any>null;
+            this.orderMore = _data["orderMore"] !== undefined ? _data["orderMore"] : <any>null;
+            this.orderPlaced = _data["orderPlaced"] !== undefined ? _data["orderPlaced"] : <any>null;
+            this.autoFlagOrderMore = _data["autoFlagOrderMore"] !== undefined ? _data["autoFlagOrderMore"] : <any>null;
+            this.category = _data["category"] !== undefined ? _data["category"] : <any>null;
+            this.subCategory = _data["subCategory"] !== undefined ? _data["subCategory"] : <any>null;
+            this.inventoryName = _data["inventoryName"] !== undefined ? _data["inventoryName"] : <any>null;
+            this.orderUrl = _data["orderUrl"] !== undefined ? _data["orderUrl"] : <any>null;
+        }
+    }
+
+    static override fromJS(data: any): ContainerItemDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ContainerItemDto();
+        result.init(data);
+        return result;
+    }
+
+    override toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["itemId"] = this.itemId !== undefined ? this.itemId : <any>null;
+        data["containerId"] = this.containerId !== undefined ? this.containerId : <any>null;
+        data["quantity"] = this.quantity !== undefined ? this.quantity : <any>null;
+        data["orderMoreMinQty"] = this.orderMoreMinQty !== undefined ? this.orderMoreMinQty : <any>null;
+        data["orderMore"] = this.orderMore !== undefined ? this.orderMore : <any>null;
+        data["orderPlaced"] = this.orderPlaced !== undefined ? this.orderPlaced : <any>null;
+        data["autoFlagOrderMore"] = this.autoFlagOrderMore !== undefined ? this.autoFlagOrderMore : <any>null;
+        data["category"] = this.category !== undefined ? this.category : <any>null;
+        data["subCategory"] = this.subCategory !== undefined ? this.subCategory : <any>null;
+        data["inventoryName"] = this.inventoryName !== undefined ? this.inventoryName : <any>null;
+        data["orderUrl"] = this.orderUrl !== undefined ? this.orderUrl : <any>null;
+        super.toJSON(data);
+        return data;
+    }
+}
+
+export interface IContainerItemDto extends IContainerDto {
+    itemId: number;
+    containerId: number;
+    quantity: number;
+    orderMoreMinQty: number;
+    orderMore: boolean;
+    orderPlaced: boolean;
+    autoFlagOrderMore: boolean;
+    category: string;
+    subCategory: string;
+    inventoryName: string;
+    orderUrl: string;
+}
+
+export class SearchContainerItemsRequest implements ISearchContainerItemsRequest {
+    category?: string | null;
+    subCategory?: string | null;
+    term!: string;
+
+    constructor(data?: ISearchContainerItemsRequest) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -2573,62 +2677,32 @@ export class ContainerItemDto implements IContainerItemDto {
 
     init(_data?: any) {
         if (_data) {
-            this.itemId = _data["itemId"] !== undefined ? _data["itemId"] : <any>null;
-            this.containerId = _data["containerId"] !== undefined ? _data["containerId"] : <any>null;
-            this.quantity = _data["quantity"] !== undefined ? _data["quantity"] : <any>null;
-            this.orderMoreMinQty = _data["orderMoreMinQty"] !== undefined ? _data["orderMoreMinQty"] : <any>null;
-            this.orderMore = _data["orderMore"] !== undefined ? _data["orderMore"] : <any>null;
-            this.orderPlaced = _data["orderPlaced"] !== undefined ? _data["orderPlaced"] : <any>null;
-            this.autoFlagOrderMore = _data["autoFlagOrderMore"] !== undefined ? _data["autoFlagOrderMore"] : <any>null;
-            this.dateAddedUtc = _data["dateAddedUtc"] ? new Date(_data["dateAddedUtc"].toString()) : <any>null;
-            this.dateUpdatedUtc = _data["dateUpdatedUtc"] ? new Date(_data["dateUpdatedUtc"].toString()) : <any>null;
             this.category = _data["category"] !== undefined ? _data["category"] : <any>null;
             this.subCategory = _data["subCategory"] !== undefined ? _data["subCategory"] : <any>null;
-            this.inventoryName = _data["inventoryName"] !== undefined ? _data["inventoryName"] : <any>null;
-            this.orderUrl = _data["orderUrl"] !== undefined ? _data["orderUrl"] : <any>null;
+            this.term = _data["term"] !== undefined ? _data["term"] : <any>null;
         }
     }
 
-    static fromJS(data: any): ContainerItemDto {
+    static fromJS(data: any): SearchContainerItemsRequest {
         data = typeof data === 'object' ? data : {};
-        let result = new ContainerItemDto();
+        let result = new SearchContainerItemsRequest();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["itemId"] = this.itemId !== undefined ? this.itemId : <any>null;
-        data["containerId"] = this.containerId !== undefined ? this.containerId : <any>null;
-        data["quantity"] = this.quantity !== undefined ? this.quantity : <any>null;
-        data["orderMoreMinQty"] = this.orderMoreMinQty !== undefined ? this.orderMoreMinQty : <any>null;
-        data["orderMore"] = this.orderMore !== undefined ? this.orderMore : <any>null;
-        data["orderPlaced"] = this.orderPlaced !== undefined ? this.orderPlaced : <any>null;
-        data["autoFlagOrderMore"] = this.autoFlagOrderMore !== undefined ? this.autoFlagOrderMore : <any>null;
-        data["dateAddedUtc"] = this.dateAddedUtc ? this.dateAddedUtc.toISOString() : <any>null;
-        data["dateUpdatedUtc"] = this.dateUpdatedUtc ? this.dateUpdatedUtc.toISOString() : <any>null;
         data["category"] = this.category !== undefined ? this.category : <any>null;
         data["subCategory"] = this.subCategory !== undefined ? this.subCategory : <any>null;
-        data["inventoryName"] = this.inventoryName !== undefined ? this.inventoryName : <any>null;
-        data["orderUrl"] = this.orderUrl !== undefined ? this.orderUrl : <any>null;
+        data["term"] = this.term !== undefined ? this.term : <any>null;
         return data;
     }
 }
 
-export interface IContainerItemDto {
-    itemId: number;
-    containerId: number;
-    quantity: number;
-    orderMoreMinQty: number;
-    orderMore: boolean;
-    orderPlaced: boolean;
-    autoFlagOrderMore: boolean;
-    dateAddedUtc: Date;
-    dateUpdatedUtc: Date;
-    category: string;
-    subCategory: string;
-    inventoryName: string;
-    orderUrl: string;
+export interface ISearchContainerItemsRequest {
+    category?: string | null;
+    subCategory?: string | null;
+    term: string;
 }
 
 export class CategoryRequest implements ICategoryRequest {
