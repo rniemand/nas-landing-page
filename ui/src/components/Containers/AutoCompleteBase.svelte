@@ -22,6 +22,7 @@
     width: 100%;
     overflow-y: auto;
     max-height: 350px;
+    z-index: 2;
   }
   .results.visible { display: block; }
   .result {
@@ -46,6 +47,19 @@
     font-size: .92857143em;
     color: rgba(31, 31, 31, 0.4);
   }
+  .bi.clear {
+    margin-left: 4px!important;
+    margin-right: 4px!important;
+    cursor: pointer;
+    margin: auto;
+    display: inline-block;
+    color: rgb(226, 28, 28);
+  }
+  .bi.clear.disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    color: rgb(70, 70, 70);
+  }
 </style>
 
 <script lang="ts">
@@ -62,7 +76,6 @@
   let loading: boolean = false;
   let results: SearchResult[] = [];
   let canSearch: boolean = false;
-  
 
   const runSearch = async (term: string | undefined) => {
     if(!canSearch) return;
@@ -95,7 +108,10 @@
 <div class="search">
   <div class="input">
     <input type="text" class="form-control" placeholder={placeholder} bind:value={value} on:focus={onFocus} on:blur={onBlur} />
-    {#if clearButton}<button class="btn btn-danger" on:click={clearInput}>x</button>{/if}
+    {#if clearButton}
+      <!-- svelte-ignore a11y-click-events-have-key-events -->
+      <i class="bi bi-trash3 clear" on:click={clearInput} class:disabled={value.length === 0}></i>
+    {/if}
     <Spinner show={loading} />
   </div>
   <div class="results" class:visible={hasResults}>
