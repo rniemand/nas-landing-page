@@ -7,6 +7,7 @@
   export let category: string = '';
   export let placeholder: string = 'Search SubCategories';
   export let clearButton: boolean = false;
+  export let onItemSelected: (item: SearchResult) => void = (item: SearchResult) => {};
   let lastCategory: string = '';
 
   const getSuggestions = async (_term: string | undefined) => {
@@ -32,4 +33,4 @@
   $: onCategoryChange(category);
 </script>
 
-<AutoCompleteBase refreshSuggestions={getSuggestions} bind:value={value} {placeholder} {clearButton} searchOnFocus />
+<AutoCompleteBase refreshSuggestions={getSuggestions} bind:value={value} {placeholder} {clearButton} searchOnFocus {onItemSelected} />

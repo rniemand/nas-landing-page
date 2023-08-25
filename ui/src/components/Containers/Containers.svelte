@@ -26,6 +26,9 @@
 <div class="mb-3">
   <AddContainer onContainerAdded={refreshContainers} />
   <EditContainer bind:this={_editContainer} onContainerModified={refreshContainers} />
+</div>
+
+<div class="mb-3">
   <ItemSearch />
 </div>
 
@@ -44,7 +47,7 @@
     <tbody>
       {#each containers as container}
         <tr>
-          <th>{container.containerLabel}</th>
+          <td>{container.containerLabel}</td>
           <td>{container.containerName}</td>
           <td>{container.itemCount}</td>
           <td>{container.notes}</td>

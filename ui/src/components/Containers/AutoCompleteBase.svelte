@@ -3,7 +3,7 @@
     width: 100%;
     font-size: 1em;
     position: relative;
-    display: block;
+    display: inline-block;
   }
   .search .input { display: flex; }
   .results {
@@ -71,6 +71,7 @@
   export let clearButton: boolean = false;
   export let searchOnFocus: boolean = false;
   export let refreshSuggestions: (term: string | undefined) => Promise<SearchResult[]>;
+  export let onItemSelected: (item: SearchResult) => void = (item: SearchResult) => {};
 
   let hasResults = false;
   let loading: boolean = false;
@@ -88,6 +89,7 @@
   const selectItem = (item: SearchResult) => {
     hasResults = false;
     value = item.value || item.title;
+    onItemSelected(item);
   };
 
   const clearInput = () => value = '';

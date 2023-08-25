@@ -5,6 +5,7 @@
   export let value: string = '';
   export let placeholder: string = 'Search Categories';
   export let clearButton: boolean = false;
+  export let onItemSelected: (item: SearchResult) => void = (item: SearchResult) => {};
 
   const getSuggestions = async (term: string | undefined) => {
     const itemRequest = new CategoryRequest({
@@ -16,4 +17,4 @@
   };
 </script>
 
-<AutoCompleteBase refreshSuggestions={getSuggestions} bind:value={value} {placeholder} {clearButton} />
+<AutoCompleteBase refreshSuggestions={getSuggestions} bind:value={value} {placeholder} {clearButton} {onItemSelected} />

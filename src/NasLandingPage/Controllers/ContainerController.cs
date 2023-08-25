@@ -41,6 +41,9 @@ public class ContainerController : ControllerBase
   public async Task<ContainerDto> GetContainer([FromRoute] int containerId) =>
     await _containerService.GetContainerAsync(containerId);
 
+  public async Task<List<ContainerItemDto>> SearchContainerItems(SearchContainerItemsRequest request) =>
+    await _containerService.SearchContainerItemsAsync(request);
+
   [HttpPost("items/add")]
   public async Task<BoolResponse> AddContainerItem([FromBody] ContainerItemDto item) =>
     await _containerService.AddContainerItemAsync(item);

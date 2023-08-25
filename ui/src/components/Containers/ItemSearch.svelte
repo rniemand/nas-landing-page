@@ -1,117 +1,92 @@
 <style>
-  .search {
-    width: 100%;
-    font-size: 1em;
-    position: relative;
-    display: block;
+  .search button {
+    width: 100px;
+    margin-left: 6px;
   }
-  .search .input { display: flex; }
-  .results {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    transform-origin: center top;
-    white-space: normal;
-    background: #fff;
-    margin-top: 0.5em;
-    width: 18em;
-    border-radius: 0.2rem;
-    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12), 0 2px 10px 0 rgba(34,36,38,.15);
-    border: 1px solid #d4d4d5;
-    width: 100%;
-    overflow-y: auto;
-    max-height: 350px;
-  }
-  .results.visible { display: block; }
-  .result {
-    cursor: pointer;
-    display: block;
-    overflow: hidden;
-    font-size: 1em;
-    padding: 0.8em 1.1em;
-    color: rgba(0,0,0,.87);
-    line-height: 1.33;
-    border-bottom: 1px solid rgba(34,36,38,.1);
-  }
-  .result:hover { background: #ebebeb; }
-  .result .title {
-    margin: -0.14em 0 0;
-    font-weight: 700;
-    font-size: 1em;
-    color: rgba(34, 34, 34, 0.85);
-  }
-  .result .description {
-    margin-top: 0;
-    font-size: .92857143em;
-    color: rgba(31, 31, 31, 0.4);
-  }
+  .search .d-flex { flex: auto; }
 </style>
 
 <script lang="ts">
-	import { CategoryRequest, ContainerClient } from "../../nlp-api";
+	import { ContainerClient, ContainerItemDto, SearchContainerItemsRequest } from "../../nlp-api";
 	import Spinner from "../Spinner.svelte";
-	import type { SearchResult } from "./ContainerHelper";
 	import ItemCategoryInput from "./ItemCategoryInput.svelte";
 	import ItemSubCategoryInput from "./ItemSubCategoryInput.svelte";
-	// import { SearchResult } from "./ContainerHelper";
 
-  export let value: string = '';
-  export let onChange: () => void = () => {};
-  let hasResults = false;
   let loading: boolean = false;
-  let results: SearchResult[] = [];
-  let canSearch: boolean = false;
+  let hasResults: boolean = false;
+  let searchTerm: string = '';
   let category: string = '';
   let subCategory: string = '';
+  let results: ContainerItemDto[] = [];
+  let debounceSearch: number | undefined = undefined;
 
-  const refreshSuggestions = async (_term: string | undefined) => {
-    // if(!canSearch) return;
-    // onChange();
-    // loading = true;
-    // const itemRequest = new CategoryRequest({
-    //   category: _term || '',
-    //   subCategory: '',
-    // });
-    // const response = await new ContainerClient().getItemCategories(itemRequest) || [];
-    // results = response.map((cat: string) => new SearchResult(cat));
-    // hasResults = results.length > 0;
-    // loading = false;
-  };
-
-  const selectItem = (item: SearchResult) => {
+  const clearSearch = () => {
     hasResults = false;
-    value = item.value || item.title;
+    results = [];
+    searchTerm = '';
+    category = '';
+    subCategory = '';
   };
 
-  const onBlur = () => {
-    canSearch = false;
-    setTimeout(() => { hasResults = false; }, 100);
+  const executeSearch = async () => {
+    debounceSearch = undefined;
+    results = await new ContainerClient().searchContainerItems(new SearchContainerItemsRequest({
+      term: searchTerm,
+      category: category,
+      subCategory: subCategory
+    }));
+    hasResults = results.length > 0;
   };
 
-  const onFocus = () => {
-    canSearch = true;
+  const runSearch = async () => {
+    if(debounceSearch) {
+      clearTimeout(debounceSearch);
+      debounceSearch = undefined;
+    }
+    debounceSearch = setTimeout(executeSearch, 250);
   };
-
-  $: refreshSuggestions(value);
 </script>
 
-<div class="search">
-  <div class="input">
-    <ItemCategoryInput placeholder="Category" bind:value={category} clearButton />
-    <ItemSubCategoryInput placeholder="SubCategory" bind:category={category} bind:value={subCategory} clearButton />
-    <input type="text" class="form-control" placeholder="Search" bind:value={value} on:focus={onFocus} on:blur={onBlur} />
-    <Spinner show={loading} />
+<div class="search d-flex mb-3">
+  <div class="d-flex">
+    <ItemCategoryInput placeholder="Category" bind:value={category} clearButton onItemSelected={runSearch} />
+    <ItemSubCategoryInput placeholder="SubCategory" bind:category={category} bind:value={subCategory} clearButton onItemSelected={runSearch} />
+    <input type="text" class="form-control" placeholder="Item Name" bind:value={searchTerm} on:keyup={runSearch} />
   </div>
-  <div class="results" class:visible={hasResults}>
-    {#each results as result}
-      <!-- svelte-ignore a11y-click-events-have-key-events -->
-      <div class="result" on:click={() => selectItem(result)}>
-        <div class="content">
-          <div class="title">{result.title}</div>
-          <div class="description">{result.description}</div>
-        </div>
-      </div>
-    {/each}
-  </div>
+  <button class="btn btn-danger" disabled={!hasResults} on:click={clearSearch}>Clear</button>
 </div>
+
+<Spinner show={loading} />
+{#if hasResults}
+  <div class="results">
+    <h2>Search Results</h2>
+    <table class="table table-striped table-hover table-bordered table-sm">
+      <thead>
+        <tr>
+          <th scope="col" colspan="2">Container</th>
+          <th scope="col" colspan="2">Categorization</th>
+          <th scope="col">Qty</th>
+          <th scope="col">Name</th>
+          <th scope="col">&nbsp;</th>
+        </tr>
+      </thead>
+      <tbody>
+        {#each results as result}
+          <tr>
+            <td>{result.containerLabel}</td>
+            <td>{result.containerName}</td>
+            <td>{result.category}</td>
+            <td>{result.subCategory}</td>
+            <td>{result.quantity}</td>
+            <td>{result.inventoryName}</td>
+            <td>
+              <a href="/containers/items/?id={result.containerId}">
+                <i class="bi bi-pencil-square"></i>
+              </a>
+            </td>
+          </tr>
+        {/each}
+      </tbody>
+    </table>
+  </div>
+{/if}
