@@ -7,6 +7,7 @@
 	import Spinner from "../Spinner.svelte";
 	import AddContainer from "./AddContainer.svelte";
 	import EditContainer from "./EditContainer.svelte";
+	import ItemSearch from "./ItemSearch.svelte";
 
   let containers: ContainerDto[] = [];
   let loading: boolean = false;
@@ -25,6 +26,7 @@
 <div class="mb-3">
   <AddContainer onContainerAdded={refreshContainers} />
   <EditContainer bind:this={_editContainer} onContainerModified={refreshContainers} />
+  <ItemSearch />
 </div>
 
 <Spinner show={loading} />

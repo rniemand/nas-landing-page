@@ -55,6 +55,8 @@
 
   export let value: string = '';
   export let onChange: () => void = () => {};
+  export let placeholder: string = 'Search Categories';
+  export let clearButton: boolean = false;
   let hasResults = false;
   let loading: boolean = false;
   let results: SearchResult[] = [];
@@ -79,6 +81,8 @@
     value = item.value || item.title;
   };
 
+  const clearInput = () => value = '';
+
   const onBlur = () => {
     canSearch = false;
     setTimeout(() => { hasResults = false; }, 100);
@@ -93,7 +97,8 @@
 
 <div class="search">
   <div class="input">
-    <input type="text" class="form-control" placeholder="Search" bind:value={value} on:focus={onFocus} on:blur={onBlur} />
+    <input type="text" class="form-control" placeholder={placeholder} bind:value={value} on:focus={onFocus} on:blur={onBlur} />
+    {#if clearButton}<button class="btn btn-danger" on:click={clearInput}>x</button>{/if}
     <Spinner show={loading} />
   </div>
   <div class="results" class:visible={hasResults}>

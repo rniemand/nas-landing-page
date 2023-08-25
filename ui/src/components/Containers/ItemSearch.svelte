@@ -51,31 +51,32 @@
 <script lang="ts">
 	import { CategoryRequest, ContainerClient } from "../../nlp-api";
 	import Spinner from "../Spinner.svelte";
-	import { SearchResult } from "./ContainerHelper";
+	import type { SearchResult } from "./ContainerHelper";
+	import ItemCategoryInput from "./ItemCategoryInput.svelte";
+	import ItemSubCategoryInput from "./ItemSubCategoryInput.svelte";
+	// import { SearchResult } from "./ContainerHelper";
 
   export let value: string = '';
-  export let category: string = '';
-  export let placeholder: string = 'Search SubCategories';
   export let onChange: () => void = () => {};
-  export let clearButton: boolean = false;
   let hasResults = false;
   let loading: boolean = false;
   let results: SearchResult[] = [];
   let canSearch: boolean = false;
-  let lastCategory: string = '';
+  let category: string = '';
+  let subCategory: string = '';
 
-  const refreshSuggestions = async (_term: string | undefined, _category: string) => {
-    if(!canSearch) return;
-    onChange();
-    loading = true;
-    const itemRequest = new CategoryRequest({
-      category: _category,
-      subCategory: _term || '',
-    });
-    const response = await new ContainerClient().getItemSubCategories(itemRequest) || [];
-    results = response.map((cat: string) => new SearchResult(cat));
-    hasResults = results.length > 0;
-    loading = false;
+  const refreshSuggestions = async (_term: string | undefined) => {
+    // if(!canSearch) return;
+    // onChange();
+    // loading = true;
+    // const itemRequest = new CategoryRequest({
+    //   category: _term || '',
+    //   subCategory: '',
+    // });
+    // const response = await new ContainerClient().getItemCategories(itemRequest) || [];
+    // results = response.map((cat: string) => new SearchResult(cat));
+    // hasResults = results.length > 0;
+    // loading = false;
   };
 
   const selectItem = (item: SearchResult) => {
@@ -88,36 +89,18 @@
     setTimeout(() => { hasResults = false; }, 100);
   };
 
-  const clearInput = () => {
-    value = '';
-  };
-
   const onFocus = () => {
     canSearch = true;
-    if(category.length > 0) refreshSuggestions(value, category);
   };
 
-  const onCategoryChange = (_category: string) => {
-    if(_category === '') {
-      value = '';
-      lastCategory = '';
-      return;
-    }
-    if(category === _category && category === lastCategory) {
-      return;
-    }
-    value = '';
-    lastCategory = _category;
-  };
-
-  $: refreshSuggestions(value, category);
-  $: onCategoryChange(category);
+  $: refreshSuggestions(value);
 </script>
 
 <div class="search">
   <div class="input">
-    <input type="text" class="form-control" placeholder={placeholder} bind:value={value} on:focus={onFocus} on:blur={onBlur} />
-    {#if clearButton}<button class="btn btn-danger" on:click={clearInput}>x</button>{/if}
+    <ItemCategoryInput placeholder="Category" bind:value={category} clearButton />
+    <ItemSubCategoryInput placeholder="SubCategory" bind:category={category} bind:value={subCategory} clearButton />
+    <input type="text" class="form-control" placeholder="Search" bind:value={value} on:focus={onFocus} on:blur={onBlur} />
     <Spinner show={loading} />
   </div>
   <div class="results" class:visible={hasResults}>
