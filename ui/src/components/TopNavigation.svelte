@@ -3,6 +3,7 @@
 </style>
 
 <script lang="ts">
+	import { goto } from "$app/navigation";
   import { navigating } from "$app/stores";
   import { AuthClient, WhoAmIResponse } from "../nlp-api";
 	import { authContext, updateAuthContext } from "../utils/AppStore";
@@ -10,13 +11,15 @@
   let path = (window.location.pathname || '/').toLowerCase();
   let showAccountDropdown: boolean = false;
   let loggedIn: boolean = false;
+  let expanded: boolean = false;
 
-  const runLogout = () => {
-    new AuthClient().logout().then(() => {
-      updateAuthContext(undefined);
-      location.href = '/';
-    });
+  const runLogout = async () => {
+    await new AuthClient().logout();
+    updateAuthContext(undefined);
+    goto('/');
   };
+
+  const toggleNavBar = () => expanded = !expanded;
 
   authContext.subscribe((_whoAmI: WhoAmIResponse | undefined) => {
     loggedIn = _whoAmI?.signedIn || false;
@@ -28,28 +31,28 @@
 <nav class="navbar bg-dark navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
   <div class="container-fluid">
     <a class="navbar-brand" href="#!">NLP</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" class:collapsed={!expanded} on:click={toggleNavBar} type="button">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <div class="collapse navbar-collapse" class:show={expanded} id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" href="/" class:active={path === '/'}>Home</a>
+          <a class="nav-link" href="/" on:click={toggleNavBar} class:active={path === '/'}>Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" href="/github" class:active={path === '/github'}>GitHub</a>
+          <a class="nav-link" href="/github" on:click={toggleNavBar} class:active={path === '/github'}>GitHub</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" href="/games" class:active={path === '/games'}>Games</a>
+          <a class="nav-link" href="/games" on:click={toggleNavBar} class:active={path === '/games'}>Games</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" href="/tasks" class:active={path === '/tasks'}>Tasks</a>
+          <a class="nav-link" href="/tasks" on:click={toggleNavBar} class:active={path === '/tasks'}>Tasks</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" href="/network" class:active={path === '/network'}>Network</a>
+          <a class="nav-link" href="/network" on:click={toggleNavBar} class:active={path === '/network'}>Network</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" href="/containers" class:active={path === '/containers'}>Containers</a>
+          <a class="nav-link" href="/containers" on:click={toggleNavBar} class:active={path === '/containers'}>Containers</a>
         </li>
       </ul>
       <div class="d-flex">
