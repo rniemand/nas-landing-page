@@ -1,5 +1,5 @@
 <style>
-  .card { font-size: 0.85em;}
+  .card { font-size: 0.85em; width: 150px; }
   .sold { opacity: 0.25; }
   .price { background-color: rgba(0,0,0,.61); border-radius: 3px; color: #00ff1f; padding: 3px; position: absolute; right: 5px; top: 5px; }
   .flex-spaced span { flex: auto; padding: 0 4px; }

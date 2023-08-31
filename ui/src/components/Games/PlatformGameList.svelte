@@ -1,6 +1,8 @@
 <style>
   h2 { flex: auto; }
   .refresh { cursor: pointer; }
+  .card-container { justify-content: space-evenly; }
+  a.refresh { margin: auto; font-size: 1.5em; margin-right: 6px; color: #ba1bcb; }
 </style>
 
 <script lang="ts">
@@ -43,14 +45,13 @@
     Loading...
   {:else}
     <div class="d-flex my-2">
-      <h2>
-        <!-- svelte-ignore a11y-click-events-have-key-events -->
-        <i class="bi bi-arrow-clockwise refresh" on:click={() => refreshGames(selectedPlatform)}></i>
-        Showing {games.length} game(s)
-      </h2>
+      <a href="#!" class="refresh" on:click={() => refreshGames(selectedPlatform)}>
+        <i class="bi bi-arrow-clockwise refresh"></i>
+      </a>
+      <h2 class="d-none d-sm-block">Showing {games.length} game(s)</h2>
       <GameSearch searchTermChanged={searchTermChangedHandler} onAddGame={onAddGameClicked} bind:term={searchTerm} />
     </div>
-    <div class="row row-cols-6 g-4">
+    <div class="row row-cols-auto g-2 card-container">
       {#each filteredGames as game (game.gameID)}<GameCard {game} {triggerAction} />{/each}
     </div>
   {/if}
