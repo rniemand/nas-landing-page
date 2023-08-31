@@ -50,7 +50,7 @@
 <div class="col">
 	<div class="card h-100" class:sold={game.gameSold}>
     <!-- svelte-ignore a11y-click-events-have-key-events -->
-    <img class="cover" src={`api/images/game/cover/${game.platformName}/${game.gameID}`} alt="game cover" on:click={onGameClicked} />
+    <img class="cover" src={`/api/images/game/cover/${game.platformName}/${game.gameID}`} alt="game cover" on:click={onGameClicked} />
     {#if game.gamePrice > 0}<div class="price">{game.gamePrice}</div>{/if}
 		<!-- <div class="title">Title</div> -->
 		<div class="card-body mb-0 p-1">
