@@ -1,6 +1,7 @@
 <script>
   import 'bootstrap/dist/css/bootstrap.min.css';
   import 'bootstrap-icons/font/bootstrap-icons.min.css';
+  import '../app.css'
   import TopNavigation from "../components/TopNavigation.svelte";
   import { AuthClient } from "../nlp-api";
   import { updateAuthContext } from "../utils/AppStore";
