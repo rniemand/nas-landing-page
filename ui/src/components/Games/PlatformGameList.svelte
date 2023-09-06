@@ -1,13 +1,17 @@
 <style>
-  h2 { flex: auto; }
-  .refresh { cursor: pointer; }
-  .card-container { justify-content: space-evenly; }
-  a.refresh { margin: auto; font-size: 1.5em; margin-right: 6px; color: #ba1bcb; }
   .games-list {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-evenly;
+  }
+  .refresh {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    font-size: 2em;
+    z-index: 10;
+    cursor: pointer;
   }
 </style>
 
@@ -44,23 +48,23 @@
   const onAddGameClicked = () => triggerAction('add-game', undefined);
 
   $: refreshGames(selectedPlatform);
+  $: searchTermChangedHandler(searchTerm);
 </script>
 
 <div>
   {#if loading}
     Loading...
   {:else}
-    <div class="d-flex my-2">
-      <a href="#!" class="refresh" on:click={() => refreshGames(selectedPlatform)}>
-        <i class="bi bi-arrow-clockwise refresh"></i>
-      </a>
-      <h2 class="d-none d-sm-block">Showing {games.length} game(s)</h2>
-      <GameSearch searchTermChanged={searchTermChangedHandler} onAddGame={onAddGameClicked} bind:term={searchTerm} />
+    <div class="text-center mt-2 mb-3">
+      <GameSearch onAddGame={onAddGameClicked} bind:value={searchTerm} />
     </div>
     <div class="games-list">
       {#each filteredGames as game (game.gameID)}
         <GameCard {game} {triggerAction} />
       {/each}
     </div>
+    <a href="#!" class="refresh" on:click={() => refreshGames(selectedPlatform)}>
+      <i class="bi bi-arrow-clockwise refresh"></i>
+    </a>
   {/if}
 </div>
