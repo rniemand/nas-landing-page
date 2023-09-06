@@ -1,7 +1,3 @@
-<style>
-  .flex .form-control { flex: 1; }
-</style>
-
 <script lang="ts">
   import { BasicGameInfoDto, GamesClient, type GamePlatformDto, GameLocationDto } from "../../nlp-api";
   import GameLocationSelector from "./GameLocationSelector.svelte";
@@ -99,13 +95,13 @@
       </div>
     </div>
     <div class="flex">
-      <div class="form-control">
+      <div class="form-control flex-1">
         <label class="label cursor-pointer">
           <span class="label-text">Has Box</span> 
           <input type="checkbox" class="toggle" id="hasBox" bind:checked={game.hasGameBox} on:change={valueChanged} />
         </label>
       </div>
-      <div class="form-control">
+      <div class="form-control flex-1">
         <label class="label cursor-pointer">
           <span class="label-text">Has Protection</span> 
           <input type="checkbox" class="toggle" id="hasProtection" bind:checked={game.hasProtection} on:change={valueChanged} />

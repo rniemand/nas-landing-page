@@ -4,7 +4,7 @@
 	import GameInfoModal from "./GameInfoModal.svelte";
   import GamePlatforms from "./GamePlatforms.svelte";
   import GameReceiptModal from "./GameReceiptModal.svelte";
-	import GameSetConsoleModal from "./GameSetConsoleModal.svelte";
+	import SetConsoleModal from "./SetConsoleModal.svelte";
   import PlatformGameList from "./PlatformGameList.svelte";
 	import { GameModal } from "./Games";
 
@@ -57,7 +57,7 @@
     {#if modalType === GameModal.Receipt}<GameReceiptModal game={selectedGame} onReceiptAssociated={closeModal} />{/if}
     {#if modalType === GameModal.GameInfo}<GameInfoModal game={selectedGame} onGameUpdated={closeModal} />{/if}
     {#if modalType === GameModal.AddGame}<AddGameModal platform={selectedPlatform} onGameAdded={closeModal} />{/if}
-    {#if modalType === GameModal.SetConsole}<GameSetConsoleModal game={selectedGame} onLocationSet={closeModal} />{/if}
+    {#if modalType === GameModal.SetConsole}<SetConsoleModal game={selectedGame} onLocationSet={closeModal} />{/if}
   </div>
   <form method="dialog" class="modal-backdrop">
     <button>close</button>
