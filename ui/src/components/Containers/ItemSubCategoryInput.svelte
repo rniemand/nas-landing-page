@@ -33,4 +33,4 @@
   $: onCategoryChange(category);
 </script>
 
-<AutoCompleteBase refreshSuggestions={getSuggestions} bind:value={value} {placeholder} {clearButton} searchOnFocus {onItemSelected} />
+<AutoCompleteBase refreshSuggestions={getSuggestions} bind:value={value} {placeholder} {clearButton} searchOnFocus {onItemSelected} {...$$props} />

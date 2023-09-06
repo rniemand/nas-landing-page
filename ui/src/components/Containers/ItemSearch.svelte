@@ -47,13 +47,11 @@
   };
 </script>
 
-<div class="search d-flex mb-3">
-  <div class="d-flex">
-    <ItemCategoryInput placeholder="Category" bind:value={category} clearButton onItemSelected={runSearch} />
-    <ItemSubCategoryInput placeholder="SubCategory" bind:category={category} bind:value={subCategory} clearButton onItemSelected={runSearch} />
-    <input type="text" class="form-control" placeholder="Item Name" bind:value={searchTerm} on:keyup={runSearch} />
-  </div>
-  <button class="btn btn-danger" disabled={!hasResults} on:click={clearSearch}>Clear</button>
+<div class="flex">
+  <ItemCategoryInput placeholder="Category" bind:value={category} clearButton onItemSelected={runSearch} className="flex-1" />
+  <ItemSubCategoryInput placeholder="SubCategory" bind:category={category} bind:value={subCategory} clearButton onItemSelected={runSearch} className="flex-1" />
+  <input type="text" class="input input-bordered flex-1 mr-2" placeholder="Item Name" bind:value={searchTerm} on:keyup={runSearch} />
+  <button class="btn btn-warning" disabled={!hasResults} on:click={clearSearch}>Clear</button>
 </div>
 
 <Spinner show={loading} />

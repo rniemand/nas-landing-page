@@ -1,7 +1,3 @@
-<style>
-  .buttons { font-size: 1.2em; }
-</style>
-
 <script lang="ts">
   import { ContainerClient, ContainerDto } from "../../nlp-api";
 	import Spinner from "../Spinner.svelte";

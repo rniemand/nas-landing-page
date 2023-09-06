@@ -17,4 +17,4 @@
   };
 </script>
 
-<AutoCompleteBase refreshSuggestions={getSuggestions} bind:value={value} {placeholder} {clearButton} {onItemSelected} />
+<AutoCompleteBase refreshSuggestions={getSuggestions} bind:value={value} {placeholder} {clearButton} {onItemSelected} {...$$props} />
