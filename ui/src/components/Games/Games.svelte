@@ -1,27 +1,21 @@
 <script lang="ts">
-	import { onMount } from "svelte";
   import { BasicGameInfoDto, GamePlatformsClient, GamePlatformDto } from "../../nlp-api";
-	import GameAddModal from "./GameAddModal.svelte";
+	import AddGameModal from "./AddGameModal.svelte";
 	import GameInfoModal from "./GameInfoModal.svelte";
   import GamePlatforms from "./GamePlatforms.svelte";
   import GameReceiptModal from "./GameReceiptModal.svelte";
-	import GameSetConsoleModal from "./GameSetConsoleModal.svelte";
+	import SetConsoleModal from "./SetConsoleModal.svelte";
   import PlatformGameList from "./PlatformGameList.svelte";
-  import { Modal as BSModal } from 'bootstrap';
+	import { GameModal } from "./Games";
 
   let loading = true;
   let platforms: GamePlatformDto[];
   let selectedPlatform: GamePlatformDto | undefined;
   let selectedGame: BasicGameInfoDto;
   let gameList: PlatformGameList;
-  let genericModal: BSModal;
   let modalType: string = '';
   let modalTitle: string = '';
-
-  const MODAL_RECEIPT = 'receipt';
-  const MODAL_GAME_INFO = 'game-info';
-  const MODAL_ADD_GAME = 'add-game';
-  const MODAL_SET_CONSOLE = 'set-console';
+  let modalDialog: HTMLDialogElement;
 
   const platformSelected = (platform: GamePlatformDto) => selectedPlatform = platform;
   const onModalClosed = () => gameList.refresh();
@@ -29,15 +23,15 @@
   const triggerActionHandler = (action: string, game: BasicGameInfoDto | undefined) => {
     if(game) selectedGame = game;
     modalType = action;
-    if(action === MODAL_RECEIPT) modalTitle = 'Game Receipt';
-    if(action === MODAL_GAME_INFO) modalTitle = 'Game Info';
-    if(action === MODAL_SET_CONSOLE) modalTitle = 'Set Console';
-    if(action === MODAL_ADD_GAME) modalTitle = 'Add Game';
-    genericModal.show();
+    if(action === GameModal.Receipt) modalTitle = 'Game Receipt';
+    if(action === GameModal.GameInfo) modalTitle = 'Game Info';
+    if(action === GameModal.SetConsole) modalTitle = 'Set Console';
+    if(action === GameModal.AddGame) modalTitle = 'Add Game';
+    modalDialog.showModal();
   };
 
   const closeModal = () => {
-    genericModal?.hide();
+    modalDialog.close();
     onModalClosed();
   };
   
@@ -46,11 +40,6 @@
     selectedPlatform = platforms ? platforms[0] : undefined;
     loading = false;
   })();
-
-  onMount(() => {
-    genericModal = BSModal.getOrCreateInstance('#gameReceiptModal');
-    return () => genericModal.dispose();
-  });
 </script>
 
 <div class="wrapper">
@@ -62,19 +51,15 @@
   {/if}
 </div>
 
-<div class="modal modal-lg fade" id="gameReceiptModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-4">{modalTitle}</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        {#if modalType === MODAL_RECEIPT}<GameReceiptModal game={selectedGame} onReceiptAssociated={closeModal} />{/if}
-        {#if modalType === MODAL_GAME_INFO}<GameInfoModal game={selectedGame} onGameUpdated={closeModal} />{/if}
-        {#if modalType === MODAL_ADD_GAME}<GameAddModal platform={selectedPlatform} onGameAdded={closeModal} />{/if}
-        {#if modalType === MODAL_SET_CONSOLE}<GameSetConsoleModal game={selectedGame} onLocationSet={closeModal} />{/if}
-      </div>
-    </div>
+<dialog id="my_modal_2" class="modal" bind:this={modalDialog}>
+  <div class="modal-box">
+    <h2 class="font-bold text-lg">{modalTitle}</h2>
+    {#if modalType === GameModal.Receipt}<GameReceiptModal game={selectedGame} onReceiptAssociated={closeModal} />{/if}
+    {#if modalType === GameModal.GameInfo}<GameInfoModal game={selectedGame} onGameUpdated={closeModal} />{/if}
+    {#if modalType === GameModal.AddGame}<AddGameModal platform={selectedPlatform} onGameAdded={closeModal} />{/if}
+    {#if modalType === GameModal.SetConsole}<SetConsoleModal game={selectedGame} onLocationSet={closeModal} />{/if}
   </div>
-</div>
+  <form method="dialog" class="modal-backdrop">
+    <button>close</button>
+  </form>
+</dialog>

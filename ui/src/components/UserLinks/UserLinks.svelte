@@ -1,5 +1,10 @@
 <style>
-	h2 { flex: auto; text-align: left; }
+	.user-links {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		justify-content: space-evenly;
+	}
 </style>
 
 <script lang="ts">
@@ -75,10 +80,9 @@
 {:else}
 	<LinkCategories categories={categoryNames} onCategorySelected={onCategorySelectedHandler} {selectedCategory} />
 	<div class="d-flex my-2">
-		<h2 class="text-capitalize">{selectedCategory}</h2>
 		<LinkSearch onSearchChange={onSearchChangeHandler} onClearSearch={onClearSearchHandler} />
 	</div>
-	<div class="row row-cols-6 g-4">
+	<div class="user-links">
 		{#each currentLinks as link}<LinkEntry {link} />{/each}
 	</div>
 {/if}

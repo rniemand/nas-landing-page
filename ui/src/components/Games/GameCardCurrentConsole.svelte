@@ -1,7 +1,7 @@
 <style>
-  .console { cursor: pointer; display: flex; font-size: 1.2em; }
+  .console { cursor: pointer; display: flex; font-size: 0.9em; }
   .console:hover { color: rgb(64, 178, 223); }
-  .console i { font-size: 1.2em; }
+  .console i { font-size: 1.5em; }
   .console span { text-align: right; flex: auto; }
 </style>
 

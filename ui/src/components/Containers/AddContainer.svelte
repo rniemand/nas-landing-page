@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Modal as BSModal } from 'bootstrap';
+  // import { Modal as BSModal } from 'bootstrap';
   import { onMount } from "svelte";
 	import { ContainerClient, ContainerDto } from '../../nlp-api';
 	import { ContainerHelper } from './ContainerHelper';
@@ -7,7 +7,7 @@
 
   export let onContainerAdded: () => void = () => {};
 
-  let _modal: BSModal;
+  // let _modal: BSModal;
   let _modalVisible: boolean = false;
   let request: ContainerDto = new ContainerDto();
   let canAdd: boolean = false;
@@ -29,7 +29,7 @@
 
     onContainerAdded();
     resetRequest();
-    _modal.hide();
+    // _modal.hide();
   };
 
   const syncRequest = () => {
@@ -69,13 +69,13 @@
   };
 
   onMount(() => {
-    _modal = BSModal.getOrCreateInstance('#addContainerModal');
-    document.getElementById('addContainerModal')?.addEventListener('show.bs.modal', onModalShown);
-    document.getElementById('addContainerModal')?.addEventListener('hidden.bs.modal', onModalHidden);
+    // _modal = BSModal.getOrCreateInstance('#addContainerModal');
+    // document.getElementById('addContainerModal')?.addEventListener('show.bs.modal', onModalShown);
+    // document.getElementById('addContainerModal')?.addEventListener('hidden.bs.modal', onModalHidden);
     return () => {
-      document.getElementById('addContainerModal')?.removeEventListener('show.bs.modal', onModalShown);
-      document.getElementById('addContainerModal')?.removeEventListener('hidden.bs.modal', onModalHidden);
-      _modal.dispose();
+      // document.getElementById('addContainerModal')?.removeEventListener('show.bs.modal', onModalShown);
+      // document.getElementById('addContainerModal')?.removeEventListener('hidden.bs.modal', onModalHidden);
+      // _modal.dispose();
     };
   });
 

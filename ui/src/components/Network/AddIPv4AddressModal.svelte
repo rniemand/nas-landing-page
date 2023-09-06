@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { Modal as BSModal } from 'bootstrap';
+  // import { Modal as BSModal } from 'bootstrap';
   import { onMount } from 'svelte';
 	import { AddNetworkIPv4Request, NetworkClient, type NetworkDeviceDto } from '../../nlp-api';
 
-  let myModal: BSModal;
+  // let myModal: BSModal;
   let deviceName: string = '';
   let modalVisible: boolean = false;
   let device: NetworkDeviceDto | undefined = undefined;
@@ -45,17 +45,17 @@
     device = _device;
     resetRequest(_device.deviceID);
     deviceName = _device.deviceName;
-    myModal.show();
+    // myModal.show();
   };
 
   onMount(() => {
-    myModal = BSModal.getOrCreateInstance('#addIPv4Address');
-    document.getElementById('addIPv4Address')?.addEventListener('show.bs.modal', onModalShown);
-    document.getElementById('addIPv4Address')?.addEventListener('hidden.bs.modal', onModalHidden);
+    // myModal = BSModal.getOrCreateInstance('#addIPv4Address');
+    // document.getElementById('addIPv4Address')?.addEventListener('show.bs.modal', onModalShown);
+    // document.getElementById('addIPv4Address')?.addEventListener('hidden.bs.modal', onModalHidden);
     return () => {
-      document.getElementById('addIPv4Address')?.removeEventListener('show.bs.modal', onModalShown);
-      document.getElementById('addIPv4Address')?.removeEventListener('hidden.bs.modal', onModalHidden);
-      myModal.dispose();
+      // document.getElementById('addIPv4Address')?.removeEventListener('show.bs.modal', onModalShown);
+      // document.getElementById('addIPv4Address')?.removeEventListener('hidden.bs.modal', onModalHidden);
+      // myModal.dispose();
     };
   });
 </script>

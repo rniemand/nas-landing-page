@@ -7,9 +7,10 @@
   import { navigating } from "$app/stores";
   import { AuthClient, WhoAmIResponse } from "../nlp-api";
 	import { authContext, updateAuthContext } from "../utils/AppStore";
+	import NavLinkItem from "./NavLinkItem.svelte";
+	import type { NavbarLink } from "./TopNavigation";
 
   let path = (window.location.pathname || '/').toLowerCase();
-  let showAccountDropdown: boolean = false;
   let loggedIn: boolean = false;
   let expanded: boolean = false;
 
@@ -19,60 +20,69 @@
     goto('/');
   };
 
+  let links: NavbarLink[] = [];
+
   const toggleNavBar = () => expanded = !expanded;
+
+  const generateNavLinks = (_loggedIn: boolean) => {
+    if(!_loggedIn) return [];
+
+    return [
+      {
+        text: 'GitHub',
+        href: '/github'
+      },
+      {
+        text: 'Games',
+        href: '/games'
+      },
+      {
+        text: 'Tasks',
+        href: '/tasks'
+      },
+      {
+        text: 'Network',
+        href: '/network'
+      },
+      {
+        text: 'Containers',
+        href: '/containers'
+      },
+      {
+        text: 'Account',
+        children: [
+          {
+            text: 'Sign Out',
+            onClick: runLogout
+          }
+        ]
+      }
+    ];
+  };
 
   authContext.subscribe((_whoAmI: WhoAmIResponse | undefined) => {
     loggedIn = _whoAmI?.signedIn || false;
+    links = generateNavLinks(loggedIn);
   });
 
   $: path = (($navigating && $navigating.to?.url.pathname) || path).toLowerCase();
 </script>
 
-<nav class="navbar bg-dark navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#!">NLP</a>
-    <button class="navbar-toggler" class:collapsed={!expanded} on:click={toggleNavBar} type="button">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" class:show={expanded} id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link" href="/" on:click={toggleNavBar} class:active={path === '/'}>Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/github" on:click={toggleNavBar} class:active={path === '/github'}>GitHub</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/games" on:click={toggleNavBar} class:active={path === '/games'}>Games</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/tasks" on:click={toggleNavBar} class:active={path === '/tasks'}>Tasks</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/network" on:click={toggleNavBar} class:active={path === '/network'}>Network</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/containers" on:click={toggleNavBar} class:active={path === '/containers'}>Containers</a>
-        </li>
+<div class="navbar bg-base-100">
+  <div class="navbar-start">
+    <div class="dropdown">
+      <label tabindex="0" class="btn btn-ghost lg:hidden">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
+      </label>
+      <ul class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+        {#each links as link}<NavLinkItem {link} />{/each}
       </ul>
-      <div class="d-flex">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          {#if loggedIn}
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#!" role="button" class:show={showAccountDropdown} on:click={() => showAccountDropdown = !showAccountDropdown}>
-                Account
-              </a>
-              <ul class="dropdown-menu fix" class:show={showAccountDropdown}>
-                <li><a class="dropdown-item" href="#!">Action</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="#!" on:click={runLogout}>
-                  <i class="bi bi-lock-fill"></i> Sign Out
-                </a></li>
-              </ul>
-            </li>
-          {/if}
-        </ul>
-      </div>
     </div>
+    <a class="btn btn-ghost normal-case text-xl" href="/">NLP</a>
   </div>
-</nav>
+  <div class="navbar-end hidden lg:flex">
+    <ul class="menu menu-horizontal px-1">
+      {#each links as link}<NavLinkItem {link} />{/each}
+    </ul>
+  </div>
+</div>
