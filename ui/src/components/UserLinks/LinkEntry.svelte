@@ -1,7 +1,7 @@
 <style>
 	.link { cursor: pointer; }
-	.card { background-color: #ffffff; }
-	.card:hover { background-color: #e0e0e0; }
+	/* .card { background-color: #ffffff; }
+	.card:hover { background-color: #e0e0e0; } */
 	.link img {
 		max-width: 100%;
 		height: auto;
@@ -12,9 +12,18 @@
 		margin: 6px;
 	}
 	.d-flex { display: flex; }
-	.d-flex span { flex: auto; text-align: center; }
-	.d-flex .follow-count { color: #0d970d; }
-	.d-flex .order { color: #8c8c8d; }
+	.card-actions span { flex: auto; text-align: center; }
+	.follow-count { color: #0d970d; }
+	.order { color: #8c8c8d; }
+	.card {
+		margin-right: 6px;
+		margin-bottom: 12px;
+		width: 50%;
+		min-width: 100px;
+		max-width: 150px;
+		cursor: pointer;
+	}
+	.card:hover { background-color: rgb(7, 10, 12); }
 </style>
 
 <script lang="ts">
@@ -30,11 +39,11 @@
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<div class="col link">
-	<div class="card h-100" on:click={handleClick}>
-		<div class="title">{link.linkName}</div>
-		<img src={`api/images/link/${link.linkImage}`} alt={link.linkName} />
-		<div class="card-body d-flex mb-0 p-1">
+<div class="card card-compact image-full bg-base-100 shadow-xl" on:click={handleClick}>
+	<figure><img src={`api/images/link/${link.linkImage}`} alt={link.linkName} /></figure>
+	<div class="card-body text-ellipsis overflow-hidden">
+		{link.linkName}
+		<div class="card-actions justify-end">
 			<span class="id"># {link.linkID}</span>
 			<span class="follow-count">{link.followCount}</span>
 			<span class="order">{link.linkOrder}</span>

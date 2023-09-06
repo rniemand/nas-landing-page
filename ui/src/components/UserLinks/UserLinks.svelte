@@ -1,5 +1,11 @@
 <style>
 	h2 { flex: auto; text-align: left; }
+	.test {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		justify-content: space-evenly;
+	}
 </style>
 
 <script lang="ts">
@@ -78,7 +84,8 @@
 		<h2 class="text-capitalize">{selectedCategory}</h2>
 		<LinkSearch onSearchChange={onSearchChangeHandler} onClearSearch={onClearSearchHandler} />
 	</div>
-	<div class="row row-cols-6 g-4">
+	<!-- <div class="row row-cols-6 g-4"> -->
+	<div class="test">
 		{#each currentLinks as link}<LinkEntry {link} />{/each}
 	</div>
 {/if}
