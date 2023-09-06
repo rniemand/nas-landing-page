@@ -81,10 +81,8 @@
 {:else}
 	<LinkCategories categories={categoryNames} onCategorySelected={onCategorySelectedHandler} {selectedCategory} />
 	<div class="d-flex my-2">
-		<h2 class="text-capitalize">{selectedCategory}</h2>
 		<LinkSearch onSearchChange={onSearchChangeHandler} onClearSearch={onClearSearchHandler} />
 	</div>
-	<!-- <div class="row row-cols-6 g-4"> -->
 	<div class="test">
 		{#each currentLinks as link}<LinkEntry {link} />{/each}
 	</div>
