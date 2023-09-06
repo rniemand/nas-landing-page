@@ -27,6 +27,7 @@
 <script lang="ts">
   import type { BasicGameInfoDto } from "../../nlp-api";
 	import GameCardCurrentConsole from "./GameCardCurrentConsole.svelte";
+	import { GameModal } from "./Games";
   export let game: BasicGameInfoDto;
   export let triggerAction: (action: string, game: BasicGameInfoDto) => void;
   let receiptNumber = '-';
@@ -39,7 +40,7 @@
 
   const onReceiptClicked = () => {
     if(!game.hasReceipt && game.gameSold) return;
-    triggerAction('receipt', game);
+    triggerAction(GameModal.Receipt, game);
   };
 
   const onGameClicked = () => {
