@@ -1,7 +1,7 @@
 <script lang="ts">
   import { type BasicGameInfoDto, GameReceiptDto, GameReceiptClient } from "../../nlp-api";
-	import GameReceiptAdder from "./GameReceiptAdder.svelte";
-	import GameReceiptEditor from "./GameReceiptEditor.svelte";
+	import AddGameReceiptModal from "./AddGameReceiptModal.svelte";
+	import EditGameReceiptModal from "./EditGameReceiptModal.svelte";
   export let onReceiptAssociated: () => void;
   export let game: BasicGameInfoDto;
   let loading = true;
@@ -35,9 +35,9 @@
       Loading...
     {:else}
       {#if receipt}
-        <GameReceiptEditor {receipt} onReceiptChanged={updateReceipt} />
+        <EditGameReceiptModal {receipt} onReceiptChanged={updateReceipt} />
       {:else}
-        <GameReceiptAdder {game} onReceiptAdded={updateReceipt} />
+        <AddGameReceiptModal {game} onReceiptAdded={updateReceipt} />
       {/if}
     {/if}
 {/if}

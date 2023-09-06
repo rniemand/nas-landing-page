@@ -112,6 +112,6 @@
         </label>
       </div>
     </div>
-    <button disabled={!formValid} class="btn btn-success btn-md w-full mt-2" on:click={addGame}>Add Game</button>
+    <button disabled={!formValid} class="btn btn-primary btn-md w-full mt-2" on:click={addGame}>Add Game</button>
   </form>
 {/if}
