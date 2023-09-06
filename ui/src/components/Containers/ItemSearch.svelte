@@ -1,11 +1,3 @@
-<style>
-  .search button {
-    width: 100px;
-    margin-left: 6px;
-  }
-  .search .d-flex { flex: auto; }
-</style>
-
 <script lang="ts">
 	import { ContainerClient, ContainerItemDto, SearchContainerItemsRequest } from "../../nlp-api";
 	import Spinner from "../Spinner.svelte";
@@ -47,7 +39,7 @@
   };
 </script>
 
-<div class="flex">
+<div class="flex my-3">
   <ItemCategoryInput placeholder="Category" bind:value={category} clearButton onItemSelected={runSearch} className="flex-1" />
   <ItemSubCategoryInput placeholder="SubCategory" bind:category={category} bind:value={subCategory} clearButton onItemSelected={runSearch} className="flex-1" />
   <input type="text" class="input input-bordered flex-1 mr-2" placeholder="Item Name" bind:value={searchTerm} on:keyup={runSearch} />
