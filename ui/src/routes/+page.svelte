@@ -10,5 +10,7 @@
   });
 </script>
 <div class="container text-center">
-  {#if loggedIn}<UserLinks />{/if}
+  {#if loggedIn}
+    <UserLinks />
+  {/if}
 </div>

@@ -1,5 +1,4 @@
 <script>
-  import 'bootstrap/dist/css/bootstrap.min.css';
   import 'bootstrap-icons/font/bootstrap-icons.min.css';
   import '../app.css'
   import TopNavigation from "../components/TopNavigation.svelte";
@@ -15,6 +14,6 @@
 </script>
 
 <TopNavigation />
-<div class="container-xxl bd-gutter mt-3 my-md-4 bd-layout">
-  <slot />
+<div class="container mx-auto">
+  <slot>&nbsp;</slot>
 </div>

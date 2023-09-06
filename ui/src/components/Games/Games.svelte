@@ -7,14 +7,13 @@
   import GameReceiptModal from "./GameReceiptModal.svelte";
 	import GameSetConsoleModal from "./GameSetConsoleModal.svelte";
   import PlatformGameList from "./PlatformGameList.svelte";
-  import { Modal as BSModal } from 'bootstrap';
 
   let loading = true;
   let platforms: GamePlatformDto[];
   let selectedPlatform: GamePlatformDto | undefined;
   let selectedGame: BasicGameInfoDto;
   let gameList: PlatformGameList;
-  let genericModal: BSModal;
+  // let genericModal: BSModal;
   let modalType: string = '';
   let modalTitle: string = '';
 
@@ -33,11 +32,11 @@
     if(action === MODAL_GAME_INFO) modalTitle = 'Game Info';
     if(action === MODAL_SET_CONSOLE) modalTitle = 'Set Console';
     if(action === MODAL_ADD_GAME) modalTitle = 'Add Game';
-    genericModal.show();
+    // genericModal.show();
   };
 
   const closeModal = () => {
-    genericModal?.hide();
+    // genericModal?.hide();
     onModalClosed();
   };
   
@@ -48,8 +47,8 @@
   })();
 
   onMount(() => {
-    genericModal = BSModal.getOrCreateInstance('#gameReceiptModal');
-    return () => genericModal.dispose();
+    // genericModal = BSModal.getOrCreateInstance('#gameReceiptModal');
+    // return () => genericModal.dispose();
   });
 </script>
 

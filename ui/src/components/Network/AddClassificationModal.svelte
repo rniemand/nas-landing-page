@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { Modal as BSModal } from 'bootstrap';
+  // import { Modal as BSModal } from 'bootstrap';
   import { onMount } from 'svelte';
   import { ClassifyNetworkDeviceRequest, NetworkClient, type NetworkDeviceDto } from '../../nlp-api';
 
-  let myModal: BSModal;
+  // let myModal: BSModal;
   let canAdd: boolean = false;
   let modalVisible: boolean = false;
   let deviceName: string = '';
@@ -19,7 +19,7 @@
     device = _device;
     resetRequest(_device.deviceID);
     deviceName = _device.deviceName;
-    myModal.show();
+    // myModal.show();
   };
 
   const resetRequest = (deviceID: number) => {
@@ -48,13 +48,13 @@
   };
 
   onMount(() => {
-    myModal = BSModal.getOrCreateInstance('#addClassification');
-    document.getElementById('addClassification')?.addEventListener('show.bs.modal', onModalShown);
-    document.getElementById('addClassification')?.addEventListener('hidden.bs.modal', onModalHidden);
+    // myModal = BSModal.getOrCreateInstance('#addClassification');
+    // document.getElementById('addClassification')?.addEventListener('show.bs.modal', onModalShown);
+    // document.getElementById('addClassification')?.addEventListener('hidden.bs.modal', onModalHidden);
     return () => {
-      document.getElementById('addClassification')?.removeEventListener('show.bs.modal', onModalShown);
-      document.getElementById('addClassification')?.removeEventListener('hidden.bs.modal', onModalHidden);
-      myModal.dispose();
+      // document.getElementById('addClassification')?.removeEventListener('show.bs.modal', onModalShown);
+      // document.getElementById('addClassification')?.removeEventListener('hidden.bs.modal', onModalHidden);
+      // myModal.dispose();
     };
   });
 </script>

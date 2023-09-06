@@ -15,6 +15,7 @@
 		"@sveltejs/adapter-auto": "^2.0.0",
 		"@sveltejs/kit": "^1.5.0",
 		"autoprefixer": "^10.4.15",
+		"daisyui": "^3.6.5",
 		"postcss": "^8.4.29",
 		"prettier": "^2.8.0",
 		"prettier-plugin-svelte": "^2.8.1",
@@ -30,7 +31,6 @@
 		"@popperjs/core": "^2.11.8",
 		"@sveltejs/adapter-static": "^2.0.2",
 		"@types/bootstrap": "^5.2.6",
-		"bootstrap": "^5.3.1",
 		"bootstrap-icons": "^1.10.5"
 	}
 }
