@@ -1,6 +1,5 @@
 <style>
-	h2 { flex: auto; text-align: left; }
-	.test {
+	.user-links {
 		display: flex;
 		flex-direction: row;
 		flex-wrap: wrap;
@@ -83,7 +82,7 @@
 	<div class="d-flex my-2">
 		<LinkSearch onSearchChange={onSearchChangeHandler} onClearSearch={onClearSearchHandler} />
 	</div>
-	<div class="test">
+	<div class="user-links">
 		{#each currentLinks as link}<LinkEntry {link} />{/each}
 	</div>
 {/if}

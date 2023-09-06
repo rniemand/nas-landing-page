@@ -3,6 +3,12 @@
   .refresh { cursor: pointer; }
   .card-container { justify-content: space-evenly; }
   a.refresh { margin: auto; font-size: 1.5em; margin-right: 6px; color: #ba1bcb; }
+  .games-list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+  }
 </style>
 
 <script lang="ts">
@@ -51,8 +57,10 @@
       <h2 class="d-none d-sm-block">Showing {games.length} game(s)</h2>
       <GameSearch searchTermChanged={searchTermChangedHandler} onAddGame={onAddGameClicked} bind:term={searchTerm} />
     </div>
-    <div class="row row-cols-auto g-2 card-container">
-      {#each filteredGames as game (game.gameID)}<GameCard {game} {triggerAction} />{/each}
+    <div class="games-list">
+      {#each filteredGames as game (game.gameID)}
+        <GameCard {game} {triggerAction} />
+      {/each}
     </div>
   {/if}
 </div>
