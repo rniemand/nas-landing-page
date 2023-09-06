@@ -1,22 +1,15 @@
-<style>
-  .search { width: 250px; }
-  .search .form-control { margin-right: 5px; }
-</style>
-
 <script lang="ts">
   export let onSearchChange: (term: string) => void;
   export let onClearSearch: () => void;
+  let searchValue: string = '';
 
-  let input: HTMLInputElement;
-
-  const onSearchChanged = () => onSearchChange(input.value);
   const onClearSearchHandler = () => {
-    input.value = '';
+    searchValue = '';
     onClearSearch();
-  }
+  };
+
+  $: onSearchChange(searchValue);
 </script>
 
-<div class="search d-flex">
-  <input type="text" class="form-control" bind:this={input} on:keyup={onSearchChanged} placeholder="Search...">
-  <button type="button" class="btn btn-outline-success" on:click={onClearSearchHandler}>Clear</button>
-</div>
+<input type="text" placeholder="Search..." class="input input-bordered mr-1" bind:value={searchValue} />
+<button type="button" class="btn btn-outline btn-warning" disabled={(searchValue?.length || 0) === 0} on:click={onClearSearchHandler}>Clear</button>

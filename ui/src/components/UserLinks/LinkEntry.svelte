@@ -1,17 +1,4 @@
 <style>
-	.link { cursor: pointer; }
-	/* .card { background-color: #ffffff; }
-	.card:hover { background-color: #e0e0e0; } */
-	.link img {
-		max-width: 100%;
-		height: auto;
-		border: 1px solid #e1e1e1;
-		padding: 3px;
-		border-radius: 4px;
-		background-color: #fff;
-		margin: 6px;
-	}
-	.d-flex { display: flex; }
 	.card-actions span { flex: auto; text-align: center; }
 	.follow-count { color: #0d970d; }
 	.order { color: #8c8c8d; }
