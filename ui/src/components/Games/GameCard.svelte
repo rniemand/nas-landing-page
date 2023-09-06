@@ -45,12 +45,12 @@
 
   const onGameClicked = () => {
     if(!game.hasReceipt && game.gameSold) return;
-    triggerAction('game-info', game);
+    triggerAction(GameModal.GameInfo, game);
   };
 
   const onConsoleClicked = () => {
     if(!game.hasReceipt && game.gameSold) return;
-    triggerAction('set-console', game);
+    triggerAction(GameModal.SetConsole, game);
   };
 
   $: setGameInfo(game);

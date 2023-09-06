@@ -1,9 +1,3 @@
-<style>
-    select {
-        width: 100%;
-    }
-</style>
-
 <script lang="ts">
 	import { GameLocationsClient, type GameLocationDto, type GamePlatformDto } from "../../nlp-api";
 
@@ -44,7 +38,7 @@
 {#if !platform}No platform provided{/if}
 {#if loading}Loading...{/if}
 {#if platformLocations.length > 0}
-  <select bind:value={locationId} on:change={onLocationChangedHandler} class="form-select">
+  <select bind:value={locationId} on:change={onLocationChangedHandler} class="select select-bordered w-full">
     {#each platformLocations as loc (loc.locationID)}<option value={loc.locationID}>{loc.locationName}</option>{/each}
   </select>
 {/if}

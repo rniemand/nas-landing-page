@@ -19,6 +19,7 @@
   import { BasicGameInfoDto, GamesClient, GamePlatformDto } from "../../nlp-api";
   import GameCard from "./GameCard.svelte";
   import GameSearch from "./GameSearch.svelte";
+	import { GameModal } from "./Games";
 
   export let selectedPlatform: GamePlatformDto | undefined;
   export let triggerAction: (action: string, game: BasicGameInfoDto | undefined) => void;
@@ -45,7 +46,7 @@
     filteredGames = games.filter(x => x.searchTerm.indexOf(safeTrem) !== -1);
   };
 
-  const onAddGameClicked = () => triggerAction('add-game', undefined);
+  const onAddGameClicked = () => triggerAction(GameModal.AddGame, undefined);
 
   $: refreshGames(selectedPlatform);
   $: searchTermChangedHandler(searchTerm);
