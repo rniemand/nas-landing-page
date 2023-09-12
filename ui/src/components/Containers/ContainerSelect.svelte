@@ -1,11 +1,8 @@
-<style>
-  .form-select { display: inline-block; width: auto; }
-</style>
-
 <script lang="ts">
 	import { ContainerClient, IntSelectOptionDto } from "../../nlp-api";
 
   export let value: number = -1;
+  export let className: string = '';
   let options: IntSelectOptionDto[] = [];
   let loading: boolean = true;
 
@@ -18,7 +15,7 @@
   refreshOptions();
 </script>
 
-<select class="form-select" bind:value={value}>
+<select class="select select-bordered w-full {className}" bind:value={value}>
   {#if loading}
   <option>Loading...</option>
   {/if}

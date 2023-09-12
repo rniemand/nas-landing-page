@@ -1,21 +1,27 @@
+<style>
+  .add-btn {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+  }
+</style>
+
 <script lang="ts">
-  // import { Modal as BSModal } from 'bootstrap';
-  import { onMount } from "svelte";
 	import { ContainerClient, ContainerDto } from '../../nlp-api';
 	import { ContainerHelper } from './ContainerHelper';
 	import Spinner from '../Spinner.svelte';
 
   export let onContainerAdded: () => void = () => {};
-
-  // let _modal: BSModal;
-  let _modalVisible: boolean = false;
+  let modalDialog: HTMLDialogElement;
   let request: ContainerDto = new ContainerDto();
   let canAdd: boolean = false;
   let message: string = '';
   let saving: boolean = false;
 
-  const onModalShown = () => _modalVisible = true;
-  const onModalHidden = () => _modalVisible = false;
+  const showModal = () => {
+    resetRequest();
+    modalDialog.showModal();
+  };
 
   const addContainer = async () => {
     saving = true;
@@ -29,7 +35,7 @@
 
     onContainerAdded();
     resetRequest();
-    // _modal.hide();
+    modalDialog.close();
   };
 
   const syncRequest = () => {
@@ -44,8 +50,6 @@
       containerId: 0,
       containerLabel: '',
       containerName: '',
-      dateAddedUtc: new Date(),
-      dateUpdatedUtc: new Date(),
       itemCount: 0,
       notes: '',
       shelfLevel: 1,
@@ -62,72 +66,64 @@
     canAdd = !response.success;
     message = canAdd ? '' : `A container already exists with the name: ${request.containerLabel}`;
   };
-
-  const updateModal = (_visible: boolean) => {
-    if(!_visible) return;
-    resetRequest();
-  };
-
-  onMount(() => {
-    // _modal = BSModal.getOrCreateInstance('#addContainerModal');
-    // document.getElementById('addContainerModal')?.addEventListener('show.bs.modal', onModalShown);
-    // document.getElementById('addContainerModal')?.addEventListener('hidden.bs.modal', onModalHidden);
-    return () => {
-      // document.getElementById('addContainerModal')?.removeEventListener('show.bs.modal', onModalShown);
-      // document.getElementById('addContainerModal')?.removeEventListener('hidden.bs.modal', onModalHidden);
-      // _modal.dispose();
-    };
-  });
-
-  $: updateModal(_modalVisible);
 </script>
 
-<button class="btn btn-success" on:click={() => _modal.show()}>Add Container</button>
+<button class="btn btn-success btn-circle add-btn text-xl text-green-200" on:click={showModal}>+</button>
 
-<div class="modal fade" id="addContainerModal" tabindex="-1" aria-labelledby="addContainerModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="addContainerModalLabel">Add Container</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        {#if saving}
-          <Spinner />
-          <div class="text-center mt-2">Adding container</div>
-        {:else}
-          <form class="row g-3">
-            <div class="col-md-3">
-              <label for="shelf" class="form-label">Shelf</label>
-              <input type="number" class="form-control" id="shelf" min="1" max="10" bind:value={request.shelfNumber} on:keyup={syncRequest} on:change={syncRequest}>
+<dialog class="modal" bind:this={modalDialog}>
+  <div class="modal-box">
+    <h2 class="font-bold text-lg">Add Container</h2>
+      {#if saving}
+        <Spinner />
+        <div class="text-center mt-2">Adding container</div>
+      {:else}
+        <form>
+          <div class="flex">
+            <div class="form-control flex-1 mr-2">
+              <label class="label" for="shelf">
+                <span class="label-text">Shelf</span>
+              </label>
+              <input type="number" class="input input-bordered w-full" id="shelf" min="1" max="10" bind:value={request.shelfNumber} on:keyup={syncRequest} on:change={syncRequest}>
             </div>
-            <div class="col-md-3">
-              <label for="level" class="form-label">Level</label>
-              <input type="number" class="form-control" id="level" min="1" max="26" bind:value={request.shelfLevel} on:keyup={syncRequest} on:change={syncRequest}>
+            <div class="form-control flex-1 mr-2">
+              <label class="label" for="level">
+                <span class="label-text">Level</span>
+              </label>
+              <input type="number" class="input input-bordered w-full" id="level" min="1" max="26" bind:value={request.shelfLevel} on:keyup={syncRequest} on:change={syncRequest}>
             </div>
-            <div class="col-md-3">
-              <label for="row" class="form-label">Row</label>
-              <input type="number" class="form-control" id="row" min="1" max="5" bind:value={request.shelfRow} on:keyup={syncRequest} on:change={syncRequest}>
+            <div class="form-control flex-1 mr-2">
+              <label class="label" for="row">
+                <span class="label-text">Row</span>
+              </label>
+              <input type="number" class="input input-bordered w-full" id="row" min="1" max="5" bind:value={request.shelfRow} on:keyup={syncRequest} on:change={syncRequest}>
             </div>
-            <div class="col-md-3">
-              <label for="position" class="form-label">Position</label>
-              <input type="number" class="form-control" id="position" min="1" max="5" bind:value={request.shelfRowPosition} on:keyup={syncRequest} on:change={syncRequest}>
+            <div class="form-control flex-1">
+              <label class="label" for="position">
+                <span class="label-text">Position</span>
+              </label>
+              <input type="number" class="input input-bordered w-full" id="position" min="1" max="5" bind:value={request.shelfRowPosition} on:keyup={syncRequest} on:change={syncRequest}>
             </div>
-            <div class="col-md-4">
-              <label for="containerLabel" class="form-label">Label</label>
-              <input type="text" class="form-control" id="containerLabel" disabled  bind:value={request.containerLabel}>
-            </div>
-            <div class="col-md-8">
-              <label for="containerName" class="form-label">Name</label>
-              <input type="text" class="form-control" id="containerName" bind:value={request.containerName} on:keyup={syncRequest} on:change={syncRequest}>
-            </div>
-            {#if message.length > 0}<div class="alert alert-warning" role="alert">{message}</div>{/if}
-            <div class="col-12" style="text-align: right;">
-              <button type="button" class="btn btn-primary" disabled={!canAdd} on:click={addContainer}>Add Container</button>
-            </div>
-          </form>
-        {/if}
-      </div>
-    </div>
+          </div>
+          <div class="form-control w-full">
+            <label class="label" for="containerLabel">
+              <span class="label-text">Label</span>
+            </label>
+            <input type="text" class="input input-bordered w-full" id="containerLabel" disabled  bind:value={request.containerLabel}>
+          </div>
+          <div class="form-control w-full">
+            <label class="label" for="containerName">
+              <span class="label-text">Name</span>
+            </label>
+            <input type="text" class="input input-bordered w-full" id="containerName" bind:value={request.containerName} on:keyup={syncRequest} on:change={syncRequest}>
+          </div>
+          {#if message.length > 0}
+            <div class="alert alert-warning my-2" role="alert">{message}</div>
+          {/if}
+          <button type="button" class="btn btn-primary w-full mt-2" disabled={!canAdd} on:click={addContainer}>Add Container</button>
+        </form>
+      {/if}
   </div>
-</div>
+  <form method="dialog" class="modal-backdrop">
+    <button>close</button>
+  </form>
+</dialog>

@@ -1,6 +1,4 @@
 <script lang="ts">
-  // import { Modal as BSModal } from 'bootstrap';
-  import { onMount } from "svelte";
 	import { ContainerClient, ContainerDto, ContainerItemDto } from '../../nlp-api';
 	import Spinner from '../Spinner.svelte';
 	import ItemCategoryInput from './ItemCategoryInput.svelte';
@@ -9,25 +7,28 @@
   export let container: ContainerDto | undefined = undefined;
   export let onItemAdded: () => void = () => {};
 
-  // let _modal: BSModal;
-  let _modalVisible: boolean = false;
   let request: ContainerItemDto = new ContainerItemDto();
   let canAdd: boolean = false;
   let message: string = '';
   let saving: boolean = false;
-
-  const onModalShown = () => _modalVisible = true;
-  const onModalHidden = () => _modalVisible = false;
+  let modalDialog: HTMLDialogElement;
 
   const addItem = async () => {
     saving = true;
+    request.containerId = container?.containerId || 0;
+    request.itemId = 0;
+    request.orderMore = request.orderMore || false;
+    request.orderMoreMinQty = request.orderMoreMinQty || 0;
+    request.orderPlaced = request.orderPlaced || false;
+    request.autoFlagOrderMore = request.autoFlagOrderMore || false;
+    request.orderUrl = request.orderUrl || '';
     const response = await new ContainerClient().addContainerItem(request);
     saving = false;
 
     if(response.success) {
       onItemAdded();
       resetRequest();
-      // _modal.hide();
+      modalDialog.close();
       return;
     }
     
@@ -37,8 +38,8 @@
   const syncRequest = () => {
     canAdd = false;
     if(request.category?.length < 2) return;
-    if(request.subCategory?.length < 2) return;
-    if(request.inventoryName?.length < 2) return;
+    if(request.subCategory?.length < 1) return;
+    if(request.inventoryName?.length < 1) return;
     canAdd = true;
   };
 
@@ -47,8 +48,6 @@
       autoFlagOrderMore: false,
       category: '',
       containerId: container?.containerId || 0,
-      dateAddedUtc: new Date(),
-      dateUpdatedUtc: new Date(),
       inventoryName: '',
       itemId: 0,
       orderMore: false,
@@ -57,95 +56,105 @@
       orderUrl: '',
       quantity: 0,
       subCategory: '',
+      containerLabel: '',
+      containerName: '',
+      itemCount: 0,
+      notes: '',
+      shelfLevel: 0,
+      shelfNumber: 0,
+      shelfRow: 0,
+      shelfRowPosition: 0,
     });
     syncRequest();
   };
   
-  const updateModal = (_visible: boolean) => {
-    if(!_visible) return;
+  const showModal = () => {
     resetRequest();
+    canAdd = false;
+    modalDialog.show();
   };
-
-  onMount(() => {
-    // _modal = BSModal.getOrCreateInstance('#addContainerItemModal');
-    // document.getElementById('addContainerItemModal')?.addEventListener('show.bs.modal', onModalShown);
-    // document.getElementById('addContainerItemModal')?.addEventListener('hidden.bs.modal', onModalHidden);
-    return () => {
-      // document.getElementById('addContainerItemModal')?.removeEventListener('show.bs.modal', onModalShown);
-      // document.getElementById('addContainerItemModal')?.removeEventListener('hidden.bs.modal', onModalHidden);
-      // _modal.dispose();
-    };
-  });
-
-  $: updateModal(_modalVisible);
 </script>
 
 {#if container}
-  <button class="btn btn-success" on:click={() => _modal.show()}>Add Item</button>
+  <button class="btn btn-success" on:click={showModal}>Add Item</button>
 {/if}
 
-<div class="modal fade" id="addContainerItemModal" tabindex="-1" aria-labelledby="addContainerItemModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="addContainerItemModalLabel">Add Container Items ({container?.containerLabel})</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+<dialog class="modal" bind:this={modalDialog}>
+  <div class="modal-box">
+    <h2 class="font-bold text-lg">Add Container Items ({container?.containerLabel})</h2>
+    {#if saving}
+    <Spinner />
+    <div class="text-center mt-2">Adding item(s)...</div>
+  {:else}
+    <form>
+      <div class="flex">
+        <div class="form-control flex-1 mr-3">
+          <label class="label" for="quantity">
+            <span class="label-text">Quantity</span>
+          </label>
+          <input type="number" class="input input-bordered w-full" min="0" id="quantity" bind:value={request.quantity} on:keyup={syncRequest} on:change={syncRequest}>
+        </div>
+        <div class="form-control flex-1">
+          <label class="label" for="orderMoreQty">
+            <span class="label-text">Order More Qty</span>
+          </label>
+          <input type="number" class="input input-bordered w-full" min="0" id="orderMoreQty" bind:value={request.orderMoreMinQty} on:keyup={syncRequest} on:change={syncRequest}>
+        </div>
       </div>
-      <div class="modal-body">
-        {#if saving}
-          <Spinner />
-          <div class="text-center mt-2">Adding item(s)...</div>
-        {:else}
-          <form class="row g-3">
-            <div class="col-md-4">
-              <label for="quantity" class="form-label">Quantity</label>
-              <input type="number" class="form-control" min="0" id="quantity" bind:value={request.quantity} on:keyup={syncRequest} on:change={syncRequest}>
-            </div>
-            <div class="col-md-4">
-              <label for="orderMoreQty" class="form-label">Order More Qty</label>
-              <input type="number" class="form-control" min="0" id="orderMoreQty" bind:value={request.orderMoreMinQty} on:keyup={syncRequest} on:change={syncRequest}>
-            </div>
-            <div class="col-md-4">
-              <label for="orderUrl" class="form-label">Order URL</label>
-              <input type="text" class="form-control" id="orderUrl" bind:value={request.orderUrl} on:keyup={syncRequest} on:change={syncRequest}>
-            </div>
-            
-            <div class="col-md-6">
-              <label for="category" class="form-label">Category</label>
-              <ItemCategoryInput bind:value={request.category} onChange={syncRequest} />
-            </div>
-            <div class="col-md-6">
-              <label for="subCategory" class="form-label">Sub subCategory</label>
-              <ItemSubCategoryInput bind:value={request.subCategory} bind:category={request.category} onChange={syncRequest} />
-            </div>
-
-            <div class="col-md-12">
-              <label for="itemName" class="form-label">Item Name</label>
-              <input type="text" class="form-control" id="itemName" bind:value={request.inventoryName} on:keyup={syncRequest} on:change={syncRequest}>
-            </div>
-
-            <div class="d-flex">
-              <div class="form-check form-switch form-check-inline">
-                <input class="form-check-input" type="checkbox" role="switch" id="orderMore" bind:checked={request.orderMore} on:change={syncRequest}>
-                <label class="form-check-label" for="orderMore">Order More</label>
-              </div>
-              <div class="form-check form-switch form-check-inline">
-                <input class="form-check-input" type="checkbox" role="switch" id="orderPlaced" bind:checked={request.orderPlaced} on:change={syncRequest}>
-                <label class="form-check-label" for="orderPlaced">Order Placed</label>
-              </div>
-              <div class="form-check form-switch form-check-inline">
-                <input class="form-check-input" type="checkbox" role="switch" id="autoFlagOrderMore" bind:checked={request.autoFlagOrderMore} on:change={syncRequest}>
-                <label class="form-check-label" for="autoFlagOrderMore">Auto Flag Order</label>
-              </div>
-            </div>
-
-            {#if message.length > 0}<div class="alert alert-warning" role="alert">{message}</div>{/if}
-            <div class="col-12" style="text-align: right;">
-              <button type="button" class="btn btn-primary" disabled={!canAdd} on:click={addItem}>Add Item(s)</button>
-            </div>
-          </form>
-        {/if}
+      <div class="form-control">
+        <label class="label" for="orderUrl">
+          <span class="label-text">Order URL</span>
+        </label>
+        <input type="text" class="input input-bordered w-full" id="orderUrl" bind:value={request.orderUrl} on:keyup={syncRequest} on:change={syncRequest}>
       </div>
-    </div>
+      <div class="flex">
+        <div class="form-control flex-1 mr-3">
+          <label class="label" for="category">
+            <span class="label-text">Category</span>
+          </label>
+          <ItemCategoryInput bind:value={request.category} />
+        </div>
+        <div class="form-control flex-1">
+          <label class="label" for="subCategory">
+            <span class="label-text">Sub subCategory</span>
+          </label>
+          <ItemSubCategoryInput bind:value={request.subCategory} bind:category={request.category} />
+        </div>
+      </div>      
+      <div class="form-control">
+        <label class="label" for="itemName">
+          <span class="label-text">Item Name</span>
+        </label>
+        <input type="text" class="input input-bordered w-full" id="itemName" bind:value={request.inventoryName} on:keyup={syncRequest} on:change={syncRequest}>
+      </div>
+      <div class="flex">
+        <div class="form-control flex-1 mr-3">
+          <label class="label cursor-pointer">
+            <input type="checkbox" class="toggle" bind:checked={request.orderMore} on:change={syncRequest} />
+            <span class="label-text ml-2">Order More</span> 
+          </label>
+        </div>
+        <div class="form-control flex-1 mr-3">
+          <label class="label cursor-pointer">
+            <input type="checkbox" class="toggle" bind:checked={request.orderPlaced} on:change={syncRequest} />
+            <span class="label-text ml-2">Order Placed</span> 
+          </label>
+        </div>
+        <div class="form-control flex-1">
+          <label class="label cursor-pointer">
+            <input type="checkbox" class="toggle" bind:checked={request.autoFlagOrderMore} on:change={syncRequest} />
+            <span class="label-text ml-2">Auto-Order</span> 
+          </label>
+        </div>
+      </div>
+      {#if message.length > 0}<div class="alert alert-warning" role="alert">{message}</div>{/if}
+      <div class="col-12" style="text-align: right;">
+        <button type="button" class="btn btn-primary w-full mt-2" disabled={!canAdd} on:click={addItem}>Add Item(s)</button>
+      </div>
+    </form>
+  {/if}
   </div>
-</div>
+  <form method="dialog" class="modal-backdrop">
+    <button>close</button>
+  </form>
+</dialog>

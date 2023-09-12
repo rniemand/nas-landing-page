@@ -1,7 +1,3 @@
-<style>
-  .buttons { font-size: 1.2em; }
-</style>
-
 <script lang="ts">
   import { ContainerClient, ContainerDto } from "../../nlp-api";
 	import Spinner from "../Spinner.svelte";
@@ -28,13 +24,12 @@
   <EditContainer bind:this={_editContainer} onContainerModified={refreshContainers} />
 </div>
 
-<div class="mb-3">
-  <ItemSearch />
-</div>
+<ItemSearch />
 
 <Spinner show={loading} />
 {#if !loading}
-  <table class="table table-striped table-hover table-bordered table-sm">
+  <h1 class="text-2xl text-center">Containers</h1>
+  <table class="table table-zebra mb-16">
     <thead>
       <tr>
         <th scope="col">Label</th>
@@ -46,16 +41,16 @@
     </thead>
     <tbody>
       {#each containers as container}
-        <tr>
+        <tr class="hover">
           <td>{container.containerLabel}</td>
           <td>{container.containerName}</td>
           <td>{container.itemCount}</td>
           <td>{container.notes}</td>
-          <td class="buttons">
-            <a href="/containers/items?id={container.containerId}">
+          <td class="text-right">
+            <a href="/containers/items?id={container.containerId}" class="btn btn-sm btn-secondary">
               <i class="bi bi-binoculars-fill"></i>
             </a>
-            <a href="#!" on:click={() => _editContainer.show(container)}>
+            <a href="#!" on:click={() => _editContainer.show(container)} class="btn btn-sm btn-primary">
               <i class="bi bi-pencil-square"></i>
             </a>
           </td>

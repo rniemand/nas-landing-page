@@ -1,11 +1,4 @@
 <style>
-  .search {
-    width: 100%;
-    font-size: 1em;
-    position: relative;
-    display: inline-block;
-  }
-  .search .input { display: flex; }
   .results {
     display: none;
     position: absolute;
@@ -47,15 +40,13 @@
     font-size: .92857143em;
     color: rgba(31, 31, 31, 0.4);
   }
-  .bi.clear {
-    margin-left: 4px!important;
-    margin-right: 4px!important;
+  a.clear {
     cursor: pointer;
     margin: auto;
     display: inline-block;
     color: rgb(226, 28, 28);
   }
-  .bi.clear.disabled {
+  a.clear .bi.disabled {
     cursor: not-allowed;
     opacity: 0.5;
     color: rgb(70, 70, 70);
@@ -70,6 +61,7 @@
   export let placeholder: string;
   export let clearButton: boolean = false;
   export let searchOnFocus: boolean = false;
+  export let className: string = '';
   export let refreshSuggestions: (term: string | undefined) => Promise<SearchResult[]>;
   export let onItemSelected: (item: SearchResult) => void = (item: SearchResult) => {};
 
@@ -107,12 +99,13 @@
   $: runSearch(value);
 </script>
 
-<div class="search">
-  <div class="input">
-    <input type="text" class="form-control" placeholder={placeholder} bind:value={value} on:focus={onFocus} on:blur={onBlur} />
+<div class="search relative {className}">
+  <div class="flex">
+    <input type="text" class="input input-bordered w-full" placeholder={placeholder} bind:value={value} on:focus={onFocus} on:blur={onBlur} />
     {#if clearButton}
-      <!-- svelte-ignore a11y-click-events-have-key-events -->
-      <i class="bi bi-trash3 clear" on:click={clearInput} class:disabled={value.length === 0}></i>
+      <a href="#!" on:click={clearInput} class="clear px-2 text-lg">
+        <i class="bi bi-trash3" class:disabled={value.length === 0}></i>
+      </a>
     {/if}
     <Spinner show={loading} />
   </div>
