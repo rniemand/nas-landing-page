@@ -104,51 +104,49 @@
 <Spinner show={!container || loading} />
 
 {#if container}
-<div class="table-responsive">
-  <table class="table table-striped table-hover table-bordered table-sm">
-    <thead>
-      <tr>
-        <th scope="col">Name</th>
-        <th scope="col" colspan="2">Qty</th>
-        <th scope="col">Order</th>
-        <th scope="col">Categorization</th>
-        <th scope="col">URL</th>
-        <th scope="col">&nbsp;</th>
+<table class="table table-zebra">
+  <thead>
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col" colspan="2">Qty</th>
+      <th scope="col">Order</th>
+      <th scope="col">Categorization</th>
+      <th scope="col">URL</th>
+      <th scope="col">&nbsp;</th>
+    </tr>
+  </thead>
+  <tbody>
+    {#each items as item}
+      <tr class="hover">
+        <td>{item.inventoryName}</td>
+        <td class="qty-btns">
+          <button class="btn btn-sm btn-circle btn-error" disabled={runningQuery} on:click={() => decrementQty(item)}>-</button>
+          <button class="btn btn-sm" disabled={runningQuery} on:click={() => setQty(item)}>set</button>
+          <button class="btn btn-sm btn-circle btn-success" disabled={runningQuery} on:click={() => incrementQty(item)}>+</button>
+        </td>
+        <td>
+          {item.quantity}
+          {#if item.orderMoreMinQty > 0}
+            <span class="info">({item.orderMoreMinQty})</span>
+          {/if}
+          <VisualBool value={item.autoFlagOrderMore} title="Auto Flag Order More" classTrue="bi bi-cart-check" hideIfFalse />
+        </td>
+        <td>
+          <VisualBool value={item.orderMore} title="Order More" />
+          <VisualBool value={item.orderPlaced} title="Order Placed" classTrue="bi bi-bag-check-fill" hideIfFalse />
+        </td>
+        <td class="small">
+          <span class="cat">{item.category}</span>
+          {#if item.subCategory}<span class="subCat">{item.subCategory}</span>{/if}
+        </td>
+        <td>{item.orderUrl}</td>
+        <td class="buttons">
+          <a href="#!" on:click={() => _updateModal.show(item)} class="btn btn-sm btn-primary">
+            <i class="bi bi-pencil-square"></i>
+          </a>
+        </td>
       </tr>
-    </thead>
-    <tbody>
-      {#each items as item}
-        <tr>
-          <td>{item.inventoryName}</td>
-          <td class="qty-btns">
-            <button class="btn btn-danger" disabled={runningQuery} on:click={() => decrementQty(item)}>-</button>
-            <button class="btn btn-dark" disabled={runningQuery} on:click={() => setQty(item)}>set</button>
-            <button class="btn btn-success" disabled={runningQuery} on:click={() => incrementQty(item)}>+</button>
-          </td>
-          <td>
-            {item.quantity}
-            {#if item.orderMoreMinQty > 0}
-              <span class="info">({item.orderMoreMinQty})</span>
-            {/if}
-            <VisualBool value={item.autoFlagOrderMore} title="Auto Flag Order More" classTrue="bi bi-cart-check" hideIfFalse />
-          </td>
-          <td>
-            <VisualBool value={item.orderMore} title="Order More" />
-            <VisualBool value={item.orderPlaced} title="Order Placed" classTrue="bi bi-bag-check-fill" hideIfFalse />
-          </td>
-          <td class="small">
-            <span class="cat">{item.category}</span>
-            {#if item.subCategory}<span class="subCat">{item.subCategory}</span>{/if}
-          </td>
-          <td>{item.orderUrl}</td>
-          <td class="buttons">
-            <a href="#!" on:click={() => _updateModal.show(item)}>
-              <i class="bi bi-pencil-square"></i>
-            </a>
-          </td>
-        </tr>
-      {/each}
-    </tbody>
-  </table>
-</div>
+    {/each}
+  </tbody>
+</table>
 {/if}
