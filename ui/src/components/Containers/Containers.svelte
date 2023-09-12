@@ -28,6 +28,7 @@
 
 <Spinner show={loading} />
 {#if !loading}
+  <h1 class="text-2xl text-center">Containers</h1>
   <table class="table table-zebra mb-16">
     <thead>
       <tr>

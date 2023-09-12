@@ -49,8 +49,8 @@
 <Spinner show={loading} />
 {#if hasResults}
   <div class="results">
-    <h2>Search Results</h2>
-    <table class="table table-striped table-hover table-bordered table-sm">
+    <h2 class="text-xl text-center">Search Results</h2>
+    <table class="table table-zebra">
       <thead>
         <tr>
           <th scope="col" colspan="2">Container</th>
@@ -62,7 +62,7 @@
       </thead>
       <tbody>
         {#each results as result}
-          <tr>
+          <tr class="hover">
             <td>{result.containerLabel}</td>
             <td>{result.containerName}</td>
             <td>{result.category}</td>
@@ -70,7 +70,7 @@
             <td>{result.quantity}</td>
             <td>{result.inventoryName}</td>
             <td>
-              <a href="/containers/items/?id={result.containerId}">
+              <a href="/containers/items/?id={result.containerId}" class="btn btn-sm btn-primary">
                 <i class="bi bi-pencil-square"></i>
               </a>
             </td>
