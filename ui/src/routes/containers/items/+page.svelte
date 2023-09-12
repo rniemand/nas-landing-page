@@ -95,8 +95,8 @@
   $: refreshContainerInfo(containerId);
 </script>
 
-<div class="mb-3">
-  <ContainerSelect bind:value={containerId} />
+<div class="mb-3 flex">
+  <ContainerSelect bind:value={containerId} className="mr-2" />
   <AddContainerItem {container} onItemAdded={refreshContainerItems} />
   <UpdateContainerItem bind:this={_updateModal} onItemSaved={refreshContainerItems} />
 </div>

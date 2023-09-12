@@ -43,17 +43,6 @@
     if(item.inventoryName?.length < 2) return;
     canAdd = true;
   };
-  
-  onMount(() => {
-    // _modal = BSModal.getOrCreateInstance('#updateContainerItemModal');
-    // document.getElementById('updateContainerItemModal')?.addEventListener('show.bs.modal', onModalShown);
-    // document.getElementById('updateContainerItemModal')?.addEventListener('hidden.bs.modal', onModalHidden);
-    return () => {
-      // document.getElementById('updateContainerItemModal')?.removeEventListener('show.bs.modal', onModalShown);
-      // document.getElementById('updateContainerItemModal')?.removeEventListener('hidden.bs.modal', onModalHidden);
-      // _modal.dispose();
-    };
-  });
 </script>
 
 <div class="modal fade" id="updateContainerItemModal" tabindex="-1" aria-labelledby="updateContainerItemModalLabel" aria-hidden="true">
