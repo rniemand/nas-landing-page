@@ -47,7 +47,7 @@
           <td>{container.itemCount}</td>
           <td>{container.notes}</td>
           <td class="text-right">
-            <a href="/containers/items?id={container.containerId}" class="btn btn-sm btn-primary">
+            <a href="/containers/items?id={container.containerId}" class="btn btn-sm btn-secondary">
               <i class="bi bi-binoculars-fill"></i>
             </a>
             <a href="#!" on:click={() => _editContainer.show(container)} class="btn btn-sm btn-primary">
