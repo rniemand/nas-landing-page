@@ -4,20 +4,42 @@
   import AddContainer from "./modals/AddContainer.svelte";
   import EditContainer from "./modals/EditContainer.svelte";
   import ItemSearch from "./ItemSearch.svelte";
+  import ContainerPagination from "./ContainerPagination.svelte";
 
   let containers: ContainerDto[] = [];
   let displayContainers: ContainerDto[] = [];
   let loading: boolean = false;
   let _editContainer: EditContainer;
+  let searchTerm: string = '';
 
   const refreshContainers = async () => {
     loading = true;
     const response = await new ContainerClient().getAllContainers();
     containers = response || [];
+    searchTerm = '';
     loading = false;
   };
-  
+
+  const matchesSearchTerm = (term: string, item: ContainerDto) => {
+    if(item.containerLabel.toLowerCase().trim().indexOf(term) !== -1) return true;
+    if(item.containerName.toLowerCase().trim().indexOf(term) !== -1) return true;
+    return false;
+  };
+
+  const searchTermChanged = (term: string) => {
+    if(term.length === 0) {
+      // hack to trigger refresh of pagination
+      containers = containers;
+    } else {
+      const safeTerm = term.toLowerCase().trim();
+      displayContainers = containers.filter(x => matchesSearchTerm(safeTerm, x));
+    }
+  };
+
+  const onPaginationChanged = (containers: ContainerDto[]) => displayContainers = containers;
   refreshContainers();
+
+  $: searchTermChanged(searchTerm);
 </script>
 
 <div class="mb-3">
@@ -31,9 +53,10 @@
     <div class="collapse-title text-xl font-medium bg-base-200">
       Containers
     </div>
-    <div class="collapse-content"> 
+    <div class="collapse-content">
       <Spinner show={loading} />
       {#if !loading}
+        <ContainerPagination containers={containers} {onPaginationChanged} pageSize={15} bind:searchTerm={searchTerm} />
         <table class="table table-zebra">
           <thead>
             <tr>
@@ -45,7 +68,7 @@
             </tr>
           </thead>
           <tbody>
-            {#each containers as container}
+            {#each displayContainers as container}
               <tr class="hover">
                 <td>{container.containerLabel}</td>
                 <td>{container.containerName}</td>
