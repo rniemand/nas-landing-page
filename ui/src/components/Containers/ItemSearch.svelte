@@ -50,8 +50,7 @@
 
 <Spinner show={loading} />
 {#if hasResults}
-  <div class="results">
-    <h2 class="text-xl text-center">Search Results</h2>
+  <div class="results mb-3">
     <table class="table table-zebra">
       <thead>
         <tr>
@@ -81,4 +80,5 @@
       </tbody>
     </table>
   </div>
+  <div class="divider"></div> 
 {/if}
