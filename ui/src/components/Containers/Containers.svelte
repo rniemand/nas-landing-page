@@ -63,7 +63,7 @@
               <th scope="col">Label</th>
               <th scope="col">Name</th>
               <th scope="col">Item Count</th>
-              <th scope="col">Notes</th>
+              <!-- <th scope="col">Notes</th> -->
               <th scope="col">&nbsp;</th>
             </tr>
           </thead>
@@ -73,7 +73,7 @@
                 <td>{container.containerLabel}</td>
                 <td>{container.containerName}</td>
                 <td>{container.itemCount}</td>
-                <td>{container.notes}</td>
+                <!-- <td>{container.notes}</td> -->
                 <td class="text-right">
                   <a href="/containers/items?id={container.containerId}" class="btn btn-sm btn-secondary">
                     <i class="bi bi-binoculars-fill"></i>

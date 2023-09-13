@@ -42,10 +42,12 @@
   $: containersChanged(containers);
 </script>
 
-<div class="flex my-3">
-  <input type="text" placeholder="Search..." class="input input-bordered mr-1 flex-auto" bind:value={searchTerm} />
-  <button type="button" class="btn btn-outline btn-warning mr-1" disabled={(searchTerm?.length || 0) === 0} on:click={clearSearch}>Clear</button>
-  <div class="join mb-3">
+<div class="flex flex-row flex-wrap my-3 w-full">
+  <div class="flex flex-auto">
+    <input type="text" placeholder="Search..." class="input input-bordered mr-1 flex-auto" bind:value={searchTerm} />
+    <button type="button" class="btn btn-outline btn-warning md:mr-1" disabled={(searchTerm?.length || 0) === 0} on:click={clearSearch}>Clear</button>
+  </div>
+  <div class="join mt-3 md:mt-0 w-full md:w-auto justify-center">
     {#each pages as page}
       <button class="join-item btn" class:btn-active={page.active} on:click={() => setActivePage(page.pageNumber)}>
         {page.pageNumber}
