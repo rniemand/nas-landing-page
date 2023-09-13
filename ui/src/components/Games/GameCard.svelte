@@ -56,7 +56,7 @@
   $: setGameInfo(game);
 </script>
 
-<div class="card card-compact bg-base-100 shadow-xl" class:sold={game.gameSold}>
+<div class="card card-compact bg-base-300 shadow-xl" class:sold={game.gameSold}>
   <!-- svelte-ignore a11y-click-events-have-key-events -->
   <figure on:click={onGameClicked}>
     <img src={`/api/images/game/cover/${game.platformName}/${game.gameID}`} alt={game.gameName} />
@@ -64,7 +64,7 @@
       <div class="price">{game.gamePrice}</div>
     {/if}
   </figure>
-  <div class="card-body">
+  <div class="card-body p-2">
     <div class="truncate game-name">{game.gameName}</div>
     <div class="flex-spaced">
       <span class="game-id">#{game.gameID}</span>

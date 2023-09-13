@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { type BasicGameInfoDto, GameReceiptDto, GameReceiptClient } from "../../nlp-api";
+  import { type BasicGameInfoDto, GameReceiptDto, GameReceiptClient } from "../../../nlp-api";
 	import AddGameReceiptModal from "./AddGameReceiptModal.svelte";
 	import EditGameReceiptModal from "./EditGameReceiptModal.svelte";
   export let onReceiptAssociated: () => void;

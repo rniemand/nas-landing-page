@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { GamesClient, type BasicGameInfoDto } from "../../nlp-api";
+  import { GamesClient, type BasicGameInfoDto } from "../../../nlp-api";
   export let onGameUpdated: () => void;
   export let game: BasicGameInfoDto;
   

@@ -18,6 +18,7 @@
 <script lang="ts">
   import { BasicGameInfoDto, GamesClient, GamePlatformDto } from "../../nlp-api";
   import GameCard from "./GameCard.svelte";
+	import GamePaginator from "./GamePaginator.svelte";
   import GameSearch from "./GameSearch.svelte";
 	import { GameModal } from "./Games";
 
@@ -26,6 +27,7 @@
   export const refresh = () => refreshGames(selectedPlatform);
   let games: BasicGameInfoDto[] = [];
   let filteredGames: BasicGameInfoDto[] = [];
+  let displayGames: BasicGameInfoDto[] = [];
   let searchTerm: string = '';
   let loading = true;
 
@@ -46,6 +48,7 @@
     filteredGames = games.filter(x => x.searchTerm.indexOf(safeTrem) !== -1);
   };
 
+  const onPaginationChanged = (games: BasicGameInfoDto[]) => displayGames = games;
   const onAddGameClicked = () => triggerAction(GameModal.AddGame, undefined);
 
   $: refreshGames(selectedPlatform);
@@ -56,11 +59,10 @@
   {#if loading}
     Loading...
   {:else}
-    <div class="text-center mt-2 mb-3">
-      <GameSearch onAddGame={onAddGameClicked} bind:value={searchTerm} />
-    </div>
+    <GameSearch onAddGame={onAddGameClicked} bind:value={searchTerm} />
+    <GamePaginator games={filteredGames} {onPaginationChanged} pageSize={24} />
     <div class="games-list">
-      {#each filteredGames as game (game.gameID)}
+      {#each displayGames as game (game.gameID)}
         <GameCard {game} {triggerAction} />
       {/each}
     </div>

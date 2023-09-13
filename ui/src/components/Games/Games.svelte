@@ -1,12 +1,12 @@
 <script lang="ts">
   import { BasicGameInfoDto, GamePlatformsClient, GamePlatformDto } from "../../nlp-api";
-	import AddGameModal from "./AddGameModal.svelte";
-	import GameInfoModal from "./GameInfoModal.svelte";
+  import AddGameModal from "./modals/AddGameModal.svelte";
+  import GameInfoModal from "./modals/GameInfoModal.svelte";
   import GamePlatforms from "./GamePlatforms.svelte";
-  import GameReceiptModal from "./GameReceiptModal.svelte";
-	import SetConsoleModal from "./SetConsoleModal.svelte";
+  import GameReceiptModal from "./modals/GameReceiptModal.svelte";
+  import SetConsoleModal from "./modals/SetConsoleModal.svelte";
   import PlatformGameList from "./PlatformGameList.svelte";
-	import { GameModal } from "./Games";
+  import { GameModal } from "./Games";
 
   let loading = true;
   let platforms: GamePlatformDto[];

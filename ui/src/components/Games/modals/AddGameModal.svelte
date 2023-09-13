@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { BasicGameInfoDto, GamesClient, type GamePlatformDto, GameLocationDto } from "../../nlp-api";
-  import GameLocationSelector from "./GameLocationSelector.svelte";
+  import { BasicGameInfoDto, GamesClient, type GamePlatformDto, GameLocationDto } from "../../../nlp-api";
+  import GameLocationSelector from "../GameLocationSelector.svelte";
 
   export let platform: GamePlatformDto | undefined;
   export let onGameAdded: () => void;

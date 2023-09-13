@@ -11,7 +11,7 @@
 
 {#if platforms}
   <div class="mt-2 platforms">
-    <ul class="menu menu-vertical lg:menu-horizontal bg-base-200 rounded-box">
+    <ul class="menu menu-vertical lg:menu-horizontal bg-base-200 rounded-box w-full justify-center">
       {#each platforms as platform}
         <li class="nav-item">
           <a href="#!" class:active={platform.platformID === selectedPlatform?.platformID} on:click={() => onPlatformSelected(platform)}>

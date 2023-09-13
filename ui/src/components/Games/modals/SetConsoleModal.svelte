@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { GameLocationsClient, type BasicGameInfoDto, GameLocationDto } from "../../nlp-api";
+  import { GameLocationsClient, type BasicGameInfoDto, GameLocationDto } from "../../../nlp-api";
   export let game: BasicGameInfoDto;
   export let onLocationSet: (location: GameLocationDto) => void;
   let locations: GameLocationDto[] = [];
