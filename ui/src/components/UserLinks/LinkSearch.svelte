@@ -11,5 +11,7 @@
   $: onSearchChange(searchValue);
 </script>
 
-<input type="text" placeholder="Search..." class="input input-bordered mr-1" bind:value={searchValue} />
-<button type="button" class="btn btn-outline btn-warning" disabled={(searchValue?.length || 0) === 0} on:click={onClearSearchHandler}>Clear</button>
+<div class="flex my-3">
+  <input type="text" placeholder="Search..." class="input input-bordered mr-1 flex-auto" bind:value={searchValue} />
+  <button type="button" class="btn btn-outline btn-warning" disabled={(searchValue?.length || 0) === 0} on:click={onClearSearchHandler}>Clear</button>
+</div>

@@ -79,9 +79,7 @@
 	<div>Loading...</div>
 {:else}
 	<LinkCategories categories={categoryNames} onCategorySelected={onCategorySelectedHandler} {selectedCategory} />
-	<div class="d-flex my-2">
-		<LinkSearch onSearchChange={onSearchChangeHandler} onClearSearch={onClearSearchHandler} />
-	</div>
+	<LinkSearch onSearchChange={onSearchChangeHandler} onClearSearch={onClearSearchHandler} />
 	<div class="user-links">
 		{#each currentLinks as link}<LinkEntry {link} />{/each}
 	</div>
