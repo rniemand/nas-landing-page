@@ -39,11 +39,13 @@
   };
 </script>
 
-<div class="flex my-3">
-  <ItemCategoryInput placeholder="Category" bind:value={category} clearButton onItemSelected={runSearch} className="flex-1" />
-  <ItemSubCategoryInput placeholder="SubCategory" bind:category={category} bind:value={subCategory} clearButton onItemSelected={runSearch} className="flex-1" />
-  <input type="text" class="input input-bordered flex-1 mr-2" placeholder="Item Name" bind:value={searchTerm} on:keyup={runSearch} />
-  <button class="btn btn-warning" disabled={!hasResults} on:click={clearSearch}>Clear</button>
+<div class="flex flex-row flex-wrap my-3 p-2">
+  <ItemCategoryInput placeholder="Category" bind:value={category} clearButton onItemSelected={runSearch} className="basis-1/2 md:basis-1/4" />
+  <ItemSubCategoryInput placeholder="SubCategory" bind:category={category} bind:value={subCategory} clearButton onItemSelected={runSearch} className="basis-1/2 md:basis-1/4" />
+  <div class="flex flex-auto mt-3 md:mt-0">
+    <input type="text" class="input input-bordered flex-1 mr-2" placeholder="Item Name" bind:value={searchTerm} on:keyup={runSearch} />
+    <button class="btn btn-warning" disabled={!hasResults} on:click={clearSearch}>Clear</button>
+  </div>
 </div>
 
 <Spinner show={loading} />

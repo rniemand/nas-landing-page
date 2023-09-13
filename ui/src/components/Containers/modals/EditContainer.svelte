@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { ContainerClient, ContainerDto } from '../../nlp-api';
-	import { ContainerHelper } from './ContainerHelper';
-	import Spinner from '../Spinner.svelte';
+	import { ContainerClient, ContainerDto } from '../../../nlp-api';
+	import { ContainerHelper } from '../ContainerHelper';
+	import Spinner from '../../Spinner.svelte';
 
   export let onContainerModified: () => void = () => {};
   export const show = (_container: ContainerDto) => {

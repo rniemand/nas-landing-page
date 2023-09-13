@@ -1,9 +1,9 @@
 <script lang="ts">
   import { ContainerClient, ContainerDto } from "../../nlp-api";
-	import Spinner from "../Spinner.svelte";
-	import AddContainer from "./AddContainer.svelte";
-	import EditContainer from "./EditContainer.svelte";
-	import ItemSearch from "./ItemSearch.svelte";
+  import Spinner from "../Spinner.svelte";
+  import AddContainer from "./modals/AddContainer.svelte";
+  import EditContainer from "./modals/EditContainer.svelte";
+  import ItemSearch from "./ItemSearch.svelte";
 
   let containers: ContainerDto[] = [];
   let loading: boolean = false;

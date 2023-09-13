@@ -14,9 +14,9 @@
 <script lang="ts">
 	import { goto } from "$app/navigation";
 	import { page } from "$app/stores";
-	import AddContainerItem from "../../../components/Containers/AddContainerItem.svelte";
+	import AddContainerItem from "../../../components/Containers/modals/AddContainerItem.svelte";
 	import ContainerSelect from "../../../components/Containers/ContainerSelect.svelte";
-	import UpdateContainerItem from "../../../components/Containers/UpdateContainerItem.svelte";
+	import UpdateContainerItem from "../../../components/Containers/modals/UpdateContainerItem.svelte";
 	import Spinner from "../../../components/Spinner.svelte";
 	import VisualBool from "../../../components/VisualBool.svelte";
 	import { ContainerClient, ContainerDto, ContainerItemDto } from "../../../nlp-api";

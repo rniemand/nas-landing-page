@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { ContainerClient, ContainerDto, ContainerItemDto } from '../../nlp-api';
-	import Spinner from '../Spinner.svelte';
-	import ItemCategoryInput from './ItemCategoryInput.svelte';
-	import ItemSubCategoryInput from './ItemSubCategoryInput.svelte';
+	import { ContainerClient, ContainerDto, ContainerItemDto } from '../../../nlp-api';
+	import Spinner from '../../Spinner.svelte';
+	import ItemCategoryInput from '../ItemCategoryInput.svelte';
+	import ItemSubCategoryInput from '../ItemSubCategoryInput.svelte';
 
   export let container: ContainerDto | undefined = undefined;
   export let onItemAdded: () => void = () => {};
