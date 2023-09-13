@@ -51,7 +51,7 @@
 <Spinner show={loading} />
 {#if hasResults}
   <div class="results mb-3">
-    <table class="table table-zebra">
+    <table class="table table-zebra rounded-none">
       <thead>
         <tr>
           <th scope="col" colspan="2">Container</th>

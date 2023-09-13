@@ -57,13 +57,13 @@
       <Spinner show={loading} />
       {#if !loading}
         <ContainerPagination containers={containers} {onPaginationChanged} pageSize={15} bind:searchTerm={searchTerm} />
-        <table class="table table-zebra">
+        <table class="table table-zebra rounded-none">
           <thead>
             <tr>
               <th scope="col">Label</th>
               <th scope="col">Name</th>
-              <th scope="col">Item Count</th>
-              <!-- <th scope="col">Notes</th> -->
+              <th scope="col" class="hidden md:block">Item Count</th>
+              <th scope="col" class="hidden md:block">Notes</th>
               <th scope="col">&nbsp;</th>
             </tr>
           </thead>
@@ -72,8 +72,8 @@
               <tr class="hover">
                 <td>{container.containerLabel}</td>
                 <td>{container.containerName}</td>
-                <td>{container.itemCount}</td>
-                <!-- <td>{container.notes}</td> -->
+                <td class="hidden md:block">{container.itemCount}</td>
+                <td class="hidden md:block">{container.notes}</td>
                 <td class="text-right">
                   <a href="/containers/items?id={container.containerId}" class="btn btn-sm btn-secondary">
                     <i class="bi bi-binoculars-fill"></i>

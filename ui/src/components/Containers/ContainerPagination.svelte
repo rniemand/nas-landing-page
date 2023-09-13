@@ -47,7 +47,7 @@
     <input type="text" placeholder="Search..." class="input input-bordered mr-1 flex-auto" bind:value={searchTerm} />
     <button type="button" class="btn btn-outline btn-warning md:mr-1" disabled={(searchTerm?.length || 0) === 0} on:click={clearSearch}>Clear</button>
   </div>
-  <div class="join mt-3 md:mt-0 w-full md:w-auto justify-center">
+  <div class="join mt-3 md:mt-0 w-full md:w-auto justify-center rounded-none">
     {#each pages as page}
       <button class="join-item btn" class:btn-active={page.active} on:click={() => setActivePage(page.pageNumber)}>
         {page.pageNumber}
