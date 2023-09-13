@@ -38,7 +38,7 @@
   };
 </script>
 
-<dialog class="modal" bind:this={modalDialog}>
+<dialog class="modal modal-bottom sm:modal-middle" bind:this={modalDialog}>
   <div class="modal-box">
     <h2 class="font-bold text-lg">Edit Container</h2>
     {#if saving}

@@ -49,7 +49,7 @@
   $: categoryChanged(item.category);
 </script>
 
-<dialog class="modal" bind:this={modalDialog}>
+<dialog class="modal modal-bottom sm:modal-middle" bind:this={modalDialog}>
   <div class="modal-box">
     <h2 class="font-bold text-lg">Update Container Item</h2>
     {#if saving}

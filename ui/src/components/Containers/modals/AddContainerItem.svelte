@@ -79,7 +79,7 @@
   <button class="btn btn-success" on:click={showModal}>Add Item</button>
 {/if}
 
-<dialog class="modal" bind:this={modalDialog}>
+<dialog class="modal modal-bottom sm:modal-middle" bind:this={modalDialog}>
   <div class="modal-box">
     <h2 class="font-bold text-lg">Add Container Items ({container?.containerLabel})</h2>
     {#if saving}

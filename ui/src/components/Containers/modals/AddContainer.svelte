@@ -71,7 +71,7 @@
 
 <button class="btn btn-success btn-circle add-btn text-xl text-green-200" on:click={showModal}>+</button>
 
-<dialog class="modal" bind:this={modalDialog}>
+<dialog class="modal modal-bottom sm:modal-middle" bind:this={modalDialog}>
   <div class="modal-box">
     <h2 class="font-bold text-lg">Add Container</h2>
       {#if saving}

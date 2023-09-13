@@ -51,7 +51,7 @@
   {/if}
 </div>
 
-<dialog class="modal" bind:this={modalDialog}>
+<dialog class="modal modal-bottom sm:modal-middle" bind:this={modalDialog}>
   <div class="modal-box">
     <h2 class="font-bold text-lg">{modalTitle}</h2>
     {#if modalType === GameModal.Receipt}<GameReceiptModal game={selectedGame} onReceiptAssociated={closeModal} />{/if}
