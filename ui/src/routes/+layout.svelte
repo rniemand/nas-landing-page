@@ -1,10 +1,11 @@
 <script>
   import 'bootstrap-icons/font/bootstrap-icons.min.css';
-  import '../app.css'
   import TopNavigation from "../components/TopNavigation.svelte";
   import { AuthClient } from "../nlp-api";
   import { updateAuthContext } from "../utils/AppStore";
   import { goto } from "$app/navigation";
+  import 'bootstrap/dist/css/bootstrap.min.css';
+  import 'bootstrap/dist/js/bootstrap';
 
   (async () => {
     const authResponse = await new AuthClient().challenge(false);
