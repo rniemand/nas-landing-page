@@ -1,7 +1,14 @@
 <style>
-	.card-actions span { flex: auto; text-align: center; }
-	.follow-count { color: #0d970d; }
-	.order { color: #8c8c8d; }
+	.card-actions span {
+		flex: auto;
+		text-align: center;
+	}
+	.follow-count {
+		color: #0d970d;
+	}
+	.order {
+		color: #8c8c8d;
+	}
 	.card {
 		margin-right: 6px;
 		margin-bottom: 12px;
@@ -10,7 +17,9 @@
 		max-width: 150px;
 		cursor: pointer;
 	}
-	.card:hover { background-color: rgb(7, 10, 12); }
+	.card:hover {
+		background-color: rgb(7, 10, 12);
+	}
 </style>
 
 <script lang="ts">
@@ -19,7 +28,7 @@
 
 	const handleClick = () => {
 		new UserLinksClient().recordLinkFollow(link.linkID).then((success: boolean) => {
-			if(success) link.followCount += 1;
+			if (success) link.followCount += 1;
 		});
 		window.open(link.linkUrl, '_blank');
 	};
