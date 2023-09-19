@@ -1,3 +1,9 @@
+<style>
+  .container {
+    margin-top: 40px;
+  }
+</style>
+
 <script>
   import 'bootstrap-icons/font/bootstrap-icons.min.css';
   import TopNavigation from "../components/TopNavigation.svelte";
@@ -15,6 +21,6 @@
 </script>
 
 <TopNavigation />
-<div class="container mx-auto">
+<div class="container">
   <slot>&nbsp;</slot>
 </div>

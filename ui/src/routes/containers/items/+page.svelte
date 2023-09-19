@@ -101,6 +101,10 @@
   <UpdateContainerItem bind:this={_updateModal} onItemSaved={refreshContainerItems} />
 </div>
 
+<div class="alert alert-warning" role="alert">
+  This is a work in progress!
+</div>
+
 <Spinner show={!container || loading} />
 
 {#if container}

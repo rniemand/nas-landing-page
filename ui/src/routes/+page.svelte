@@ -9,6 +9,11 @@
     loggedIn = _whoAmI?.signedIn || false;
   });
 </script>
+
+<div class="alert alert-warning" role="alert">
+  This is a work in progress!
+</div>
+
 <div class="container text-center">
   {#if loggedIn}
     <UserLinks />
