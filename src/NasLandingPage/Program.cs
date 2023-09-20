@@ -26,8 +26,7 @@ public class Program
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
     builder.Services.AddSwaggerDocument();
-    builder.Services.AddNasLandingPage(builder.Configuration);
-
+    builder.Services.AddNasLandingPage();
     builder.Services.AddNlpAuthentication();
     builder.Services.AddAuthorization(opts =>
     {

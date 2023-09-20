@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
-using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Authentication;
+using NasLandingPage.Exceptions;
 
 namespace NasLandingPage.Auth;
 
@@ -16,7 +15,7 @@ public static class NasLandingPageAuthExtensions
       yield return commaString.Substring(start, x - start);
       start = x + 1;
     }
-    yield return commaString.Substring(start);
+    yield return commaString[start..];
   }
 
   private static bool Accepts(string acceptsHeader, string mimeType, string mimeSubtype)
@@ -34,7 +33,6 @@ public static class NasLandingPageAuthExtensions
       if (acceptPart.StartsWith(mimeType) && acceptPart.EndsWith(mimeSubtype))
         return true;
     }
-
     return false;
   }
 
@@ -48,31 +46,36 @@ public static class NasLandingPageAuthExtensions
     })
       .AddCookie(options =>
       {
-        options.Events.OnRedirectToAccessDenied = async (ctxt) =>
+        options.Events.OnRedirectToAccessDenied = async (context) =>
         {
-          ctxt.Response.ContentType = "application/json";
-          ctxt.Response.StatusCode = 403;
-          await using StreamWriter sw = new StreamWriter(ctxt.Response.Body);
+          context.Response.ContentType = "application/json";
+          context.Response.StatusCode = 403;
+          await using var sw = new StreamWriter(context.Response.Body);
           await sw.WriteAsync("{\"error\":\"Access denied!\"}");
         };
+        options.ExpireTimeSpan = TimeSpan.FromDays(7);
+        options.SlidingExpiration = true;
       })
       .AddOAuth<GoogleOptions, NlpGoogleHandler>(GoogleDefaults.AuthenticationScheme, GoogleDefaults.DisplayName, options =>
       {
         options.CallbackPath = new PathString("/api/signin-google");
         var configurationSection = config.GetSection("GoogleAuth");
+        if (!configurationSection.Exists())
+          throw new NlpException("Failed to find 'GoogleAuth' configuration section");
+
         options.ClientId = configurationSection["ClientId"];
         options.ClientSecret = configurationSection["Secret"];
-        Func<RedirectContext<OAuthOptions>, Task> originalOnRedirectToAuthorizationEndpoint = options.Events.OnRedirectToAuthorizationEndpoint;
-        options.Events.OnRedirectToAuthorizationEndpoint = async (ctxt) =>
+        var originalOnRedirectToAuthorizationEndpoint = options.Events.OnRedirectToAuthorizationEndpoint;
+        options.Events.OnRedirectToAuthorizationEndpoint = async context =>
         {
-          if (Accepts(ctxt.Request.Headers.Accept, "text", "html"))
-            await originalOnRedirectToAuthorizationEndpoint(ctxt);
+          if (Accepts(context.Request.Headers.Accept, "text", "html"))
+            await originalOnRedirectToAuthorizationEndpoint(context);
           else
           {
-            ctxt.Response.ContentType = "application/json";
-            ctxt.Response.StatusCode = 401;
-            await using StreamWriter sw = new StreamWriter(ctxt.Response.Body);
-            await sw.WriteAsync($"{{\"redirectTo\":\"{ctxt.RedirectUri}\"}}");
+            context.Response.ContentType = "application/json";
+            context.Response.StatusCode = 401;
+            await using var sw = new StreamWriter(context.Response.Body);
+            await sw.WriteAsync($"{{\"redirectTo\":\"{context.RedirectUri}\"}}");
           }
         };
       });
