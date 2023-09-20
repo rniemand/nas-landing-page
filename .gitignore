@@ -11,3 +11,5 @@ tools/
 *.executiontimes.cache
 
 .github/.sonarqube/
+
+src/NasLandingPage/appsettings.machine.json

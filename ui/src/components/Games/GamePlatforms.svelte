@@ -1,24 +1,20 @@
-<style>
-  .platforms { text-align: center; }
-</style>
-
 <script lang="ts">
-  import type { GamePlatformDto } from "../../nlp-api";
-  export let platforms: GamePlatformDto[];
-  export let selectedPlatform: GamePlatformDto | undefined;
-  export let onPlatformSelected: (platform: GamePlatformDto) => void;
+	import type { GamePlatformDto } from '../../nlp-api';
+	import HorizontalList from '../Common/Collections/HorizontalList.svelte';
+	import HorizontalListEntry from '../Common/Collections/HorizontalListEntry.svelte';
+	export let platforms: GamePlatformDto[];
+	export let selectedPlatform: GamePlatformDto | undefined;
+	export let onPlatformSelected: (platform: GamePlatformDto) => void;
 </script>
 
 {#if platforms}
-  <div class="mt-2 platforms">
-    <ul class="menu menu-vertical lg:menu-horizontal bg-base-200 rounded-box w-full justify-center">
-      {#each platforms as platform}
-        <li class="nav-item">
-          <a href="#!" class:active={platform.platformID === selectedPlatform?.platformID} on:click={() => onPlatformSelected(platform)}>
-            {platform.platformName}
-          </a>
-        </li>
-      {/each}
-    </ul>
-  </div>
+	<HorizontalList>
+		{#each platforms as platform}
+			<HorizontalListEntry
+				active={platform.platformID === selectedPlatform?.platformID}
+				on:click={() => onPlatformSelected(platform)}>
+				{platform.platformName}
+			</HorizontalListEntry>
+		{/each}
+	</HorizontalList>
 {/if}
