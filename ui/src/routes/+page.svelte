@@ -8,6 +8,7 @@
 	import { goto } from '$app/navigation';
 	import { AuthClient, type WhoAmIResponse } from '../nlp-api';
 	import { authContext, updateAuthContext } from '../utils/AppStore';
+  import { Button } from 'sveltestrap';
 
 	let loggedIn = true;
 
@@ -26,9 +27,9 @@
 	<h1>Nas Landing Page</h1>
 	{#if loggedIn}
 		<p>You are logged in</p>
-		<p><a href="#!" on:click={runLogout}>LogOut</a></p>
+    <Button on:click={runLogout} color="danger">LogOut</Button>
 	{:else}
 		<p>Not logged in</p>
-		<p><a href="/login">LogIn</a></p>
+    <Button on:click={() => goto('/login')} color="success">LogIn</Button>
 	{/if}
 </div>
