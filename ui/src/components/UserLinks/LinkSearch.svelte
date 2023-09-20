@@ -1,17 +1,22 @@
 <script lang="ts">
-  export let onSearchChange: (term: string) => void;
-  export let onClearSearch: () => void;
-  let searchValue: string = '';
+	import RnButton from '../Common/RnButton.svelte';
+	import RnTextInput from '../Common/RnTextInput.svelte';
+	export let onSearchChange: (term: string) => void;
+	export let onClearSearch: () => void;
+	let searchValue: string = '';
 
-  const onClearSearchHandler = () => {
-    searchValue = '';
-    onClearSearch();
-  };
+	const onClearSearchHandler = () => {
+		searchValue = '';
+		onClearSearch();
+	};
 
-  $: onSearchChange(searchValue);
+	$: onSearchChange(searchValue);
 </script>
 
-<div class="flex my-3">
-  <input type="text" placeholder="Search..." class="input input-bordered mr-1 flex-auto" bind:value={searchValue} />
-  <button type="button" class="btn btn-outline btn-warning" disabled={(searchValue?.length || 0) === 0} on:click={onClearSearchHandler}>Clear</button>
+<div class="d-flex my-2">
+	<RnTextInput placeholder="Search..." bind:value={searchValue} class="me-2" />
+	<RnButton
+		style="warning"
+		disabled={(searchValue?.length || 0) === 0}
+		on:click={onClearSearchHandler}>Clear</RnButton>
 </div>

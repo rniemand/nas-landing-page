@@ -1,7 +1,7 @@
 <style>
 	.link-card {
-		min-width: 60px;
-		max-width: 100px;
+		min-width: 80px;
+		max-width: 130px;
 		width: 33%;
 		border: 1px solid #7f7f7f;
 		margin: 3px;
