@@ -1,3 +1,9 @@
+<style>
+	.text-center {
+		text-align: center;
+	}
+</style>
+
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { AuthClient, type WhoAmIResponse } from '../nlp-api';
@@ -16,7 +22,8 @@
 	});
 </script>
 
-<div class="container text-center">
+<div class="text-center">
+	<h1>Nas Landing Page</h1>
 	{#if loggedIn}
 		<p>You are logged in</p>
 		<p><a href="#!" on:click={runLogout}>LogOut</a></p>
