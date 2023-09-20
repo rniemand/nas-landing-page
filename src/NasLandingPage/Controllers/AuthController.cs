@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using NasLandingPage.Exceptions;
 using NasLandingPage.Models.Requests;
 using NasLandingPage.Models.Responses;
 using NasLandingPage.Repos;
@@ -25,12 +26,8 @@ public class AuthController : ControllerBase
   }
 
   [HttpGet("whoami")]
-  public async Task<WhoAmIResponse> WhoAmI(bool includeClaims = false)
-  {
-    await Task.CompletedTask;
-    var whoAmI = new WhoAmIResponse(HttpContext.User, includeClaims);
-    return whoAmI;
-  }
+  public WhoAmIResponse WhoAmI(bool includeClaims = false) =>
+    new(HttpContext.User, includeClaims);
 
   [HttpGet("authenticate")]
   [ProducesResponseType(typeof(WhoAmIResponse), 200)]
@@ -44,7 +41,7 @@ public class AuthController : ControllerBase
     else if (HttpContext.User.Identity is null || !HttpContext.User.Identity.IsAuthenticated)
       await HttpContext.ChallengeAsync();
     else
-      return Ok(await WhoAmI());
+      return Ok(WhoAmI());
     return new EmptyResult();
   }
 
@@ -56,9 +53,10 @@ public class AuthController : ControllerBase
       await Challenge();
       return;
     }
+
     var email = User.FindFirstValue(ClaimTypes.Email);
     if (email is null)
-      throw new Exception("User principal is authenticated, but has no Email claim!");
+      throw new NlpException("User principal is authenticated, but has no Email claim!");
 
     var entity = await userRepo.GetByEmailAsync(email);
     if (entity is null)
@@ -92,6 +90,9 @@ public class AuthController : ControllerBase
       return await Challenge();
 
     var email = User.FindFirstValue(ClaimTypes.Email);
-    return Ok(await _authService.SetNewPasswordAsync(request, email));
+
+    return email is null
+      ? throw new NlpException("Failed to find users email")
+      : Ok(await _authService.SetNewPasswordAsync(request, email));
   }
 }
