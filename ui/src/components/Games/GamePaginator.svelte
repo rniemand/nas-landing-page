@@ -1,52 +1,55 @@
 <script lang="ts">
-  import type { BasicGameInfoDto } from "../../nlp-api";
+	import type { BasicGameInfoDto } from '../../nlp-api';
+	import Paginator from '../Common/Collections/Paginator.svelte';
+	import PaginatorItem from '../Common/Collections/PaginatorItem.svelte';
+	import RnHead from '../Common/RnHead.svelte';
 
-  interface PageInfo {
-    pageNumber: number;
-    active: boolean;
-  }
-  
-  export let games: BasicGameInfoDto[] = [];
-  export let pageSize: number = 10;
-  export let onPaginationChanged: (games: BasicGameInfoDto[]) => void;
-  let showPaginator: boolean = false;
-  let pages: PageInfo[] = [];
+	interface PageInfo {
+		pageNumber: number;
+		active: boolean;
+	}
 
-  const gamesChanged = (_games: BasicGameInfoDto[]) => {
-    showPaginator = _games.length > pageSize;
-    pages = [];
-    for(let i = 1; i < Math.ceil(_games.length / pageSize)+1; i++) {
-      pages.push({
-        pageNumber: i,
-        active: i === 1,
-      });
-    }
-    setActivePage(1);
-  };
+	export let games: BasicGameInfoDto[] = [];
+	export let pageSize: number = 10;
+	export let onPaginationChanged: (games: BasicGameInfoDto[]) => void;
+	let showPaginator: boolean = false;
+	let pages: PageInfo[] = [];
 
-  const setActivePage = (pageNumber: number) => {
-    for(const page of pages) {
-      page.active = pageNumber === page.pageNumber;
-    }
-    pages = pages;
+	const gamesChanged = (_games: BasicGameInfoDto[]) => {
+		showPaginator = _games.length > pageSize;
+		pages = [];
+		for (let i = 1; i < Math.ceil(_games.length / pageSize) + 1; i++) {
+			pages.push({
+				pageNumber: i,
+				active: i === 1
+			});
+		}
+		setActivePage(1);
+	};
 
-    let startIdx = (pageNumber - 1) * pageSize;
-    let endIdx = startIdx + pageSize;
-    onPaginationChanged(games.slice(startIdx, endIdx));
-  };
+	const setActivePage = (pageNumber: number) => {
+		for (const page of pages) {
+			page.active = pageNumber === page.pageNumber;
+		}
+		pages = pages;
 
-  $: gamesChanged(games);
+		let startIdx = (pageNumber - 1) * pageSize;
+		let endIdx = startIdx + pageSize;
+		onPaginationChanged(games.slice(startIdx, endIdx));
+	};
+
+	$: gamesChanged(games);
 </script>
 
 {#if showPaginator}
-  <div class="flex">
-    <h1 class="flex-auto text-xl">{games.length} Game(s)</h1>
-    <div class="join mb-3">
-      {#each pages as page}
-        <button class="join-item btn" class:btn-active={page.active} on:click={() => setActivePage(page.pageNumber)}>
-          {page.pageNumber}
-        </button>
-      {/each}
-    </div>
-  </div>
+	<div class="d-flex">
+		<RnHead class="me-auto">{games.length} Game(s)</RnHead>
+
+		<Paginator>
+			{#each pages as page}
+				<PaginatorItem on:click={() => setActivePage(page.pageNumber)} active={page.active}
+					>{page.pageNumber}</PaginatorItem>
+			{/each}
+		</Paginator>
+	</div>
 {/if}
