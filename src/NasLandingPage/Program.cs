@@ -11,6 +11,7 @@ public class Program
   public static void Main(string[] args)
   {
     var builder = WebApplication.CreateBuilder(args);
+    builder.Configuration.AddJsonFile("appsettings.machine.json", true);
 
     builder.Services.AddControllers()
       .ConfigureApplicationPartManager(manager =>
