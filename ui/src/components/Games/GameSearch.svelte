@@ -1,14 +1,21 @@
 <script lang="ts">
-  export let onAddGame: () => void;
-  export let value = '';
+	import RnButton from '../Common/RnButton.svelte';
+	import RnTextInput from '../Common/RnTextInput.svelte';
 
-  const clearSearch = () => {
-    value = '';
-  };
+	export let onAddGame: () => void;
+	export let value = '';
+
+	const clearSearch = () => {
+		value = '';
+	};
 </script>
 
-<div class="flex my-3">
-  <input type="text" placeholder="Search..." class="input input-bordered mr-1 flex-auto" bind:value={value} />
-  <button type="button" class="btn btn-outline btn-warning mr-1" disabled={(value?.length || 0) === 0} on:click={clearSearch}>Clear</button>
-  <button class="btn btn-success" on:click={onAddGame}>Add</button>
+<div class="d-flex my-3">
+	<RnTextInput placeholder="Search..." class="me-2" bind:value />
+	<RnButton
+		style="warning"
+		class="me-2"
+		disabled={(value?.length || 0) === 0}
+		on:click={clearSearch}>Clear</RnButton>
+	<RnButton style="success" on:click={onAddGame}>Add</RnButton>
 </div>

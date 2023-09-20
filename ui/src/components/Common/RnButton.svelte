@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	export let style: 'warning' = 'warning';
+	export let style: 'warning' | 'success' = 'success';
 	export let outline: boolean = false;
 	export let disabled: boolean = false;
 	let classes: string = '';
@@ -17,6 +17,6 @@
 	$: classes = generateClasses();
 </script>
 
-<button type="button" class={classes} {disabled} on:click={dispatchOnClick}>
+<button type="button" class="{classes} {$$props.class}" {disabled} on:click={dispatchOnClick}>
 	<slot />
 </button>

@@ -15,6 +15,7 @@
 		margin-right: 2px;
 		cursor: pointer;
 		min-width: 100px;
+		text-align: center;
 	}
 	.links-container :global(.link:last-child) {
 		margin-right: 0;
