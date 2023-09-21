@@ -14,7 +14,7 @@ public class NlpGoogleHandler : GoogleHandler
   protected override string BuildChallengeUrl(AuthenticationProperties properties, string redirectUri)
   {
     if (properties.RedirectUri is null || properties.RedirectUri.StartsWith("/api"))
-      properties.RedirectUri = Context.Request.Headers["Referer"].ToString() ?? "/";
+      properties.RedirectUri = Context.Request.Headers["Referer"].ToString();
     return base.BuildChallengeUrl(properties, redirectUri);
   }
 }

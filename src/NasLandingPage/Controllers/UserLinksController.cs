@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using NasLandingPage.Extensions;
 using NasLandingPage.Models.Dto;
 using NasLandingPage.Services;
 
@@ -8,16 +9,18 @@ namespace NasLandingPage.Controllers;
 [Route("api/[controller]")]
 public class UserLinksController : ControllerBase
 {
-  private readonly IUserLinkService _linkService;
+  private readonly IUserLinksService _userLinksService;
 
-  public UserLinksController(IUserLinkService linkService)
+  public UserLinksController(IUserLinksService userLinksService)
   {
-    _linkService = linkService;
+    _userLinksService = userLinksService;
   }
 
-  [HttpGet("all")]
-  public async Task<List<UserLinkDto>> GetAllLinks() => await _linkService.GetAllLinksAsync();
+  [HttpGet]
+  public async Task<UserLinkDto[]> GetUserLinks() =>
+    await _userLinksService.GetUserLinksAsync(User.GetNlpUserContext());
 
-  [HttpPut("follow/{linkId:int}")]
-  public async Task<bool> RecordLinkFollow([FromRoute] int linkId) => await _linkService.RecordLinkFollow(linkId);
+  [HttpGet("follow/{linkId:int}")]
+  public async Task FollowLink([FromRoute] int linkId) =>
+    await _userLinksService.IncrementLinkFollowCountAsync(User.GetNlpUserContext(), linkId);
 }

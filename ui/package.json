@@ -25,10 +25,9 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@popperjs/core": "^2.11.8",
 		"@sveltejs/adapter-static": "^2.0.2",
-		"@types/bootstrap": "^5.2.6",
 		"bootstrap": "^5.3.2",
-		"bootstrap-icons": "^1.10.5"
+		"svelte": "^3.59.2",
+		"sveltestrap": "^5.11.2"
 	}
 }

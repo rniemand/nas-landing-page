@@ -11,6 +11,7 @@ public class Program
   public static void Main(string[] args)
   {
     var builder = WebApplication.CreateBuilder(args);
+    builder.Configuration.AddJsonFile("appsettings.machine.json", true);
 
     builder.Services.AddControllers()
       .ConfigureApplicationPartManager(manager =>
@@ -26,7 +27,6 @@ public class Program
     builder.Services.AddSwaggerGen();
     builder.Services.AddSwaggerDocument();
     builder.Services.AddNasLandingPage(builder.Configuration);
-
     builder.Services.AddNlpAuthentication();
     builder.Services.AddAuthorization(opts =>
     {

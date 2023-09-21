@@ -1,86 +1,63 @@
-<style>
-	.user-links {
-		display: flex;
-		flex-direction: row;
-		flex-wrap: wrap;
-		justify-content: space-evenly;
-	}
-</style>
-
 <script lang="ts">
-	import { UserLinksClient, type UserLinkDto } from '../../nlp-api';
-	import LinkCategories from './LinkCategories.svelte';
+	import { Col, Row } from 'sveltestrap';
+	import { UserLinkDto, UserLinksClient } from '../../nlp-api';
+	import HorizontalList from '../common/HorizontalList.svelte';
+	import HorizontalListEntry from '../common/HorizontalListEntry.svelte';
+	import LinksDisplay from './LinksDisplay.svelte';
 	import LinkSearch from './LinkSearch.svelte';
-	import LinkEntry from './LinkEntry.svelte';
 
+	let categories: string[] = [];
 	let links: UserLinkDto[] = [];
-	let linksLoaded = false;
-	let linkLookup: { [key:string]:UserLinkDto } = {};
-	let searchKeys: string[] = [];
-	let categories: { [key: string]: UserLinkDto[] } = {};
-	let categoryNames: string[] = [];
+	let displayLinks: UserLinkDto[] = [];
 	let selectedCategory: string = '';
-	let lastCategory = '';
-	let currentLinks: UserLinkDto[] = [];
+	let searchTerm: string = '';
 
-	const refreshLinks = () => {
-		new UserLinksClient().getAllLinks().then((responseLinks: UserLinkDto[]) => {
-			links = responseLinks;
-			linksLoaded = true;
-		});
+	const selectedCategoryChanged = (_category: string) => {
+		displayLinks = links.slice().filter((x) => x.linkCategory === _category);
+		searchTerm = '';
 	};
 
-	const categorizeLinks = (links: UserLinkDto[]): { [key: string]: UserLinkDto[] } => links.reduce((pv: { [key: string]: UserLinkDto[] }, cv) => {
-		if (pv[cv.linkCategory] === void 0) pv[cv.linkCategory] = [];
-		pv[cv.linkCategory].push(cv);
-		return pv;
-	}, {});
-
-	const processLinks = (_links: UserLinkDto[]) => {
-		linkLookup = _links.reduce((pv: { [key:string]:UserLinkDto }, cv) => {
-			let key = `${cv.linkName}|${cv.linkCategory}|${cv.linkImage}`.toLowerCase();
-			pv[key] = cv;
-			return pv;
-		}, {});
-
-		searchKeys = Object.keys(linkLookup);
-		categories = categorizeLinks(_links);
-		categoryNames = Object.keys(categories);
-		categoryNames.sort();
-		selectedCategory = categoryNames[0];
-		currentLinks = _links.filter(x => x.linkCategory === selectedCategory);
+	const searchTermChanged = (_term: string) => {
+		if (!_term || _term.length === 0) {
+			displayLinks = links.slice().filter((x) => x.linkCategory === selectedCategory);
+			return;
+		}
+		let safeTerm = _term.toLowerCase().trim();
+		displayLinks = links.slice().filter((x) => x.linkName.toLowerCase().indexOf(safeTerm) !== -1);
 	};
 
-	const onCategorySelectedHandler = (category: string) => {
-		selectedCategory = category;
-		currentLinks = links.filter(x => x.linkCategory === category);
+	const onLinkSelected = async (link: UserLinkDto) => {
+		await new UserLinksClient().followLink(link.linkId);
+		link.followCount += 1;
+		displayLinks = displayLinks;
+		window.open(link.linkUrl, '_blank');
 	};
 
-	const onSearchChangeHandler = (term: string) => {
-		if(selectedCategory.toLowerCase() != 'search') lastCategory = selectedCategory;
-		selectedCategory = 'Search';
-		const safeTerm = (term || '').toLowerCase().trim();
-		currentLinks = searchKeys.reduce((pv: UserLinkDto[], cv) => {
-			if(cv.indexOf(safeTerm) != -1) pv.push(linkLookup[cv]);
+	(async () => {
+		links = await new UserLinksClient().getUserLinks();
+		categories = links.reduce((pv: string[], cv) => {
+			if (pv.indexOf(cv.linkCategory) === -1) pv.push(cv.linkCategory);
 			return pv;
 		}, []);
-	};
+		selectedCategory = categories.length === 0 ? '' : categories[0];
+	})();
 
-	const onClearSearchHandler = () => {
-		selectedCategory = lastCategory;
-		onCategorySelectedHandler(selectedCategory);
-	};
-
-	refreshLinks();
-	$: processLinks(links);
+	$: selectedCategoryChanged(selectedCategory);
+	$: searchTermChanged(searchTerm);
 </script>
 
-{#if !linksLoaded}
-	<div>Loading...</div>
-{:else}
-	<LinkCategories categories={categoryNames} onCategorySelected={onCategorySelectedHandler} {selectedCategory} />
-	<LinkSearch onSearchChange={onSearchChangeHandler} onClearSearch={onClearSearchHandler} />
-	<div class="user-links">
-		{#each currentLinks as link}<LinkEntry {link} />{/each}
-	</div>
-{/if}
+<Row>
+	<Col>
+		<HorizontalList>
+			{#each categories as category}
+				<HorizontalListEntry
+					active={selectedCategory === category}
+					on:click={() => (selectedCategory = category)}>
+					{category}
+				</HorizontalListEntry>
+			{/each}
+		</HorizontalList>
+		<LinkSearch bind:searchTerm />
+		<LinksDisplay links={displayLinks} {onLinkSelected} />
+	</Col>
+</Row>

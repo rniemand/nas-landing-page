@@ -1,19 +1,17 @@
-using System.Net.Http.Headers;
 using System.Security.Claims;
-using System.Text;
-using System.Web;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using NasLandingPage.Auth;
+using NasLandingPage.Exceptions;
+using NasLandingPage.Extensions;
+using NasLandingPage.Models;
 using NasLandingPage.Models.Requests;
 using NasLandingPage.Models.Responses;
 using NasLandingPage.Repos;
 using NasLandingPage.Services;
-using Newtonsoft.Json;
 
 namespace NasLandingPage.Controllers;
 
@@ -23,18 +21,22 @@ namespace NasLandingPage.Controllers;
 public class AuthController : ControllerBase
 {
   private readonly IAuthService _authService;
+  private readonly IUserRepo _userRepo;
 
-  public AuthController(IAuthService authService)
+  public AuthController(IAuthService authService, IUserRepo userRepo)
   {
     _authService = authService;
+    _userRepo = userRepo;
   }
 
   [HttpGet("whoami")]
   public async Task<WhoAmIResponse> WhoAmI(bool includeClaims = false)
   {
-    await Task.CompletedTask;
-    var whoAmI = new WhoAmIResponse(HttpContext.User, includeClaims);
-    return whoAmI;
+    var whoAmIResponse = new WhoAmIResponse(HttpContext.User, includeClaims);
+    if (string.IsNullOrWhiteSpace(whoAmIResponse.Email)) return whoAmIResponse;
+    var user = await EnsureUserIdAsync(User.GetNlpUserContext());
+    whoAmIResponse.UserId = user.UserId;
+    return whoAmIResponse;
   }
 
   [HttpGet("authenticate")]
@@ -61,9 +63,10 @@ public class AuthController : ControllerBase
       await Challenge();
       return;
     }
+
     var email = User.FindFirstValue(ClaimTypes.Email);
     if (email is null)
-      throw new Exception("User principal is authenticated, but has no Email claim!");
+      throw new NlpException("User principal is authenticated, but has no Email claim!");
 
     var entity = await userRepo.GetByEmailAsync(email);
     if (entity is null)
@@ -83,6 +86,7 @@ public class AuthController : ControllerBase
       _ = userRepo.UpdatePasswordHash(entity).ConfigureAwait(false);
 
     (HttpContext.User.Identity as ClaimsIdentity)!.AddClaim(new Claim("NlpPass", "1"));
+    (HttpContext.User.Identity as ClaimsIdentity)!.AddClaim(new Claim("NlpUser", $"{entity.UserID}:{entity.Email}"));
     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, User);
   }
 
@@ -97,138 +101,24 @@ public class AuthController : ControllerBase
       return await Challenge();
 
     var email = User.FindFirstValue(ClaimTypes.Email);
-    return Ok(await _authService.SetNewPasswordAsync(request, email));
+
+    return email is null
+      ? throw new NlpException("Failed to find users email")
+      : Ok(await _authService.SetNewPasswordAsync(request, email));
   }
 
-  [HttpGet("fitbit-start")]
-  public async Task<ActionResult> StartFitbitFlow([FromServices] IOAuthRepo oAuthRepo)
+  private async Task<NlpUserContext> EnsureUserIdAsync(NlpUserContext user)
   {
-    var pkce = new Pkce();
-    await oAuthRepo.SetPkceCodesAsync("FitBit", pkce.CodeChallenge, pkce.CodeVerifier);
+    if (user.UserId > 0) return user;
 
-    var entry = await oAuthRepo.GetOAuthEntryAsync("FitBit");
-    if (entry is null) throw new Exception("Missing FitBit OAuth entry");
+    if (string.IsNullOrWhiteSpace(user.Email))
+      throw new NlpException("Unable to resolve userId - no email provided");
 
-    var sb = new StringBuilder($"{entry.AuthUrl}?")
-      .Append("response_type=code")
-      .Append($"&client_id={entry.ClientID}")
-      .Append("&scope=activity+cardio_fitness+electrocardiogram+heartrate+location+nutrition+oxygen_saturation+profile+respiratory_rate+settings+sleep+social+temperature+weight")
-      .Append($"&code_challenge={entry.PkceCodeChallenge}")
-      .Append("&code_challenge_method=S256")
-      .Append($"&state={entry.State}")
-      .Append($"&redirect_uri={HttpUtility.UrlEncode(entry.RedirectUri)}");
+    var dbUser = await _userRepo.GetByEmailAsync(user.Email);
+    if (dbUser is null)
+      throw new NlpException($"Unable to resolve an RPP user with an email of: {user.Email}");
 
-    return Ok(sb.ToString());
+    user.UserId = dbUser.UserID;
+    return user;
   }
-
-  [HttpGet("fitbit")]
-  public async Task<ActionResult> ProcessFitbitResponse([FromServices] IOAuthRepo oAuthRepo)
-  {
-    var queryCollection = Request.Query;
-
-    if (queryCollection.ContainsKey("code"))
-    {
-      var fitbitCode = queryCollection["code"].ToString();
-      await oAuthRepo.SetAuthorizationCodeAsync("FitBit", fitbitCode);
-      var entry = await oAuthRepo.GetOAuthEntryAsync("FitBit");
-      if (entry is null) throw new Exception("Missing FitBit OAuth entry");
-
-      var request = new HttpRequestMessage(HttpMethod.Post, entry.TokenUrl);
-      request.Content = new FormUrlEncodedContent(new List<KeyValuePair<string, string>>
-      {
-        new("client_id", entry.ClientID),
-        new("grant_type", "authorization_code"),
-        new("redirect_uri", entry.RedirectUri),
-        new("code", entry.AuthorizationCode),
-        new("code_verifier", entry.PkceCodeVerifier),
-      });
-
-      var userName = entry.ClientID;
-      var userPassword = entry.ClientSecret;
-      var authenticationString = $"{userName}:{userPassword}";
-      var base64String = Convert.ToBase64String(Encoding.ASCII.GetBytes(authenticationString));
-      request.Headers.Authorization = new AuthenticationHeaderValue("Basic", base64String);
-
-      var httpClient = new HttpClient();
-      var response = await httpClient.SendAsync(request);
-      response.EnsureSuccessStatusCode();
-      var jsonResponse = await response.Content.ReadAsStringAsync();
-      var fitbitResponse = JsonConvert.DeserializeObject<GetTokensResponse>(jsonResponse);
-      if (fitbitResponse is null) throw new Exception("Unable to parse fitbit response");
-
-      await oAuthRepo.SetAccessTokensAsync("FitBit",
-        fitbitResponse.AccessToken,
-        fitbitResponse.RefreshToken,
-        fitbitResponse.ExpiresIn
-      );
-
-      return Ok("SOMETHING WAS DONE!");
-    }
-
-    return Ok("NOTHING HAPPENED");
-  }
-
-  [HttpGet("fitbit-refresh")]
-  public async Task<ActionResult> RefreshFitBitToken([FromServices] IOAuthRepo oAuthRepo)
-  {
-    var entry = await oAuthRepo.GetOAuthEntryAsync("FitBit");
-    if (entry is null) throw new Exception("Missing FitBit OAuth entry");
-
-    var request = new HttpRequestMessage(HttpMethod.Post, entry.TokenUrl);
-    request.Content = new FormUrlEncodedContent(new List<KeyValuePair<string, string>>
-    {
-      new("grant_type", "refresh_token"),
-      new("client_id", entry.ClientID),
-      new("refresh_token", entry.RefreshToken),
-    });
-
-    var userName = entry.ClientID;
-    var userPassword = entry.ClientSecret;
-    var authenticationString = $"{userName}:{userPassword}";
-    var base64String = Convert.ToBase64String(Encoding.ASCII.GetBytes(authenticationString));
-    request.Headers.Authorization = new AuthenticationHeaderValue("Basic", base64String);
-
-    var httpClient = new HttpClient();
-    var response = await httpClient.SendAsync(request);
-    response.EnsureSuccessStatusCode();
-    var jsonResponse = await response.Content.ReadAsStringAsync();
-    var fitbitResponse = JsonConvert.DeserializeObject<GetTokensResponse>(jsonResponse);
-    if (fitbitResponse is null) throw new Exception("Unable to parse fitbit response");
-
-    await oAuthRepo.SetAccessTokensAsync("FitBit",
-      fitbitResponse.AccessToken,
-      fitbitResponse.RefreshToken,
-      fitbitResponse.ExpiresIn
-    );
-
-    return Ok("ALL DONE");
-  }
-
-  [HttpGet("fitbit-load/{date}")]
-  public async Task<ActionResult> FitbitLoadDate([FromRoute] string date, [FromServices] IFitBitService fitBitService)
-  {
-    await fitBitService.SyncFitbitActivitySummaryAsync(1, DateOnly.Parse(date));
-    return Ok("DONE");
-  }
-}
-
-public class GetTokensResponse
-{
-  [JsonProperty("access_token")]
-  public string AccessToken { get; set; } = string.Empty;
-
-  [JsonProperty("expires_in")]
-  public int ExpiresIn { get; set; }
-
-  [JsonProperty("refresh_token")]
-  public string RefreshToken { get; set; } = string.Empty;
-
-  [JsonProperty("scope")]
-  public string Scope { get; set; } = string.Empty;
-
-  [JsonProperty("token_type")]
-  public string TokenType { get; set; } = string.Empty;
-
-  [JsonProperty("user_id")]
-  public string UserId { get; set; } = string.Empty;
 }
