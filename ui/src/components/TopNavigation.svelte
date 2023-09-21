@@ -19,10 +19,7 @@
 	import { goto } from '$app/navigation';
 
 	let isOpen = false;
-	let userSignedIn: boolean = false;
-	let userFirstName: string = '';
 	let whoAmI: WhoAmIResponse | undefined;
-
 	const handleUpdate = (event: any) => (isOpen = event.detail.isOpen);
 
 	const runLogout = async () => {
@@ -34,8 +31,6 @@
 	onMount(() => {
 		return authContext.subscribe((_whoAmI?: WhoAmIResponse) => {
 			whoAmI = _whoAmI;
-			userSignedIn = _whoAmI?.signedIn || false;
-			userFirstName = (_whoAmI?.name || '').split(' ')[0];
 		});
 	});
 </script>
@@ -45,9 +40,9 @@
 	<NavbarToggler on:click={() => (isOpen = !isOpen)} />
 	<Collapse {isOpen} navbar expand="md" on:update={handleUpdate}>
 		<Nav class="ms-auto" navbar>
-			{#if userSignedIn}
+			{#if whoAmI?.signedIn}
 				<Dropdown nav inNavbar>
-					<DropdownToggle nav caret>{userFirstName}</DropdownToggle>
+					<DropdownToggle nav caret>Account</DropdownToggle>
 					<DropdownMenu end>
 						<DropdownItem>Option 1</DropdownItem>
 						<DropdownItem divider />

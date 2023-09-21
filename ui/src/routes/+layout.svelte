@@ -5,6 +5,7 @@
 	import 'bootstrap/dist/css/bootstrap.min.css';
 	import TopNavigation from '../components/TopNavigation.svelte';
 	import { Styles } from 'sveltestrap';
+	import { Col, Container, Row } from 'sveltestrap';
 
 	(async () => {
 		const authResponse = await new AuthClient().challenge(false);
@@ -15,4 +16,6 @@
 
 <Styles />
 <TopNavigation />
-<slot />
+<Container>
+	<slot />
+</Container>
