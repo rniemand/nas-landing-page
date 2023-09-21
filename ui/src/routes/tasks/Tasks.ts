@@ -1,7 +1,7 @@
 import { UserTaskDto } from '../../nlp-api';
 
-export const createNewTask = () => {
-	return new UserTaskDto({
+export const createNewTask = () =>
+	new UserTaskDto({
 		taskID: 0,
 		dateAddedUtc: new Date(),
 		taskCategory: '',
@@ -13,4 +13,12 @@ export const createNewTask = () => {
 		dateCompletedUtc: undefined,
 		dateDeletedUtc: undefined
 	});
+
+export const validateTaskForAdding = (task: UserTaskDto | undefined) => {
+	if (!task) return false;
+	if (task.taskCategory.length === 0) return false;
+	if (task.taskSubCategory.length === 0) return false;
+	if (task.taskName.length === 0) return false;
+	if (task.taskPriority === -1) return false;
+	return true;
 };

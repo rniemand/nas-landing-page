@@ -13,18 +13,22 @@
 		Row
 	} from 'sveltestrap';
 	import TaskPriority from './TaskPriority.svelte';
-	import { createNewTask } from './Tasks';
-	import type { UserTaskDto } from '../../nlp-api';
+	import { createNewTask, validateTaskForAdding } from './Tasks';
 	import TaskCategorySelector from './TaskCategorySelector.svelte';
+	import type { UserTaskDto } from '../../nlp-api';
 
 	let open = false;
 	let userTask: UserTaskDto = createNewTask();
+	let canAdd: boolean = false;
 
-	const taskEntryChanged = (_userTask: UserTaskDto) => {
-		console.log('taskEntryChanged', _userTask);
-	};
-
+	const taskEntryChanged = (_userTask: UserTaskDto) => (canAdd = validateTaskForAdding(_userTask));
 	const toggle = () => (open = !open);
+
+	const addTask = async () => {
+		//const response = await new UserTasksClient().addTask(userTask);
+		//console.log('x', response);
+		// toggle();
+	};
 
 	$: taskEntryChanged(userTask);
 </script>
@@ -56,7 +60,7 @@
 					<Col>
 						<FormGroup>
 							<Label for="subCategory">Sub Category</Label>
-							<Input type="text" id="subCategory" />
+							<Input type="text" id="subCategory" bind:value={userTask.taskSubCategory} />
 						</FormGroup>
 					</Col>
 				</Row>
@@ -67,7 +71,7 @@
 			</Form>
 		</ModalBody>
 		<ModalFooter>
-			<Button color="primary" disabled on:click={toggle}>Add Task</Button>
+			<Button color="primary" disabled={!canAdd} on:click={addTask}>Add Task</Button>
 		</ModalFooter>
 	</Modal>
 </div>
