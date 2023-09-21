@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NasLandingPage.Exceptions;
+using NasLandingPage.Extensions;
+using NasLandingPage.Models;
 using NasLandingPage.Models.Requests;
 using NasLandingPage.Models.Responses;
 using NasLandingPage.Repos;
@@ -19,15 +21,23 @@ namespace NasLandingPage.Controllers;
 public class AuthController : ControllerBase
 {
   private readonly IAuthService _authService;
+  private readonly IUserRepo _userRepo;
 
-  public AuthController(IAuthService authService)
+  public AuthController(IAuthService authService, IUserRepo userRepo)
   {
     _authService = authService;
+    _userRepo = userRepo;
   }
 
   [HttpGet("whoami")]
-  public WhoAmIResponse WhoAmI(bool includeClaims = false) =>
-    new(HttpContext.User, includeClaims);
+  public async Task<WhoAmIResponse> WhoAmI(bool includeClaims = false)
+  {
+    var nlpUser = new WhoAmIResponse(HttpContext.User, includeClaims);
+    if (string.IsNullOrWhiteSpace(nlpUser.Email)) return nlpUser;
+    var user = await EnsureUserIdAsync(User.GetNlpUserContext());
+    nlpUser.UserId = user.UserId;
+    return nlpUser;
+  }
 
   [HttpGet("authenticate")]
   [ProducesResponseType(typeof(WhoAmIResponse), 200)]
@@ -76,6 +86,7 @@ public class AuthController : ControllerBase
       _ = userRepo.UpdatePasswordHash(entity).ConfigureAwait(false);
 
     (HttpContext.User.Identity as ClaimsIdentity)!.AddClaim(new Claim("NlpPass", "1"));
+    (HttpContext.User.Identity as ClaimsIdentity)!.AddClaim(new Claim("NlpUser", $"{entity.UserID}:{entity.Email}"));
     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, User);
   }
 
@@ -94,5 +105,20 @@ public class AuthController : ControllerBase
     return email is null
       ? throw new NlpException("Failed to find users email")
       : Ok(await _authService.SetNewPasswordAsync(request, email));
+  }
+
+  private async Task<NlpUserContext> EnsureUserIdAsync(NlpUserContext user)
+  {
+    if (user.UserId > 0) return user;
+
+    if (string.IsNullOrWhiteSpace(user.Email))
+      throw new NlpException("Unable to resolve userId - no email provided");
+
+    var dbUser = await _userRepo.GetByEmailAsync(user.Email);
+    if (dbUser is null)
+      throw new NlpException($"Unable to resolve an RPP user with an email of: {user.Email}");
+
+    user.UserId = dbUser.UserID;
+    return user;
   }
 }

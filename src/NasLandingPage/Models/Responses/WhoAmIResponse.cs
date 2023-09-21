@@ -4,6 +4,7 @@ namespace NasLandingPage.Models.Responses;
 
 public class WhoAmIResponse
 {
+  public int UserId { get; set; }
   public string? Name { get; set; }
   public string? Email { get; set; }
   public bool SignedIn { get; set; }

@@ -13,6 +13,8 @@ public static class ServiceCollectionExtensions
     .AddSingleton<IPathAbstraction, PathAbstraction>()
     .AddSingleton<IConnectionHelper, ConnectionHelper>()
     .AddSingleton<IUserRepo, UserRepo>()
+    .AddSingleton<IUserLinksRepo, UserLinksRepo>()
     .AddSingleton<IJsonHelper, JsonHelper>()
-    .AddSingleton<IAuthService, AuthService>();
+    .AddSingleton<IAuthService, AuthService>()
+    .AddSingleton<IUserLinksService, UserLinksService>();
 }

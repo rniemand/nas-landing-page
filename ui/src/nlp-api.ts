@@ -248,7 +248,68 @@ export class AuthClient extends NlpBaseClient implements IAuthClient {
     }
 }
 
+export interface IUserLinksClient {
+
+    getUserLinks(): Promise<UserLinkDto[]>;
+}
+
+export class UserLinksClient extends NlpBaseClient implements IUserLinksClient {
+    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+        super();
+        this.http = http ? http : window as any;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    getUserLinks(): Promise<UserLinkDto[]> {
+        let url_ = this.baseUrl + "/api/UserLinks";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processGetUserLinks(_response));
+        });
+    }
+
+    protected processGetUserLinks(response: Response): Promise<UserLinkDto[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(UserLinkDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<UserLinkDto[]>(null as any);
+    }
+}
+
 export class WhoAmIResponse implements IWhoAmIResponse {
+    userId!: number;
     name?: string | null;
     email?: string | null;
     signedIn!: boolean;
@@ -265,6 +326,7 @@ export class WhoAmIResponse implements IWhoAmIResponse {
 
     init(_data?: any) {
         if (_data) {
+            this.userId = _data["userId"] !== undefined ? _data["userId"] : <any>null;
             this.name = _data["name"] !== undefined ? _data["name"] : <any>null;
             this.email = _data["email"] !== undefined ? _data["email"] : <any>null;
             this.signedIn = _data["signedIn"] !== undefined ? _data["signedIn"] : <any>null;
@@ -290,6 +352,7 @@ export class WhoAmIResponse implements IWhoAmIResponse {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["userId"] = this.userId !== undefined ? this.userId : <any>null;
         data["name"] = this.name !== undefined ? this.name : <any>null;
         data["email"] = this.email !== undefined ? this.email : <any>null;
         data["signedIn"] = this.signedIn !== undefined ? this.signedIn : <any>null;
@@ -305,6 +368,7 @@ export class WhoAmIResponse implements IWhoAmIResponse {
 }
 
 export interface IWhoAmIResponse {
+    userId: number;
     name?: string | null;
     email?: string | null;
     signedIn: boolean;
@@ -349,6 +413,86 @@ export class SetNewPasswordRequest implements ISetNewPasswordRequest {
 export interface ISetNewPasswordRequest {
     email: string;
     password: string;
+}
+
+export class UserLinkDto implements IUserLinkDto {
+    linkId!: number;
+    userID!: number;
+    deleted!: boolean;
+    linkOrder!: number;
+    followCount!: number;
+    dateAddedUtc!: Date;
+    dateUpdatedUtc!: Date;
+    dateLastFollowedUtc!: Date;
+    linkName!: string;
+    linkCategory!: string;
+    linkUrl!: string;
+    linkImage!: string;
+
+    constructor(data?: IUserLinkDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.linkId = _data["linkId"] !== undefined ? _data["linkId"] : <any>null;
+            this.userID = _data["userID"] !== undefined ? _data["userID"] : <any>null;
+            this.deleted = _data["deleted"] !== undefined ? _data["deleted"] : <any>null;
+            this.linkOrder = _data["linkOrder"] !== undefined ? _data["linkOrder"] : <any>null;
+            this.followCount = _data["followCount"] !== undefined ? _data["followCount"] : <any>null;
+            this.dateAddedUtc = _data["dateAddedUtc"] ? new Date(_data["dateAddedUtc"].toString()) : <any>null;
+            this.dateUpdatedUtc = _data["dateUpdatedUtc"] ? new Date(_data["dateUpdatedUtc"].toString()) : <any>null;
+            this.dateLastFollowedUtc = _data["dateLastFollowedUtc"] ? new Date(_data["dateLastFollowedUtc"].toString()) : <any>null;
+            this.linkName = _data["linkName"] !== undefined ? _data["linkName"] : <any>null;
+            this.linkCategory = _data["linkCategory"] !== undefined ? _data["linkCategory"] : <any>null;
+            this.linkUrl = _data["linkUrl"] !== undefined ? _data["linkUrl"] : <any>null;
+            this.linkImage = _data["linkImage"] !== undefined ? _data["linkImage"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): UserLinkDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new UserLinkDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["linkId"] = this.linkId !== undefined ? this.linkId : <any>null;
+        data["userID"] = this.userID !== undefined ? this.userID : <any>null;
+        data["deleted"] = this.deleted !== undefined ? this.deleted : <any>null;
+        data["linkOrder"] = this.linkOrder !== undefined ? this.linkOrder : <any>null;
+        data["followCount"] = this.followCount !== undefined ? this.followCount : <any>null;
+        data["dateAddedUtc"] = this.dateAddedUtc ? this.dateAddedUtc.toISOString() : <any>null;
+        data["dateUpdatedUtc"] = this.dateUpdatedUtc ? this.dateUpdatedUtc.toISOString() : <any>null;
+        data["dateLastFollowedUtc"] = this.dateLastFollowedUtc ? this.dateLastFollowedUtc.toISOString() : <any>null;
+        data["linkName"] = this.linkName !== undefined ? this.linkName : <any>null;
+        data["linkCategory"] = this.linkCategory !== undefined ? this.linkCategory : <any>null;
+        data["linkUrl"] = this.linkUrl !== undefined ? this.linkUrl : <any>null;
+        data["linkImage"] = this.linkImage !== undefined ? this.linkImage : <any>null;
+        return data;
+    }
+}
+
+export interface IUserLinkDto {
+    linkId: number;
+    userID: number;
+    deleted: boolean;
+    linkOrder: number;
+    followCount: number;
+    dateAddedUtc: Date;
+    dateUpdatedUtc: Date;
+    dateLastFollowedUtc: Date;
+    linkName: string;
+    linkCategory: string;
+    linkUrl: string;
+    linkImage: string;
 }
 
 export class ApiException extends Error {
