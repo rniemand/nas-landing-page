@@ -791,11 +791,10 @@ export interface IUserLinkDto {
 export class UserTaskDto implements IUserTaskDto {
     taskID!: number;
     userID!: number;
-    deleted!: boolean;
-    completed!: boolean;
     taskPriority!: number;
     dateAddedUtc!: Date;
-    dateCompletedUtc!: Date;
+    dateCompletedUtc?: Date | null;
+    dateDeletedUtc?: Date | null;
     taskName!: string;
     taskCategory!: string;
     taskSubCategory!: string;
@@ -814,11 +813,10 @@ export class UserTaskDto implements IUserTaskDto {
         if (_data) {
             this.taskID = _data["taskID"] !== undefined ? _data["taskID"] : <any>null;
             this.userID = _data["userID"] !== undefined ? _data["userID"] : <any>null;
-            this.deleted = _data["deleted"] !== undefined ? _data["deleted"] : <any>null;
-            this.completed = _data["completed"] !== undefined ? _data["completed"] : <any>null;
             this.taskPriority = _data["taskPriority"] !== undefined ? _data["taskPriority"] : <any>null;
             this.dateAddedUtc = _data["dateAddedUtc"] ? new Date(_data["dateAddedUtc"].toString()) : <any>null;
             this.dateCompletedUtc = _data["dateCompletedUtc"] ? new Date(_data["dateCompletedUtc"].toString()) : <any>null;
+            this.dateDeletedUtc = _data["dateDeletedUtc"] ? new Date(_data["dateDeletedUtc"].toString()) : <any>null;
             this.taskName = _data["taskName"] !== undefined ? _data["taskName"] : <any>null;
             this.taskCategory = _data["taskCategory"] !== undefined ? _data["taskCategory"] : <any>null;
             this.taskSubCategory = _data["taskSubCategory"] !== undefined ? _data["taskSubCategory"] : <any>null;
@@ -837,11 +835,10 @@ export class UserTaskDto implements IUserTaskDto {
         data = typeof data === 'object' ? data : {};
         data["taskID"] = this.taskID !== undefined ? this.taskID : <any>null;
         data["userID"] = this.userID !== undefined ? this.userID : <any>null;
-        data["deleted"] = this.deleted !== undefined ? this.deleted : <any>null;
-        data["completed"] = this.completed !== undefined ? this.completed : <any>null;
         data["taskPriority"] = this.taskPriority !== undefined ? this.taskPriority : <any>null;
         data["dateAddedUtc"] = this.dateAddedUtc ? this.dateAddedUtc.toISOString() : <any>null;
         data["dateCompletedUtc"] = this.dateCompletedUtc ? this.dateCompletedUtc.toISOString() : <any>null;
+        data["dateDeletedUtc"] = this.dateDeletedUtc ? this.dateDeletedUtc.toISOString() : <any>null;
         data["taskName"] = this.taskName !== undefined ? this.taskName : <any>null;
         data["taskCategory"] = this.taskCategory !== undefined ? this.taskCategory : <any>null;
         data["taskSubCategory"] = this.taskSubCategory !== undefined ? this.taskSubCategory : <any>null;
@@ -853,11 +850,10 @@ export class UserTaskDto implements IUserTaskDto {
 export interface IUserTaskDto {
     taskID: number;
     userID: number;
-    deleted: boolean;
-    completed: boolean;
     taskPriority: number;
     dateAddedUtc: Date;
-    dateCompletedUtc: Date;
+    dateCompletedUtc?: Date | null;
+    dateDeletedUtc?: Date | null;
     taskName: string;
     taskCategory: string;
     taskSubCategory: string;

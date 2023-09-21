@@ -12,7 +12,13 @@
 		Col,
 		Row
 	} from 'sveltestrap';
+	import TaskPriority from './TaskPriority.svelte';
+	import { createNewTask } from './Tasks';
+	import type { UserTaskDto } from '../../nlp-api';
+
 	let open = false;
+	let userTask: UserTaskDto = createNewTask();
+
 	const toggle = () => (open = !open);
 </script>
 
@@ -26,15 +32,11 @@
 					<Col xs="9">
 						<FormGroup>
 							<Label for="name">Task Name</Label>
-							<Input type="text" id="name" />
+							<Input type="text" id="name" bind:value={userTask.taskName} />
 						</FormGroup>
 					</Col>
 					<Col>
-						<Label for="priority">Priority</Label>
-						<Input type="select" id="priority">
-							<option>One</option>
-							<option>Two</option>
-						</Input>
+						<TaskPriority bind:value={userTask.taskPriority} />
 					</Col>
 				</Row>
 				<Row>
@@ -53,7 +55,7 @@
 				</Row>
 				<FormGroup>
 					<Label for="description">Task Description</Label>
-					<Input type="textarea" id="description" />
+					<Input type="textarea" id="description" bind:value={userTask.taskDescription} />
 				</FormGroup>
 			</Form>
 		</ModalBody>

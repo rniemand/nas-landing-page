@@ -36,7 +36,7 @@ internal class UserTasksRepo : IUserTasksRepo
     const string query = @"SELECT DISTINCT ut.TaskCategory
     FROM `UserTasks` ut
     WHERE ut.UserID = @UserID
-	    AND ut.Deleted = 0
+	    AND ut.DateDeletedUtc IS NULL
     ORDER BY ut.TaskCategory";
     await using var connection = _connectionHelper.GetCoreConnection();
     return await connection.QueryAsync<string>(query, new { UserID = userContext.UserId });
@@ -47,7 +47,7 @@ internal class UserTasksRepo : IUserTasksRepo
     const string query = @"SELECT DISTINCT ut.TaskSubCategory
     FROM `UserTasks` ut
     WHERE ut.UserID = @UserID
-	    AND ut.Deleted = 0
+	    AND ut.DateDeletedUtc IS NULL
 	    AND ut.TaskCategory = @TaskCategory
     ORDER BY ut.TaskSubCategory";
     await using var connection = _connectionHelper.GetCoreConnection();
@@ -64,7 +64,7 @@ internal class UserTasksRepo : IUserTasksRepo
     FROM `UserTasks` ut
     WHERE
 	    ut.UserID = @UserID
-	    AND ut.Deleted = 0
+	    AND ut.DateDeletedUtc IS NULL
 	    AND ut.DateCompletedUtc IS NULL
     ORDER BY ut.TaskPriority";
     await using var connection = _connectionHelper.GetCoreConnection();
