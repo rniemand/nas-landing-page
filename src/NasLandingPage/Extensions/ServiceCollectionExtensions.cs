@@ -18,8 +18,10 @@ public static class ServiceCollectionExtensions
       .AddSingleton<IConnectionHelper, ConnectionHelper>()
       .AddSingleton<IUserRepo, UserRepo>()
       .AddSingleton<IUserLinksRepo, UserLinksRepo>()
+      .AddSingleton<IUserTasksRepo, UserTasksRepo>()
       .AddSingleton<IJsonHelper, JsonHelper>()
       .AddSingleton<IAuthService, AuthService>()
+      .AddSingleton<IUserTasksService, UserTasksService>()
       .AddSingleton<IUserLinksService, UserLinksService>();
 
   private static NlpConfig BindConfiguration(IConfiguration configuration)
