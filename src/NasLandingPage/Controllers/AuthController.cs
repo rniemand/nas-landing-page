@@ -32,11 +32,11 @@ public class AuthController : ControllerBase
   [HttpGet("whoami")]
   public async Task<WhoAmIResponse> WhoAmI(bool includeClaims = false)
   {
-    var nlpUser = new WhoAmIResponse(HttpContext.User, includeClaims);
-    if (string.IsNullOrWhiteSpace(nlpUser.Email)) return nlpUser;
+    var whoAmIResponse = new WhoAmIResponse(HttpContext.User, includeClaims);
+    if (string.IsNullOrWhiteSpace(whoAmIResponse.Email)) return whoAmIResponse;
     var user = await EnsureUserIdAsync(User.GetNlpUserContext());
-    nlpUser.UserId = user.UserId;
-    return nlpUser;
+    whoAmIResponse.UserId = user.UserId;
+    return whoAmIResponse;
   }
 
   [HttpGet("authenticate")]
@@ -51,7 +51,7 @@ public class AuthController : ControllerBase
     else if (HttpContext.User.Identity is null || !HttpContext.User.Identity.IsAuthenticated)
       await HttpContext.ChallengeAsync();
     else
-      return Ok(WhoAmI());
+      return Ok(await WhoAmI());
     return new EmptyResult();
   }
 
