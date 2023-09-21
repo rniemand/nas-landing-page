@@ -35,7 +35,7 @@
 	});
 </script>
 
-<Navbar color="dark" dark expand="md">
+<Navbar color="primary-subtle" class="shadow" expand="md">
 	<NavbarBrand>NLP</NavbarBrand>
 	<NavbarToggler on:click={() => (isOpen = !isOpen)} />
 	<Collapse {isOpen} navbar expand="md" on:update={handleUpdate}>

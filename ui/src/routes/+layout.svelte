@@ -16,6 +16,6 @@
 
 <Styles />
 <TopNavigation />
-<Container>
+<Container class="mt-2">
 	<slot />
 </Container>
