@@ -411,7 +411,7 @@ export interface IUserTasksClient {
 
     addTask(task: UserTaskDto): Promise<BoolResponse>;
 
-    getTaskCategories(): Promise<string[]>;
+    getTaskCategories(filter: string): Promise<string[]>;
 
     getTaskSubCategories(category: string): Promise<string[]>;
 }
@@ -510,13 +510,17 @@ export class UserTasksClient extends NlpBaseClient implements IUserTasksClient {
         return Promise.resolve<BoolResponse>(null as any);
     }
 
-    getTaskCategories(): Promise<string[]> {
+    getTaskCategories(filter: string): Promise<string[]> {
         let url_ = this.baseUrl + "/api/UserTasks/categories";
         url_ = url_.replace(/[?&]$/, "");
 
+        const content_ = JSON.stringify(filter);
+
         let options_: RequestInit = {
-            method: "GET",
+            body: content_,
+            method: "POST",
             headers: {
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };

@@ -7,7 +7,7 @@ namespace NasLandingPage.Repos;
 public interface IUserTasksRepo
 {
   Task<int> AddTaskAsync(UserTaskEntity task);
-  Task<IEnumerable<string>> GetTaskCategoriesAsync(NlpUserContext userContext);
+  Task<IEnumerable<string>> GetTaskCategoriesAsync(NlpUserContext userContext, string filter);
   Task<IEnumerable<string>> GetTaskSubCategoriesAsync(NlpUserContext userContext, string category);
   Task<IEnumerable<UserTaskEntity>> GetUserTasksAsync(NlpUserContext userContext);
 }
@@ -31,15 +31,19 @@ internal class UserTasksRepo : IUserTasksRepo
     return await connection.ExecuteAsync(query, task);
   }
 
-  public async Task<IEnumerable<string>> GetTaskCategoriesAsync(NlpUserContext userContext)
+  public async Task<IEnumerable<string>> GetTaskCategoriesAsync(NlpUserContext userContext, string filter)
   {
-    const string query = @"SELECT DISTINCT ut.TaskCategory
+    var query = @$"SELECT DISTINCT ut.TaskCategory
     FROM `UserTasks` ut
     WHERE ut.UserID = @UserID
 	    AND ut.DateDeletedUtc IS NULL
+      AND ut.TaskCategory LIKE '%{filter}%'
     ORDER BY ut.TaskCategory";
     await using var connection = _connectionHelper.GetCoreConnection();
-    return await connection.QueryAsync<string>(query, new { UserID = userContext.UserId });
+    return await connection.QueryAsync<string>(query, new
+    {
+      UserID = userContext.UserId
+    });
   }
 
   public async Task<IEnumerable<string>> GetTaskSubCategoriesAsync(NlpUserContext userContext, string category)

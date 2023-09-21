@@ -21,9 +21,9 @@ public class UserTasksController : ControllerBase
   public async Task<UserTaskDto[]> GetUserTasks() =>
     await _userTasksService.GetUserTasksAsync(User.GetNlpUserContext());
 
-  [HttpGet("categories")]
-  public async Task<string[]> GetTaskCategories() =>
-    await _userTasksService.GetTaskCategoriesAsync(User.GetNlpUserContext());
+  [HttpPost("categories")]
+  public async Task<string[]> GetTaskCategories([FromBody] string filter) =>
+    await _userTasksService.GetTaskCategoriesAsync(User.GetNlpUserContext(), filter);
 
   [HttpPost("sub-categories")]
   public async Task<string[]> GetTaskSubCategories([FromBody] string category) =>

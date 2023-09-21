@@ -9,7 +9,7 @@ public interface IUserTasksService
 {
   Task<BoolResponse> AddUserTaskAsync(NlpUserContext userContext, UserTaskDto taskDto);
   Task<UserTaskDto[]> GetUserTasksAsync(NlpUserContext userContext);
-  Task<string[]> GetTaskCategoriesAsync(NlpUserContext userContext);
+  Task<string[]> GetTaskCategoriesAsync(NlpUserContext userContext, string filter);
   Task<string[]> GetTaskSubCategoriesAsync(NlpUserContext userContext, string category);
 }
 
@@ -34,8 +34,8 @@ internal class UserTasksService : IUserTasksService
   public async Task<UserTaskDto[]> GetUserTasksAsync(NlpUserContext userContext) =>
     (await _userTasksRepo.GetUserTasksAsync(userContext)).Select(UserTaskDto.FromEntity).ToArray();
 
-  public async Task<string[]> GetTaskCategoriesAsync(NlpUserContext userContext) =>
-    (await _userTasksRepo.GetTaskCategoriesAsync(userContext)).ToArray();
+  public async Task<string[]> GetTaskCategoriesAsync(NlpUserContext userContext, string filter) =>
+    (await _userTasksRepo.GetTaskCategoriesAsync(userContext, filter)).ToArray();
 
   public async Task<string[]> GetTaskSubCategoriesAsync(NlpUserContext userContext, string category) =>
     (await _userTasksRepo.GetTaskSubCategoriesAsync(userContext, category)).ToArray();
