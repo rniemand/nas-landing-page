@@ -405,6 +405,289 @@ export class UserLinksClient extends NlpBaseClient implements IUserLinksClient {
     }
 }
 
+export interface IUserTasksClient {
+
+    getUserTasks(): Promise<UserTaskDto[]>;
+
+    addTask(task: UserTaskDto): Promise<BoolResponse>;
+
+    getTaskCategories(request: BasicSearchRequest): Promise<string[]>;
+
+    getTaskSubCategories(request: BasicSearchRequest): Promise<string[]>;
+
+    completeTask(taskId: number): Promise<BoolResponse>;
+
+    updateUserTask(taskDto: UserTaskDto): Promise<BoolResponse>;
+}
+
+export class UserTasksClient extends NlpBaseClient implements IUserTasksClient {
+    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+        super();
+        this.http = http ? http : window as any;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    getUserTasks(): Promise<UserTaskDto[]> {
+        let url_ = this.baseUrl + "/api/UserTasks";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processGetUserTasks(_response));
+        });
+    }
+
+    protected processGetUserTasks(response: Response): Promise<UserTaskDto[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(UserTaskDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<UserTaskDto[]>(null as any);
+    }
+
+    addTask(task: UserTaskDto): Promise<BoolResponse> {
+        let url_ = this.baseUrl + "/api/UserTasks";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(task);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processAddTask(_response));
+        });
+    }
+
+    protected processAddTask(response: Response): Promise<BoolResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = BoolResponse.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<BoolResponse>(null as any);
+    }
+
+    getTaskCategories(request: BasicSearchRequest): Promise<string[]> {
+        let url_ = this.baseUrl + "/api/UserTasks/categories";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(request);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processGetTaskCategories(_response));
+        });
+    }
+
+    protected processGetTaskCategories(response: Response): Promise<string[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(item);
+            }
+            else {
+                result200 = <any>null;
+            }
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<string[]>(null as any);
+    }
+
+    getTaskSubCategories(request: BasicSearchRequest): Promise<string[]> {
+        let url_ = this.baseUrl + "/api/UserTasks/sub-categories";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(request);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processGetTaskSubCategories(_response));
+        });
+    }
+
+    protected processGetTaskSubCategories(response: Response): Promise<string[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(item);
+            }
+            else {
+                result200 = <any>null;
+            }
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<string[]>(null as any);
+    }
+
+    completeTask(taskId: number): Promise<BoolResponse> {
+        let url_ = this.baseUrl + "/api/UserTasks/complete-task/id/{taskId}";
+        if (taskId === undefined || taskId === null)
+            throw new Error("The parameter 'taskId' must be defined.");
+        url_ = url_.replace("{taskId}", encodeURIComponent("" + taskId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "PUT",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processCompleteTask(_response));
+        });
+    }
+
+    protected processCompleteTask(response: Response): Promise<BoolResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = BoolResponse.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<BoolResponse>(null as any);
+    }
+
+    updateUserTask(taskDto: UserTaskDto): Promise<BoolResponse> {
+        let url_ = this.baseUrl + "/api/UserTasks/update-task";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(taskDto);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processUpdateUserTask(_response));
+        });
+    }
+
+    protected processUpdateUserTask(response: Response): Promise<BoolResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = BoolResponse.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<BoolResponse>(null as any);
+    }
+}
+
 export class WhoAmIResponse implements IWhoAmIResponse {
     userId!: number;
     name?: string | null;
@@ -590,6 +873,158 @@ export interface IUserLinkDto {
     linkCategory: string;
     linkUrl: string;
     linkImage: string;
+}
+
+export class UserTaskDto implements IUserTaskDto {
+    taskID!: number;
+    userID!: number;
+    taskPriority!: number;
+    dateAddedUtc!: Date;
+    dateCompletedUtc?: Date | null;
+    dateDeletedUtc?: Date | null;
+    taskName!: string;
+    taskCategory!: string;
+    taskSubCategory!: string;
+    taskDescription!: string;
+
+    constructor(data?: IUserTaskDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.taskID = _data["taskID"] !== undefined ? _data["taskID"] : <any>null;
+            this.userID = _data["userID"] !== undefined ? _data["userID"] : <any>null;
+            this.taskPriority = _data["taskPriority"] !== undefined ? _data["taskPriority"] : <any>null;
+            this.dateAddedUtc = _data["dateAddedUtc"] ? new Date(_data["dateAddedUtc"].toString()) : <any>null;
+            this.dateCompletedUtc = _data["dateCompletedUtc"] ? new Date(_data["dateCompletedUtc"].toString()) : <any>null;
+            this.dateDeletedUtc = _data["dateDeletedUtc"] ? new Date(_data["dateDeletedUtc"].toString()) : <any>null;
+            this.taskName = _data["taskName"] !== undefined ? _data["taskName"] : <any>null;
+            this.taskCategory = _data["taskCategory"] !== undefined ? _data["taskCategory"] : <any>null;
+            this.taskSubCategory = _data["taskSubCategory"] !== undefined ? _data["taskSubCategory"] : <any>null;
+            this.taskDescription = _data["taskDescription"] !== undefined ? _data["taskDescription"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): UserTaskDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new UserTaskDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["taskID"] = this.taskID !== undefined ? this.taskID : <any>null;
+        data["userID"] = this.userID !== undefined ? this.userID : <any>null;
+        data["taskPriority"] = this.taskPriority !== undefined ? this.taskPriority : <any>null;
+        data["dateAddedUtc"] = this.dateAddedUtc ? this.dateAddedUtc.toISOString() : <any>null;
+        data["dateCompletedUtc"] = this.dateCompletedUtc ? this.dateCompletedUtc.toISOString() : <any>null;
+        data["dateDeletedUtc"] = this.dateDeletedUtc ? this.dateDeletedUtc.toISOString() : <any>null;
+        data["taskName"] = this.taskName !== undefined ? this.taskName : <any>null;
+        data["taskCategory"] = this.taskCategory !== undefined ? this.taskCategory : <any>null;
+        data["taskSubCategory"] = this.taskSubCategory !== undefined ? this.taskSubCategory : <any>null;
+        data["taskDescription"] = this.taskDescription !== undefined ? this.taskDescription : <any>null;
+        return data;
+    }
+}
+
+export interface IUserTaskDto {
+    taskID: number;
+    userID: number;
+    taskPriority: number;
+    dateAddedUtc: Date;
+    dateCompletedUtc?: Date | null;
+    dateDeletedUtc?: Date | null;
+    taskName: string;
+    taskCategory: string;
+    taskSubCategory: string;
+    taskDescription: string;
+}
+
+export class BasicSearchRequest implements IBasicSearchRequest {
+    filter?: string | null;
+    subFilter?: string | null;
+
+    constructor(data?: IBasicSearchRequest) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.filter = _data["filter"] !== undefined ? _data["filter"] : <any>null;
+            this.subFilter = _data["subFilter"] !== undefined ? _data["subFilter"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): BasicSearchRequest {
+        data = typeof data === 'object' ? data : {};
+        let result = new BasicSearchRequest();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["filter"] = this.filter !== undefined ? this.filter : <any>null;
+        data["subFilter"] = this.subFilter !== undefined ? this.subFilter : <any>null;
+        return data;
+    }
+}
+
+export interface IBasicSearchRequest {
+    filter?: string | null;
+    subFilter?: string | null;
+}
+
+export class BoolResponse implements IBoolResponse {
+    success!: boolean;
+    error?: string | null;
+
+    constructor(data?: IBoolResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.success = _data["success"] !== undefined ? _data["success"] : <any>null;
+            this.error = _data["error"] !== undefined ? _data["error"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): BoolResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new BoolResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["success"] = this.success !== undefined ? this.success : <any>null;
+        data["error"] = this.error !== undefined ? this.error : <any>null;
+        return data;
+    }
+}
+
+export interface IBoolResponse {
+    success: boolean;
+    error?: string | null;
 }
 
 export interface FileResponse {

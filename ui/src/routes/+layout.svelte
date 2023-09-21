@@ -5,7 +5,8 @@
 	import 'bootstrap/dist/css/bootstrap.min.css';
 	import TopNavigation from '../components/TopNavigation.svelte';
 	import { Styles } from 'sveltestrap';
-	import { Col, Container, Row } from 'sveltestrap';
+	import { Container } from 'sveltestrap';
+	import ToastManager from '../components/ToastManager.svelte';
 
 	(async () => {
 		const authResponse = await new AuthClient().challenge(false);
@@ -16,6 +17,7 @@
 
 <Styles />
 <TopNavigation />
+<ToastManager />
 <Container class="mt-2">
 	<slot />
 </Container>

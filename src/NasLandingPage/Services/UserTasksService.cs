@@ -1,0 +1,61 @@
+using NasLandingPage.Models;
+using NasLandingPage.Models.Dto;
+using NasLandingPage.Models.Requests;
+using NasLandingPage.Models.Responses;
+using NasLandingPage.Repos;
+
+namespace NasLandingPage.Services;
+
+public interface IUserTasksService
+{
+  Task<BoolResponse> AddUserTaskAsync(NlpUserContext userContext, UserTaskDto taskDto);
+  Task<UserTaskDto[]> GetUserTasksAsync(NlpUserContext userContext);
+  Task<string[]> GetTaskCategoriesAsync(NlpUserContext userContext, BasicSearchRequest request);
+  Task<string[]> GetTaskSubCategoriesAsync(NlpUserContext userContext, BasicSearchRequest request);
+  Task<BoolResponse> CompleteUserTaskAsync(NlpUserContext userContext, int taskId);
+  Task<BoolResponse> UpdateUserTaskAsync(NlpUserContext userContext, UserTaskDto taskDto);
+}
+
+internal class UserTasksService : IUserTasksService
+{
+  private readonly IUserTasksRepo _userTasksRepo;
+
+  public UserTasksService(IUserTasksRepo userTasksRepo)
+  {
+    _userTasksRepo = userTasksRepo;
+  }
+
+  public async Task<BoolResponse> AddUserTaskAsync(NlpUserContext userContext, UserTaskDto taskDto)
+  {
+    var response = new BoolResponse();
+    var taskEntity = taskDto.ToEntity();
+    taskEntity.UserID = userContext.UserId;
+    var rowCount = await _userTasksRepo.AddTaskAsync(taskEntity);
+    return rowCount == 0 ? response.AsError("Failed to add user task") : response;
+  }
+
+  public async Task<UserTaskDto[]> GetUserTasksAsync(NlpUserContext userContext) =>
+    (await _userTasksRepo.GetUserTasksAsync(userContext)).Select(UserTaskDto.FromEntity).ToArray();
+
+  public async Task<string[]> GetTaskCategoriesAsync(NlpUserContext userContext, BasicSearchRequest request) =>
+    (await _userTasksRepo.GetTaskCategoriesAsync(userContext, request.Filter ?? "")).ToArray();
+
+  public async Task<string[]> GetTaskSubCategoriesAsync(NlpUserContext userContext, BasicSearchRequest request) =>
+    (await _userTasksRepo.GetTaskSubCategoriesAsync(userContext, request.Filter ?? "", request.SubFilter ?? "")).ToArray();
+
+  public async Task<BoolResponse> CompleteUserTaskAsync(NlpUserContext userContext, int taskId)
+  {
+    var response = new BoolResponse();
+    var rowCount = await _userTasksRepo.CompleteUserTaskAsync(userContext, taskId);
+    return rowCount == 0 ? response.AsError("Failed to complete task") : response;
+  }
+
+  public async Task<BoolResponse> UpdateUserTaskAsync(NlpUserContext userContext, UserTaskDto taskDto)
+  {
+    var response = new BoolResponse();
+    var taskEntity = taskDto.ToEntity();
+    taskEntity.UserID = userContext.UserId;
+    var rowCount = await _userTasksRepo.UpdateUserTaskAsync(taskEntity);
+    return rowCount == 0 ? response.AsError("Failed to update task") : response;
+  }
+}
