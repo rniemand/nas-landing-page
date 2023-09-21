@@ -19,4 +19,8 @@ public class UserLinksController : ControllerBase
   [HttpGet]
   public async Task<UserLinkDto[]> GetUserLinks() =>
     await _userLinksService.GetUserLinksAsync(User.GetNlpUserContext());
+
+  [HttpGet("follow/{linkId:int}")]
+  public async Task FollowLink([FromRoute] int linkId) =>
+    await _userLinksService.IncrementLinkFollowCountAsync(User.GetNlpUserContext(), linkId);
 }

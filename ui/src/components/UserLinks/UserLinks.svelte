@@ -13,6 +13,13 @@
 	const selectedCategoryChanged = (_category: string) =>
 		(displayLinks = links.slice().filter((x) => x.linkCategory === _category));
 
+	const onLinkSelected = async (link: UserLinkDto) => {
+		await new UserLinksClient().followLink(link.linkId);
+		link.followCount += 1;
+		displayLinks = displayLinks;
+		window.open(link.linkUrl, '_blank');
+	};
+
 	(async () => {
 		links = await new UserLinksClient().getUserLinks();
 		categories = links.reduce((pv: string[], cv) => {
@@ -36,6 +43,6 @@
 				</HorizontalListEntry>
 			{/each}
 		</HorizontalList>
-		<LinksDisplay links={displayLinks} />
+		<LinksDisplay links={displayLinks} {onLinkSelected} />
 	</Col>
 </Row>

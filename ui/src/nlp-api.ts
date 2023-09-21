@@ -311,6 +311,8 @@ export class ImageClient extends NlpBaseClient implements IImageClient {
 export interface IUserLinksClient {
 
     getUserLinks(): Promise<UserLinkDto[]>;
+
+    followLink(linkId: number): Promise<void>;
 }
 
 export class UserLinksClient extends NlpBaseClient implements IUserLinksClient {
@@ -365,6 +367,41 @@ export class UserLinksClient extends NlpBaseClient implements IUserLinksClient {
             });
         }
         return Promise.resolve<UserLinkDto[]>(null as any);
+    }
+
+    followLink(linkId: number): Promise<void> {
+        let url_ = this.baseUrl + "/api/UserLinks/follow/{linkId}";
+        if (linkId === undefined || linkId === null)
+            throw new Error("The parameter 'linkId' must be defined.");
+        url_ = url_.replace("{linkId}", encodeURIComponent("" + linkId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processFollowLink(_response));
+        });
+    }
+
+    protected processFollowLink(response: Response): Promise<void> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            return;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<void>(null as any);
     }
 }
 

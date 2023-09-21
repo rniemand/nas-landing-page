@@ -46,11 +46,13 @@
 <script lang="ts">
 	import type { UserLinkDto } from '../../nlp-api';
 	export let links: UserLinkDto[] = [];
+	export let onLinkSelected: (link: UserLinkDto) => void;
 </script>
 
 <div class="links mt-2">
 	{#each links as link}
-		<div class="link shadow">
+		<!-- svelte-ignore a11y-click-events-have-key-events -->
+		<div class="link shadow" on:click={() => onLinkSelected(link)}>
 			<div class="image">
 				<img src={`/api/image/user-link/${link.linkId}`} alt={link.linkName} />
 				<span class="follow">{link.followCount}</span>

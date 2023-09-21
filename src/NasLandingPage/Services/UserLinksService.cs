@@ -8,6 +8,7 @@ public interface IUserLinksService
 {
   Task<UserLinkDto[]> GetUserLinksAsync(NlpUserContext userContext);
   Task<string> GetUserLinkImagePathAsync(int linkId);
+  Task IncrementLinkFollowCountAsync(NlpUserContext userContext, int linkId);
 }
 
 internal class UserLinksService : IUserLinksService
@@ -35,4 +36,7 @@ internal class UserLinksService : IUserLinksService
     var dbFilePath = Path.Join(_config.LinkImageRootDir, dbLink.LinkImage);
     return !File.Exists(dbFilePath) ? fallbackPath : dbFilePath;
   }
+
+  public async Task IncrementLinkFollowCountAsync(NlpUserContext userContext, int linkId) =>
+    await _userLinksRepo.IncrementLinkFollowCountAsync(userContext, linkId);
 }
