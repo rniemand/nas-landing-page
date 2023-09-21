@@ -12,6 +12,7 @@ public interface IUserTasksService
   Task<UserTaskDto[]> GetUserTasksAsync(NlpUserContext userContext);
   Task<string[]> GetTaskCategoriesAsync(NlpUserContext userContext, BasicSearchRequest request);
   Task<string[]> GetTaskSubCategoriesAsync(NlpUserContext userContext, BasicSearchRequest request);
+  Task<BoolResponse> CompleteUserTaskAsync(NlpUserContext userContext, int taskId);
 }
 
 internal class UserTasksService : IUserTasksService
@@ -40,4 +41,11 @@ internal class UserTasksService : IUserTasksService
 
   public async Task<string[]> GetTaskSubCategoriesAsync(NlpUserContext userContext, BasicSearchRequest request) =>
     (await _userTasksRepo.GetTaskSubCategoriesAsync(userContext, request.Filter ?? "", request.SubFilter ?? "")).ToArray();
+
+  public async Task<BoolResponse> CompleteUserTaskAsync(NlpUserContext userContext, int taskId)
+  {
+    var response = new BoolResponse();
+    var rowCount = await _userTasksRepo.CompleteUserTaskAsync(userContext, taskId);
+    return rowCount == 0 ? response.AsError("Failed to complete task") : response;
+  }
 }

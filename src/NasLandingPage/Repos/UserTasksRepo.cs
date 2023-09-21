@@ -10,6 +10,7 @@ public interface IUserTasksRepo
   Task<IEnumerable<string>> GetTaskCategoriesAsync(NlpUserContext userContext, string filter);
   Task<IEnumerable<string>> GetTaskSubCategoriesAsync(NlpUserContext userContext, string category, string filter);
   Task<IEnumerable<UserTaskEntity>> GetUserTasksAsync(NlpUserContext userContext);
+  Task<int> CompleteUserTaskAsync(NlpUserContext userContext, int taskId);
 }
 
 internal class UserTasksRepo : IUserTasksRepo
@@ -74,5 +75,21 @@ internal class UserTasksRepo : IUserTasksRepo
     ORDER BY ut.TaskPriority";
     await using var connection = _connectionHelper.GetCoreConnection();
     return await connection.QueryAsync<UserTaskEntity>(query, new { UserID = userContext.UserId });
+  }
+
+  public async Task<int> CompleteUserTaskAsync(NlpUserContext userContext, int taskId)
+  {
+    const string query = @"UPDATE `UserTasks`
+    SET
+      `DateCompletedUtc` = utc_timestamp(6)
+    WHERE
+      `TaskID` = @TaskID
+      AND `UserID` = @UserID";
+    await using var connection = _connectionHelper.GetCoreConnection();
+    return await connection.ExecuteAsync(query, new
+    {
+      UserID = userContext.UserId,
+      TaskID = taskId,
+    });
   }
 }
