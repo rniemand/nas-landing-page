@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { Toast, ToastBody, ToastHeader } from 'sveltestrap';
-	import { NlpToastMessage, toastSuccess, toasts } from './ToastManager';
+	import { NlpToastMessage, toasts } from './ToastManager';
 	let toastMessages: NlpToastMessage[] = [];
 
 	onMount(() => {
@@ -13,11 +13,11 @@
 
 <div class="toast-container position-fixed bottom-0 end-0 p-3">
 	{#each toastMessages as entry}
-		<Toast>
+		<Toast autohide>
 			<ToastHeader icon={entry.color} toggle={entry.dismiss}>
 				{entry.title}
 			</ToastHeader>
-			<ToastBody>{entry.body}</ToastBody>
+			{#if entry.body}<ToastBody>{entry.body}</ToastBody>{/if}
 		</Toast>
 	{/each}
 </div>

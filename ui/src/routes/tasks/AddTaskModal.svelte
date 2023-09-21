@@ -16,6 +16,7 @@
 	import { createNewTask, validateTaskForAdding } from './Tasks';
 	import TaskCategorySelector from './TaskCategorySelector.svelte';
 	import type { UserTaskDto } from '../../nlp-api';
+	import { toastError } from '../../components/ToastManager';
 
 	let open = false;
 	let userTask: UserTaskDto = createNewTask();
@@ -28,6 +29,8 @@
 		//const response = await new UserTasksClient().addTask(userTask);
 		//console.log('x', response);
 		// toggle();
+
+		toastError('Failed to add task');
 	};
 
 	$: taskEntryChanged(userTask);

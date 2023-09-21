@@ -1,5 +1,4 @@
 import { writable, type Writable } from 'svelte/store';
-
 export const toasts: Writable<NlpToastMessage[]> = writable([]);
 
 export class NlpToastMessage {
@@ -7,8 +6,9 @@ export class NlpToastMessage {
 	constructor(
 		private _manager: ToastManager,
 		public title: string,
-		public body: string,
-		public color: string
+		public body: string | undefined,
+		public color: string,
+		public autoHide: boolean = false
 	) {}
 	setId = (id: number) => (this.id = id);
 	dismiss = () => this._manager.dismiss(this);
@@ -35,6 +35,14 @@ class ToastManager {
 
 const manager = new ToastManager(toasts);
 
-export const toastSuccess = (title: string, body: string) => {
-	manager.add(new NlpToastMessage(manager, title, body, 'success'));
-};
+export const toastSuccess = (
+	title: string,
+	body: string | undefined = undefined,
+	autoHide: boolean = true
+) => manager.add(new NlpToastMessage(manager, title, body, 'success', autoHide));
+
+export const toastError = (
+	title: string,
+	body: string | undefined = undefined,
+	autoHide: boolean = true
+) => manager.add(new NlpToastMessage(manager, title, body, 'danger', autoHide));
