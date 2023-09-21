@@ -15,11 +15,18 @@
 	import TaskPriority from './TaskPriority.svelte';
 	import { createNewTask } from './Tasks';
 	import type { UserTaskDto } from '../../nlp-api';
+	import TaskCategorySelector from './TaskCategorySelector.svelte';
 
 	let open = false;
 	let userTask: UserTaskDto = createNewTask();
 
+	const taskEntryChanged = (_userTask: UserTaskDto) => {
+		console.log('taskEntryChanged', _userTask);
+	};
+
 	const toggle = () => (open = !open);
+
+	$: taskEntryChanged(userTask);
 </script>
 
 <div>
@@ -43,7 +50,7 @@
 					<Col>
 						<FormGroup>
 							<Label for="category">Category</Label>
-							<Input type="text" id="category" />
+							<TaskCategorySelector bind:value={userTask.taskCategory} />
 						</FormGroup>
 					</Col>
 					<Col>
