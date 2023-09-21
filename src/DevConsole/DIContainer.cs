@@ -22,7 +22,7 @@ internal static class DIContainer
 
     services
       .AddSingleton<IConfiguration>(config)
-      .AddNasLandingPage()
+      .AddNasLandingPage(config)
       .AddLogging(loggingBuilder =>
       {
         loggingBuilder.ClearProviders();
