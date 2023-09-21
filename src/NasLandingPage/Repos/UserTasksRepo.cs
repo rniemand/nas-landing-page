@@ -8,7 +8,7 @@ public interface IUserTasksRepo
 {
   Task<int> AddTaskAsync(UserTaskEntity task);
   Task<IEnumerable<string>> GetTaskCategoriesAsync(NlpUserContext userContext, string filter);
-  Task<IEnumerable<string>> GetTaskSubCategoriesAsync(NlpUserContext userContext, string category);
+  Task<IEnumerable<string>> GetTaskSubCategoriesAsync(NlpUserContext userContext, string category, string filter);
   Task<IEnumerable<UserTaskEntity>> GetUserTasksAsync(NlpUserContext userContext);
 }
 
@@ -46,13 +46,14 @@ internal class UserTasksRepo : IUserTasksRepo
     });
   }
 
-  public async Task<IEnumerable<string>> GetTaskSubCategoriesAsync(NlpUserContext userContext, string category)
+  public async Task<IEnumerable<string>> GetTaskSubCategoriesAsync(NlpUserContext userContext, string category, string filter)
   {
-    const string query = @"SELECT DISTINCT ut.TaskSubCategory
+    var query = @$"SELECT DISTINCT ut.TaskSubCategory
     FROM `UserTasks` ut
     WHERE ut.UserID = @UserID
 	    AND ut.DateDeletedUtc IS NULL
 	    AND ut.TaskCategory = @TaskCategory
+      AND ut.TaskSubCategory LIKE '%{filter}%'
     ORDER BY ut.TaskSubCategory";
     await using var connection = _connectionHelper.GetCoreConnection();
     return await connection.QueryAsync<string>(query, new

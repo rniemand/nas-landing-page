@@ -411,9 +411,9 @@ export interface IUserTasksClient {
 
     addTask(task: UserTaskDto): Promise<BoolResponse>;
 
-    getTaskCategories(filter: string): Promise<string[]>;
+    getTaskCategories(request: BasicSearchRequest): Promise<string[]>;
 
-    getTaskSubCategories(category: string): Promise<string[]>;
+    getTaskSubCategories(request: BasicSearchRequest): Promise<string[]>;
 }
 
 export class UserTasksClient extends NlpBaseClient implements IUserTasksClient {
@@ -510,11 +510,11 @@ export class UserTasksClient extends NlpBaseClient implements IUserTasksClient {
         return Promise.resolve<BoolResponse>(null as any);
     }
 
-    getTaskCategories(filter: string): Promise<string[]> {
+    getTaskCategories(request: BasicSearchRequest): Promise<string[]> {
         let url_ = this.baseUrl + "/api/UserTasks/categories";
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(filter);
+        const content_ = JSON.stringify(request);
 
         let options_: RequestInit = {
             body: content_,
@@ -557,11 +557,11 @@ export class UserTasksClient extends NlpBaseClient implements IUserTasksClient {
         return Promise.resolve<string[]>(null as any);
     }
 
-    getTaskSubCategories(category: string): Promise<string[]> {
+    getTaskSubCategories(request: BasicSearchRequest): Promise<string[]> {
         let url_ = this.baseUrl + "/api/UserTasks/sub-categories";
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(category);
+        const content_ = JSON.stringify(request);
 
         let options_: RequestInit = {
             body: content_,
@@ -862,6 +862,46 @@ export interface IUserTaskDto {
     taskCategory: string;
     taskSubCategory: string;
     taskDescription: string;
+}
+
+export class BasicSearchRequest implements IBasicSearchRequest {
+    filter?: string | null;
+    subFilter?: string | null;
+
+    constructor(data?: IBasicSearchRequest) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.filter = _data["filter"] !== undefined ? _data["filter"] : <any>null;
+            this.subFilter = _data["subFilter"] !== undefined ? _data["subFilter"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): BasicSearchRequest {
+        data = typeof data === 'object' ? data : {};
+        let result = new BasicSearchRequest();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["filter"] = this.filter !== undefined ? this.filter : <any>null;
+        data["subFilter"] = this.subFilter !== undefined ? this.subFilter : <any>null;
+        return data;
+    }
+}
+
+export interface IBasicSearchRequest {
+    filter?: string | null;
+    subFilter?: string | null;
 }
 
 export class BoolResponse implements IBoolResponse {

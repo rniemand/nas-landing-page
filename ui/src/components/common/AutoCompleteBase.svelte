@@ -53,12 +53,11 @@
 	}
 	a.clear-icon {
 		cursor: pointer;
-		color: rgb(248, 8, 8);
+		color: rgb(193 99 99);
 		margin: auto;
-		margin-left: 4px;
 	}
 	a.clear-icon.disabled {
-		color: #d4d4d5;
+		color: #737373;
 		cursor: not-allowed;
 	}
 </style>
@@ -119,7 +118,7 @@
 			<a
 				href="#!"
 				on:click={clearSearch}
-				class="clear-icon"
+				class="clear-icon ms-1"
 				class:disabled={(value?.length || 0) <= 0}>
 				<Icon name="trash3" />
 			</a>

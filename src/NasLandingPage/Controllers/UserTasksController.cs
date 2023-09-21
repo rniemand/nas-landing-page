@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using NasLandingPage.Extensions;
 using NasLandingPage.Models.Dto;
+using NasLandingPage.Models.Requests;
 using NasLandingPage.Models.Responses;
 using NasLandingPage.Services;
 
@@ -22,12 +23,12 @@ public class UserTasksController : ControllerBase
     await _userTasksService.GetUserTasksAsync(User.GetNlpUserContext());
 
   [HttpPost("categories")]
-  public async Task<string[]> GetTaskCategories([FromBody] string filter) =>
-    await _userTasksService.GetTaskCategoriesAsync(User.GetNlpUserContext(), filter);
+  public async Task<string[]> GetTaskCategories([FromBody] BasicSearchRequest request) =>
+    await _userTasksService.GetTaskCategoriesAsync(User.GetNlpUserContext(), request);
 
   [HttpPost("sub-categories")]
-  public async Task<string[]> GetTaskSubCategories([FromBody] string category) =>
-    await _userTasksService.GetTaskSubCategoriesAsync(User.GetNlpUserContext(), category);
+  public async Task<string[]> GetTaskSubCategories([FromBody] BasicSearchRequest request) =>
+    await _userTasksService.GetTaskSubCategoriesAsync(User.GetNlpUserContext(), request);
 
   [HttpPost]
   public async Task<BoolResponse> AddTask([FromBody] UserTaskDto task) =>

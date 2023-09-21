@@ -17,6 +17,7 @@
 	import TaskCategorySelector from './TaskCategorySelector.svelte';
 	import { UserTasksClient, type UserTaskDto } from '../../nlp-api';
 	import { toastError, toastSuccess } from '../../components/ToastManager';
+	import TaskSubCategorySelector from './TaskSubCategorySelector.svelte';
 
 	export let onTaskAdded: () => void = () => {};
 	let open = false;
@@ -24,11 +25,14 @@
 	let canAdd: boolean = false;
 
 	const taskEntryChanged = (_userTask: UserTaskDto) => (canAdd = validateTaskForAdding(_userTask));
-	const toggle = () => (open = !open);
+
+	const toggle = () => {
+		open = !open;
+		if (open) userTask = createNewTask();
+	};
 
 	const addTask = async () => {
 		const response = await new UserTasksClient().addTask(userTask);
-
 		if (response.success) {
 			toastSuccess('Task Added', `${userTask.taskName} has been created`);
 			userTask = createNewTask();
@@ -63,13 +67,16 @@
 					<Col>
 						<FormGroup>
 							<Label for="category">Category</Label>
-							<TaskCategorySelector bind:value={userTask.taskCategory} />
+							<TaskCategorySelector bind:value={userTask.taskCategory} showClear />
 						</FormGroup>
 					</Col>
 					<Col>
 						<FormGroup>
 							<Label for="subCategory">Sub Category</Label>
-							<Input type="text" id="subCategory" bind:value={userTask.taskSubCategory} />
+							<TaskSubCategorySelector
+								category={userTask.taskCategory}
+								bind:value={userTask.taskSubCategory}
+								showClear />
 						</FormGroup>
 					</Col>
 				</Row>
