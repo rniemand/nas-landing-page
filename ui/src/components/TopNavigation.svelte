@@ -41,6 +41,9 @@
 	<Collapse {isOpen} navbar expand="md" on:update={handleUpdate}>
 		<Nav class="ms-auto" navbar>
 			{#if whoAmI?.signedIn}
+				<NavItem>
+					<NavLink href="/tasks">Tasks</NavLink>
+				</NavItem>
 				<Dropdown nav inNavbar>
 					<DropdownToggle nav caret>Account</DropdownToggle>
 					<DropdownMenu end>

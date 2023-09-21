@@ -24,9 +24,9 @@ internal class UserTasksRepo : IUserTasksRepo
   public async Task<int> AddTaskAsync(UserTaskEntity task)
   {
     const string query = @"INSERT INTO `UserTasks`
-	    (`UserID`,`TaskPriority`,`TaskName`,`TaskCategory`,`TaskDescription`)
+	    (`UserID`,`TaskPriority`,`TaskName`,`TaskCategory`,`TaskSubCategory`,`TaskDescription`)
     VALUES
-	    (@UserID,@TaskPriority,@TaskName,@TaskCategory,@TaskDescription)";
+	    (@UserID,@TaskPriority,@TaskName,@TaskCategory,@TaskSubCategory,@TaskDescription)";
     await using var connection = _connectionHelper.GetCoreConnection();
     return await connection.ExecuteAsync(query, task);
   }
