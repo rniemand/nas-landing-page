@@ -44,8 +44,7 @@
 				<Dropdown nav inNavbar>
 					<DropdownToggle nav caret>Account</DropdownToggle>
 					<DropdownMenu end>
-						<DropdownItem>Option 1</DropdownItem>
-						<DropdownItem divider />
+						<!-- <DropdownItem divider /> -->
 						<DropdownItem on:click={runLogout}>
 							<Icon name="lock-fill" />
 							Log Out

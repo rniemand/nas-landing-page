@@ -4,14 +4,27 @@
 	import HorizontalList from '../common/HorizontalList.svelte';
 	import HorizontalListEntry from '../common/HorizontalListEntry.svelte';
 	import LinksDisplay from './LinksDisplay.svelte';
+	import LinkSearch from './LinkSearch.svelte';
 
 	let categories: string[] = [];
 	let links: UserLinkDto[] = [];
 	let displayLinks: UserLinkDto[] = [];
 	let selectedCategory: string = '';
+	let searchTerm: string = '';
 
-	const selectedCategoryChanged = (_category: string) =>
-		(displayLinks = links.slice().filter((x) => x.linkCategory === _category));
+	const selectedCategoryChanged = (_category: string) => {
+		displayLinks = links.slice().filter((x) => x.linkCategory === _category);
+		searchTerm = '';
+	};
+
+	const searchTermChanged = (_term: string) => {
+		if (!_term || _term.length === 0) {
+			displayLinks = links.slice().filter((x) => x.linkCategory === selectedCategory);
+			return;
+		}
+		let safeTerm = _term.toLowerCase().trim();
+		displayLinks = links.slice().filter((x) => x.linkName.toLowerCase().indexOf(safeTerm) !== -1);
+	};
 
 	const onLinkSelected = async (link: UserLinkDto) => {
 		await new UserLinksClient().followLink(link.linkId);
@@ -30,6 +43,7 @@
 	})();
 
 	$: selectedCategoryChanged(selectedCategory);
+	$: searchTermChanged(searchTerm);
 </script>
 
 <Row>
@@ -43,6 +57,7 @@
 				</HorizontalListEntry>
 			{/each}
 		</HorizontalList>
+		<LinkSearch bind:searchTerm />
 		<LinksDisplay links={displayLinks} {onLinkSelected} />
 	</Col>
 </Row>

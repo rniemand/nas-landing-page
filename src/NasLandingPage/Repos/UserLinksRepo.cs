@@ -1,7 +1,6 @@
 using Dapper;
 using NasLandingPage.Models;
 using NasLandingPage.Models.Entities;
-using Octokit;
 
 namespace NasLandingPage.Repos;
 
@@ -28,8 +27,11 @@ internal class UserLinksRepo : IUserLinksRepo
     WHERE ul.UserID = @UserID
     AND ul.Deleted = 0
     ORDER BY ul.LinkCategory, ul.LinkOrder";
-    return await _connectionHelper.GetCoreConnection()
-      .QueryAsync<UserLinkEntity>(query, new { UserID = userContext.UserId });
+    await using var connection = _connectionHelper.GetCoreConnection();
+    return await connection.QueryAsync<UserLinkEntity>(query, new
+    {
+      UserID = userContext.UserId
+    });
   }
 
   public async Task<UserLinkEntity?> GetUserLinkByIdAsync(int linkId)
@@ -38,8 +40,11 @@ internal class UserLinksRepo : IUserLinksRepo
     FROM `UserLinks` ul
     WHERE ul.LinkId = @LinkID
     LIMIT 1";
-    return await _connectionHelper.GetCoreConnection()
-      .QuerySingleOrDefaultAsync<UserLinkEntity>(query, new { LinkID = linkId });
+    await using var connection = _connectionHelper.GetCoreConnection();
+    return await connection.QuerySingleOrDefaultAsync<UserLinkEntity>(query, new
+    {
+      LinkID = linkId
+    });
   }
 
   public async Task<int> IncrementLinkFollowCountAsync(NlpUserContext userContext, int linkId)
@@ -51,11 +56,11 @@ internal class UserLinksRepo : IUserLinksRepo
     WHERE
 	    UserID = @UserID
 	    AND LinkId = @LinkID";
-    return await _connectionHelper.GetCoreConnection()
-      .ExecuteAsync(query, new
-      {
-        UserID = userContext.UserId,
-        LinkID = linkId,
-      });
+    await using var connection = _connectionHelper.GetCoreConnection();
+    return await connection.ExecuteAsync(query, new
+    {
+      UserID = userContext.UserId,
+      LinkID = linkId,
+    });
   }
 }
