@@ -15,9 +15,10 @@
 	import TaskPriority from './TaskPriority.svelte';
 	import { createNewTask, validateTaskForAdding } from './Tasks';
 	import TaskCategorySelector from './TaskCategorySelector.svelte';
-	import type { UserTaskDto } from '../../nlp-api';
-	import { toastError } from '../../components/ToastManager';
+	import { UserTasksClient, type UserTaskDto } from '../../nlp-api';
+	import { toastError, toastSuccess } from '../../components/ToastManager';
 
+	export let onTaskAdded: () => void = () => {};
 	let open = false;
 	let userTask: UserTaskDto = createNewTask();
 	let canAdd: boolean = false;
@@ -26,11 +27,16 @@
 	const toggle = () => (open = !open);
 
 	const addTask = async () => {
-		//const response = await new UserTasksClient().addTask(userTask);
-		//console.log('x', response);
-		// toggle();
+		const response = await new UserTasksClient().addTask(userTask);
 
-		toastError('Failed to add task');
+		if (response.success) {
+			toastSuccess('Task Added', `${userTask.taskName} has been created`);
+			userTask = createNewTask();
+			onTaskAdded();
+			toggle();
+		} else {
+			toastError('Error Adding Task', response.error || 'Unknown error');
+		}
 	};
 
 	$: taskEntryChanged(userTask);
