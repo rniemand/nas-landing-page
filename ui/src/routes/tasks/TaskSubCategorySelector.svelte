@@ -12,8 +12,8 @@
 
 	const onCategoryChanged = (_cat: string) => {
 		if (_cat === lastCategory) return;
+		value = lastCategory ? '' : value;
 		lastCategory = _cat;
-		value = '';
 	};
 
 	const getSuggestions = async (term: string) => {

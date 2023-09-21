@@ -36,8 +36,10 @@
 	import { UserTasksClient, type UserTaskDto } from '../../nlp-api';
 	import { onMount } from 'svelte';
 	import { toastError, toastSuccess } from '../../components/ToastManager';
+	import EditTaskModal from './EditTaskModal.svelte';
 
 	let tasks: UserTaskDto[] = [];
+	let editModal: EditTaskModal;
 
 	const priorityClass = (task: UserTaskDto) => {
 		if (task.taskPriority < 128) return 'high';
@@ -67,6 +69,7 @@
 	<Col>
 		<div class="text-end">
 			<AddTaskModal onTaskAdded={refreshTasks} />
+			<EditTaskModal bind:this={editModal} onTaskEdited={refreshTasks} />
 		</div>
 		<div class="tasks mt-2">
 			{#each tasks as task}
@@ -77,7 +80,7 @@
 						<span class="sub-cat">{task.taskSubCategory}</span>
 					</div>
 					<div class="ms-2">
-						<Button>
+						<Button on:click={() => editModal.open(task)}>
 							<Icon name="pencil-square" />
 						</Button>
 						<Button color="success" on:click={() => completeTask(task)}>

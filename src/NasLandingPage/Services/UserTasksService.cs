@@ -13,6 +13,7 @@ public interface IUserTasksService
   Task<string[]> GetTaskCategoriesAsync(NlpUserContext userContext, BasicSearchRequest request);
   Task<string[]> GetTaskSubCategoriesAsync(NlpUserContext userContext, BasicSearchRequest request);
   Task<BoolResponse> CompleteUserTaskAsync(NlpUserContext userContext, int taskId);
+  Task<BoolResponse> UpdateUserTaskAsync(NlpUserContext userContext, UserTaskDto taskDto);
 }
 
 internal class UserTasksService : IUserTasksService
@@ -47,5 +48,14 @@ internal class UserTasksService : IUserTasksService
     var response = new BoolResponse();
     var rowCount = await _userTasksRepo.CompleteUserTaskAsync(userContext, taskId);
     return rowCount == 0 ? response.AsError("Failed to complete task") : response;
+  }
+
+  public async Task<BoolResponse> UpdateUserTaskAsync(NlpUserContext userContext, UserTaskDto taskDto)
+  {
+    var response = new BoolResponse();
+    var taskEntity = taskDto.ToEntity();
+    taskEntity.UserID = userContext.UserId;
+    var rowCount = await _userTasksRepo.UpdateUserTaskAsync(taskEntity);
+    return rowCount == 0 ? response.AsError("Failed to update task") : response;
   }
 }

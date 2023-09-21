@@ -37,4 +37,8 @@ public class UserTasksController : ControllerBase
   [HttpPut("complete-task/id/{taskId:int}")]
   public async Task<BoolResponse> CompleteTask([FromRoute] int taskId) =>
     await _userTasksService.CompleteUserTaskAsync(User.GetNlpUserContext(), taskId);
+
+  [HttpPatch("update-task")]
+  public async Task<BoolResponse> UpdateUserTask([FromBody] UserTaskDto taskDto) =>
+    await _userTasksService.UpdateUserTaskAsync(User.GetNlpUserContext(), taskDto);
 }
