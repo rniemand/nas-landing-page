@@ -29,6 +29,7 @@
 
 	const searchTermChanged = (_term: string) => {
 		if (!_term || _term.length == 0) {
+			games = games;
 			displayGames = games.slice();
 		} else {
 			let safeTerm = _term.toLowerCase().trim();
@@ -46,11 +47,11 @@
 	<PlatformGamesSearch bind:value={searchTerm} />
 	<PlatformGamesPagination {games} pageSize={20} {onPageChanged} />
 {/if}
-<Row class="games-list">
+<Row class="games-list d-flex flex-wrap justify-content-between">
 	{#if displayGames.length === 0}
 		<p class="text-center">No games</p>
 	{:else}
-		{#each displayGames as game}
+		{#each displayGames as game (game.gameID)}
 			<GameInfoCard {game} />
 		{/each}
 	{/if}

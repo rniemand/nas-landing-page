@@ -2,7 +2,7 @@ namespace NasLandingPage.Models.Dto;
 
 public class GameDto
 {
-  public long GameID { get; set; }
+  public int GameID { get; set; }
   public int PlatformID { get; set; }
   public int LocationID { get; set; }
   public bool HasGameBox { get; set; }

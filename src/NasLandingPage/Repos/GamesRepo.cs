@@ -7,6 +7,7 @@ public interface IGamesRepo
 {
   Task<IEnumerable<GamePlatformDto>> GetPlatformsAsync();
   Task<IEnumerable<GameDto>> GetPlatformGamesAsync(int platformId);
+  Task<string?> GetGameCoverByGameIdAsync(int gameId);
 }
 
 public class GamesRepo : IGamesRepo
@@ -45,5 +46,22 @@ public class GamesRepo : IGamesRepo
     ";
     await using var connection = _connectionHelper.GetCoreConnection();
     return await connection.QueryAsync<GameDto>(query, new { PlatformID = platformId });
+  }
+
+  public async Task<string?> GetGameCoverByGameIdAsync(int gameId)
+  {
+    const string query = @"
+    SELECT gi.ImagePath
+    FROM `GameImages` gi
+    WHERE
+	    gi.GameID = @GameID
+	    AND gi.ImageType = 'cover'
+	    AND gi.ImageOrder = 1
+    ";
+    await using var connection = _connectionHelper.GetCoreConnection();
+    return await connection.QuerySingleOrDefaultAsync<string>(query, new
+    {
+      GameID = gameId
+    });
   }
 }

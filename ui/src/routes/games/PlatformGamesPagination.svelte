@@ -12,6 +12,7 @@
 
 	const gamesChanged = (_games: GameDto[]) => {
 		showPagination = _games.length > pageSize;
+		pages = [];
 		for (let i = 0; i < Math.ceil(_games.length / pageSize); i++) {
 			pages.push({ active: false, pageNumber: i + 1 });
 		}
