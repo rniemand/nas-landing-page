@@ -956,6 +956,7 @@ export class GameDto implements IGameDto {
     platformName?: string | null;
     locationName?: string | null;
     imagePath?: string | null;
+    searchTerm?: string | null;
 
     constructor(data?: IGameDto) {
         if (data) {
@@ -980,6 +981,7 @@ export class GameDto implements IGameDto {
             this.platformName = _data["platformName"] !== undefined ? _data["platformName"] : <any>null;
             this.locationName = _data["locationName"] !== undefined ? _data["locationName"] : <any>null;
             this.imagePath = _data["imagePath"] !== undefined ? _data["imagePath"] : <any>null;
+            this.searchTerm = _data["searchTerm"] !== undefined ? _data["searchTerm"] : <any>null;
         }
     }
 
@@ -1004,6 +1006,7 @@ export class GameDto implements IGameDto {
         data["platformName"] = this.platformName !== undefined ? this.platformName : <any>null;
         data["locationName"] = this.locationName !== undefined ? this.locationName : <any>null;
         data["imagePath"] = this.imagePath !== undefined ? this.imagePath : <any>null;
+        data["searchTerm"] = this.searchTerm !== undefined ? this.searchTerm : <any>null;
         return data;
     }
 }
@@ -1021,6 +1024,7 @@ export interface IGameDto {
     platformName?: string | null;
     locationName?: string | null;
     imagePath?: string | null;
+    searchTerm?: string | null;
 }
 
 export class UserLinkDto implements IUserLinkDto {

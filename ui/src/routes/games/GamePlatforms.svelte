@@ -14,15 +14,13 @@
 </script>
 
 <Row>
-	<Col>
-		{#if platforms.length > 0}
-			<HorizontalList>
-				{#each platforms as platform}
-					<HorizontalListEntry active={platform === value} on:click={() => (value = platform)}>
-						{platform.platformName}
-					</HorizontalListEntry>
-				{/each}
-			</HorizontalList>
-		{/if}
-	</Col>
+	{#if platforms.length > 0}
+		<HorizontalList>
+			{#each platforms as platform}
+				<HorizontalListEntry active={platform === value} on:click={() => (value = platform)}>
+					{platform.platformName}
+				</HorizontalListEntry>
+			{/each}
+		</HorizontalList>
+	{/if}
 </Row>

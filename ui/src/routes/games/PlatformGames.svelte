@@ -1,30 +1,53 @@
 <script lang="ts">
-	import { Col, Row } from 'sveltestrap';
+	import { Row } from 'sveltestrap';
 	import { GamesClient, type GameDto, type GamePlatformDto } from '../../nlp-api';
 	import GameInfoCard from './GameInfoCard.svelte';
+	import PlatformGamesSearch from './PlatformGamesSearch.svelte';
 
 	export let platform: GamePlatformDto | undefined = undefined;
+	let searchTerm: string = '';
 	let games: GameDto[] = [];
+	let displayGames: GameDto[] = [];
 
 	const refreshGames = async (_platform: GamePlatformDto | undefined) => {
 		if (!_platform) {
 			games = [];
+			searchTerm = '';
 		} else {
-			games = await new GamesClient().getPlatformGames(_platform.platformID);
+			games = (await new GamesClient().getPlatformGames(_platform.platformID)).map((x) => {
+				x.searchTerm = `${x.gameCaseLocation}|${x.gameName}|${x.locationName}|${x.platformName}`
+					.toLowerCase()
+					.trim();
+				return x;
+			});
+
+			displayGames = games.slice();
+			searchTerm = '';
+		}
+	};
+
+	const searchTermChanged = (_term: string) => {
+		if (!_term || _term.length == 0) {
+			displayGames = games.slice();
+		} else {
+			let safeTerm = _term.toLowerCase().trim();
+			displayGames = games.filter((x) => x.searchTerm?.indexOf(safeTerm) !== -1);
 		}
 	};
 
 	$: refreshGames(platform);
+	$: searchTermChanged(searchTerm);
 </script>
 
-<Row>
-	<Col class="games-list">
-		{#if games.length === 0}
-			<p class="text-center">No games</p>
-		{:else}
-			{#each games as game}
-				<GameInfoCard {game} />
-			{/each}
-		{/if}
-	</Col>
+{#if displayGames.length > 0}
+	<PlatformGamesSearch bind:value={searchTerm} />
+{/if}
+<Row class="games-list">
+	{#if displayGames.length === 0}
+		<p class="text-center">No games</p>
+	{:else}
+		{#each displayGames as game}
+			<GameInfoCard {game} />
+		{/each}
+	{/if}
 </Row>

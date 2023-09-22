@@ -16,4 +16,5 @@ public class GameDto
   public string? PlatformName { get; set; }
   public string? LocationName { get; set; }
   public string? ImagePath { get; set; }
+  public string? SearchTerm { get; set; }
 }
