@@ -248,6 +248,66 @@ export class AuthClient extends NlpBaseClient implements IAuthClient {
     }
 }
 
+export interface IGamesClient {
+
+    getPlatforms(): Promise<GamePlatformDto[]>;
+}
+
+export class GamesClient extends NlpBaseClient implements IGamesClient {
+    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+        super();
+        this.http = http ? http : window as any;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    getPlatforms(): Promise<GamePlatformDto[]> {
+        let url_ = this.baseUrl + "/api/Games/platforms";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processGetPlatforms(_response));
+        });
+    }
+
+    protected processGetPlatforms(response: Response): Promise<GamePlatformDto[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(GamePlatformDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<GamePlatformDto[]>(null as any);
+    }
+}
+
 export interface IImageClient {
 
     getUserLinkImage(linkId: number): Promise<FileResponse | null>;
@@ -793,6 +853,46 @@ export class SetNewPasswordRequest implements ISetNewPasswordRequest {
 export interface ISetNewPasswordRequest {
     email: string;
     password: string;
+}
+
+export class GamePlatformDto implements IGamePlatformDto {
+    platformID!: number;
+    platformName!: string;
+
+    constructor(data?: IGamePlatformDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.platformID = _data["platformID"] !== undefined ? _data["platformID"] : <any>null;
+            this.platformName = _data["platformName"] !== undefined ? _data["platformName"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): GamePlatformDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GamePlatformDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["platformID"] = this.platformID !== undefined ? this.platformID : <any>null;
+        data["platformName"] = this.platformName !== undefined ? this.platformName : <any>null;
+        return data;
+    }
+}
+
+export interface IGamePlatformDto {
+    platformID: number;
+    platformName: string;
 }
 
 export class UserLinkDto implements IUserLinkDto {
