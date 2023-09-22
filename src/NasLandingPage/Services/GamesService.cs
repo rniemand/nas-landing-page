@@ -6,6 +6,7 @@ namespace NasLandingPage.Services;
 public interface IGamesService
 {
   Task<GamePlatformDto[]> GetPlatformsAsync();
+  Task<GameDto[]> GetPlatformGamesAsync(int platformId);
 }
 
 public class GamesService : IGamesService
@@ -19,4 +20,7 @@ public class GamesService : IGamesService
 
   public async Task<GamePlatformDto[]> GetPlatformsAsync() =>
     (await _gamesRepo.GetPlatformsAsync()).ToArray();
+
+  public async Task<GameDto[]> GetPlatformGamesAsync(int platformId) =>
+    (await _gamesRepo.GetPlatformGamesAsync(platformId)).ToArray();
 }

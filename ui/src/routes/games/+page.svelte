@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { Row, Col } from 'sveltestrap';
 	import GamePlatforms from './GamePlatforms.svelte';
+	import type { GamePlatformDto } from '../../nlp-api';
+	import PlatformGames from './PlatformGames.svelte';
+
+	let platform: GamePlatformDto | undefined = undefined;
 </script>
 
-<Row>
-	<Col>
-		<GamePlatforms />
-	</Col>
-</Row>
+<GamePlatforms bind:value={platform} />
+<PlatformGames {platform} />

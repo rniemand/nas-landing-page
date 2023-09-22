@@ -251,6 +251,8 @@ export class AuthClient extends NlpBaseClient implements IAuthClient {
 export interface IGamesClient {
 
     getPlatforms(): Promise<GamePlatformDto[]>;
+
+    getPlatformGames(platformId: number): Promise<GameDto[]>;
 }
 
 export class GamesClient extends NlpBaseClient implements IGamesClient {
@@ -305,6 +307,52 @@ export class GamesClient extends NlpBaseClient implements IGamesClient {
             });
         }
         return Promise.resolve<GamePlatformDto[]>(null as any);
+    }
+
+    getPlatformGames(platformId: number): Promise<GameDto[]> {
+        let url_ = this.baseUrl + "/api/Games/games/platform-id/{platformId}";
+        if (platformId === undefined || platformId === null)
+            throw new Error("The parameter 'platformId' must be defined.");
+        url_ = url_.replace("{platformId}", encodeURIComponent("" + platformId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processGetPlatformGames(_response));
+        });
+    }
+
+    protected processGetPlatformGames(response: Response): Promise<GameDto[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(GameDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<GameDto[]>(null as any);
     }
 }
 
@@ -893,6 +941,86 @@ export class GamePlatformDto implements IGamePlatformDto {
 export interface IGamePlatformDto {
     platformID: number;
     platformName: string;
+}
+
+export class GameDto implements IGameDto {
+    gameID!: number;
+    platformID!: number;
+    locationID!: number;
+    hasGameBox!: boolean;
+    hasProtection!: boolean;
+    gameRating!: number;
+    gamePrice!: number;
+    gameName!: string;
+    gameCaseLocation!: string;
+    platformName?: string | null;
+    locationName?: string | null;
+    imagePath?: string | null;
+
+    constructor(data?: IGameDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.gameID = _data["gameID"] !== undefined ? _data["gameID"] : <any>null;
+            this.platformID = _data["platformID"] !== undefined ? _data["platformID"] : <any>null;
+            this.locationID = _data["locationID"] !== undefined ? _data["locationID"] : <any>null;
+            this.hasGameBox = _data["hasGameBox"] !== undefined ? _data["hasGameBox"] : <any>null;
+            this.hasProtection = _data["hasProtection"] !== undefined ? _data["hasProtection"] : <any>null;
+            this.gameRating = _data["gameRating"] !== undefined ? _data["gameRating"] : <any>null;
+            this.gamePrice = _data["gamePrice"] !== undefined ? _data["gamePrice"] : <any>null;
+            this.gameName = _data["gameName"] !== undefined ? _data["gameName"] : <any>null;
+            this.gameCaseLocation = _data["gameCaseLocation"] !== undefined ? _data["gameCaseLocation"] : <any>null;
+            this.platformName = _data["platformName"] !== undefined ? _data["platformName"] : <any>null;
+            this.locationName = _data["locationName"] !== undefined ? _data["locationName"] : <any>null;
+            this.imagePath = _data["imagePath"] !== undefined ? _data["imagePath"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): GameDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GameDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["gameID"] = this.gameID !== undefined ? this.gameID : <any>null;
+        data["platformID"] = this.platformID !== undefined ? this.platformID : <any>null;
+        data["locationID"] = this.locationID !== undefined ? this.locationID : <any>null;
+        data["hasGameBox"] = this.hasGameBox !== undefined ? this.hasGameBox : <any>null;
+        data["hasProtection"] = this.hasProtection !== undefined ? this.hasProtection : <any>null;
+        data["gameRating"] = this.gameRating !== undefined ? this.gameRating : <any>null;
+        data["gamePrice"] = this.gamePrice !== undefined ? this.gamePrice : <any>null;
+        data["gameName"] = this.gameName !== undefined ? this.gameName : <any>null;
+        data["gameCaseLocation"] = this.gameCaseLocation !== undefined ? this.gameCaseLocation : <any>null;
+        data["platformName"] = this.platformName !== undefined ? this.platformName : <any>null;
+        data["locationName"] = this.locationName !== undefined ? this.locationName : <any>null;
+        data["imagePath"] = this.imagePath !== undefined ? this.imagePath : <any>null;
+        return data;
+    }
+}
+
+export interface IGameDto {
+    gameID: number;
+    platformID: number;
+    locationID: number;
+    hasGameBox: boolean;
+    hasProtection: boolean;
+    gameRating: number;
+    gamePrice: number;
+    gameName: string;
+    gameCaseLocation: string;
+    platformName?: string | null;
+    locationName?: string | null;
+    imagePath?: string | null;
 }
 
 export class UserLinkDto implements IUserLinkDto {

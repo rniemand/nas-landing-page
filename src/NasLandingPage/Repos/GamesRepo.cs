@@ -6,6 +6,7 @@ namespace NasLandingPage.Repos;
 public interface IGamesRepo
 {
   Task<IEnumerable<GamePlatformDto>> GetPlatformsAsync();
+  Task<IEnumerable<GameDto>> GetPlatformGamesAsync(int platformId);
 }
 
 public class GamesRepo : IGamesRepo
@@ -25,5 +26,24 @@ public class GamesRepo : IGamesRepo
     ORDER BY `PlatformName`";
     await using var connection = _connectionHelper.GetCoreConnection();
     return await connection.QueryAsync<GamePlatformDto>(query);
+  }
+
+  public async Task<IEnumerable<GameDto>> GetPlatformGamesAsync(int platformId)
+  {
+    const string query = @"
+    SELECT
+	    g.*,
+	    gp.PlatformName,
+	    gl.LocationName,
+	    gi.ImagePath
+    FROM `Games` g
+	    INNER JOIN `GamePlatforms` gp ON gp.PlatformID = g.PlatformID
+	    LEFT JOIN `GameLocations` gl ON gl.LocationID = g.LocationID
+	    LEFT JOIN `GameImages` gi ON gi.GameID = g.GameID AND gi.ImageType = 'cover' AND gi.ImageOrder = 1
+    WHERE g.PlatformID = @PlatformID
+    ORDER BY g.GameName
+    ";
+    await using var connection = _connectionHelper.GetCoreConnection();
+    return await connection.QueryAsync<GameDto>(query, new { PlatformID = platformId });
   }
 }

@@ -18,4 +18,8 @@ public class GamesController : ControllerBase
   [HttpGet("platforms")]
   public async Task<GamePlatformDto[]> GetPlatforms() =>
     await _gamesService.GetPlatformsAsync();
+
+  [HttpGet("games/platform-id/{platformId:int}")]
+  public async Task<GameDto[]> GetPlatformGames([FromRoute] int platformId) =>
+    await _gamesService.GetPlatformGamesAsync(platformId);
 }
