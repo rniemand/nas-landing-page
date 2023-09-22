@@ -3,6 +3,7 @@
 	import { GamesClient, type GameDto, type GamePlatformDto } from '../../nlp-api';
 	import GameInfoCard from './GameInfoCard.svelte';
 	import PlatformGamesSearch from './PlatformGamesSearch.svelte';
+	import PlatformGamesPagination from './PlatformGamesPagination.svelte';
 
 	export let platform: GamePlatformDto | undefined = undefined;
 	let searchTerm: string = '';
@@ -35,12 +36,15 @@
 		}
 	};
 
+	const onPageChanged = (_games: GameDto[]) => (displayGames = _games);
+
 	$: refreshGames(platform);
 	$: searchTermChanged(searchTerm);
 </script>
 
 {#if displayGames.length > 0}
 	<PlatformGamesSearch bind:value={searchTerm} />
+	<PlatformGamesPagination {games} pageSize={20} {onPageChanged} />
 {/if}
 <Row class="games-list">
 	{#if displayGames.length === 0}

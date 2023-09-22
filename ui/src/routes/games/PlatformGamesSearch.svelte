@@ -4,7 +4,7 @@
 	export let value: string = '';
 </script>
 
-<Row>
+<Row class="mt-2">
 	<Col class="d-flex">
 		<Input type="text" bind:value placeholder="Filter" class="me-2" />
 		<Button color="warning" disabled={value.length === 0} on:click={() => (value = '')}>
