@@ -42,6 +42,9 @@
 		<Nav class="ms-auto" navbar>
 			{#if whoAmI?.signedIn}
 				<NavItem>
+					<NavLink href="/games">Games</NavLink>
+				</NavItem>
+				<NavItem>
 					<NavLink href="/tasks">Tasks</NavLink>
 				</NavItem>
 				<Dropdown nav inNavbar>

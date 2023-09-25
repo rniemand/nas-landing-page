@@ -19,8 +19,10 @@ public static class ServiceCollectionExtensions
       .AddSingleton<IUserRepo, UserRepo>()
       .AddSingleton<IUserLinksRepo, UserLinksRepo>()
       .AddSingleton<IUserTasksRepo, UserTasksRepo>()
+      .AddSingleton<IGamesRepo, GamesRepo>()
       .AddSingleton<IJsonHelper, JsonHelper>()
       .AddSingleton<IAuthService, AuthService>()
+      .AddSingleton<IGamesService, GamesService>()
       .AddSingleton<IUserTasksService, UserTasksService>()
       .AddSingleton<IUserLinksService, UserLinksService>();
 

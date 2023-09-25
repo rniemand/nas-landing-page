@@ -1,4 +1,4 @@
-﻿namespace NasLandingPage.Models;
+namespace NasLandingPage.Models;
 
 public class NlpConfig
 {
@@ -7,4 +7,10 @@ public class NlpConfig
 
   [ConfigurationKeyName("LinkImageFallback")]
   public string LinkImageFallback { get; set; } = string.Empty;
+
+  [ConfigurationKeyName("GamesImageRootDir")]
+  public string GamesImageRootDir { get; set; } = string.Empty;
+
+  [ConfigurationKeyName("GamesImageFallback")]
+  public string GamesImageFallback { get; set; } = string.Empty;
 }

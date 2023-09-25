@@ -248,6 +248,162 @@ export class AuthClient extends NlpBaseClient implements IAuthClient {
     }
 }
 
+export interface IGamesClient {
+
+    getPlatforms(): Promise<GamePlatformDto[]>;
+
+    getPlatformGames(platformId: number): Promise<GameDto[]>;
+
+    getGameCover(platform: string, gameId: number): Promise<FileResponse | null>;
+}
+
+export class GamesClient extends NlpBaseClient implements IGamesClient {
+    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+        super();
+        this.http = http ? http : window as any;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    getPlatforms(): Promise<GamePlatformDto[]> {
+        let url_ = this.baseUrl + "/api/Games/platforms";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processGetPlatforms(_response));
+        });
+    }
+
+    protected processGetPlatforms(response: Response): Promise<GamePlatformDto[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(GamePlatformDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<GamePlatformDto[]>(null as any);
+    }
+
+    getPlatformGames(platformId: number): Promise<GameDto[]> {
+        let url_ = this.baseUrl + "/api/Games/games/platform-id/{platformId}";
+        if (platformId === undefined || platformId === null)
+            throw new Error("The parameter 'platformId' must be defined.");
+        url_ = url_.replace("{platformId}", encodeURIComponent("" + platformId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processGetPlatformGames(_response));
+        });
+    }
+
+    protected processGetPlatformGames(response: Response): Promise<GameDto[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(GameDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<GameDto[]>(null as any);
+    }
+
+    getGameCover(platform: string, gameId: number): Promise<FileResponse | null> {
+        let url_ = this.baseUrl + "/api/Games/game-cover/{platform}/{gameId}";
+        if (platform === undefined || platform === null)
+            throw new Error("The parameter 'platform' must be defined.");
+        url_ = url_.replace("{platform}", encodeURIComponent("" + platform));
+        if (gameId === undefined || gameId === null)
+            throw new Error("The parameter 'gameId' must be defined.");
+        url_ = url_.replace("{gameId}", encodeURIComponent("" + gameId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "application/octet-stream"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processGetGameCover(_response));
+        });
+    }
+
+    protected processGetGameCover(response: Response): Promise<FileResponse | null> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            let fileNameMatch = contentDisposition ? /filename\*=(?:(\\?['"])(.*?)\1|(?:[^\s]+'.*?')?([^;\n]*))/g.exec(contentDisposition) : undefined;
+            let fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[3] || fileNameMatch[2] : undefined;
+            if (fileName) {
+                fileName = decodeURIComponent(fileName);
+            } else {
+                fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+                fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            }
+            return response.blob().then(blob => { return { fileName: fileName, data: blob, status: status, headers: _headers }; });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<FileResponse | null>(null as any);
+    }
+}
+
 export interface IImageClient {
 
     getUserLinkImage(linkId: number): Promise<FileResponse | null>;
@@ -793,6 +949,130 @@ export class SetNewPasswordRequest implements ISetNewPasswordRequest {
 export interface ISetNewPasswordRequest {
     email: string;
     password: string;
+}
+
+export class GamePlatformDto implements IGamePlatformDto {
+    platformID!: number;
+    platformName!: string;
+
+    constructor(data?: IGamePlatformDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.platformID = _data["platformID"] !== undefined ? _data["platformID"] : <any>null;
+            this.platformName = _data["platformName"] !== undefined ? _data["platformName"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): GamePlatformDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GamePlatformDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["platformID"] = this.platformID !== undefined ? this.platformID : <any>null;
+        data["platformName"] = this.platformName !== undefined ? this.platformName : <any>null;
+        return data;
+    }
+}
+
+export interface IGamePlatformDto {
+    platformID: number;
+    platformName: string;
+}
+
+export class GameDto implements IGameDto {
+    gameID!: number;
+    platformID!: number;
+    locationID!: number;
+    hasGameBox!: boolean;
+    hasProtection!: boolean;
+    gameRating!: number;
+    gamePrice!: number;
+    gameName!: string;
+    gameCaseLocation!: string;
+    platformName?: string | null;
+    locationName?: string | null;
+    imagePath?: string | null;
+    searchTerm?: string | null;
+
+    constructor(data?: IGameDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.gameID = _data["gameID"] !== undefined ? _data["gameID"] : <any>null;
+            this.platformID = _data["platformID"] !== undefined ? _data["platformID"] : <any>null;
+            this.locationID = _data["locationID"] !== undefined ? _data["locationID"] : <any>null;
+            this.hasGameBox = _data["hasGameBox"] !== undefined ? _data["hasGameBox"] : <any>null;
+            this.hasProtection = _data["hasProtection"] !== undefined ? _data["hasProtection"] : <any>null;
+            this.gameRating = _data["gameRating"] !== undefined ? _data["gameRating"] : <any>null;
+            this.gamePrice = _data["gamePrice"] !== undefined ? _data["gamePrice"] : <any>null;
+            this.gameName = _data["gameName"] !== undefined ? _data["gameName"] : <any>null;
+            this.gameCaseLocation = _data["gameCaseLocation"] !== undefined ? _data["gameCaseLocation"] : <any>null;
+            this.platformName = _data["platformName"] !== undefined ? _data["platformName"] : <any>null;
+            this.locationName = _data["locationName"] !== undefined ? _data["locationName"] : <any>null;
+            this.imagePath = _data["imagePath"] !== undefined ? _data["imagePath"] : <any>null;
+            this.searchTerm = _data["searchTerm"] !== undefined ? _data["searchTerm"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): GameDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GameDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["gameID"] = this.gameID !== undefined ? this.gameID : <any>null;
+        data["platformID"] = this.platformID !== undefined ? this.platformID : <any>null;
+        data["locationID"] = this.locationID !== undefined ? this.locationID : <any>null;
+        data["hasGameBox"] = this.hasGameBox !== undefined ? this.hasGameBox : <any>null;
+        data["hasProtection"] = this.hasProtection !== undefined ? this.hasProtection : <any>null;
+        data["gameRating"] = this.gameRating !== undefined ? this.gameRating : <any>null;
+        data["gamePrice"] = this.gamePrice !== undefined ? this.gamePrice : <any>null;
+        data["gameName"] = this.gameName !== undefined ? this.gameName : <any>null;
+        data["gameCaseLocation"] = this.gameCaseLocation !== undefined ? this.gameCaseLocation : <any>null;
+        data["platformName"] = this.platformName !== undefined ? this.platformName : <any>null;
+        data["locationName"] = this.locationName !== undefined ? this.locationName : <any>null;
+        data["imagePath"] = this.imagePath !== undefined ? this.imagePath : <any>null;
+        data["searchTerm"] = this.searchTerm !== undefined ? this.searchTerm : <any>null;
+        return data;
+    }
+}
+
+export interface IGameDto {
+    gameID: number;
+    platformID: number;
+    locationID: number;
+    hasGameBox: boolean;
+    hasProtection: boolean;
+    gameRating: number;
+    gamePrice: number;
+    gameName: string;
+    gameCaseLocation: string;
+    platformName?: string | null;
+    locationName?: string | null;
+    imagePath?: string | null;
+    searchTerm?: string | null;
 }
 
 export class UserLinkDto implements IUserLinkDto {
