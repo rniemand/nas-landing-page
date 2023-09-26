@@ -7,8 +7,9 @@ public class ChoreFrequency
   public DayOfWeek[] DaysOfWeek { get; }
   public int[] DaysOfMonth { get; }
   public int IntervalDays { get; }
-  public int IntervalWeeks { get; }
+  public int IntervalWeeks { get; private set; }
   public int IntervalMonths { get; }
+  public bool IsValid { get; }
 
   public ChoreFrequency(string expression)
   {
@@ -18,6 +19,35 @@ public class ChoreFrequency
     IntervalDays = ExtractIntKey(args, "d");
     IntervalWeeks = ExtractIntKey(args, "w");
     IntervalMonths = ExtractIntKey(args, "m");
+    IsValid = ValidateConfiguration(expression);
+  }
+
+  public DateTimeOffset GetNextOccurrenceFrom(DateTimeOffset date)
+  {
+
+    return date.AddDays(IntervalDays);
+  }
+
+  private bool ValidateConfiguration(string expression)
+  {
+    // If we don't have any intervals but do have days of week defined we can assume this is weekly
+    if (IntervalDays == 0 && IntervalWeeks == 0 && IntervalMonths == 0 && DaysOfWeek.Length > 0)
+      IntervalWeeks = 1;
+
+    // ReSharper disable once ConvertIfStatementToSwitchStatement
+    if (IntervalDays == 0 && IntervalWeeks == 0 && IntervalMonths == 0)
+      throw new NlpException($"Invalid expression: {expression}");
+
+    if (IntervalDays > 0 && IntervalWeeks > 0)
+      throw new NlpException("Cannot mix 'd:' and 'w:' expressions");
+
+    if (IntervalDays > 0 && IntervalMonths > 0)
+      throw new NlpException("Cannot mix 'd:' and 'm:' expressions");
+
+    if (IntervalMonths > 0 && IntervalWeeks > 0)
+      throw new NlpException("Cannot mix 'w:' and 'm:' expressions");
+
+    return true;
   }
 
   private static int ExtractIntKey(IReadOnlyDictionary<string, string> args, string key) =>

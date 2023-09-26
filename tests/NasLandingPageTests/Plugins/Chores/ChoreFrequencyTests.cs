@@ -32,4 +32,8 @@ internal class ChoreFrequencyTests
   [TestCase("m:5", 5)]
   public void ChoreFrequency_GivenPattern_ShouldExtractIntervalMonths(string pattern, int expected) =>
     Assert.That(new ChoreFrequency(pattern).IntervalMonths, Is.EqualTo(expected));
+
+  [TestCase("m:5", true)]
+  public void ChoreFrequency_GivenPattern_ShouldSetIsValid(string pattern, bool expected) =>
+    Assert.That(new ChoreFrequency(pattern).IsValid, Is.EqualTo(expected));
 }
