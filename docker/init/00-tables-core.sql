@@ -33,8 +33,7 @@ CREATE TABLE `HomeFloors` (
 	`DateAddedUtc` DATETIME NOT NULL DEFAULT utc_timestamp(6),
 	`DateDeletedUtc` DATETIME NULL DEFAULT NULL,
 	`FloorName` VARCHAR(128) NOT NULL DEFAULT '' COLLATE 'utf8mb3_general_ci',
-	PRIMARY KEY (`FloorId`) USING BTREE,
-	INDEX `FK_Chores_Floors_Homes` (`HomeId`) USING BTREE
+	PRIMARY KEY (`FloorId`) USING BTREE
 )
 COLLATE='utf8mb3_general_ci'
 ENGINE=InnoDB;
@@ -45,8 +44,7 @@ CREATE TABLE `HomeRooms` (
 	`DateAddedUtc` DATETIME NOT NULL DEFAULT utc_timestamp(6),
 	`DateDeletedUtc` DATETIME NULL DEFAULT NULL,
 	`RoomName` VARCHAR(128) NOT NULL DEFAULT '' COLLATE 'utf8mb3_general_ci',
-	PRIMARY KEY (`RoomId`) USING BTREE,
-	INDEX `FK_Rooms_Floors` (`FloorId`) USING BTREE
+	PRIMARY KEY (`RoomId`) USING BTREE
 )
 COLLATE='utf8mb3_general_ci'
 ENGINE=InnoDB;
@@ -66,8 +64,7 @@ CREATE TABLE `HomeChores` (
 	`FrequencyValue` VARCHAR(64) NOT NULL DEFAULT '7' COLLATE 'utf8mb3_general_ci',
 	`ChoreName` VARCHAR(128) NOT NULL COLLATE 'utf8mb3_general_ci',
 	`ChoreDescription` TEXT NULL DEFAULT NULL COLLATE 'utf8mb3_general_ci',
-	PRIMARY KEY (`ChoreId`) USING BTREE,
-	INDEX `FK_Chores_Rooms` (`RoomId`) USING BTREE
+	PRIMARY KEY (`ChoreId`) USING BTREE
 )
 COLLATE='utf8mb3_general_ci'
 ENGINE=InnoDB;
