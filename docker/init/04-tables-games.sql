@@ -1,4 +1,4 @@
-CREATE TABLE `Games` (
+CREATE TABLE IF NOT EXISTS `Games` (
 	`GameID` INT(11) NOT NULL DEFAULT '0',
 	`PlatformID` INT(11) NOT NULL,
 	`LocationID` INT(11) NOT NULL,
@@ -11,9 +11,7 @@ CREATE TABLE `Games` (
 	PRIMARY KEY (`GameID`) USING BTREE,
 	INDEX `PlatformID` (`PlatformID`) USING BTREE,
 	INDEX `LocationID` (`LocationID`) USING BTREE
-)
-COLLATE='utf8mb4_general_ci'
-ENGINE=InnoDB;
+) COLLATE='utf8mb4_general_ci' ENGINE=InnoDB;
 
 
 CREATE TABLE IF NOT EXISTS `GameImages` (
@@ -40,9 +38,9 @@ CREATE TABLE IF NOT EXISTS `GamePlatforms` (
 
 CREATE TABLE IF NOT EXISTS `GameReceipts` (
   `ReceiptID` int(11) NOT NULL AUTO_INCREMENT,
-  `HaveReceipt` bit(1) NOT NULL DEFAULT b '0',
-  `ReceiptScanned` bit(1) NOT NULL DEFAULT b '0',
-  `ReceiptAssociated` bit(1) NOT NULL DEFAULT b '0',
+  `HaveReceipt` bit(1) NOT NULL DEFAULT b'0',
+  `ReceiptScanned` bit(1) NOT NULL DEFAULT b'0',
+  `ReceiptAssociated` bit(1) NOT NULL DEFAULT b'0',
   `ReceiptDate` date DEFAULT NULL,
   `Store` varchar(256) DEFAULT NULL,
   `ReceiptNumber` varchar(64) DEFAULT NULL,
