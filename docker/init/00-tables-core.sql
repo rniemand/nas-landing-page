@@ -49,22 +49,24 @@ CREATE TABLE `HomeRooms` (
 COLLATE='utf8mb3_general_ci'
 ENGINE=InnoDB;
 
-CREATE TABLE `HomeChores` (
+CREATE TABLE IF NOT EXISTS `HomeChores` (
 	`ChoreId` INT(11) NOT NULL AUTO_INCREMENT,
 	`RoomId` INT(11) NOT NULL DEFAULT '0',
 	`CompletedCount` INT(11) NOT NULL DEFAULT '0',
-	`Frequency` TINYINT(4) NOT NULL DEFAULT '1',
-	`Priority` TINYINT(4) NOT NULL DEFAULT '1',
 	`ChorePoints` SMALLINT(6) NOT NULL DEFAULT '0',
 	`DateAddedUtc` DATETIME NOT NULL DEFAULT utc_timestamp(6),
+	`DateScheduledUtc` DATETIME NOT NULL DEFAULT utc_timestamp(6),
 	`DateDeletedUtc` DATETIME NULL DEFAULT NULL,
 	`DateDisabledUtc` DATETIME NULL DEFAULT NULL,
 	`DateLastCompletedUtc` DATETIME NULL DEFAULT NULL,
-	`DateScheduledUtc` DATETIME NOT NULL DEFAULT utc_timestamp(6),
-	`FrequencyValue` VARCHAR(64) NOT NULL DEFAULT '7' COLLATE 'utf8mb3_general_ci',
+	`Priority` VARCHAR(8) NOT NULL DEFAULT 'low' COLLATE 'utf8mb3_general_ci',
+	`ChoreFrequency` VARCHAR(128) NOT NULL DEFAULT '1w' COLLATE 'utf8mb3_general_ci',
 	`ChoreName` VARCHAR(128) NOT NULL COLLATE 'utf8mb3_general_ci',
 	`ChoreDescription` TEXT NULL DEFAULT NULL COLLATE 'utf8mb3_general_ci',
-	PRIMARY KEY (`ChoreId`) USING BTREE
+	PRIMARY KEY (`ChoreId`) USING BTREE,
+	INDEX `Priority` (`Priority`) USING BTREE,
+	INDEX `RoomId` (`RoomId`) USING BTREE
 )
 COLLATE='utf8mb3_general_ci'
 ENGINE=InnoDB;
+

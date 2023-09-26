@@ -5,7 +5,6 @@ public class HomeChoreDto
   public int ChoreId { get; set; }
   public int RoomId { get; set; }
   public int CompletedCount { get; set; }
-  public int Frequency { get; set; }
   public int Priority { get; set; }
   public int ChorePoints { get; set; }
   public DateTimeOffset DateAddedUtc { get; set; } = DateTimeOffset.MinValue;
@@ -13,7 +12,7 @@ public class HomeChoreDto
   public DateTimeOffset? DateDisabledUtc { get; set; }
   public DateTimeOffset? DateLastCompletedUtc { get; set; }
   public DateTimeOffset DateScheduledUtc { get; set; } = DateTimeOffset.MinValue;
-  public string FrequencyValue { get; set; } = string.Empty;
+  public string ChoreFrequency { get; set; } = string.Empty;
   public string ChoreName { get; set; } = null!;
   public string ChoreDescription { get; set; } = string.Empty;
 }
