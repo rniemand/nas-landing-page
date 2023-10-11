@@ -30,10 +30,10 @@ WHERE h.DefaultHome = 1;
 
 
 INSERT INTO `HomeChores`
-	(`RoomId`,`ChorePoints`,`DateScheduledUtc`,`Priority`,`ChoreFrequency`,`ChoreName`,`ChoreDescription`)
+	(`RoomId`,`ChorePoints`,`DateScheduledUtc`,`Priority`,`IntervalModifier`,`Interval`,`ChoreName`,`ChoreDescription`)
 VALUES
-	(1,1,'0001-01-01','low','w:1 dow:mon','Weekly Chore 1','Occurs once a week on Mondays'),
-	(2,1,'0001-01-01','med','m:1 dom:1','Monthly Chore 1','Occurs on the first of every month'),
-	(3,1,'0001-01-01','high','w:2 dow:mon,wed,fri','3 Times a week every 2 weeks','Occurs on every Monday, Wednesday and Friday every second week'),
-	(4,1,'0001-01-01','med','w:2','Every 2nd week from completion date','Occurs exactly 2 weeks after the last completion date'),
-  (5,1,'0001-01-01','low','dom:15','Every 15th of a month','Occurs on the 15th of every month');
+	(1,1,'0001-01-01','low','Weeks','1','Weekly Chore 1','Occurs once a week on Mondays'),
+	(2,1,'0001-01-01','med','DaysOfMonth','1','Monthly Chore 1','Occurs on the first of every month'),
+	(3,1,'0001-01-01','high','DaysOfWeek','mon,wed,fri','3 Times a week every week','Occurs on every Monday, Wednesday and Friday'),
+	(4,1,'0001-01-01','med','Weeks','2','Every 2nd week from completion date','Occurs exactly 2 weeks after the last completion date'),
+  (5,1,'0001-01-01','low','DaysOfMonth','15','Every 15th of a month','Occurs on the 15th of every month');

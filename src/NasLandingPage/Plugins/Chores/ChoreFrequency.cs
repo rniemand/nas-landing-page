@@ -2,94 +2,118 @@ using NasLandingPage.Exceptions;
 
 namespace NasLandingPage.Plugins.Chores;
 
-public class ChoreFrequency
+internal class ChoreFrequency
 {
+  public ChoreFrequencyInterval IntervalModifier { get; }
+  public string Interval { get; set; }
   public DayOfWeek[] DaysOfWeek { get; }
   public int[] DaysOfMonth { get; }
-  public int IntervalDays { get; }
-  public int IntervalWeeks { get; private set; }
-  public int IntervalMonths { get; }
-  public bool IsValid { get; }
 
-  public ChoreFrequency(string expression)
+  public ChoreFrequency(string modifier, string interval)
   {
-    var args = GenerateArgsDictionary(expression);
-    DaysOfWeek = ExtractDaysOfWeek(args, "dow");
-    DaysOfMonth = ExtractIntArrayKey(args, "dom");
-    IntervalDays = ExtractIntKey(args, "d");
-    IntervalWeeks = ExtractIntKey(args, "w");
-    IntervalMonths = ExtractIntKey(args, "m");
-    IsValid = ValidateConfiguration(expression);
+    IntervalModifier = MapChoreFrequencyInterval(modifier);
+    Interval = GetAdjustInterval(modifier, interval);
+    DaysOfWeek = GetDaysOfWeek(IntervalModifier, interval);
+    DaysOfMonth = GetDaysOfMonth(IntervalModifier, interval);
   }
 
-  public DateTimeOffset GetNextOccurrenceFrom(DateTimeOffset date)
+  public DateOnly GetNextOccurrence(DateOnly date)
   {
-
-    return date.AddDays(IntervalDays);
-  }
-
-  private bool ValidateConfiguration(string expression)
-  {
-    // If we don't have any intervals but do have days of week defined we can assume this is weekly
-    if (IntervalDays == 0 && IntervalWeeks == 0 && IntervalMonths == 0 && DaysOfWeek.Length > 0)
-      IntervalWeeks = 1;
-
-    // ReSharper disable once ConvertIfStatementToSwitchStatement
-    if (IntervalDays == 0 && IntervalWeeks == 0 && IntervalMonths == 0)
-      throw new NlpException($"Invalid expression: {expression}");
-
-    if (IntervalDays > 0 && IntervalWeeks > 0)
-      throw new NlpException("Cannot mix 'd:' and 'w:' expressions");
-
-    if (IntervalDays > 0 && IntervalMonths > 0)
-      throw new NlpException("Cannot mix 'd:' and 'm:' expressions");
-
-    if (IntervalMonths > 0 && IntervalWeeks > 0)
-      throw new NlpException("Cannot mix 'w:' and 'm:' expressions");
-
-    return true;
-  }
-
-  private static int ExtractIntKey(IReadOnlyDictionary<string, string> args, string key) =>
-    args.ContainsKey(key) ? int.Parse(args[key]) : 0;
-
-  private static DayOfWeek[] ExtractDaysOfWeek(IReadOnlyDictionary<string, string> args, string key)
-  {
-    if (!args.ContainsKey(key)) return Array.Empty<DayOfWeek>();
-    var dayOfWeeks = new List<DayOfWeek>();
-    foreach (var dow in args[key].Split(",", StringSplitOptions.RemoveEmptyEntries))
+    switch (IntervalModifier)
     {
-      switch (dow.ToLower().Trim())
+      case ChoreFrequencyInterval.Days:
+        return date.AddDays(int.Parse(Interval));
+      case ChoreFrequencyInterval.Weeks:
+        return date.AddDays(int.Parse(Interval) * 7);
+      case ChoreFrequencyInterval.Months:
+        return date.AddMonths(int.Parse(Interval));
+      case ChoreFrequencyInterval.DaysOfWeek:
+        return date.AddDays(GetDaysDifference(date.DayOfWeek, GetNextDayOfWeek(DaysOfWeek, date.DayOfWeek)));
+      case ChoreFrequencyInterval.DaysOfMonth:
       {
-        case "mon": dayOfWeeks.Add(DayOfWeek.Monday); break;
-        case "tue": dayOfWeeks.Add(DayOfWeek.Tuesday); break;
-        case "wed": dayOfWeeks.Add(DayOfWeek.Wednesday); break;
-        case "thu": dayOfWeeks.Add(DayOfWeek.Thursday); break;
-        case "fri": dayOfWeeks.Add(DayOfWeek.Friday); break;
-        case "sat": dayOfWeeks.Add(DayOfWeek.Saturday); break;
-        case "sun": dayOfWeeks.Add(DayOfWeek.Sunday); break;
-        default: throw new NlpException($"Invalid DoW value: {dow}");
+        var nextDay = GetNextDayOfMonth(DaysOfMonth, date.Day);
+        var nextMonth = date.AddMonths(1);
+        if (date.Day == nextDay) return nextMonth;
+        return date.Day > nextDay ? new DateOnly(nextMonth.Year, nextMonth.Month, nextDay) : new DateOnly(date.Year, date.Month, nextDay);
       }
+      default:
+        throw new NlpException($"Unsupported modifier: {IntervalModifier:G}");
     }
-
-    return dayOfWeeks.ToArray();
   }
 
-  private static int[] ExtractIntArrayKey(IReadOnlyDictionary<string, string> args, string key) =>
-    args.ContainsKey(key)
-      ? args[key].Split(",", StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToArray()
-      : Array.Empty<int>();
-
-  private static Dictionary<string, string> GenerateArgsDictionary(string expression)
-  {
-    var mapped = new Dictionary<string, string>();
-    var parts = expression.ToLower().Trim().Split(" ", StringSplitOptions.RemoveEmptyEntries);
-    foreach (var part in parts)
+  private static ChoreFrequencyInterval MapChoreFrequencyInterval(string modifier) =>
+    modifier.ToLower().Trim() switch
     {
-      if (!part.Contains(':')) throw new NlpException($"Invalid frequency expression: {expression}");
-      var subParts = part.Split(':');
-      mapped[subParts[0]] = subParts[1];
-    }
-    return mapped;
+      "weeks" => ChoreFrequencyInterval.Weeks,
+      "weekly" => ChoreFrequencyInterval.Weeks,
+      "days" => ChoreFrequencyInterval.Days,
+      "daily" => ChoreFrequencyInterval.Days,
+      "months" => ChoreFrequencyInterval.Months,
+      "monthly" => ChoreFrequencyInterval.Months,
+      "daysofmonth" => ChoreFrequencyInterval.DaysOfMonth,
+      "dom" => ChoreFrequencyInterval.DaysOfMonth,
+      "daysofweek" => ChoreFrequencyInterval.DaysOfWeek,
+      "dow" => ChoreFrequencyInterval.DaysOfWeek,
+      _ => throw new NlpException($"Unsupported chore modifier: {modifier}")
+    };
+
+  private static string GetAdjustInterval(string modifier, string interval) =>
+    modifier.ToLower().Trim() switch
+    {
+      "weekly" => "1",
+      "monthly" => "1",
+      "daily" => "1",
+      _ => interval
+    };
+
+  private static DayOfWeek MapDayOfWeek(string value) =>
+    value switch
+    {
+      "mon" => DayOfWeek.Monday,
+      "monday" => DayOfWeek.Monday,
+      "tue" => DayOfWeek.Tuesday,
+      "tuesday" => DayOfWeek.Tuesday,
+      "wed" => DayOfWeek.Wednesday,
+      "wednesday" => DayOfWeek.Wednesday,
+      "thu" => DayOfWeek.Thursday,
+      "thursday" => DayOfWeek.Thursday,
+      "fri" => DayOfWeek.Friday,
+      "friday" => DayOfWeek.Friday,
+      "sat" => DayOfWeek.Saturday,
+      "saturday" => DayOfWeek.Saturday,
+      "sun" => DayOfWeek.Sunday,
+      "sunday" => DayOfWeek.Sunday,
+      _ => throw new NlpException($"Unsupported day of week: {value}")
+    };
+
+  private static DayOfWeek[] GetDaysOfWeek(ChoreFrequencyInterval modifier, string value) =>
+    modifier != ChoreFrequencyInterval.DaysOfWeek
+      ? Array.Empty<DayOfWeek>()
+      : value.ToLower().Trim().Split(",", StringSplitOptions.RemoveEmptyEntries).Select(MapDayOfWeek).ToArray();
+
+  private static int[] GetDaysOfMonth(ChoreFrequencyInterval modifier, string value) =>
+    modifier != ChoreFrequencyInterval.DaysOfMonth
+      ? Array.Empty<int>()
+      : value.ToLower().Trim().Split(",", StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToArray();
+
+  private static DayOfWeek GetNextDayOfWeek(IReadOnlyList<DayOfWeek> daysOfWeek, DayOfWeek currentDayOfWeek)
+  {
+    if (daysOfWeek.Count == 1) return daysOfWeek[0];
+    var pastCurrentDow = daysOfWeek.Where(x => x > currentDayOfWeek).Order().ToList();
+    return pastCurrentDow.Any() ? pastCurrentDow.First() : daysOfWeek.Where(x => x < currentDayOfWeek).Order().First();
+  }
+
+  private static int GetNextDayOfMonth(IReadOnlyList<int> daysOfMonth, int currentDayOfMonth)
+  {
+    if (daysOfMonth.Count == 1) return daysOfMonth[0];
+    var futureDay = daysOfMonth.Where(x => x > currentDayOfMonth).Order().ToList();
+    return futureDay.Any() ? futureDay.First() : daysOfMonth.Where(x => x < currentDayOfMonth).Order().First();
+  }
+
+  private static int GetDaysDifference(DayOfWeek a, DayOfWeek b)
+  {
+    if (a == b) return 7;
+    if (b > a) return b - a;
+    return 7 - (a - b);
   }
 }
