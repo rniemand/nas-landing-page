@@ -1,5 +1,6 @@
 using NasLandingPage.Exceptions;
 using NasLandingPage.Models;
+using NasLandingPage.Plugins.Chores;
 using NasLandingPage.Repos;
 using NasLandingPage.Services;
 using RnCore.Abstractions;
@@ -24,7 +25,9 @@ public static class ServiceCollectionExtensions
       .AddSingleton<IAuthService, AuthService>()
       .AddSingleton<IGamesService, GamesService>()
       .AddSingleton<IUserTasksService, UserTasksService>()
-      .AddSingleton<IUserLinksService, UserLinksService>();
+      .AddSingleton<IUserLinksService, UserLinksService>()
+      // TODO: [CONFIG] (ServiceCollectionExtensions.AddNasLandingPage) Make module registration configurable
+      .AddHomeChores();
 
   private static NlpConfig BindConfiguration(IConfiguration configuration)
   {

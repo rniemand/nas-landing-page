@@ -30,7 +30,7 @@ WHERE h.DefaultHome = 1;
 
 
 INSERT INTO `HomeChores`
-	(`RoomId`,`ChorePoints`,`DateScheduledUtc`,`Priority`,`IntervalModifier`,`Interval`,`ChoreName`,`ChoreDescription`)
+	(`RoomId`,`ChorePoints`,`DateScheduled`,`Priority`,`IntervalModifier`,`Interval`,`ChoreName`,`ChoreDescription`)
 VALUES
 	(1,1,'0001-01-01','low','Weeks','1','Weekly Chore 1','Occurs once a week on Mondays'),
 	(2,1,'0001-01-01','med','DaysOfMonth','1','Monthly Chore 1','Occurs on the first of every month'),

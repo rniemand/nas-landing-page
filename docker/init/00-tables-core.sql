@@ -46,11 +46,10 @@ CREATE TABLE IF NOT EXISTS `HomeChores` (
   `RoomId` INT(11) NOT NULL DEFAULT '0',
   `CompletedCount` INT(11) NOT NULL DEFAULT '0',
   `ChorePoints` SMALLINT(6) NOT NULL DEFAULT '0',
-  `DateAddedUtc` DATETIME NOT NULL DEFAULT utc_timestamp(6),
-  `DateScheduledUtc` DATETIME NOT NULL DEFAULT utc_timestamp(6),
-  `DateDeletedUtc` DATETIME NULL DEFAULT NULL,
-  `DateDisabledUtc` DATETIME NULL DEFAULT NULL,
-  `DateLastCompletedUtc` DATETIME NULL DEFAULT NULL,
+  `DateAdded` DATETIME NOT NULL DEFAULT curdate(),
+  `DateScheduled` DATE NOT NULL DEFAULT curdate(),
+  `DateDeleted` DATE NULL DEFAULT NULL,
+  `DateDisabled` DATE NULL DEFAULT NULL,
   `Priority` VARCHAR(8) NOT NULL DEFAULT 'low' COLLATE 'utf8mb3_general_ci',
   `IntervalModifier` VARCHAR(16) NOT NULL DEFAULT '1w' COLLATE 'utf8mb3_general_ci',
   `Interval` VARCHAR(64) NOT NULL DEFAULT '1w' COLLATE 'utf8mb3_general_ci',
@@ -60,3 +59,15 @@ CREATE TABLE IF NOT EXISTS `HomeChores` (
   INDEX `Priority` (`Priority`) USING BTREE,
   INDEX `RoomId` (`RoomId`) USING BTREE
 ) COLLATE = 'utf8mb3_general_ci' ENGINE = InnoDB;
+
+CREATE TABLE `HomeChoreHistory` (
+  `ChoreHistoryId` BIGINT(20) NOT NULL AUTO_INCREMENT,
+  `ChoreId` INT(11) NOT NULL,
+  `UserId` INT(11) NOT NULL,
+  `PointsClaimed` BIT(1) NOT NULL DEFAULT b '0',
+  `Points` INT(11) NOT NULL DEFAULT '0',
+  `DateAdded` DATE NOT NULL DEFAULT curdate(),
+  `DateClaimed` DATE NULL DEFAULT NULL,
+  PRIMARY KEY (`ChoreHistoryId`) USING BTREE,
+  INDEX `ChoreId` (`ChoreId`) USING BTREE
+) COLLATE = 'utf8mb4_general_ci' ENGINE = InnoDB;
