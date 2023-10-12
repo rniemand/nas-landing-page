@@ -1,6 +1,6 @@
 CREATE TABLE `Users` (
   `UserID` INT(11) NOT NULL AUTO_INCREMENT,
-  `CanSetPass` BIT(1) NOT NULL DEFAULT b '0',
+  `CanSetPass` BIT(1) NOT NULL DEFAULT b'0',
   `Email` VARCHAR(256) NOT NULL COLLATE 'utf8mb4_general_ci',
   `PasswordHash` VARCHAR(128) NOT NULL COLLATE 'utf8mb4_general_ci',
   PRIMARY KEY (`UserID`) USING BTREE
@@ -8,7 +8,7 @@ CREATE TABLE `Users` (
 
 CREATE TABLE `Homes` (
   `HomeId` INT(11) NOT NULL AUTO_INCREMENT,
-  `DefaultHome` BIT(1) NOT NULL DEFAULT b '0',
+  `DefaultHome` BIT(1) NOT NULL DEFAULT b'0',
   `Longitude` DOUBLE NOT NULL DEFAULT '0',
   `Latitude` DOUBLE NOT NULL DEFAULT '0',
   `DateAddedUtc` DATETIME NOT NULL DEFAULT utc_timestamp(6),
@@ -64,7 +64,7 @@ CREATE TABLE `HomeChoreHistory` (
   `ChoreHistoryId` BIGINT(20) NOT NULL AUTO_INCREMENT,
   `ChoreId` INT(11) NOT NULL,
   `UserId` INT(11) NOT NULL,
-  `PointsClaimed` BIT(1) NOT NULL DEFAULT b '0',
+  `PointsClaimed` BIT(1) NOT NULL DEFAULT b'0',
   `Points` INT(11) NOT NULL DEFAULT '0',
   `DateAdded` DATE NOT NULL DEFAULT curdate(),
   `DateClaimed` DATE NULL DEFAULT NULL,
