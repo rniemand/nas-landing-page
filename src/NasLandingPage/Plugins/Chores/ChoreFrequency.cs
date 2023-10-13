@@ -17,6 +17,10 @@ internal class ChoreFrequency
     DaysOfMonth = GetDaysOfMonth(IntervalModifier, interval);
   }
 
+  public ChoreFrequency(HomeChoreDto chore)
+  : this(chore.IntervalModifier, chore.Interval)
+  { }
+
   public DateOnly GetNextOccurrence(DateOnly date)
   {
     switch (IntervalModifier)
@@ -30,12 +34,12 @@ internal class ChoreFrequency
       case ChoreFrequencyInterval.DaysOfWeek:
         return date.AddDays(GetDaysDifference(date.DayOfWeek, GetNextDayOfWeek(DaysOfWeek, date.DayOfWeek)));
       case ChoreFrequencyInterval.DaysOfMonth:
-      {
-        var nextDay = GetNextDayOfMonth(DaysOfMonth, date.Day);
-        var nextMonth = date.AddMonths(1);
-        if (date.Day == nextDay) return nextMonth;
-        return date.Day > nextDay ? new DateOnly(nextMonth.Year, nextMonth.Month, nextDay) : new DateOnly(date.Year, date.Month, nextDay);
-      }
+        {
+          var nextDay = GetNextDayOfMonth(DaysOfMonth, date.Day);
+          var nextMonth = date.AddMonths(1);
+          if (date.Day == nextDay) return nextMonth;
+          return date.Day > nextDay ? new DateOnly(nextMonth.Year, nextMonth.Month, nextDay) : new DateOnly(date.Year, date.Month, nextDay);
+        }
       default:
         throw new NlpException($"Unsupported modifier: {IntervalModifier:G}");
     }

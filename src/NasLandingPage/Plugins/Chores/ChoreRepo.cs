@@ -8,7 +8,9 @@ interface IChoreRepo
   Task<int> AddChoreAsync(HomeChoreDto chore);
   Task<int> UpdateChoreAsync(HomeChoreDto chore);
   Task<int> RescheduleChoreAsync(HomeChoreDto chore);
+  Task<HomeChoreDto?> GetChoreByIdAsync(int choreId);
   Task<int> AddChoreCompletedEntryAsync(HomeChoreHistoryDto entry);
+  Task<IEnumerable<HomeChoreDto>> GetChoresAsync();
 }
 
 public class ChoreRepo : IChoreRepo
@@ -63,6 +65,21 @@ public class ChoreRepo : IChoreRepo
     return await connection.ExecuteAsync(query, chore);
   }
 
+  public async Task<HomeChoreDto?> GetChoreByIdAsync(int choreId)
+  {
+    const string query = @"
+    SELECT *
+    FROM `HomeChores` hc
+    WHERE
+      hc.`ChoreId` = @ChoreId
+      AND hc.`DateDeleted` IS NULL";
+    await using var connection = _connectionHelper.GetCoreConnection();
+    return await connection.QueryFirstOrDefaultAsync<HomeChoreDto>(query, new
+    {
+      ChoreId = choreId,
+    });
+  }
+
   public async Task<int> AddChoreCompletedEntryAsync(HomeChoreHistoryDto entry)
   {
     const string query = @"
@@ -72,5 +89,17 @@ public class ChoreRepo : IChoreRepo
       (@ChoreId, @UserId, @Points)";
     await using var connection = _connectionHelper.GetCoreConnection();
     return await connection.ExecuteAsync(query, entry);
+  }
+
+  public async Task<IEnumerable<HomeChoreDto>> GetChoresAsync()
+  {
+    const string query = @"
+    SELECT *
+    FROM `HomeChores` hc
+    WHERE
+      hc.`DateDeleted` IS NULL
+    ORDER BY hc.`DateScheduled`";
+    await using var connection = _connectionHelper.GetCoreConnection();
+    return await connection.QueryAsync<HomeChoreDto>(query);
   }
 }

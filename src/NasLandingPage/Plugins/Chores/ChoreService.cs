@@ -7,7 +7,8 @@ public interface IChoreService
 {
   Task<BoolResponse> AddChoreAsync(NlpUserContext userContext, HomeChoreDto chore);
   Task<BoolResponse> UpdateChoreAsync(NlpUserContext userContext, HomeChoreDto chore);
-  Task<BoolResponse> RescheduleChoreAsync(NlpUserContext userContext, HomeChoreDto chore);
+  Task<BoolResponse> CompleteChoreAsync(NlpUserContext userContext, CompleteChoreRequest request);
+  Task<HomeChoreDto[]> GetChoresAsync(NlpUserContext userContext);
 }
 
 internal class ChoreService : IChoreService
@@ -33,10 +34,31 @@ internal class ChoreService : IChoreService
     return rowCount == 0 ? response.AsError("Failed to update chore") : response;
   }
 
-  public async Task<BoolResponse> RescheduleChoreAsync(NlpUserContext userContext, HomeChoreDto chore)
+  public async Task<BoolResponse> CompleteChoreAsync(NlpUserContext userContext, CompleteChoreRequest request)
   {
     var response = new BoolResponse();
-    var rowCount = await _choreRepo.RescheduleChoreAsync(chore);
-    return rowCount == 0 ? response.AsError("Failed to reschedule chore") : response;
+
+    // Fetch the chore from the DB
+    var dbChore = await _choreRepo.GetChoreByIdAsync(request.Chore.ChoreId);
+    if (dbChore is null) return response.AsError("Invalid chore ID");
+
+    // Reschedule the chore
+    var doNow = DateOnly.FromDateTime(DateTime.Now);
+    dbChore.DateLastCompleted = doNow;
+    dbChore.DateScheduled = new ChoreFrequency(dbChore).GetNextOccurrence(doNow);
+    var rowCount = await _choreRepo.RescheduleChoreAsync(dbChore);
+    if (rowCount == 0) return response.AsError("Failed to reschedule chore");
+
+    // Track the completed chore
+    rowCount = await _choreRepo.AddChoreCompletedEntryAsync(new HomeChoreHistoryDto
+    {
+      ChoreId = dbChore.ChoreId,
+      Points = dbChore.ChorePoints,
+      UserId = request.CompletedBy,
+    });
+
+    return rowCount == 0 ? response.AsError("Chore rescheduled, failed to insert history record") : response;
   }
+
+  public async Task<HomeChoreDto[]> GetChoresAsync(NlpUserContext userContext) => (await _choreRepo.GetChoresAsync()).ToArray();
 }

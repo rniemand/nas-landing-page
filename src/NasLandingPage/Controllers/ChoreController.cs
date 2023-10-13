@@ -16,6 +16,10 @@ public class ChoreController : ControllerBase
     _choreService = choreService;
   }
 
+  [HttpGet("chores")]
+  public async Task<HomeChoreDto[]> GetChores() =>
+    await _choreService.GetChoresAsync(User.GetNlpUserContext());
+
   [HttpPost("add-chore")]
   public async Task<BoolResponse> AddChore([FromBody] HomeChoreDto chore) =>
     await _choreService.AddChoreAsync(User.GetNlpUserContext(), chore);
@@ -24,7 +28,7 @@ public class ChoreController : ControllerBase
   public async Task<BoolResponse> UpdateChore([FromBody] HomeChoreDto chore) =>
     await _choreService.UpdateChoreAsync(User.GetNlpUserContext(), chore);
 
-  [HttpPatch("reschedule-chore")]
-  public async Task<BoolResponse> RescheduleChore([FromBody] HomeChoreDto chore) =>
-    await _choreService.RescheduleChoreAsync(User.GetNlpUserContext(), chore);
+  [HttpPatch("complete-chore")]
+  public async Task<BoolResponse> CompleteChore([FromBody] CompleteChoreRequest request) =>
+    await _choreService.CompleteChoreAsync(User.GetNlpUserContext(), request);
 }
