@@ -21,11 +21,13 @@ public static class ServiceCollectionExtensions
       .AddSingleton<IUserLinksRepo, UserLinksRepo>()
       .AddSingleton<IUserTasksRepo, UserTasksRepo>()
       .AddSingleton<IGamesRepo, GamesRepo>()
+      .AddSingleton<ICoreRepo, CoreRepo>()
       .AddSingleton<IJsonHelper, JsonHelper>()
       .AddSingleton<IAuthService, AuthService>()
       .AddSingleton<IGamesService, GamesService>()
       .AddSingleton<IUserTasksService, UserTasksService>()
       .AddSingleton<IUserLinksService, UserLinksService>()
+      .AddSingleton<ICoreService, CoreService>()
       // TODO: [CONFIG] (ServiceCollectionExtensions.AddNasLandingPage) Make module registration configurable
       .AddHomeChores();
 
