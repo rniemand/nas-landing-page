@@ -21,6 +21,8 @@ internal class ChoreFrequency
   : this(chore.IntervalModifier, chore.Interval)
   { }
 
+  public DateOnly GetNextOccurrence() => GetNextOccurrence(DateOnly.FromDateTime(DateTime.Now));
+
   public DateOnly GetNextOccurrence(DateOnly date)
   {
     switch (IntervalModifier)

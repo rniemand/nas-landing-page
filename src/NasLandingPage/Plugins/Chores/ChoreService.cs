@@ -23,6 +23,7 @@ internal class ChoreService : IChoreService
   public async Task<BoolResponse> AddChoreAsync(NlpUserContext userContext, HomeChoreDto chore)
   {
     var response = new BoolResponse();
+    chore.DateScheduled = DateOnly.FromDateTime(DateTime.Now).AddDays(-1);
     var rowCount = await _choreRepo.AddChoreAsync(chore);
     return rowCount == 0 ? response.AsError("Failed to add chore") : response;
   }

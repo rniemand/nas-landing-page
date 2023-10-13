@@ -438,7 +438,7 @@ export interface ICoreClient {
 
     getFloors(homeId: number): Promise<HomeFloorDto[]>;
 
-    getFloorRooms(floorId: number, homeId: string): Promise<HomeRoomDto[]>;
+    getFloorRooms(floorId: number): Promise<HomeRoomDto[]>;
 }
 
 export class CoreClient extends NlpBaseClient implements ICoreClient {
@@ -498,14 +498,11 @@ export class CoreClient extends NlpBaseClient implements ICoreClient {
         return Promise.resolve<HomeFloorDto[]>(null as any);
     }
 
-    getFloorRooms(floorId: number, homeId: string): Promise<HomeRoomDto[]> {
-        let url_ = this.baseUrl + "/api/Core/home/{homeId}/floor/{floorId}/rooms";
+    getFloorRooms(floorId: number): Promise<HomeRoomDto[]> {
+        let url_ = this.baseUrl + "/api/Core/floor/{floorId}/rooms";
         if (floorId === undefined || floorId === null)
             throw new Error("The parameter 'floorId' must be defined.");
         url_ = url_.replace("{floorId}", encodeURIComponent("" + floorId));
-        if (homeId === undefined || homeId === null)
-            throw new Error("The parameter 'homeId' must be defined.");
-        url_ = url_.replace("{homeId}", encodeURIComponent("" + homeId));
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: RequestInit = {
@@ -1255,7 +1252,7 @@ export class HomeChoreDto implements IHomeChoreDto {
     choreId!: number;
     roomId!: number;
     completedCount!: number;
-    priority!: number;
+    priority!: string;
     chorePoints!: number;
     dateAdded!: Date;
     dateDeleted?: Date | null;
@@ -1326,7 +1323,7 @@ export interface IHomeChoreDto {
     choreId: number;
     roomId: number;
     completedCount: number;
-    priority: number;
+    priority: string;
     chorePoints: number;
     dateAdded: Date;
     dateDeleted?: Date | null;

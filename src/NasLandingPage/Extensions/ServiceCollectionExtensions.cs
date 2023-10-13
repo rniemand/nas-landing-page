@@ -1,3 +1,4 @@
+using Dapper;
 using NasLandingPage.Exceptions;
 using NasLandingPage.Models;
 using NasLandingPage.Plugins.Chores;
@@ -10,8 +11,11 @@ namespace NasLandingPage.Extensions;
 
 public static class ServiceCollectionExtensions
 {
-  public static IServiceCollection AddNasLandingPage(this IServiceCollection services, IConfiguration configuration) =>
-    services
+  public static IServiceCollection AddNasLandingPage(this IServiceCollection services, IConfiguration configuration)
+  {
+    SqlMapper.AddTypeHandler(new DapperSqlDateOnlyTypeHandler());
+
+    return services
       .AddSingleton(BindConfiguration(configuration))
       .AddSingleton(typeof(ILoggerAdapter<>), typeof(LoggerAdapter<>))
       .AddSingleton<IFileAbstraction, FileAbstraction>()
@@ -30,6 +34,7 @@ public static class ServiceCollectionExtensions
       .AddSingleton<ICoreService, CoreService>()
       // TODO: [CONFIG] (ServiceCollectionExtensions.AddNasLandingPage) Make module registration configurable
       .AddHomeChores();
+  }
 
   private static NlpConfig BindConfiguration(IConfiguration configuration)
   {

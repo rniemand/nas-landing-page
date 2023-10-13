@@ -5,7 +5,7 @@ public class HomeChoreDto
   public int ChoreId { get; set; }
   public int RoomId { get; set; }
   public int CompletedCount { get; set; }
-  public int Priority { get; set; }
+  public string Priority { get; set; } = "low";
   public int ChorePoints { get; set; }
   public DateOnly DateAdded { get; set; } = DateOnly.MinValue;
   public DateOnly? DateDeleted { get; set; }
