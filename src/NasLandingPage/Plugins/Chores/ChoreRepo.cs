@@ -3,7 +3,7 @@ using NasLandingPage.Repos;
 
 namespace NasLandingPage.Plugins.Chores;
 
-interface IChoreRepo
+internal interface IChoreRepo
 {
   Task<int> AddChoreAsync(HomeChoreDto chore);
   Task<int> UpdateChoreAsync(HomeChoreDto chore);
@@ -13,7 +13,7 @@ interface IChoreRepo
   Task<IEnumerable<HomeChoreDto>> GetChoresAsync();
 }
 
-public class ChoreRepo : IChoreRepo
+internal class ChoreRepo : IChoreRepo
 {
   private readonly IConnectionHelper _connectionHelper;
 
@@ -44,8 +44,7 @@ public class ChoreRepo : IChoreRepo
 	    `IntervalModifier` = @IntervalModifier,
 	    `Interval` = @Interval,
 	    `ChoreName` = @ChoreName,
-	    `ChoreDescription` = @ChoreDescription,
-      `DateScheduled` = @DateScheduled
+	    `ChoreDescription` = @ChoreDescription
     WHERE
       `ChoreId` = @ChoreId";
     await using var connection = _connectionHelper.GetCoreConnection();
@@ -108,6 +107,7 @@ public class ChoreRepo : IChoreRepo
       hc.`DateDeleted` IS NULL
 	    AND hr.`DateDeletedUtc` IS NULL
 	    AND hf.`DateDeletedUtc` IS NULL
+      AND hc.`DateScheduled` <= curdate()
     ORDER BY hc.`DateScheduled` ASC";
     await using var connection = _connectionHelper.GetCoreConnection();
     return await connection.QueryAsync<HomeChoreDto>(query);

@@ -1,5 +1,7 @@
-/* Nothing to see here, yet... */
-
 nav.justify-content-end ul.pagination {
 	justify-content: flex-end !important;
+}
+
+.accordion.rn-accordian .accordion-item {
+	background-color: #101010;
 }

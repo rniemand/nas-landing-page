@@ -31,11 +31,8 @@ internal class ChoreService : IChoreService
   public async Task<BoolResponse> UpdateChoreAsync(NlpUserContext userContext, HomeChoreDto chore)
   {
     var response = new BoolResponse();
-
     var dbChore = await _choreRepo.GetChoreByIdAsync(chore.ChoreId);
     if (dbChore is null) return response.AsError("Failed to find chore in DB");
-
-    chore.DateScheduled = new ChoreFrequency(chore).GetNextOccurrence();
     var rowCount = await _choreRepo.UpdateChoreAsync(chore);
     return rowCount == 0 ? response.AsError("Failed to update chore") : response;
   }

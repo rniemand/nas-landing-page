@@ -4,6 +4,7 @@
 	import { ChoreClient, type HomeChoreDto } from '../../nlp-api';
 	import ChoreInfoDisplay from './components/ChoreInfoDisplay.svelte';
 	import EditChoreModal from './modals/EditChoreModal.svelte';
+	import ChorePriorityIcon from './components/ChorePriorityIcon.svelte';
 
 	let loading: boolean = true;
 	let chores: HomeChoreDto[] = [];
@@ -33,9 +34,11 @@
 </Row>
 <Row>
 	<Col>
-		<Accordion class="mt-1">
+		<Accordion class="mt-1 rn-accordian">
 			{#each chores as chore}
-				<AccordionItem header={chore.choreName}>
+				<AccordionItem>
+					<span class="m-0" slot="header"
+						><ChorePriorityIcon priority={chore.priority} /> {chore.choreName}</span>
 					<ChoreInfoDisplay {chore} {onEditChore} />
 				</AccordionItem>
 			{/each}
