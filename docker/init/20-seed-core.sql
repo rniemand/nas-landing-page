@@ -32,8 +32,8 @@ WHERE h.DefaultHome = 1;
 INSERT INTO `HomeChores`
 	(`RoomId`,`ChorePoints`,`DateScheduled`,`Priority`,`IntervalModifier`,`Interval`,`ChoreName`,`ChoreDescription`)
 VALUES
-	(1,1,'0001-01-01','low','Weeks','1','Weekly Chore 1','Occurs once a week on Mondays'),
-	(2,1,'0001-01-01','med','DaysOfMonth','1','Monthly Chore 1','Occurs on the first of every month'),
-	(3,1,'0001-01-01','high','DaysOfWeek','mon,wed,fri','3 Times a week every week','Occurs on every Monday, Wednesday and Friday'),
-	(4,1,'0001-01-01','med','Weeks','2','Every 2nd week from completion date','Occurs exactly 2 weeks after the last completion date'),
-  (5,1,'0001-01-01','low','DaysOfMonth','15','Every 15th of a month','Occurs on the 15th of every month');
+	(1,1,'2023-10-17 00:00:00','low','Weeks','1','Weekly Chore 1','Occurs once a week on Mondays'),
+	(2,1,'2023-10-17 00:00:00','med','DaysOfMonth','1','Monthly Chore 1','Occurs on the first of every month'),
+	(3,1,'2023-10-17 00:00:00','high','DaysOfWeek','mon,wed,fri','3 Times a week every week','Occurs on every Monday, Wednesday and Friday'),
+	(4,1,'2023-10-17 00:00:00','med','Weeks','2','Every 2nd week from completion date','Occurs exactly 2 weeks after the last completion date'),
+  (5,1,'2023-10-17 00:00:00','low','DaysOfMonth','15','Every 15th of a month','Occurs on the 15th of every month');

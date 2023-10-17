@@ -20,6 +20,6 @@
 
 <Input type="select" disabled={loading} bind:value>
 	{#each floors as floor}
-		<option value={floor.floorId}>{floor.floorName}</option>
+		<option value={floor.floorId} selected={value === floor.floorId}>{floor.floorName}</option>
 	{/each}
 </Input>

@@ -44,7 +44,8 @@ public class ChoreRepo : IChoreRepo
 	    `IntervalModifier` = @IntervalModifier,
 	    `Interval` = @Interval,
 	    `ChoreName` = @ChoreName,
-	    `ChoreDescription` = @ChoreDescription
+	    `ChoreDescription` = @ChoreDescription,
+      `DateScheduled` = @DateScheduled
     WHERE
       `ChoreId` = @ChoreId";
     await using var connection = _connectionHelper.GetCoreConnection();
@@ -94,11 +95,20 @@ public class ChoreRepo : IChoreRepo
   public async Task<IEnumerable<HomeChoreDto>> GetChoresAsync()
   {
     const string query = @"
-    SELECT *
+    SELECT
+	    hc.*,
+	    hr.`RoomName`,
+	    hf.`FloorName`
     FROM `HomeChores` hc
+    INNER JOIN `HomeRooms` hr
+	    ON hr.`RoomId` = hc.`RoomId`
+    INNER JOIN `HomeFloors` hf
+	    ON hf.`FloorId` = hr.`FloorId`
     WHERE
       hc.`DateDeleted` IS NULL
-    ORDER BY hc.`DateScheduled`";
+	    AND hr.`DateDeletedUtc` IS NULL
+	    AND hf.`DateDeletedUtc` IS NULL
+    ORDER BY hc.`DateScheduled` ASC";
     await using var connection = _connectionHelper.GetCoreConnection();
     return await connection.QueryAsync<HomeChoreDto>(query);
   }

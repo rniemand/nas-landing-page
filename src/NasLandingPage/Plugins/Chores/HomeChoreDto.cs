@@ -16,4 +16,7 @@ public class HomeChoreDto
   public string Interval { get; set; } = string.Empty;
   public string ChoreName { get; set; } = null!;
   public string ChoreDescription { get; set; } = string.Empty;
+  // Additional properties
+  public string? RoomName { get; set; }
+  public string? FloorName { get; set; }
 }

@@ -438,6 +438,8 @@ export interface ICoreClient {
 
     getFloors(homeId: number): Promise<HomeFloorDto[]>;
 
+    resolveFloorIdFromRoomId(roomId: number): Promise<number>;
+
     getFloorRooms(floorId: number): Promise<HomeRoomDto[]>;
 }
 
@@ -496,6 +498,46 @@ export class CoreClient extends NlpBaseClient implements ICoreClient {
             });
         }
         return Promise.resolve<HomeFloorDto[]>(null as any);
+    }
+
+    resolveFloorIdFromRoomId(roomId: number): Promise<number> {
+        let url_ = this.baseUrl + "/api/Core/room/{roomId}/floor-id";
+        if (roomId === undefined || roomId === null)
+            throw new Error("The parameter 'roomId' must be defined.");
+        url_ = url_.replace("{roomId}", encodeURIComponent("" + roomId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processResolveFloorIdFromRoomId(_response));
+        });
+    }
+
+    protected processResolveFloorIdFromRoomId(response: Response): Promise<number> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<number>(null as any);
     }
 
     getFloorRooms(floorId: number): Promise<HomeRoomDto[]> {
@@ -1263,6 +1305,8 @@ export class HomeChoreDto implements IHomeChoreDto {
     interval!: string;
     choreName!: string;
     choreDescription!: string;
+    roomName?: string | null;
+    floorName?: string | null;
 
     constructor(data?: IHomeChoreDto) {
         if (data) {
@@ -1289,6 +1333,8 @@ export class HomeChoreDto implements IHomeChoreDto {
             this.interval = _data["interval"] !== undefined ? _data["interval"] : <any>null;
             this.choreName = _data["choreName"] !== undefined ? _data["choreName"] : <any>null;
             this.choreDescription = _data["choreDescription"] !== undefined ? _data["choreDescription"] : <any>null;
+            this.roomName = _data["roomName"] !== undefined ? _data["roomName"] : <any>null;
+            this.floorName = _data["floorName"] !== undefined ? _data["floorName"] : <any>null;
         }
     }
 
@@ -1315,6 +1361,8 @@ export class HomeChoreDto implements IHomeChoreDto {
         data["interval"] = this.interval !== undefined ? this.interval : <any>null;
         data["choreName"] = this.choreName !== undefined ? this.choreName : <any>null;
         data["choreDescription"] = this.choreDescription !== undefined ? this.choreDescription : <any>null;
+        data["roomName"] = this.roomName !== undefined ? this.roomName : <any>null;
+        data["floorName"] = this.floorName !== undefined ? this.floorName : <any>null;
         return data;
     }
 }
@@ -1334,6 +1382,8 @@ export interface IHomeChoreDto {
     interval: string;
     choreName: string;
     choreDescription: string;
+    roomName?: string | null;
+    floorName?: string | null;
 }
 
 export class BoolResponse implements IBoolResponse {

@@ -11,6 +11,7 @@ public interface ICoreService
 
   // Rooms
   Task<IEnumerable<HomeRoomDto>> GetFloorRoomsAsync(NlpUserContext userContext, int floorId);
+  Task<int> ResolveFloorIdFromRoomIsAsync(NlpUserContext userContext, int roomId);
 }
 
 internal class CoreService : ICoreService
@@ -29,4 +30,7 @@ internal class CoreService : ICoreService
   // Rooms
   public async Task<IEnumerable<HomeRoomDto>> GetFloorRoomsAsync(NlpUserContext userContext, int floorId) =>
     await _coreRepo.GetFloorRoomsAsync(floorId);
+
+  public async Task<int> ResolveFloorIdFromRoomIsAsync(NlpUserContext userContext, int roomId) =>
+    await _coreRepo.ResolveFloorIdFromRoomIdAsync(roomId);
 }

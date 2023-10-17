@@ -7,6 +7,7 @@ public interface ICoreRepo
 {
   // Floors
   Task<IEnumerable<HomeFloorDto>> GetFloorsAsync(int homeId);
+  Task<int> ResolveFloorIdFromRoomIdAsync(int roomId);
 
   // Rooms
   Task<IEnumerable<HomeRoomDto>> GetFloorRoomsAsync(int floorId);
@@ -38,6 +39,18 @@ internal class CoreRepo : ICoreRepo
     });
   }
 
+  public async Task<int> ResolveFloorIdFromRoomIdAsync(int roomId)
+  {
+    const string query = @"
+    SELECT hr.`FloorId`
+    FROM `HomeRooms` hr
+    WHERE hr.`RoomId` = @RoomId";
+    await using var connection = _connectionHelper.GetCoreConnection();
+    return await connection.QuerySingleOrDefaultAsync<int>(query, new
+    {
+      RoomId = roomId
+    });
+  }
 
   // Rooms
   public async Task<IEnumerable<HomeRoomDto>> GetFloorRoomsAsync(int floorId)
