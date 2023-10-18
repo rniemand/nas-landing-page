@@ -1,7 +1,7 @@
 using Dapper;
-using NasLandingPage.Repos;
+using NasLandingPage.Models.Dto;
 
-namespace NasLandingPage.Plugins.Chores;
+namespace NasLandingPage.Repos;
 
 internal interface IChoreRepo
 {

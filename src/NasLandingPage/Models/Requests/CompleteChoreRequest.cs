@@ -1,4 +1,6 @@
-namespace NasLandingPage.Plugins.Chores;
+using NasLandingPage.Models.Dto;
+
+namespace NasLandingPage.Models.Requests;
 
 public class CompleteChoreRequest
 {

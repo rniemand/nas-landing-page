@@ -1,7 +1,11 @@
 using NasLandingPage.Models;
+using NasLandingPage.Models.Dto;
+using NasLandingPage.Models.Misc;
+using NasLandingPage.Models.Requests;
 using NasLandingPage.Models.Responses;
+using NasLandingPage.Repos;
 
-namespace NasLandingPage.Plugins.Chores;
+namespace NasLandingPage.Services;
 
 public interface IChoreService
 {

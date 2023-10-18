@@ -1,6 +1,8 @@
+using NasLandingPage.Enums;
 using NasLandingPage.Exceptions;
+using NasLandingPage.Models.Dto;
 
-namespace NasLandingPage.Plugins.Chores;
+namespace NasLandingPage.Models.Misc;
 
 internal class ChoreFrequency
 {

@@ -1,15 +1,3 @@
-CREATE TABLE `Users` (
-	`UserID` INT(11) NOT NULL AUTO_INCREMENT,
-	`CanSetPass` BIT(1) NOT NULL DEFAULT b'0',
-	`DateAdded` DATE NOT NULL DEFAULT curdate(),
-	`DateDeleted` DATE NULL DEFAULT NULL,
-	`Email` VARCHAR(256) NOT NULL COLLATE 'utf8mb4_general_ci',
-	`PasswordHash` VARCHAR(128) NOT NULL COLLATE 'utf8mb4_general_ci',
-	`FirstName` VARCHAR(128) NOT NULL COLLATE 'utf8mb4_general_ci',
-	`Surname` VARCHAR(128) NOT NULL COLLATE 'utf8mb4_general_ci',
-	PRIMARY KEY (`UserID`) USING BTREE
-) COLLATE='utf8mb4_general_ci' ENGINE=InnoDB;
-
 CREATE TABLE `Homes` (
   `HomeId` INT(11) NOT NULL AUTO_INCREMENT,
   `DefaultHome` BIT(1) NOT NULL DEFAULT b'0',
@@ -26,6 +14,19 @@ CREATE TABLE `Homes` (
   `AddressLine2` VARCHAR(512) NULL DEFAULT NULL COLLATE 'utf8mb4_general_ci',
   PRIMARY KEY (`HomeId`) USING BTREE
 ) COLLATE = 'utf8mb4_general_ci' ENGINE = InnoDB;
+
+CREATE TABLE `Users` (
+	`UserID` INT(11) NOT NULL AUTO_INCREMENT,
+	`CurrentHomeID` INT(11) NOT NULL,
+	`CanSetPass` BIT(1) NOT NULL DEFAULT b'0',
+	`DateAdded` DATE NOT NULL DEFAULT curdate(),
+	`DateDeleted` DATE NULL DEFAULT NULL,
+	`Email` VARCHAR(256) NOT NULL COLLATE 'utf8mb4_general_ci',
+	`PasswordHash` VARCHAR(128) NOT NULL COLLATE 'utf8mb4_general_ci',
+	`FirstName` VARCHAR(128) NOT NULL COLLATE 'utf8mb4_general_ci',
+	`Surname` VARCHAR(128) NOT NULL COLLATE 'utf8mb4_general_ci',
+	PRIMARY KEY (`UserID`) USING BTREE
+) COLLATE='utf8mb4_general_ci' ENGINE=InnoDB;
 
 CREATE TABLE `HomeFloors` (
   `FloorId` INT(11) NOT NULL AUTO_INCREMENT,
@@ -75,3 +76,12 @@ CREATE TABLE `HomeChoreHistory` (
   PRIMARY KEY (`ChoreHistoryId`) USING BTREE,
   INDEX `ChoreId` (`ChoreId`) USING BTREE
 ) COLLATE = 'utf8mb4_general_ci' ENGINE = InnoDB;
+
+CREATE TABLE `UserHomeMappings` (
+	`UserID` INT(11) NOT NULL,
+	`HomeID` INT(11) NOT NULL,
+	`DateAdded` DATE NOT NULL DEFAULT curdate(),
+	`DateDeleted` DATE NULL DEFAULT NULL,
+	INDEX `UserID` (`UserID`) USING BTREE,
+	INDEX `HomeID` (`HomeID`) USING BTREE
+) COLLATE='utf8mb4_general_ci' ENGINE=InnoDB;

@@ -1,4 +1,4 @@
-namespace NasLandingPage.Plugins.Chores;
+namespace NasLandingPage.Enums;
 
 enum ChoreFrequencyInterval
 {

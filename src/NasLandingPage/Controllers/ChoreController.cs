@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using NasLandingPage.Extensions;
+using NasLandingPage.Models.Dto;
+using NasLandingPage.Models.Requests;
 using NasLandingPage.Models.Responses;
-using NasLandingPage.Plugins.Chores;
+using NasLandingPage.Services;
 
 namespace NasLandingPage.Controllers;
 

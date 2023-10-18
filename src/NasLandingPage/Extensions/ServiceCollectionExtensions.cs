@@ -1,7 +1,6 @@
 using Dapper;
 using NasLandingPage.Exceptions;
 using NasLandingPage.Models;
-using NasLandingPage.Plugins.Chores;
 using NasLandingPage.Repos;
 using NasLandingPage.Services;
 using RnCore.Abstractions;
@@ -32,8 +31,15 @@ public static class ServiceCollectionExtensions
       .AddSingleton<IUserTasksService, UserTasksService>()
       .AddSingleton<IUserLinksService, UserLinksService>()
       .AddSingleton<ICoreService, CoreService>()
-      // TODO: [CONFIG] (ServiceCollectionExtensions.AddNasLandingPage) Make module registration configurable
+      // Plugins
       .AddHomeChores();
+  }
+
+  private static IServiceCollection AddHomeChores(this IServiceCollection services)
+  {
+    return services
+      .AddSingleton<IChoreRepo, ChoreRepo>()
+      .AddSingleton<IChoreService, ChoreService>();
   }
 
   private static NlpConfig BindConfiguration(IConfiguration configuration)
