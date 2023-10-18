@@ -4,6 +4,7 @@
 
 	export let homeId: number;
 	export let value: number = -1;
+	export let className: string = '';
 
 	let loading: boolean = true;
 	let floors: HomeFloorDto[] = [];
@@ -18,7 +19,7 @@
 	refreshFloors();
 </script>
 
-<Input type="select" disabled={loading} bind:value>
+<Input type="select" disabled={loading} bind:value class={className}>
 	{#each floors as floor}
 		<option value={floor.floorId} selected={value === floor.floorId}>{floor.floorName}</option>
 	{/each}
