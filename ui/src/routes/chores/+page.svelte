@@ -20,6 +20,7 @@
 
 	const onChoreAdded = () => refreshChores();
 	const onChoreUpdated = () => refreshChores();
+	const onChoreCompleted = () => refreshChores();
 
 	const onEditChore = (chore: HomeChoreDto) => editModal?.editChore(chore);
 	const onCompleteChore = (chore: HomeChoreDto) => completeModal?.completeChore(chore);
@@ -31,7 +32,7 @@
 	<Col class="text-end">
 		<AddChoreModal {onChoreAdded} />
 		<EditChoreModal bind:this={editModal} {onChoreUpdated} />
-		<CompleteChoreModal bind:this={completeModal} />
+		<CompleteChoreModal bind:this={completeModal} {onChoreCompleted} />
 	</Col>
 </Row>
 <Row>

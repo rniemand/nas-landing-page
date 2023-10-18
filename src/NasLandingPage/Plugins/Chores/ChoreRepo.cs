@@ -57,8 +57,7 @@ internal class ChoreRepo : IChoreRepo
     UPDATE `HomeChores`
     SET
       `CompletedCount` = `CompletedCount` + 1,
-      `DateScheduled` = @DateScheduled,
-      `DateLastCompleted` = curdate()
+      `DateScheduled` = @DateScheduled
     WHERE
       `ChoreId` = @ChoreId";
     await using var connection = _connectionHelper.GetCoreConnection();
