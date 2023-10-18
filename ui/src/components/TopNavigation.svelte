@@ -17,9 +17,11 @@
 	import { authContext, updateAuthContext } from '../utils/AppStore';
 	import { AuthClient, type WhoAmIResponse } from '../nlp-api';
 	import { goto } from '$app/navigation';
+	import { page } from '$app/stores';
 
 	let isOpen = false;
 	let whoAmI: WhoAmIResponse | undefined;
+	let pageId = '/';
 	const handleUpdate = (event: any) => (isOpen = event.detail.isOpen);
 
 	const runLogout = async () => {
@@ -33,6 +35,8 @@
 			whoAmI = _whoAmI;
 		});
 	});
+
+	$: pageId = $page.route.id || '';
 </script>
 
 <Navbar color="primary-subtle" class="shadow" expand="md">
@@ -42,10 +46,13 @@
 		<Nav class="ms-auto" navbar>
 			{#if whoAmI?.signedIn}
 				<NavItem>
-					<NavLink href="/games">Games</NavLink>
+					<NavLink href="/chores" active={pageId === '/chores'}>Chores</NavLink>
 				</NavItem>
 				<NavItem>
-					<NavLink href="/tasks">Tasks</NavLink>
+					<NavLink href="/games" active={pageId === '/games'}>Games</NavLink>
+				</NavItem>
+				<NavItem>
+					<NavLink href="/tasks" active={pageId === '/tasks'}>Tasks</NavLink>
 				</NavItem>
 				<Dropdown nav inNavbar>
 					<DropdownToggle nav caret>Account</DropdownToggle>

@@ -7,6 +7,7 @@
 	import { Styles } from 'sveltestrap';
 	import { Container } from 'sveltestrap';
 	import ToastManager from '../components/ToastManager.svelte';
+	import 'bootstrap-icons/font/bootstrap-icons.css';
 
 	(async () => {
 		const authResponse = await new AuthClient().challenge(false);

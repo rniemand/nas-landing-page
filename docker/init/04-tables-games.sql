@@ -1,20 +1,17 @@
-CREATE TABLE `Games` (
-	`GameID` INT(11) NOT NULL DEFAULT '0',
-	`PlatformID` INT(11) NOT NULL,
-	`LocationID` INT(11) NOT NULL,
-	`HasGameBox` BIT(1) NOT NULL DEFAULT b'0',
-	`HasProtection` BIT(1) NOT NULL DEFAULT b'0',
-	`GameRating` TINYINT(4) NOT NULL DEFAULT '0',
-	`GamePrice` DOUBLE NOT NULL DEFAULT '0',
-	`GameName` VARCHAR(256) NULL DEFAULT NULL COLLATE 'utf8mb4_general_ci',
-	`GameCaseLocation` VARCHAR(32) NULL DEFAULT '' COLLATE 'utf8mb4_general_ci',
-	PRIMARY KEY (`GameID`) USING BTREE,
-	INDEX `PlatformID` (`PlatformID`) USING BTREE,
-	INDEX `LocationID` (`LocationID`) USING BTREE
-)
-COLLATE='utf8mb4_general_ci'
-ENGINE=InnoDB;
-
+CREATE TABLE IF NOT EXISTS `Games` (
+  `GameID` INT(11) NOT NULL AUTO_INCREMENT,
+  `PlatformID` INT(11) NOT NULL,
+  `LocationID` INT(11) NOT NULL,
+  `HasGameBox` BIT(1) NOT NULL DEFAULT b'0',
+  `HasProtection` BIT(1) NOT NULL DEFAULT b'0',
+  `GameRating` TINYINT(4) NOT NULL DEFAULT '0',
+  `GamePrice` DOUBLE NOT NULL DEFAULT '0',
+  `GameName` VARCHAR(256) NULL DEFAULT NULL COLLATE 'utf8mb4_general_ci',
+  `GameCaseLocation` VARCHAR(32) NULL DEFAULT '' COLLATE 'utf8mb4_general_ci',
+  PRIMARY KEY (`GameID`) USING BTREE,
+  INDEX `PlatformID` (`PlatformID`) USING BTREE,
+  INDEX `LocationID` (`LocationID`) USING BTREE
+) COLLATE = 'utf8mb4_general_ci' ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS `GameImages` (
   `GameID` bigint(20) NOT NULL,
@@ -40,9 +37,9 @@ CREATE TABLE IF NOT EXISTS `GamePlatforms` (
 
 CREATE TABLE IF NOT EXISTS `GameReceipts` (
   `ReceiptID` int(11) NOT NULL AUTO_INCREMENT,
-  `HaveReceipt` bit(1) NOT NULL DEFAULT b '0',
-  `ReceiptScanned` bit(1) NOT NULL DEFAULT b '0',
-  `ReceiptAssociated` bit(1) NOT NULL DEFAULT b '0',
+  `HaveReceipt` bit(1) NOT NULL DEFAULT b'0',
+  `ReceiptScanned` bit(1) NOT NULL DEFAULT b'0',
+  `ReceiptAssociated` bit(1) NOT NULL DEFAULT b'0',
   `ReceiptDate` date DEFAULT NULL,
   `Store` varchar(256) DEFAULT NULL,
   `ReceiptNumber` varchar(64) DEFAULT NULL,

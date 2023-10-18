@@ -6,6 +6,7 @@ public interface IUserRepo
 {
   Task<UserEntity?> GetByEmailAsync(string email);
   Task<bool> UpdatePasswordHash(UserEntity user);
+  Task<IEnumerable<UserEntity>> GetAllUsersAsync();
 }
 
 public class UserRepo : IUserRepo
@@ -42,5 +43,16 @@ public class UserRepo : IUserRepo
       `UserID` = @UserID";
     await using var connection = _connectionHelper.GetCoreConnection();
     return (await connection.ExecuteAsync(query, user)) == 1;
+  }
+
+  public async Task<IEnumerable<UserEntity>> GetAllUsersAsync()
+  {
+    const string query = @"
+    SELECT *
+    FROM `Users` u
+    WHERE u.`DateDeleted` IS NULL
+    ORDER BY u.FirstName, u.Surname";
+    await using var connection = _connectionHelper.GetCoreConnection();
+    return await connection.QueryAsync<UserEntity>(query);
   }
 }

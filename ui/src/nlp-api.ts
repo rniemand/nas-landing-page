@@ -248,6 +248,390 @@ export class AuthClient extends NlpBaseClient implements IAuthClient {
     }
 }
 
+export interface IChoreClient {
+
+    getChores(): Promise<HomeChoreDto[]>;
+
+    addChore(chore: HomeChoreDto): Promise<BoolResponse>;
+
+    updateChore(chore: HomeChoreDto): Promise<BoolResponse>;
+
+    completeChore(request: CompleteChoreRequest): Promise<BoolResponse>;
+}
+
+export class ChoreClient extends NlpBaseClient implements IChoreClient {
+    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+        super();
+        this.http = http ? http : window as any;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    getChores(): Promise<HomeChoreDto[]> {
+        let url_ = this.baseUrl + "/api/Chore/chores";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processGetChores(_response));
+        });
+    }
+
+    protected processGetChores(response: Response): Promise<HomeChoreDto[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(HomeChoreDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<HomeChoreDto[]>(null as any);
+    }
+
+    addChore(chore: HomeChoreDto): Promise<BoolResponse> {
+        let url_ = this.baseUrl + "/api/Chore/add-chore";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(chore);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processAddChore(_response));
+        });
+    }
+
+    protected processAddChore(response: Response): Promise<BoolResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = BoolResponse.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<BoolResponse>(null as any);
+    }
+
+    updateChore(chore: HomeChoreDto): Promise<BoolResponse> {
+        let url_ = this.baseUrl + "/api/Chore/update-chore";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(chore);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processUpdateChore(_response));
+        });
+    }
+
+    protected processUpdateChore(response: Response): Promise<BoolResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = BoolResponse.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<BoolResponse>(null as any);
+    }
+
+    completeChore(request: CompleteChoreRequest): Promise<BoolResponse> {
+        let url_ = this.baseUrl + "/api/Chore/complete-chore";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(request);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processCompleteChore(_response));
+        });
+    }
+
+    protected processCompleteChore(response: Response): Promise<BoolResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = BoolResponse.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<BoolResponse>(null as any);
+    }
+}
+
+export interface ICoreClient {
+
+    getFloors(homeId: number): Promise<HomeFloorDto[]>;
+
+    resolveFloorIdFromRoomId(roomId: number): Promise<number>;
+
+    getFloorRooms(floorId: number): Promise<HomeRoomDto[]>;
+
+    getAllUsers(): Promise<UserDto[]>;
+}
+
+export class CoreClient extends NlpBaseClient implements ICoreClient {
+    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+        super();
+        this.http = http ? http : window as any;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    getFloors(homeId: number): Promise<HomeFloorDto[]> {
+        let url_ = this.baseUrl + "/api/Core/home/{homeId}/floors";
+        if (homeId === undefined || homeId === null)
+            throw new Error("The parameter 'homeId' must be defined.");
+        url_ = url_.replace("{homeId}", encodeURIComponent("" + homeId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processGetFloors(_response));
+        });
+    }
+
+    protected processGetFloors(response: Response): Promise<HomeFloorDto[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(HomeFloorDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<HomeFloorDto[]>(null as any);
+    }
+
+    resolveFloorIdFromRoomId(roomId: number): Promise<number> {
+        let url_ = this.baseUrl + "/api/Core/room/{roomId}/floor-id";
+        if (roomId === undefined || roomId === null)
+            throw new Error("The parameter 'roomId' must be defined.");
+        url_ = url_.replace("{roomId}", encodeURIComponent("" + roomId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processResolveFloorIdFromRoomId(_response));
+        });
+    }
+
+    protected processResolveFloorIdFromRoomId(response: Response): Promise<number> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<number>(null as any);
+    }
+
+    getFloorRooms(floorId: number): Promise<HomeRoomDto[]> {
+        let url_ = this.baseUrl + "/api/Core/floor/{floorId}/rooms";
+        if (floorId === undefined || floorId === null)
+            throw new Error("The parameter 'floorId' must be defined.");
+        url_ = url_.replace("{floorId}", encodeURIComponent("" + floorId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processGetFloorRooms(_response));
+        });
+    }
+
+    protected processGetFloorRooms(response: Response): Promise<HomeRoomDto[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(HomeRoomDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<HomeRoomDto[]>(null as any);
+    }
+
+    getAllUsers(): Promise<UserDto[]> {
+        let url_ = this.baseUrl + "/api/Core/users/list";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processGetAllUsers(_response));
+        });
+    }
+
+    protected processGetAllUsers(response: Response): Promise<UserDto[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(UserDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<UserDto[]>(null as any);
+    }
+}
+
 export interface IGamesClient {
 
     getPlatforms(): Promise<GamePlatformDto[]>;
@@ -951,6 +1335,341 @@ export interface ISetNewPasswordRequest {
     password: string;
 }
 
+export class HomeChoreDto implements IHomeChoreDto {
+    choreId!: number;
+    roomId!: number;
+    completedCount!: number;
+    priority!: string;
+    chorePoints!: number;
+    dateAdded!: Date;
+    dateDeleted?: Date | null;
+    dateDisabled?: Date | null;
+    dateLastCompleted?: Date | null;
+    dateScheduled!: Date;
+    intervalModifier!: string;
+    interval!: string;
+    choreName!: string;
+    choreDescription!: string;
+    roomName?: string | null;
+    floorName?: string | null;
+
+    constructor(data?: IHomeChoreDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.choreId = _data["choreId"] !== undefined ? _data["choreId"] : <any>null;
+            this.roomId = _data["roomId"] !== undefined ? _data["roomId"] : <any>null;
+            this.completedCount = _data["completedCount"] !== undefined ? _data["completedCount"] : <any>null;
+            this.priority = _data["priority"] !== undefined ? _data["priority"] : <any>null;
+            this.chorePoints = _data["chorePoints"] !== undefined ? _data["chorePoints"] : <any>null;
+            this.dateAdded = _data["dateAdded"] ? new Date(_data["dateAdded"].toString()) : <any>null;
+            this.dateDeleted = _data["dateDeleted"] ? new Date(_data["dateDeleted"].toString()) : <any>null;
+            this.dateDisabled = _data["dateDisabled"] ? new Date(_data["dateDisabled"].toString()) : <any>null;
+            this.dateLastCompleted = _data["dateLastCompleted"] ? new Date(_data["dateLastCompleted"].toString()) : <any>null;
+            this.dateScheduled = _data["dateScheduled"] ? new Date(_data["dateScheduled"].toString()) : <any>null;
+            this.intervalModifier = _data["intervalModifier"] !== undefined ? _data["intervalModifier"] : <any>null;
+            this.interval = _data["interval"] !== undefined ? _data["interval"] : <any>null;
+            this.choreName = _data["choreName"] !== undefined ? _data["choreName"] : <any>null;
+            this.choreDescription = _data["choreDescription"] !== undefined ? _data["choreDescription"] : <any>null;
+            this.roomName = _data["roomName"] !== undefined ? _data["roomName"] : <any>null;
+            this.floorName = _data["floorName"] !== undefined ? _data["floorName"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): HomeChoreDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new HomeChoreDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["choreId"] = this.choreId !== undefined ? this.choreId : <any>null;
+        data["roomId"] = this.roomId !== undefined ? this.roomId : <any>null;
+        data["completedCount"] = this.completedCount !== undefined ? this.completedCount : <any>null;
+        data["priority"] = this.priority !== undefined ? this.priority : <any>null;
+        data["chorePoints"] = this.chorePoints !== undefined ? this.chorePoints : <any>null;
+        data["dateAdded"] = this.dateAdded ? formatDate(this.dateAdded) : <any>null;
+        data["dateDeleted"] = this.dateDeleted ? formatDate(this.dateDeleted) : <any>null;
+        data["dateDisabled"] = this.dateDisabled ? formatDate(this.dateDisabled) : <any>null;
+        data["dateLastCompleted"] = this.dateLastCompleted ? formatDate(this.dateLastCompleted) : <any>null;
+        data["dateScheduled"] = this.dateScheduled ? formatDate(this.dateScheduled) : <any>null;
+        data["intervalModifier"] = this.intervalModifier !== undefined ? this.intervalModifier : <any>null;
+        data["interval"] = this.interval !== undefined ? this.interval : <any>null;
+        data["choreName"] = this.choreName !== undefined ? this.choreName : <any>null;
+        data["choreDescription"] = this.choreDescription !== undefined ? this.choreDescription : <any>null;
+        data["roomName"] = this.roomName !== undefined ? this.roomName : <any>null;
+        data["floorName"] = this.floorName !== undefined ? this.floorName : <any>null;
+        return data;
+    }
+}
+
+export interface IHomeChoreDto {
+    choreId: number;
+    roomId: number;
+    completedCount: number;
+    priority: string;
+    chorePoints: number;
+    dateAdded: Date;
+    dateDeleted?: Date | null;
+    dateDisabled?: Date | null;
+    dateLastCompleted?: Date | null;
+    dateScheduled: Date;
+    intervalModifier: string;
+    interval: string;
+    choreName: string;
+    choreDescription: string;
+    roomName?: string | null;
+    floorName?: string | null;
+}
+
+export class BoolResponse implements IBoolResponse {
+    success!: boolean;
+    error?: string | null;
+
+    constructor(data?: IBoolResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.success = _data["success"] !== undefined ? _data["success"] : <any>null;
+            this.error = _data["error"] !== undefined ? _data["error"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): BoolResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new BoolResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["success"] = this.success !== undefined ? this.success : <any>null;
+        data["error"] = this.error !== undefined ? this.error : <any>null;
+        return data;
+    }
+}
+
+export interface IBoolResponse {
+    success: boolean;
+    error?: string | null;
+}
+
+export class CompleteChoreRequest implements ICompleteChoreRequest {
+    chore!: HomeChoreDto;
+    completedBy!: number;
+
+    constructor(data?: ICompleteChoreRequest) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.chore = new HomeChoreDto();
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.chore = _data["chore"] ? HomeChoreDto.fromJS(_data["chore"]) : new HomeChoreDto();
+            this.completedBy = _data["completedBy"] !== undefined ? _data["completedBy"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): CompleteChoreRequest {
+        data = typeof data === 'object' ? data : {};
+        let result = new CompleteChoreRequest();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["chore"] = this.chore ? this.chore.toJSON() : <any>null;
+        data["completedBy"] = this.completedBy !== undefined ? this.completedBy : <any>null;
+        return data;
+    }
+}
+
+export interface ICompleteChoreRequest {
+    chore: HomeChoreDto;
+    completedBy: number;
+}
+
+export class HomeFloorDto implements IHomeFloorDto {
+    floorId!: number;
+    homeId!: number;
+    dateAddedUtc!: Date;
+    dateDeletedUtc?: Date | null;
+    floorName!: string;
+
+    constructor(data?: IHomeFloorDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.floorId = _data["floorId"] !== undefined ? _data["floorId"] : <any>null;
+            this.homeId = _data["homeId"] !== undefined ? _data["homeId"] : <any>null;
+            this.dateAddedUtc = _data["dateAddedUtc"] ? new Date(_data["dateAddedUtc"].toString()) : <any>null;
+            this.dateDeletedUtc = _data["dateDeletedUtc"] ? new Date(_data["dateDeletedUtc"].toString()) : <any>null;
+            this.floorName = _data["floorName"] !== undefined ? _data["floorName"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): HomeFloorDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new HomeFloorDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["floorId"] = this.floorId !== undefined ? this.floorId : <any>null;
+        data["homeId"] = this.homeId !== undefined ? this.homeId : <any>null;
+        data["dateAddedUtc"] = this.dateAddedUtc ? this.dateAddedUtc.toISOString() : <any>null;
+        data["dateDeletedUtc"] = this.dateDeletedUtc ? this.dateDeletedUtc.toISOString() : <any>null;
+        data["floorName"] = this.floorName !== undefined ? this.floorName : <any>null;
+        return data;
+    }
+}
+
+export interface IHomeFloorDto {
+    floorId: number;
+    homeId: number;
+    dateAddedUtc: Date;
+    dateDeletedUtc?: Date | null;
+    floorName: string;
+}
+
+export class HomeRoomDto implements IHomeRoomDto {
+    roomId!: number;
+    floorId!: number;
+    dateAddedUtc!: Date;
+    dateDeletedUtc?: Date | null;
+    roomName!: string;
+
+    constructor(data?: IHomeRoomDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.roomId = _data["roomId"] !== undefined ? _data["roomId"] : <any>null;
+            this.floorId = _data["floorId"] !== undefined ? _data["floorId"] : <any>null;
+            this.dateAddedUtc = _data["dateAddedUtc"] ? new Date(_data["dateAddedUtc"].toString()) : <any>null;
+            this.dateDeletedUtc = _data["dateDeletedUtc"] ? new Date(_data["dateDeletedUtc"].toString()) : <any>null;
+            this.roomName = _data["roomName"] !== undefined ? _data["roomName"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): HomeRoomDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new HomeRoomDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["roomId"] = this.roomId !== undefined ? this.roomId : <any>null;
+        data["floorId"] = this.floorId !== undefined ? this.floorId : <any>null;
+        data["dateAddedUtc"] = this.dateAddedUtc ? this.dateAddedUtc.toISOString() : <any>null;
+        data["dateDeletedUtc"] = this.dateDeletedUtc ? this.dateDeletedUtc.toISOString() : <any>null;
+        data["roomName"] = this.roomName !== undefined ? this.roomName : <any>null;
+        return data;
+    }
+}
+
+export interface IHomeRoomDto {
+    roomId: number;
+    floorId: number;
+    dateAddedUtc: Date;
+    dateDeletedUtc?: Date | null;
+    roomName: string;
+}
+
+export class UserDto implements IUserDto {
+    userID!: number;
+    email!: string;
+    firstName!: string;
+    surname!: string;
+    displayName!: string;
+
+    constructor(data?: IUserDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.userID = _data["userID"] !== undefined ? _data["userID"] : <any>null;
+            this.email = _data["email"] !== undefined ? _data["email"] : <any>null;
+            this.firstName = _data["firstName"] !== undefined ? _data["firstName"] : <any>null;
+            this.surname = _data["surname"] !== undefined ? _data["surname"] : <any>null;
+            this.displayName = _data["displayName"] !== undefined ? _data["displayName"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): UserDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new UserDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["userID"] = this.userID !== undefined ? this.userID : <any>null;
+        data["email"] = this.email !== undefined ? this.email : <any>null;
+        data["firstName"] = this.firstName !== undefined ? this.firstName : <any>null;
+        data["surname"] = this.surname !== undefined ? this.surname : <any>null;
+        data["displayName"] = this.displayName !== undefined ? this.displayName : <any>null;
+        return data;
+    }
+}
+
+export interface IUserDto {
+    userID: number;
+    email: string;
+    firstName: string;
+    surname: string;
+    displayName: string;
+}
+
 export class GamePlatformDto implements IGamePlatformDto {
     platformID!: number;
     platformName!: string;
@@ -1267,44 +1986,10 @@ export interface IBasicSearchRequest {
     subFilter?: string | null;
 }
 
-export class BoolResponse implements IBoolResponse {
-    success!: boolean;
-    error?: string | null;
-
-    constructor(data?: IBoolResponse) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.success = _data["success"] !== undefined ? _data["success"] : <any>null;
-            this.error = _data["error"] !== undefined ? _data["error"] : <any>null;
-        }
-    }
-
-    static fromJS(data: any): BoolResponse {
-        data = typeof data === 'object' ? data : {};
-        let result = new BoolResponse();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["success"] = this.success !== undefined ? this.success : <any>null;
-        data["error"] = this.error !== undefined ? this.error : <any>null;
-        return data;
-    }
-}
-
-export interface IBoolResponse {
-    success: boolean;
-    error?: string | null;
+function formatDate(d: Date) {
+    return d.getFullYear() + '-' + 
+        (d.getMonth() < 9 ? ('0' + (d.getMonth()+1)) : (d.getMonth()+1)) + '-' +
+        (d.getDate() < 10 ? ('0' + d.getDate()) : d.getDate());
 }
 
 export interface FileResponse {
