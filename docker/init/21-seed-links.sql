@@ -1,4 +1,4 @@
-INSERT INTO `UserLinks` (`Deleted`, `UserID`, `LinkOrder`, `FollowCount`, `DateAddedUtc`, `DateUpdatedUtc`, `DateLastFollowedUtc`, `LinkName`, `LinkCategory`, `LinkUrl`, `LinkImage`) VALUES
+INSERT INTO `UserLinks` (`Deleted`, `UserID`, `LinkOrder`, `FollowCount`, `DateAdded`, `DateUpdated`, `DateLastFollowed`, `LinkName`, `LinkCategory`, `LinkUrl`, `LinkImage`) VALUES
 	(b'0', 1, 256, 11, '2022-06-27 22:12:44', '2022-06-27 22:12:44', '2022-12-22 21:49:05', 'Github', 'coding', 'https://github.com/rniemand?tab=repositories', 'github.png'),
 	(b'0', 1, 1024, 51, '2022-06-27 22:16:53', '2022-06-27 22:16:53', '2023-05-19 18:57:25', 'Crashplan', 'daily', 'http://192.168.0.60:7810/', 'crashplan.png'),
 	(b'0', 1, 1024, 1, '2022-06-27 22:21:21', '2022-06-27 22:21:21', '2022-09-30 21:11:11', 'EasyEDA', 'coding', 'https://easyeda.com/editor', 'easy-eda.png'),

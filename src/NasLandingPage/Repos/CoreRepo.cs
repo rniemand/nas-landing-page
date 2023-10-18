@@ -1,11 +1,14 @@
 using Dapper;
+using NasLandingPage.Models;
 using NasLandingPage.Models.Dto;
-using System.Drawing;
 
 namespace NasLandingPage.Repos;
 
 public interface ICoreRepo
 {
+  // Homes
+  Task<IEnumerable<HomeDto>> GetHomesAsync(NlpUserContext userContext);
+
   // Floors
   Task<IEnumerable<HomeFloorDto>> GetFloorsAsync(int homeId);
   Task<int> ResolveFloorIdFromRoomIdAsync(int roomId);
@@ -27,6 +30,14 @@ internal class CoreRepo : ICoreRepo
     _connectionHelper = connectionHelper;
   }
 
+
+  // Homes
+  public async Task<IEnumerable<HomeDto>> GetHomesAsync(NlpUserContext userContext)
+  {
+    await Task.CompletedTask;
+    return new List<HomeDto>();
+  }
+
   // Floors
   public async Task<IEnumerable<HomeFloorDto>> GetFloorsAsync(int homeId)
   {
@@ -35,7 +46,7 @@ internal class CoreRepo : ICoreRepo
     FROM `HomeFloors` hf
     WHERE
       hf.`HomeId` = @HomeId
-      AND hf.`DateDeletedUtc` IS NULL
+      AND hf.`DateDeleted` IS NULL
     ORDER BY hf.`FloorName`";
     await using var connection = _connectionHelper.GetCoreConnection();
     return await connection.QueryAsync<HomeFloorDto>(query, new
@@ -87,7 +98,7 @@ internal class CoreRepo : ICoreRepo
     SELECT *
     FROM `HomeRooms` hr
     WHERE
-      hr.`DateDeletedUtc` IS NULL
+      hr.`DateDeleted` IS NULL
       AND hr.`FloorId` = @FloorId
     ORDER BY hr.`RoomName`";
     await using var connection = _connectionHelper.GetCoreConnection();

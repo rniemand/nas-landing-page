@@ -3,15 +3,15 @@ import { UserTaskDto } from '../../nlp-api';
 export const createNewTask = () =>
 	new UserTaskDto({
 		taskID: 0,
-		dateAddedUtc: new Date(),
+		dateAdded: new Date(),
 		taskCategory: '',
 		taskDescription: '',
 		taskName: '',
 		taskPriority: 128,
 		taskSubCategory: '',
 		userID: 0,
-		dateCompletedUtc: undefined,
-		dateDeletedUtc: undefined
+		dateCompleted: undefined,
+		dateDeleted: undefined
 	});
 
 export const validateTaskForAdding = (task: UserTaskDto | undefined) => {

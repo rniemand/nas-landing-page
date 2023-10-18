@@ -52,7 +52,7 @@ internal class UserLinksRepo : IUserLinksRepo
     const string query = @"UPDATE `UserLinks`
     SET
 	    FollowCount = FollowCount + 1,
-	    DateLastFollowedUtc = utc_timestamp(6)
+	    DateLastFollowed = utc_timestamp(6)
     WHERE
 	    UserID = @UserID
 	    AND LinkId = @LinkID";

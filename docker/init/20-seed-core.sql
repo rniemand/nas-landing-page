@@ -1,8 +1,8 @@
 INSERT INTO `Homes`
-  (`DefaultHome`,`Longitude`,`Latitude`,`Country`,`PostalCode`,`City`,`Province`,`HomeName`,`AddressLine1`,`AddressLine2`)
+  (`Longitude`,`Latitude`,`Country`,`PostalCode`,`City`,`Province`,`HomeName`,`AddressLine1`,`AddressLine2`)
 VALUES
-  (1, 12, 21,'ca','xxx','city','province','Home (Default)','address 1','address 2'),
-  (0, 12, 21,'ca','xxx','city','province','Home 2','address 1','address 2');
+  (12, 21,'ca','xxx','city','province','Home (Default)','address 1','address 2'),
+  (12, 21,'ca','xxx','city','province','Home 2','address 1','address 2');
 
 INSERT INTO `Users`
 	(`CurrentHomeID`, `Email`, `FirstName`, `Surname`, `PasswordHash`)

@@ -7,9 +7,9 @@ public class UserTaskDto
   public int TaskID { get; set; }
   public int UserID { get; set; }
   public int TaskPriority { get; set; }
-  public DateTimeOffset DateAddedUtc { get; set; } = DateTimeOffset.MinValue;
-  public DateTimeOffset? DateCompletedUtc { get; set; }
-  public DateTimeOffset? DateDeletedUtc { get; set; }
+  public DateTimeOffset DateAdded { get; set; } = DateTimeOffset.MinValue;
+  public DateTimeOffset? DateCompleted { get; set; }
+  public DateTimeOffset? DateDeleted { get; set; }
   public string TaskName { get; set; } = null!;
   public string TaskCategory { get; set; } = null!;
   public string TaskSubCategory { get; set; } = null!;
@@ -20,26 +20,26 @@ public class UserTaskDto
     UserID = entity.UserID,
     TaskID = entity.TaskID,
     TaskPriority = entity.TaskPriority,
-    DateAddedUtc = entity.DateAddedUtc,
-    DateCompletedUtc = entity.DateCompletedUtc,
+    DateAdded = entity.DateAdded,
+    DateCompleted = entity.DateCompleted,
     TaskName = entity.TaskName,
     TaskCategory = entity.TaskCategory,
     TaskDescription = entity.TaskDescription,
     TaskSubCategory = entity.TaskSubCategory,
-    DateDeletedUtc = entity.DateDeletedUtc,
+    DateDeleted = entity.DateDeleted,
   };
 
   public UserTaskEntity ToEntity() => new()
   {
     TaskID = TaskID,
     TaskPriority = TaskPriority,
-    DateAddedUtc = DateAddedUtc,
-    DateCompletedUtc = DateCompletedUtc,
+    DateAdded = DateAdded,
+    DateCompleted = DateCompleted,
     TaskName = TaskName,
     TaskCategory = TaskCategory,
     TaskDescription = TaskDescription,
     TaskSubCategory = TaskSubCategory,
     UserID = UserID,
-    DateDeletedUtc = DateDeletedUtc,
+    DateDeleted = DateDeleted,
   };
 }

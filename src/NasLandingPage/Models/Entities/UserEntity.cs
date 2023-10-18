@@ -5,6 +5,7 @@ namespace NasLandingPage.Models.Entities;
 public class UserEntity
 {
   public int UserID { get; set; }
+  public int CurrentHomeID { get; set; }
   public string Email { get; set; } = null!;
   public string PasswordHash { get; set; } = null!;
   public bool CanSetPass { get; set; }

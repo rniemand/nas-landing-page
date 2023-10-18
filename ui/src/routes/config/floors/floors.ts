@@ -2,11 +2,11 @@ import { HomeFloorDto } from '../../../nlp-api';
 
 export const createBlankFloorDto = (homeId: number) =>
 	new HomeFloorDto({
-		dateAddedUtc: new Date(),
+		dateAdded: new Date(),
 		floorId: 0,
 		floorName: '',
 		homeId: homeId,
-		dateDeletedUtc: new Date()
+		dateDeleted: new Date()
 	});
 
 export const validateAddFloor = (floor: HomeFloorDto) => {

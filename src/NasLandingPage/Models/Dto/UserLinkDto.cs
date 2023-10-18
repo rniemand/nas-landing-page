@@ -9,9 +9,9 @@ public class UserLinkDto
   public bool Deleted { get; set; }
   public int LinkOrder { get; set; }
   public int FollowCount { get; set; }
-  public DateTimeOffset DateAddedUtc { get; set; } = DateTimeOffset.MinValue;
-  public DateTimeOffset DateUpdatedUtc { get; set; } = DateTimeOffset.MinValue;
-  public DateTimeOffset DateLastFollowedUtc { get; set; } = DateTimeOffset.MinValue;
+  public DateTimeOffset DateAdded { get; set; } = DateTimeOffset.MinValue;
+  public DateTimeOffset DateUpdated { get; set; } = DateTimeOffset.MinValue;
+  public DateTimeOffset DateLastFollowed { get; set; } = DateTimeOffset.MinValue;
   public string LinkName { get; set; } = null!;
   public string LinkCategory { get; set; } = null!;
   public string LinkUrl { get; set; } = null!;
@@ -19,15 +19,15 @@ public class UserLinkDto
 
   public static UserLinkDto FromEntity(UserLinkEntity entity) => new()
   {
-    DateAddedUtc = entity.DateAddedUtc,
-    DateUpdatedUtc = entity.DateUpdatedUtc,
+    DateAdded = entity.DateAdded,
+    DateUpdated = entity.DateUpdated,
     LinkName = entity.LinkName,
     LinkCategory = entity.LinkCategory,
     LinkUrl = entity.LinkUrl,
     LinkImage = entity.LinkImage,
     LinkOrder = entity.LinkOrder,
     FollowCount = entity.FollowCount,
-    DateLastFollowedUtc = entity.DateLastFollowedUtc,
+    DateLastFollowed = entity.DateLastFollowed,
     Deleted = entity.Deleted,
     LinkId = entity.LinkId,
     UserID = entity.UserID,

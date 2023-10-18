@@ -21,14 +21,10 @@ public class UserRepo : IUserRepo
 
   public async Task<UserEntity?> GetByEmailAsync(string email)
   {
-    const string query = $@"SELECT
-      `UserID`,
-      `Email`,
-      `PasswordHash`,
-      `CanSetPass`
+    const string query = $@"
+    SELECT *
     FROM {TableName}
     WHERE `Email` = @Email";
-
     await using var connection = _connectionHelper.GetCoreConnection();
     return await connection.QuerySingleOrDefaultAsync<UserEntity>(query, new { Email = email });
   }
