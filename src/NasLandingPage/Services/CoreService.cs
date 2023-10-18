@@ -12,15 +12,20 @@ public interface ICoreService
   // Rooms
   Task<IEnumerable<HomeRoomDto>> GetFloorRoomsAsync(NlpUserContext userContext, int floorId);
   Task<int> ResolveFloorIdFromRoomIsAsync(NlpUserContext userContext, int roomId);
+
+  // Users
+  Task<IEnumerable<UserDto>> GetAllUsersAsync();
 }
 
 internal class CoreService : ICoreService
 {
   private readonly ICoreRepo _coreRepo;
+  private readonly IUserRepo _userRepo;
 
-  public CoreService(ICoreRepo coreRepo)
+  public CoreService(ICoreRepo coreRepo, IUserRepo userRepo)
   {
     _coreRepo = coreRepo;
+    _userRepo = userRepo;
   }
 
   // Floors
@@ -33,4 +38,8 @@ internal class CoreService : ICoreService
 
   public async Task<int> ResolveFloorIdFromRoomIsAsync(NlpUserContext userContext, int roomId) =>
     await _coreRepo.ResolveFloorIdFromRoomIdAsync(roomId);
+
+  // Users
+  public async Task<IEnumerable<UserDto>> GetAllUsersAsync() =>
+    (await _userRepo.GetAllUsersAsync()).Select(UserDto.FromEntity);
 }

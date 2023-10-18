@@ -441,6 +441,8 @@ export interface ICoreClient {
     resolveFloorIdFromRoomId(roomId: number): Promise<number>;
 
     getFloorRooms(floorId: number): Promise<HomeRoomDto[]>;
+
+    getAllUsers(): Promise<UserDto[]>;
 }
 
 export class CoreClient extends NlpBaseClient implements ICoreClient {
@@ -584,6 +586,49 @@ export class CoreClient extends NlpBaseClient implements ICoreClient {
             });
         }
         return Promise.resolve<HomeRoomDto[]>(null as any);
+    }
+
+    getAllUsers(): Promise<UserDto[]> {
+        let url_ = this.baseUrl + "/api/Core/users/list";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processGetAllUsers(_response));
+        });
+    }
+
+    protected processGetAllUsers(response: Response): Promise<UserDto[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(UserDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<UserDto[]>(null as any);
     }
 }
 
@@ -1571,6 +1616,58 @@ export interface IHomeRoomDto {
     dateAddedUtc: Date;
     dateDeletedUtc?: Date | null;
     roomName: string;
+}
+
+export class UserDto implements IUserDto {
+    userID!: number;
+    email!: string;
+    firstName!: string;
+    surname!: string;
+    displayName!: string;
+
+    constructor(data?: IUserDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.userID = _data["userID"] !== undefined ? _data["userID"] : <any>null;
+            this.email = _data["email"] !== undefined ? _data["email"] : <any>null;
+            this.firstName = _data["firstName"] !== undefined ? _data["firstName"] : <any>null;
+            this.surname = _data["surname"] !== undefined ? _data["surname"] : <any>null;
+            this.displayName = _data["displayName"] !== undefined ? _data["displayName"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): UserDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new UserDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["userID"] = this.userID !== undefined ? this.userID : <any>null;
+        data["email"] = this.email !== undefined ? this.email : <any>null;
+        data["firstName"] = this.firstName !== undefined ? this.firstName : <any>null;
+        data["surname"] = this.surname !== undefined ? this.surname : <any>null;
+        data["displayName"] = this.displayName !== undefined ? this.displayName : <any>null;
+        return data;
+    }
+}
+
+export interface IUserDto {
+    userID: number;
+    email: string;
+    firstName: string;
+    surname: string;
+    displayName: string;
 }
 
 export class GamePlatformDto implements IGamePlatformDto {

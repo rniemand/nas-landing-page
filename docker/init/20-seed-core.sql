@@ -1,7 +1,9 @@
 INSERT INTO `Users`
-	(`Email`, `PasswordHash`)
+	(`Email`, `FirstName`, `Surname`, `PasswordHash`)
 VALUES
-	('niemand.richard@gmail.com', 'AQAAAAIAAYagAAAAEKGjbkZvWeUEDyWmUKEw7NFmLPKbDXSpIrquaQI6XcJCX4DAkA41pOqCmxaCPs7xbQ==');
+	('niemand.richard@gmail.com', 'Richard', 'Niemand', ''),
+  ('1@2.com', 'Kelsie', 'Mackie', ''),
+  ('2@2.com', 'Sam', 'Niemand', '');
 
 INSERT INTO `Homes`
   (`DefaultHome`,`Longitude`,`Latitude`,`Country`,`PostalCode`,`City`,`Province`,`HomeName`,`AddressLine1`,`AddressLine2`)

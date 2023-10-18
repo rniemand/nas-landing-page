@@ -27,4 +27,8 @@ public class CoreController : ControllerBase
   [HttpGet("floor/{floorId:int}/rooms")]
   public async Task<HomeRoomDto[]> GetFloorRooms([FromRoute] int floorId) =>
     (await _coreService.GetFloorRoomsAsync(User.GetNlpUserContext(), floorId)).ToArray();
+
+  [HttpGet("users/list")]
+  public async Task<UserDto[]> GetAllUsers() =>
+    (await _coreService.GetAllUsersAsync()).ToArray();
 }
