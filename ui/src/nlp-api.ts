@@ -436,13 +436,13 @@ export class ChoreClient extends NlpBaseClient implements IChoreClient {
 
 export interface IFloorClient {
 
-    getFloors(homeId: number): Promise<HomeFloorDto[]>;
+    listFloors(): Promise<HomeFloorDto[]>;
 
     addFloor(floor: HomeFloorDto): Promise<BoolResponse>;
 
     updateFloor(floor: HomeFloorDto): Promise<BoolResponse>;
 
-    resolveFloorIdFromRoomId(roomId: number): Promise<number>;
+    resolveFromRoomId(roomId: number): Promise<number>;
 }
 
 export class FloorClient extends NlpBaseClient implements IFloorClient {
@@ -456,11 +456,8 @@ export class FloorClient extends NlpBaseClient implements IFloorClient {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
-    getFloors(homeId: number): Promise<HomeFloorDto[]> {
-        let url_ = this.baseUrl + "/api/Floor/home/{homeId}/floors";
-        if (homeId === undefined || homeId === null)
-            throw new Error("The parameter 'homeId' must be defined.");
-        url_ = url_.replace("{homeId}", encodeURIComponent("" + homeId));
+    listFloors(): Promise<HomeFloorDto[]> {
+        let url_ = this.baseUrl + "/api/Floor/list";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: RequestInit = {
@@ -473,11 +470,11 @@ export class FloorClient extends NlpBaseClient implements IFloorClient {
         return this.transformOptions(options_).then(transformedOptions_ => {
             return this.http.fetch(url_, transformedOptions_);
         }).then((_response: Response) => {
-            return this.transformResult(url_, _response, (_response: Response) => this.processGetFloors(_response));
+            return this.transformResult(url_, _response, (_response: Response) => this.processListFloors(_response));
         });
     }
 
-    protected processGetFloors(response: Response): Promise<HomeFloorDto[]> {
+    protected processListFloors(response: Response): Promise<HomeFloorDto[]> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
@@ -503,7 +500,7 @@ export class FloorClient extends NlpBaseClient implements IFloorClient {
     }
 
     addFloor(floor: HomeFloorDto): Promise<BoolResponse> {
-        let url_ = this.baseUrl + "/api/Floor/add-floor";
+        let url_ = this.baseUrl + "/api/Floor/add";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(floor);
@@ -543,7 +540,7 @@ export class FloorClient extends NlpBaseClient implements IFloorClient {
     }
 
     updateFloor(floor: HomeFloorDto): Promise<BoolResponse> {
-        let url_ = this.baseUrl + "/api/Floor/update-floor";
+        let url_ = this.baseUrl + "/api/Floor/update";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(floor);
@@ -582,8 +579,8 @@ export class FloorClient extends NlpBaseClient implements IFloorClient {
         return Promise.resolve<BoolResponse>(null as any);
     }
 
-    resolveFloorIdFromRoomId(roomId: number): Promise<number> {
-        let url_ = this.baseUrl + "/api/Floor/room/{roomId}/floor-id";
+    resolveFromRoomId(roomId: number): Promise<number> {
+        let url_ = this.baseUrl + "/api/Floor/resolve-from-room-id/{roomId}";
         if (roomId === undefined || roomId === null)
             throw new Error("The parameter 'roomId' must be defined.");
         url_ = url_.replace("{roomId}", encodeURIComponent("" + roomId));
@@ -599,11 +596,11 @@ export class FloorClient extends NlpBaseClient implements IFloorClient {
         return this.transformOptions(options_).then(transformedOptions_ => {
             return this.http.fetch(url_, transformedOptions_);
         }).then((_response: Response) => {
-            return this.transformResult(url_, _response, (_response: Response) => this.processResolveFloorIdFromRoomId(_response));
+            return this.transformResult(url_, _response, (_response: Response) => this.processResolveFromRoomId(_response));
         });
     }
 
-    protected processResolveFloorIdFromRoomId(response: Response): Promise<number> {
+    protected processResolveFromRoomId(response: Response): Promise<number> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {

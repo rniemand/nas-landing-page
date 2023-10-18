@@ -30,7 +30,7 @@
 	let isValid: boolean = false;
 
 	const enrichChore = async (_chore: HomeChoreDto) => {
-		floorId = await new FloorClient().resolveFloorIdFromRoomId(_chore.roomId);
+		floorId = await new FloorClient().resolveFromRoomId(_chore.roomId);
 		loading = false;
 	};
 

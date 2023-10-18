@@ -7,7 +7,7 @@ namespace NasLandingPage.Services;
 
 public interface IFloorService
 {
-  Task<IEnumerable<HomeFloorDto>> GetFloorsAsync(NlpUserContext userContext, int homeId);
+  Task<HomeFloorDto[]> GetFloorsAsync(NlpUserContext userContext);
   Task<BoolResponse> AddFloorAsync(NlpUserContext userContext, HomeFloorDto floor);
   Task<BoolResponse> UpdateFloorAsync(NlpUserContext userContext, HomeFloorDto floor);
   Task<int> ResolveFloorIdFromRoomIsAsync(NlpUserContext userContext, int roomId);
@@ -22,8 +22,8 @@ class FloorService : IFloorService
     _floorRepo = floorRepo;
   }
 
-  public async Task<IEnumerable<HomeFloorDto>> GetFloorsAsync(NlpUserContext userContext, int homeId) =>
-    await _floorRepo.GetFloorsAsync(homeId);
+  public async Task<HomeFloorDto[]> GetFloorsAsync(NlpUserContext userContext) =>
+    (await _floorRepo.GetFloorsAsync(userContext)).ToArray();
 
   public async Task<BoolResponse> AddFloorAsync(NlpUserContext userContext, HomeFloorDto floor)
   {

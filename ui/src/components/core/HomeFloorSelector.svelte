@@ -11,7 +11,7 @@
 
 	const refreshFloors = async () => {
 		loading = true;
-		floors = (await new FloorClient().getFloors(homeId)) || [];
+		floors = (await new FloorClient().listFloors(homeId)) || [];
 		if (floors.length > 0 && value <= 0) value = floors[0].floorId;
 		loading = false;
 	};

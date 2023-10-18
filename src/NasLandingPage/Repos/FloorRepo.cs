@@ -1,11 +1,12 @@
 using Dapper;
+using NasLandingPage.Models;
 using NasLandingPage.Models.Dto;
 
 namespace NasLandingPage.Repos;
 
 public interface IFloorRepo
 {
-  Task<IEnumerable<HomeFloorDto>> GetFloorsAsync(int homeId);
+  Task<IEnumerable<HomeFloorDto>> GetFloorsAsync(NlpUserContext userContext);
   Task<int> ResolveFloorIdFromRoomIdAsync(int roomId);
   Task<int> AddFloorAsync(HomeFloorDto floor);
   Task<int> UpdateFloorAsync(HomeFloorDto floor);
@@ -20,19 +21,24 @@ class FloorRepo : IFloorRepo
     _connectionHelper = connectionHelper;
   }
 
-  public async Task<IEnumerable<HomeFloorDto>> GetFloorsAsync(int homeId)
+  public async Task<IEnumerable<HomeFloorDto>> GetFloorsAsync(NlpUserContext userContext)
   {
     const string query = @"
-    SELECT *
-    FROM `HomeFloors` hf
-    WHERE
-      hf.`HomeId` = @HomeId
-      AND hf.`DateDeleted` IS NULL
+    SELECT hf.*
+    FROM `Users` u
+    INNER JOIN `UserHomeMappings` uhm
+	    ON uhm.`UserID` = u.`UserID`
+	    AND u.`UserID` = @UserID
+	    AND uhm.`DateDeleted` IS NULL
+	    AND uhm.`HomeID` = u.`CurrentHomeID`
+    INNER JOIN `HomeFloors` hf
+	    ON hf.`HomeId` = uhm.`HomeID`
+	    AND hf.`DateDeleted` IS NULL
     ORDER BY hf.`FloorName`";
     await using var connection = _connectionHelper.GetCoreConnection();
     return await connection.QueryAsync<HomeFloorDto>(query, new
     {
-      HomeId = homeId,
+      UserID = userContext.UserId,
     });
   }
 

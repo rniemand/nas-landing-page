@@ -17,19 +17,18 @@ public class FloorController : ControllerBase
     _floorService = floorService;
   }
 
-  [HttpGet("home/{homeId:int}/floors")]
-  public async Task<HomeFloorDto[]> GetFloors([FromRoute] int homeId) =>
-    (await _floorService.GetFloorsAsync(User.GetNlpUserContext(), homeId)).ToArray();
+  [HttpGet("list")]
+  public async Task<HomeFloorDto[]> ListFloors() => await _floorService.GetFloorsAsync(User.GetNlpUserContext());
 
-  [HttpPost("add-floor")]
+  [HttpPost("add")]
   public async Task<BoolResponse> AddFloor([FromBody] HomeFloorDto floor) =>
     await _floorService.AddFloorAsync(User.GetNlpUserContext(), floor);
 
-  [HttpPatch("update-floor")]
+  [HttpPatch("update")]
   public async Task<BoolResponse> UpdateFloor([FromBody] HomeFloorDto floor) =>
     await _floorService.UpdateFloorAsync(User.GetNlpUserContext(), floor);
 
-  [HttpGet("room/{roomId:int}/floor-id")]
-  public async Task<int> ResolveFloorIdFromRoomId([FromRoute] int roomId) =>
+  [HttpGet("resolve-from-room-id/{roomId:int}")]
+  public async Task<int> ResolveFromRoomId([FromRoute] int roomId) =>
     await _floorService.ResolveFloorIdFromRoomIsAsync(User.GetNlpUserContext(), roomId);
 }
