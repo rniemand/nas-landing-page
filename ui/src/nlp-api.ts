@@ -438,9 +438,17 @@ export interface ICoreClient {
 
     getFloors(homeId: number): Promise<HomeFloorDto[]>;
 
+    addFloor(floor: HomeFloorDto): Promise<BoolResponse>;
+
+    updateFloor(floor: HomeFloorDto): Promise<BoolResponse>;
+
     resolveFloorIdFromRoomId(roomId: number): Promise<number>;
 
     getFloorRooms(floorId: number): Promise<HomeRoomDto[]>;
+
+    addRoom(room: HomeRoomDto): Promise<BoolResponse>;
+
+    updateRoom(room: HomeRoomDto): Promise<BoolResponse>;
 
     getAllUsers(): Promise<UserDto[]>;
 }
@@ -500,6 +508,86 @@ export class CoreClient extends NlpBaseClient implements ICoreClient {
             });
         }
         return Promise.resolve<HomeFloorDto[]>(null as any);
+    }
+
+    addFloor(floor: HomeFloorDto): Promise<BoolResponse> {
+        let url_ = this.baseUrl + "/api/Core/add-floor";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(floor);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processAddFloor(_response));
+        });
+    }
+
+    protected processAddFloor(response: Response): Promise<BoolResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = BoolResponse.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<BoolResponse>(null as any);
+    }
+
+    updateFloor(floor: HomeFloorDto): Promise<BoolResponse> {
+        let url_ = this.baseUrl + "/api/Core/update-floor";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(floor);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processUpdateFloor(_response));
+        });
+    }
+
+    protected processUpdateFloor(response: Response): Promise<BoolResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = BoolResponse.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<BoolResponse>(null as any);
     }
 
     resolveFloorIdFromRoomId(roomId: number): Promise<number> {
@@ -586,6 +674,86 @@ export class CoreClient extends NlpBaseClient implements ICoreClient {
             });
         }
         return Promise.resolve<HomeRoomDto[]>(null as any);
+    }
+
+    addRoom(room: HomeRoomDto): Promise<BoolResponse> {
+        let url_ = this.baseUrl + "/api/Core/add-room";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(room);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processAddRoom(_response));
+        });
+    }
+
+    protected processAddRoom(response: Response): Promise<BoolResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = BoolResponse.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<BoolResponse>(null as any);
+    }
+
+    updateRoom(room: HomeRoomDto): Promise<BoolResponse> {
+        let url_ = this.baseUrl + "/api/Core/update-room";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(room);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processUpdateRoom(_response));
+        });
+    }
+
+    protected processUpdateRoom(response: Response): Promise<BoolResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = BoolResponse.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<BoolResponse>(null as any);
     }
 
     getAllUsers(): Promise<UserDto[]> {
