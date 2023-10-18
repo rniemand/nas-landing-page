@@ -1,12 +1,14 @@
 <script lang="ts">
 	import { Accordion, AccordionItem, Button, Col, Row } from 'sveltestrap';
-	import { ConfigUrls } from '../../../enums/AppUrls';
+	import { AppUrls, ConfigUrls } from '../../../enums/AppUrls';
 	import HomeFloorSelector from '../../../components/core/HomeFloorSelector.svelte';
 	import { CoreClient, type HomeRoomDto } from '../../../nlp-api';
 	import AddRoomModal from './AddRoomModal.svelte';
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 	import EditRoomModal from './EditRoomModal.svelte';
+	import NavigationCrumbs from '../../../components/core/NavigationCrumbs.svelte';
+	import NavigationCrumb from '../../../components/core/NavigationCrumb.svelte';
 
 	// TODO: [COMPLETE] make use of the correct home id here
 	const homeID: number = 1;
@@ -28,9 +30,14 @@
 	$: floorId = parseInt($page.url?.searchParams.get('floorId') || '0');
 </script>
 
+<NavigationCrumbs>
+	<NavigationCrumb icon="bi-house-fill" url={AppUrls.Home} />
+	<NavigationCrumb icon="bi-gear-fill" url={ConfigUrls.Root} />
+	<NavigationCrumb title="Rooms" />
+</NavigationCrumbs>
+
 <Row>
 	<Col>
-		<h1 class="text-center"><a href={ConfigUrls.Root}>Configuration</a> / Rooms</h1>
 		<HomeFloorSelector className="mt-3" homeId={homeID} bind:value={floorId} />
 		<div class="text-end mt-3">
 			<Button color="primary" on:click={() => goto(ConfigUrls.Floors)}>Floors</Button>

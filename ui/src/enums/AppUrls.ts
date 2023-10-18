@@ -1,5 +1,6 @@
-export class AuthUrls {
+export class AppUrls {
 	public static readonly Login = '/login';
+	public static readonly Home = '/';
 }
 
 export class ChoreUrls {
@@ -15,6 +16,10 @@ export class ConfigUrls {
 
 export class GamesUrls {
 	public static readonly Root = '/games';
+}
+
+export class LinkUrls {
+	public static readonly Root = '/links';
 }
 
 export class TasksUrls {

@@ -1,11 +1,13 @@
 <script lang="ts">
 	import { Accordion, AccordionItem, Button, Col, Row } from 'sveltestrap';
-	import { ConfigUrls } from '../../../enums/AppUrls';
+	import { AppUrls, ConfigUrls } from '../../../enums/AppUrls';
 	import { CoreClient, type HomeFloorDto } from '../../../nlp-api';
 	import Spinner from '../../../components/common/Spinner.svelte';
 	import AddFloorModal from './AddFloorModal.svelte';
 	import { goto } from '$app/navigation';
 	import EditFloorModal from './EditFloorModal.svelte';
+	import NavigationCrumbs from '../../../components/core/NavigationCrumbs.svelte';
+	import NavigationCrumb from '../../../components/core/NavigationCrumb.svelte';
 
 	let floors: HomeFloorDto[] = [];
 	let loading: boolean = true;
@@ -24,11 +26,15 @@
 	refreshFloors();
 </script>
 
+<NavigationCrumbs>
+	<NavigationCrumb icon="bi-house-fill" url={AppUrls.Home} />
+	<NavigationCrumb icon="bi-gear-fill" url={ConfigUrls.Root} />
+	<NavigationCrumb title="Floors" />
+</NavigationCrumbs>
+
 <Row>
 	<Col>
-		<h1 class="text-center"><a href={ConfigUrls.Root}>Configuration</a> / Floors</h1>
 		<Spinner show={loading} />
-
 		<div class="text-end">
 			<AddFloorModal disabled={loading} {onFloorAdded} />
 			<EditFloorModal bind:this={editModal} {onFloorUpdated} />

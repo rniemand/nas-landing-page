@@ -6,6 +6,9 @@
 	import EditChoreModal from './modals/EditChoreModal.svelte';
 	import ChorePriorityIcon from './components/ChorePriorityIcon.svelte';
 	import CompleteChoreModal from './modals/CompleteChoreModal.svelte';
+	import NavigationCrumbs from '../../components/core/NavigationCrumbs.svelte';
+	import NavigationCrumb from '../../components/core/NavigationCrumb.svelte';
+	import { AppUrls } from '../../enums/AppUrls';
 
 	let loading: boolean = true;
 	let chores: HomeChoreDto[] = [];
@@ -28,25 +31,29 @@
 	refreshChores();
 </script>
 
-<Row>
+<NavigationCrumbs>
+	<NavigationCrumb icon="bi-house-fill" url={AppUrls.Home} />
+	<NavigationCrumb title="Chores" />
+</NavigationCrumbs>
+
+<Row class="mt-3">
 	<Col class="text-end">
 		<AddChoreModal {onChoreAdded} />
 		<EditChoreModal bind:this={editModal} {onChoreUpdated} />
 		<CompleteChoreModal bind:this={completeModal} {onChoreCompleted} />
 	</Col>
 </Row>
-<Row>
-	<Col>
-		<Accordion class="mt-1 rn-accordian">
-			{#each chores as chore (chore.choreId)}
-				<AccordionItem>
-					<span class="m-0" slot="header">
-						<ChorePriorityIcon priority={chore.priority} />
-						{chore.choreName}
-					</span>
-					<ChoreInfoDisplay {chore} {onEditChore} {onCompleteChore} />
-				</AccordionItem>
-			{/each}
-		</Accordion>
-	</Col>
+
+<Row class="mt-3">
+	<Accordion class="rn-accordian">
+		{#each chores as chore (chore.choreId)}
+			<AccordionItem>
+				<span class="m-0" slot="header">
+					<ChorePriorityIcon priority={chore.priority} />
+					{chore.choreName}
+				</span>
+				<ChoreInfoDisplay {chore} {onEditChore} {onCompleteChore} />
+			</AccordionItem>
+		{/each}
+	</Accordion>
 </Row>

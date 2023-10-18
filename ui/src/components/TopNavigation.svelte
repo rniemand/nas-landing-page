@@ -17,7 +17,7 @@
 	import { AuthClient, type WhoAmIResponse } from '../nlp-api';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
-	import { AuthUrls, ChoreUrls, ConfigUrls, GamesUrls, TasksUrls } from '../enums/AppUrls';
+	import { AppUrls } from '../enums/AppUrls';
 
 	let isOpen = false;
 	let whoAmI: WhoAmIResponse | undefined;
@@ -45,15 +45,6 @@
 	<Collapse {isOpen} navbar expand="md" on:update={handleUpdate}>
 		<Nav class="ms-auto" navbar>
 			{#if whoAmI?.signedIn}
-				<NavItem>
-					<NavLink href={ChoreUrls.Root} active={pageId === ChoreUrls.Root}>Chores</NavLink>
-				</NavItem>
-				<NavItem>
-					<NavLink href={GamesUrls.Root} active={pageId === GamesUrls.Root}>Games</NavLink>
-				</NavItem>
-				<NavItem>
-					<NavLink href={TasksUrls.Root} active={pageId === TasksUrls.Root}>Tasks</NavLink>
-				</NavItem>
 				<Dropdown nav inNavbar>
 					<DropdownToggle nav caret>Account</DropdownToggle>
 					<DropdownMenu end>
@@ -62,15 +53,11 @@
 							<i class="bi bi-key-fill" />
 							Log Out
 						</DropdownItem>
-						<DropdownItem on:click={() => goto(ConfigUrls.Root)}>
-							<i class="bi bi-gear-fill" />
-							Configuration
-						</DropdownItem>
 					</DropdownMenu>
 				</Dropdown>
 			{:else}
 				<NavItem>
-					<NavLink href={AuthUrls.Login}>Login</NavLink>
+					<NavLink href={AppUrls.Login}>Login</NavLink>
 				</NavItem>
 			{/if}
 		</Nav>
