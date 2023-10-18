@@ -24,51 +24,53 @@ public interface ICoreService
 
 internal class CoreService : ICoreService
 {
-  private readonly ICoreRepo _coreRepo;
   private readonly IUserRepo _userRepo;
+  private readonly IFloorRepo _floorRepo;
+  private readonly IRoomRepo _roomRepo;
 
-  public CoreService(ICoreRepo coreRepo, IUserRepo userRepo)
+  public CoreService(IUserRepo userRepo, IFloorRepo floorRepo, IRoomRepo roomRepo)
   {
-    _coreRepo = coreRepo;
     _userRepo = userRepo;
+    _floorRepo = floorRepo;
+    _roomRepo = roomRepo;
   }
 
   // Floors
   public async Task<IEnumerable<HomeFloorDto>> GetFloorsAsync(NlpUserContext userContext, int homeId) =>
-    await _coreRepo.GetFloorsAsync(homeId);
+    await _floorRepo.GetFloorsAsync(homeId);
 
   public async Task<BoolResponse> AddFloorAsync(NlpUserContext userContext, HomeFloorDto floor)
   {
     var response = new BoolResponse();
-    var rowCount = await _coreRepo.AddFloorAsync(floor);
+    var rowCount = await _floorRepo.AddFloorAsync(floor);
     return rowCount == 1 ? response : response.AsError("Failed to add floor");
   }
 
   public async Task<BoolResponse> UpdateFloorAsync(NlpUserContext userContext, HomeFloorDto floor)
   {
     var response = new BoolResponse();
-    var rowCount = await _coreRepo.UpdateFloorAsync(floor);
+    var rowCount = await _floorRepo.UpdateFloorAsync(floor);
     return rowCount == 1 ? response : response.AsError("Failed to update floor");
   }
 
   // Rooms
   public async Task<IEnumerable<HomeRoomDto>> GetFloorRoomsAsync(NlpUserContext userContext, int floorId) =>
-    await _coreRepo.GetFloorRoomsAsync(floorId);
+    await _roomRepo.GetFloorRoomsAsync(floorId);
 
   public async Task<int> ResolveFloorIdFromRoomIsAsync(NlpUserContext userContext, int roomId) =>
-    await _coreRepo.ResolveFloorIdFromRoomIdAsync(roomId);
+    await _floorRepo.ResolveFloorIdFromRoomIdAsync(roomId);
 
   public async Task<BoolResponse> AddRoomAsync(NlpUserContext userContext, HomeRoomDto room)
   {
     var response = new BoolResponse();
-    var rowCount = await _coreRepo.AddRoomAsync(room);
+    var rowCount = await _roomRepo.AddRoomAsync(room);
     return rowCount == 1 ? response : response.AsError("Failed to add room");
   }
 
   public async Task<BoolResponse> UpdateRoomAsync(NlpUserContext userContext, HomeRoomDto room)
   {
     var response = new BoolResponse();
-    var rowCount = await _coreRepo.UpdateRoomAsync(room);
+    var rowCount = await _roomRepo.UpdateRoomAsync(room);
     return rowCount == 1 ? response : response.AsError("Failed to update room");
   }
 

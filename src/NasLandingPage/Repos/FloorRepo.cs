@@ -1,44 +1,25 @@
 using Dapper;
-using NasLandingPage.Models;
 using NasLandingPage.Models.Dto;
 
 namespace NasLandingPage.Repos;
 
-public interface ICoreRepo
+public interface IFloorRepo
 {
-  // Homes
-  Task<IEnumerable<HomeDto>> GetHomesAsync(NlpUserContext userContext);
-
-  // Floors
   Task<IEnumerable<HomeFloorDto>> GetFloorsAsync(int homeId);
   Task<int> ResolveFloorIdFromRoomIdAsync(int roomId);
   Task<int> AddFloorAsync(HomeFloorDto floor);
   Task<int> UpdateFloorAsync(HomeFloorDto floor);
-
-  // Rooms
-  Task<IEnumerable<HomeRoomDto>> GetFloorRoomsAsync(int floorId);
-  Task<int> AddRoomAsync(HomeRoomDto room);
-  Task<int> UpdateRoomAsync(HomeRoomDto room);
 }
 
-internal class CoreRepo : ICoreRepo
+class FloorRepo : IFloorRepo
 {
   private readonly IConnectionHelper _connectionHelper;
 
-  public CoreRepo(IConnectionHelper connectionHelper)
+  public FloorRepo(IConnectionHelper connectionHelper)
   {
     _connectionHelper = connectionHelper;
   }
 
-
-  // Homes
-  public async Task<IEnumerable<HomeDto>> GetHomesAsync(NlpUserContext userContext)
-  {
-    await Task.CompletedTask;
-    return new List<HomeDto>();
-  }
-
-  // Floors
   public async Task<IEnumerable<HomeFloorDto>> GetFloorsAsync(int homeId)
   {
     const string query = @"
@@ -89,45 +70,5 @@ internal class CoreRepo : ICoreRepo
 	    `FloorId` = @FloorId";
     await using var connection = _connectionHelper.GetCoreConnection();
     return await connection.ExecuteAsync(query, floor);
-  }
-
-  // Rooms
-  public async Task<IEnumerable<HomeRoomDto>> GetFloorRoomsAsync(int floorId)
-  {
-    const string query = @"
-    SELECT *
-    FROM `HomeRooms` hr
-    WHERE
-      hr.`DateDeleted` IS NULL
-      AND hr.`FloorId` = @FloorId
-    ORDER BY hr.`RoomName`";
-    await using var connection = _connectionHelper.GetCoreConnection();
-    return await connection.QueryAsync<HomeRoomDto>(query, new
-    {
-      FloorId = floorId,
-    });
-  }
-
-  public async Task<int> AddRoomAsync(HomeRoomDto room)
-  {
-    const string query = @"
-    INSERT INTO `HomeRooms`
-	    (`FloorId`,`RoomName`)
-    VALUES
-	    (@FloorId,@RoomName)";
-    await using var connection = _connectionHelper.GetCoreConnection();
-    return await connection.ExecuteAsync(query, room);
-  }
-
-  public async Task<int> UpdateRoomAsync(HomeRoomDto room)
-  {
-    const string query = @"
-    UPDATE `HomeRooms`
-    SET
-	    `RoomName` = @RoomName
-    WHERE
-	    `RoomId` = @RoomId";
-    await using var connection = _connectionHelper.GetCoreConnection();
-    return await connection.ExecuteAsync(query, room);
   }
 }

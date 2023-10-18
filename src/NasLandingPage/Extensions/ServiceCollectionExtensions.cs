@@ -17,15 +17,21 @@ public static class ServiceCollectionExtensions
     return services
       .AddSingleton(BindConfiguration(configuration))
       .AddSingleton(typeof(ILoggerAdapter<>), typeof(LoggerAdapter<>))
+      // Abstractions
       .AddSingleton<IFileAbstraction, FileAbstraction>()
       .AddSingleton<IPathAbstraction, PathAbstraction>()
       .AddSingleton<IConnectionHelper, ConnectionHelper>()
+      // Repos
       .AddSingleton<IUserRepo, UserRepo>()
       .AddSingleton<IUserLinksRepo, UserLinksRepo>()
       .AddSingleton<IUserTasksRepo, UserTasksRepo>()
       .AddSingleton<IGamesRepo, GamesRepo>()
-      .AddSingleton<ICoreRepo, CoreRepo>()
+      .AddSingleton<IHomeRepo, HomeRepo>()
+      .AddSingleton<IFloorRepo, FloorRepo>()
+      .AddSingleton<IRoomRepo, RoomRepo>()
+      // Helpers
       .AddSingleton<IJsonHelper, JsonHelper>()
+      // Services
       .AddSingleton<IAuthService, AuthService>()
       .AddSingleton<IGamesService, GamesService>()
       .AddSingleton<IUserTasksService, UserTasksService>()
