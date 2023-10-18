@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { CoreClient, HomeFloorDto } from '../../nlp-api';
+	import { FloorClient, HomeFloorDto } from '../../nlp-api';
 	import { Input } from 'sveltestrap';
 
 	export let homeId: number;
@@ -11,7 +11,7 @@
 
 	const refreshFloors = async () => {
 		loading = true;
-		floors = (await new CoreClient().getFloors(homeId)) || [];
+		floors = (await new FloorClient().getFloors(homeId)) || [];
 		if (floors.length > 0 && value <= 0) value = floors[0].floorId;
 		loading = false;
 	};

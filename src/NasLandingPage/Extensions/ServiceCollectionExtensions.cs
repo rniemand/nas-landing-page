@@ -36,7 +36,9 @@ public static class ServiceCollectionExtensions
       .AddSingleton<IGamesService, GamesService>()
       .AddSingleton<IUserTasksService, UserTasksService>()
       .AddSingleton<IUserLinksService, UserLinksService>()
-      .AddSingleton<ICoreService, CoreService>()
+      .AddSingleton<IFloorService, FloorService>()
+      .AddSingleton<IRoomService, RoomService>()
+      .AddSingleton<IUserService, UserService>()
       // Plugins
       .AddHomeChores();
   }

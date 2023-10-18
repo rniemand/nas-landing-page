@@ -2,7 +2,7 @@
 	import { Accordion, AccordionItem, Button, Col, Row } from 'sveltestrap';
 	import { AppUrls, ConfigUrls } from '../../../enums/AppUrls';
 	import HomeFloorSelector from '../../../components/core/HomeFloorSelector.svelte';
-	import { CoreClient, type HomeRoomDto } from '../../../nlp-api';
+	import { RoomClient, type HomeRoomDto } from '../../../nlp-api';
 	import AddRoomModal from './AddRoomModal.svelte';
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
@@ -19,7 +19,7 @@
 
 	const refreshRooms = async (_floorID: number) => {
 		loading = true;
-		rooms = (await new CoreClient().getFloorRooms(_floorID)) || [];
+		rooms = (await new RoomClient().getFloorRooms(_floorID)) || [];
 		loading = false;
 	};
 

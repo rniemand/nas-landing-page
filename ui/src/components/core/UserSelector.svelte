@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Input } from 'sveltestrap';
-	import { CoreClient, type UserDto } from '../../nlp-api';
+	import { UserClient, type UserDto } from '../../nlp-api';
 
 	export let value: number = 0;
 	let users: UserDto[] = [];
@@ -8,7 +8,7 @@
 
 	const refreshUsers = async () => {
 		loading = true;
-		users = (await new CoreClient().getAllUsers()) || [];
+		users = (await new UserClient().getAllUsers()) || [];
 		loading = false;
 	};
 

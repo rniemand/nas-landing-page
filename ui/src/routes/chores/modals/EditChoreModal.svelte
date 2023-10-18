@@ -18,7 +18,7 @@
 	import ChoreFrequency from '../components/ChoreFrequency.svelte';
 	import { createBlankChore, validateAddChore } from '../chores';
 	import Spinner from '../../../components/common/Spinner.svelte';
-	import { ChoreClient, CoreClient, type HomeChoreDto } from '../../../nlp-api';
+	import { ChoreClient, FloorClient, type HomeChoreDto } from '../../../nlp-api';
 	import { toastError, toastSuccess } from '../../../components/ToastManager';
 
 	export let onChoreUpdated: () => void = () => {};
@@ -30,7 +30,7 @@
 	let isValid: boolean = false;
 
 	const enrichChore = async (_chore: HomeChoreDto) => {
-		floorId = await new CoreClient().resolveFloorIdFromRoomId(_chore.roomId);
+		floorId = await new FloorClient().resolveFloorIdFromRoomId(_chore.roomId);
 		loading = false;
 	};
 

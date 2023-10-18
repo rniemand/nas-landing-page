@@ -12,7 +12,7 @@
 		Row
 	} from 'sveltestrap';
 	import Spinner from '../../../components/common/Spinner.svelte';
-	import { CoreClient, type HomeRoomDto } from '../../../nlp-api';
+	import { RoomClient, type HomeRoomDto } from '../../../nlp-api';
 	import { createBlankRoom, validateAddRoom } from './rooms';
 	import HomeFloorSelector from '../../../components/core/HomeFloorSelector.svelte';
 	import { toastError, toastSuccess } from '../../../components/ToastManager';
@@ -34,7 +34,7 @@
 
 	const addRoom = async () => {
 		submitting = true;
-		const response = await new CoreClient().addRoom(room);
+		const response = await new RoomClient().addRoom(room);
 		if (response.success) {
 			toastSuccess('Add Room', `Room "${room.roomName}" has been added`);
 			open = false;

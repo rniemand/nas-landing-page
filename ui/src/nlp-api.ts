@@ -434,7 +434,7 @@ export class ChoreClient extends NlpBaseClient implements IChoreClient {
     }
 }
 
-export interface ICoreClient {
+export interface IFloorClient {
 
     getFloors(homeId: number): Promise<HomeFloorDto[]>;
 
@@ -443,17 +443,9 @@ export interface ICoreClient {
     updateFloor(floor: HomeFloorDto): Promise<BoolResponse>;
 
     resolveFloorIdFromRoomId(roomId: number): Promise<number>;
-
-    getFloorRooms(floorId: number): Promise<HomeRoomDto[]>;
-
-    addRoom(room: HomeRoomDto): Promise<BoolResponse>;
-
-    updateRoom(room: HomeRoomDto): Promise<BoolResponse>;
-
-    getAllUsers(): Promise<UserDto[]>;
 }
 
-export class CoreClient extends NlpBaseClient implements ICoreClient {
+export class FloorClient extends NlpBaseClient implements IFloorClient {
     private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
@@ -465,7 +457,7 @@ export class CoreClient extends NlpBaseClient implements ICoreClient {
     }
 
     getFloors(homeId: number): Promise<HomeFloorDto[]> {
-        let url_ = this.baseUrl + "/api/Core/home/{homeId}/floors";
+        let url_ = this.baseUrl + "/api/Floor/home/{homeId}/floors";
         if (homeId === undefined || homeId === null)
             throw new Error("The parameter 'homeId' must be defined.");
         url_ = url_.replace("{homeId}", encodeURIComponent("" + homeId));
@@ -511,7 +503,7 @@ export class CoreClient extends NlpBaseClient implements ICoreClient {
     }
 
     addFloor(floor: HomeFloorDto): Promise<BoolResponse> {
-        let url_ = this.baseUrl + "/api/Core/add-floor";
+        let url_ = this.baseUrl + "/api/Floor/add-floor";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(floor);
@@ -551,7 +543,7 @@ export class CoreClient extends NlpBaseClient implements ICoreClient {
     }
 
     updateFloor(floor: HomeFloorDto): Promise<BoolResponse> {
-        let url_ = this.baseUrl + "/api/Core/update-floor";
+        let url_ = this.baseUrl + "/api/Floor/update-floor";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(floor);
@@ -591,7 +583,7 @@ export class CoreClient extends NlpBaseClient implements ICoreClient {
     }
 
     resolveFloorIdFromRoomId(roomId: number): Promise<number> {
-        let url_ = this.baseUrl + "/api/Core/room/{roomId}/floor-id";
+        let url_ = this.baseUrl + "/api/Floor/room/{roomId}/floor-id";
         if (roomId === undefined || roomId === null)
             throw new Error("The parameter 'roomId' must be defined.");
         url_ = url_.replace("{roomId}", encodeURIComponent("" + roomId));
@@ -628,175 +620,6 @@ export class CoreClient extends NlpBaseClient implements ICoreClient {
             });
         }
         return Promise.resolve<number>(null as any);
-    }
-
-    getFloorRooms(floorId: number): Promise<HomeRoomDto[]> {
-        let url_ = this.baseUrl + "/api/Core/floor/{floorId}/rooms";
-        if (floorId === undefined || floorId === null)
-            throw new Error("The parameter 'floorId' must be defined.");
-        url_ = url_.replace("{floorId}", encodeURIComponent("" + floorId));
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_: RequestInit = {
-            method: "GET",
-            headers: {
-                "Accept": "application/json"
-            }
-        };
-
-        return this.transformOptions(options_).then(transformedOptions_ => {
-            return this.http.fetch(url_, transformedOptions_);
-        }).then((_response: Response) => {
-            return this.transformResult(url_, _response, (_response: Response) => this.processGetFloorRooms(_response));
-        });
-    }
-
-    protected processGetFloorRooms(response: Response): Promise<HomeRoomDto[]> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200)
-                    result200!.push(HomeRoomDto.fromJS(item));
-            }
-            else {
-                result200 = <any>null;
-            }
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<HomeRoomDto[]>(null as any);
-    }
-
-    addRoom(room: HomeRoomDto): Promise<BoolResponse> {
-        let url_ = this.baseUrl + "/api/Core/add-room";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(room);
-
-        let options_: RequestInit = {
-            body: content_,
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            }
-        };
-
-        return this.transformOptions(options_).then(transformedOptions_ => {
-            return this.http.fetch(url_, transformedOptions_);
-        }).then((_response: Response) => {
-            return this.transformResult(url_, _response, (_response: Response) => this.processAddRoom(_response));
-        });
-    }
-
-    protected processAddRoom(response: Response): Promise<BoolResponse> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = BoolResponse.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<BoolResponse>(null as any);
-    }
-
-    updateRoom(room: HomeRoomDto): Promise<BoolResponse> {
-        let url_ = this.baseUrl + "/api/Core/update-room";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(room);
-
-        let options_: RequestInit = {
-            body: content_,
-            method: "PATCH",
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            }
-        };
-
-        return this.transformOptions(options_).then(transformedOptions_ => {
-            return this.http.fetch(url_, transformedOptions_);
-        }).then((_response: Response) => {
-            return this.transformResult(url_, _response, (_response: Response) => this.processUpdateRoom(_response));
-        });
-    }
-
-    protected processUpdateRoom(response: Response): Promise<BoolResponse> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = BoolResponse.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<BoolResponse>(null as any);
-    }
-
-    getAllUsers(): Promise<UserDto[]> {
-        let url_ = this.baseUrl + "/api/Core/users/list";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_: RequestInit = {
-            method: "GET",
-            headers: {
-                "Accept": "application/json"
-            }
-        };
-
-        return this.transformOptions(options_).then(transformedOptions_ => {
-            return this.http.fetch(url_, transformedOptions_);
-        }).then((_response: Response) => {
-            return this.transformResult(url_, _response, (_response: Response) => this.processGetAllUsers(_response));
-        });
-    }
-
-    protected processGetAllUsers(response: Response): Promise<UserDto[]> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200)
-                    result200!.push(UserDto.fromJS(item));
-            }
-            else {
-                result200 = <any>null;
-            }
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<UserDto[]>(null as any);
     }
 }
 
@@ -1013,6 +836,213 @@ export class ImageClient extends NlpBaseClient implements IImageClient {
             });
         }
         return Promise.resolve<FileResponse | null>(null as any);
+    }
+}
+
+export interface IRoomClient {
+
+    getFloorRooms(floorId: number): Promise<HomeRoomDto[]>;
+
+    addRoom(room: HomeRoomDto): Promise<BoolResponse>;
+
+    updateRoom(room: HomeRoomDto): Promise<BoolResponse>;
+}
+
+export class RoomClient extends NlpBaseClient implements IRoomClient {
+    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+        super();
+        this.http = http ? http : window as any;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    getFloorRooms(floorId: number): Promise<HomeRoomDto[]> {
+        let url_ = this.baseUrl + "/api/Room/floor/{floorId}/rooms";
+        if (floorId === undefined || floorId === null)
+            throw new Error("The parameter 'floorId' must be defined.");
+        url_ = url_.replace("{floorId}", encodeURIComponent("" + floorId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processGetFloorRooms(_response));
+        });
+    }
+
+    protected processGetFloorRooms(response: Response): Promise<HomeRoomDto[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(HomeRoomDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<HomeRoomDto[]>(null as any);
+    }
+
+    addRoom(room: HomeRoomDto): Promise<BoolResponse> {
+        let url_ = this.baseUrl + "/api/Room/add-room";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(room);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processAddRoom(_response));
+        });
+    }
+
+    protected processAddRoom(response: Response): Promise<BoolResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = BoolResponse.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<BoolResponse>(null as any);
+    }
+
+    updateRoom(room: HomeRoomDto): Promise<BoolResponse> {
+        let url_ = this.baseUrl + "/api/Room/update-room";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(room);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processUpdateRoom(_response));
+        });
+    }
+
+    protected processUpdateRoom(response: Response): Promise<BoolResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = BoolResponse.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<BoolResponse>(null as any);
+    }
+}
+
+export interface IUserClient {
+
+    getAllUsers(): Promise<UserDto[]>;
+}
+
+export class UserClient extends NlpBaseClient implements IUserClient {
+    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+        super();
+        this.http = http ? http : window as any;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    getAllUsers(): Promise<UserDto[]> {
+        let url_ = this.baseUrl + "/api/User/users/list";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processGetAllUsers(_response));
+        });
+    }
+
+    protected processGetAllUsers(response: Response): Promise<UserDto[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(UserDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<UserDto[]>(null as any);
     }
 }
 
@@ -1734,114 +1764,6 @@ export interface IHomeFloorDto {
     floorName: string;
 }
 
-export class HomeRoomDto implements IHomeRoomDto {
-    roomId!: number;
-    floorId!: number;
-    dateAdded!: Date;
-    dateDeleted?: Date | null;
-    roomName!: string;
-
-    constructor(data?: IHomeRoomDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.roomId = _data["roomId"] !== undefined ? _data["roomId"] : <any>null;
-            this.floorId = _data["floorId"] !== undefined ? _data["floorId"] : <any>null;
-            this.dateAdded = _data["dateAdded"] ? new Date(_data["dateAdded"].toString()) : <any>null;
-            this.dateDeleted = _data["dateDeleted"] ? new Date(_data["dateDeleted"].toString()) : <any>null;
-            this.roomName = _data["roomName"] !== undefined ? _data["roomName"] : <any>null;
-        }
-    }
-
-    static fromJS(data: any): HomeRoomDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new HomeRoomDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["roomId"] = this.roomId !== undefined ? this.roomId : <any>null;
-        data["floorId"] = this.floorId !== undefined ? this.floorId : <any>null;
-        data["dateAdded"] = this.dateAdded ? this.dateAdded.toISOString() : <any>null;
-        data["dateDeleted"] = this.dateDeleted ? this.dateDeleted.toISOString() : <any>null;
-        data["roomName"] = this.roomName !== undefined ? this.roomName : <any>null;
-        return data;
-    }
-}
-
-export interface IHomeRoomDto {
-    roomId: number;
-    floorId: number;
-    dateAdded: Date;
-    dateDeleted?: Date | null;
-    roomName: string;
-}
-
-export class UserDto implements IUserDto {
-    userID!: number;
-    currentHomeID!: number;
-    email!: string;
-    firstName!: string;
-    surname!: string;
-    displayName!: string;
-
-    constructor(data?: IUserDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.userID = _data["userID"] !== undefined ? _data["userID"] : <any>null;
-            this.currentHomeID = _data["currentHomeID"] !== undefined ? _data["currentHomeID"] : <any>null;
-            this.email = _data["email"] !== undefined ? _data["email"] : <any>null;
-            this.firstName = _data["firstName"] !== undefined ? _data["firstName"] : <any>null;
-            this.surname = _data["surname"] !== undefined ? _data["surname"] : <any>null;
-            this.displayName = _data["displayName"] !== undefined ? _data["displayName"] : <any>null;
-        }
-    }
-
-    static fromJS(data: any): UserDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new UserDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["userID"] = this.userID !== undefined ? this.userID : <any>null;
-        data["currentHomeID"] = this.currentHomeID !== undefined ? this.currentHomeID : <any>null;
-        data["email"] = this.email !== undefined ? this.email : <any>null;
-        data["firstName"] = this.firstName !== undefined ? this.firstName : <any>null;
-        data["surname"] = this.surname !== undefined ? this.surname : <any>null;
-        data["displayName"] = this.displayName !== undefined ? this.displayName : <any>null;
-        return data;
-    }
-}
-
-export interface IUserDto {
-    userID: number;
-    currentHomeID: number;
-    email: string;
-    firstName: string;
-    surname: string;
-    displayName: string;
-}
-
 export class GamePlatformDto implements IGamePlatformDto {
     platformID!: number;
     platformName!: string;
@@ -1964,6 +1886,114 @@ export interface IGameDto {
     locationName?: string | null;
     imagePath?: string | null;
     searchTerm?: string | null;
+}
+
+export class HomeRoomDto implements IHomeRoomDto {
+    roomId!: number;
+    floorId!: number;
+    dateAdded!: Date;
+    dateDeleted?: Date | null;
+    roomName!: string;
+
+    constructor(data?: IHomeRoomDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.roomId = _data["roomId"] !== undefined ? _data["roomId"] : <any>null;
+            this.floorId = _data["floorId"] !== undefined ? _data["floorId"] : <any>null;
+            this.dateAdded = _data["dateAdded"] ? new Date(_data["dateAdded"].toString()) : <any>null;
+            this.dateDeleted = _data["dateDeleted"] ? new Date(_data["dateDeleted"].toString()) : <any>null;
+            this.roomName = _data["roomName"] !== undefined ? _data["roomName"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): HomeRoomDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new HomeRoomDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["roomId"] = this.roomId !== undefined ? this.roomId : <any>null;
+        data["floorId"] = this.floorId !== undefined ? this.floorId : <any>null;
+        data["dateAdded"] = this.dateAdded ? this.dateAdded.toISOString() : <any>null;
+        data["dateDeleted"] = this.dateDeleted ? this.dateDeleted.toISOString() : <any>null;
+        data["roomName"] = this.roomName !== undefined ? this.roomName : <any>null;
+        return data;
+    }
+}
+
+export interface IHomeRoomDto {
+    roomId: number;
+    floorId: number;
+    dateAdded: Date;
+    dateDeleted?: Date | null;
+    roomName: string;
+}
+
+export class UserDto implements IUserDto {
+    userID!: number;
+    currentHomeID!: number;
+    email!: string;
+    firstName!: string;
+    surname!: string;
+    displayName!: string;
+
+    constructor(data?: IUserDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.userID = _data["userID"] !== undefined ? _data["userID"] : <any>null;
+            this.currentHomeID = _data["currentHomeID"] !== undefined ? _data["currentHomeID"] : <any>null;
+            this.email = _data["email"] !== undefined ? _data["email"] : <any>null;
+            this.firstName = _data["firstName"] !== undefined ? _data["firstName"] : <any>null;
+            this.surname = _data["surname"] !== undefined ? _data["surname"] : <any>null;
+            this.displayName = _data["displayName"] !== undefined ? _data["displayName"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): UserDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new UserDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["userID"] = this.userID !== undefined ? this.userID : <any>null;
+        data["currentHomeID"] = this.currentHomeID !== undefined ? this.currentHomeID : <any>null;
+        data["email"] = this.email !== undefined ? this.email : <any>null;
+        data["firstName"] = this.firstName !== undefined ? this.firstName : <any>null;
+        data["surname"] = this.surname !== undefined ? this.surname : <any>null;
+        data["displayName"] = this.displayName !== undefined ? this.displayName : <any>null;
+        return data;
+    }
+}
+
+export interface IUserDto {
+    userID: number;
+    currentHomeID: number;
+    email: string;
+    firstName: string;
+    surname: string;
+    displayName: string;
 }
 
 export class UserLinkDto implements IUserLinkDto {
