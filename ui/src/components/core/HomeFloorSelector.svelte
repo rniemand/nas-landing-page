@@ -18,7 +18,7 @@
 	refreshFloors();
 </script>
 
-<Input type="select" disabled={loading} bind:value class={className}>
+<Input type="select" disabled={loading} bind:value class={className} on:change>
 	{#each floors as floor}
 		<option value={floor.floorId} selected={value === floor.floorId}>{floor.floorName}</option>
 	{/each}

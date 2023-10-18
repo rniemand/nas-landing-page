@@ -16,16 +16,27 @@
 	let editModal: EditRoomModal;
 
 	const refreshRooms = async (_floorID: number) => {
-		loading = true;
-		rooms = (await new RoomClient().getFloorRooms(_floorID)) || [];
-		loading = false;
+		if (_floorID <= 0) {
+			rooms = [];
+		} else {
+			loading = true;
+			rooms = (await new RoomClient().getFloorRooms(_floorID)) || [];
+			loading = false;
+		}
+	};
+
+	const floorSelected = (a: any) => {
+		let floorId = parseInt(a?.target?.value || '0');
+		if (floorId === 0) return;
+		goto(ConfigUrls.FloorRooms(floorId));
 	};
 
 	const onRoomAdded = () => refreshRooms(floorId);
 	const onRoomUpdated = () => refreshRooms(floorId);
 
+	$: if ($page.url?.searchParams?.has('floorId'))
+		floorId = parseInt($page.url?.searchParams.get('floorId') || '0');
 	$: refreshRooms(floorId);
-	$: floorId = parseInt($page.url?.searchParams.get('floorId') || '0');
 </script>
 
 <NavigationCrumbs>
@@ -36,7 +47,7 @@
 
 <Row>
 	<Col>
-		<HomeFloorSelector className="mt-3" bind:value={floorId} />
+		<HomeFloorSelector className="mt-3" bind:value={floorId} on:change={floorSelected} />
 		<div class="text-end mt-3">
 			<Button color="primary" on:click={() => goto(ConfigUrls.Floors)}>Floors</Button>
 			<AddRoomModal disabled={loading} {floorId} {onRoomAdded} />
