@@ -1,6 +1,11 @@
 <script lang="ts">
 	import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'sveltestrap';
-	import { ChoreClient, CompleteChoreRequest, type HomeChoreDto, type WhoAmIResponse } from '../../../nlp-api';
+	import {
+		ChoreClient,
+		CompleteChoreRequest,
+		type HomeChoreDto,
+		type WhoAmIResponse
+	} from '../../../nlp-api';
 	import { createBlankChore } from '../chores';
 	import UserSelector from '../../../components/core/UserSelector.svelte';
 	import { onMount } from 'svelte';
@@ -21,22 +26,24 @@
 	export const completeChore = (_chore: HomeChoreDto) => {
 		chore = _chore;
 		open = true;
+		submitting = false;
 	};
 
 	const _completeChore = async () => {
 		const request = new CompleteChoreRequest({
 			chore: chore,
-			completedBy: userId,
+			completedBy: userId
 		});
 		submitting = true;
 		const response = await new ChoreClient().completeChore(request);
-		if(response.success) {
+		if (response.success) {
 			toastSuccess('Chore', 'Chore has been marked as completed');
 			open = false;
 			onChoreCompleted();
 		} else {
 			toastError('Error', response?.error || 'Failed to complete chore');
 		}
+		submitting = false;
 	};
 
 	onMount(() => {
@@ -56,6 +63,7 @@
 		{/if}
 	</ModalBody>
 	<ModalFooter>
-		<Button color="primary" disabled={userId <= 0 || submitting} on:click={_completeChore}>Complete Chore</Button>
+		<Button color="primary" disabled={userId <= 0 || submitting} on:click={_completeChore}
+			>Complete Chore</Button>
 	</ModalFooter>
 </Modal>
