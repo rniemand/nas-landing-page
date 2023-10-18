@@ -10,8 +10,6 @@
 	import NavigationCrumbs from '../../../components/core/NavigationCrumbs.svelte';
 	import NavigationCrumb from '../../../components/core/NavigationCrumb.svelte';
 
-	// TODO: [COMPLETE] make use of the correct home id here
-	const homeID: number = 1;
 	let floorId: number = 0;
 	let loading: boolean = true;
 	let rooms: HomeRoomDto[] = [];
@@ -38,7 +36,7 @@
 
 <Row>
 	<Col>
-		<HomeFloorSelector className="mt-3" homeId={homeID} bind:value={floorId} />
+		<HomeFloorSelector className="mt-3" bind:value={floorId} />
 		<div class="text-end mt-3">
 			<Button color="primary" on:click={() => goto(ConfigUrls.Floors)}>Floors</Button>
 			<AddRoomModal disabled={loading} {floorId} {onRoomAdded} />

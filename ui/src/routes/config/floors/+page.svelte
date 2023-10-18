@@ -15,8 +15,7 @@
 
 	const refreshFloors = async () => {
 		loading = true;
-		// TODO: work in the users home id
-		floors = (await new FloorClient().listFloors(1)) || [];
+		floors = (await new FloorClient().listFloors()) || [];
 		loading = false;
 	};
 

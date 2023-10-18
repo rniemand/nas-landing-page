@@ -20,8 +20,6 @@
 	export let disabled: boolean = false;
 	export let floorId: number = 0;
 	export let onRoomAdded: () => void = () => {};
-	// TODO: [COMPLETE] make use of correct home id here
-	const homeID: number = 1;
 	let open = false;
 	let submitting: boolean = false;
 	let isValid: boolean = false;
@@ -58,7 +56,7 @@
 				<Row>
 					<FormGroup>
 						<Label>Room Name</Label>
-						<HomeFloorSelector homeId={homeID} bind:value={room.floorId} />
+						<HomeFloorSelector bind:value={room.floorId} />
 					</FormGroup>
 				</Row>
 				<Row>
