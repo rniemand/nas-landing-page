@@ -38,10 +38,11 @@
 <Row>
 	<Col>
 		<Accordion class="mt-1 rn-accordian">
-			{#each chores as chore}
+			{#each chores as chore (chore.choreId)}
 				<AccordionItem>
 					<span class="m-0" slot="header">
-						<ChorePriorityIcon priority={chore.priority} /> {chore.choreName}
+						<ChorePriorityIcon priority={chore.priority} />
+						{chore.choreName}
 					</span>
 					<ChoreInfoDisplay {chore} {onEditChore} {onCompleteChore} />
 				</AccordionItem>
