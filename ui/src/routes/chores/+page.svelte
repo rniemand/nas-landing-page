@@ -40,8 +40,9 @@
 		<Accordion class="mt-1 rn-accordian">
 			{#each chores as chore}
 				<AccordionItem>
-					<span class="m-0" slot="header"
-						><ChorePriorityIcon priority={chore.priority} /> {chore.choreName}</span>
+					<span class="m-0" slot="header">
+						<ChorePriorityIcon priority={chore.priority} /> {chore.choreName}
+					</span>
 					<ChoreInfoDisplay {chore} {onEditChore} {onCompleteChore} />
 				</AccordionItem>
 			{/each}

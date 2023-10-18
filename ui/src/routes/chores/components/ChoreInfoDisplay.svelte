@@ -57,14 +57,14 @@
 		<i class="bi bi-pencil-square" />
 		<span class="d-none d-sm-inline">Edit</span>
 	</Button>
-	<Button color="warning" class="flex-fill me-1">
+	<!-- <Button color="warning" class="flex-fill me-1" disabled>
 		<i class="bi bi-calendar-x-fill" />
 		<span class="d-none d-sm-inline">Reschedule</span>
 	</Button>
-	<Button color="secondary" class="flex-fill me-1">
+	<Button color="secondary" class="flex-fill me-1" disabled>
 		<i class="bi bi-card-checklist" />
 		<span class="d-none d-sm-inline">History</span>
-	</Button>
+	</Button> -->
 	<Button color="success" class="flex-fill" on:click={() => onCompleteChore(chore)}>
 		<i class="bi bi-check2-circle" />
 		<span class="d-none d-sm-inline">Complete</span>
