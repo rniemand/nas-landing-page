@@ -1,14 +1,15 @@
-INSERT INTO `Users`
-	(`Email`, `FirstName`, `Surname`, `PasswordHash`)
-VALUES
-	('niemand.richard@gmail.com', 'Richard', 'Niemand', ''),
-  ('1@2.com', 'Kelsie', 'Mackie', ''),
-  ('2@2.com', 'Sam', 'Niemand', '');
-
 INSERT INTO `Homes`
-  (`DefaultHome`,`Longitude`,`Latitude`,`Country`,`PostalCode`,`City`,`Province`,`HomeName`,`AddressLine1`,`AddressLine2`)
+  (`Longitude`,`Latitude`,`Country`,`PostalCode`,`City`,`Province`,`HomeName`,`AddressLine1`,`AddressLine2`)
 VALUES
-  (1,12,21,'ca','xxx','city','province','Home','address 1','address 2');
+  (12, 21,'ca','xxx','city','province','Home (Default)','address 1','address 2'),
+  (12, 21,'ca','xxx','city','province','Home 2','address 1','address 2');
+
+INSERT INTO `Users`
+	(`CurrentHomeID`, `Email`, `FirstName`, `Surname`, `PasswordHash`)
+VALUES
+	(1, 'niemand.richard@gmail.com', 'Richard', 'Niemand', ''),
+  (2, '1@2.com', 'Kelsie', 'Mackie', ''),
+  (1, '2@2.com', 'Sam', 'Niemand', '');
 
 INSERT INTO `HomeFloors`
 	(`HomeId`,`FloorName`)
@@ -64,3 +65,12 @@ VALUES
 	(3,1,'2023-10-17 00:00:00','high','DaysOfWeek','mon,wed,fri','3 Times a week every week','Occurs on every Monday, Wednesday and Friday'),
 	(4,1,'2023-10-17 00:00:00','med','Weeks','2','Every 2nd week from completion date','Occurs exactly 2 weeks after the last completion date'),
   (5,1,'2023-10-17 00:00:00','low','DaysOfMonth','15','Every 15th of a month','Occurs on the 15th of every month');
+
+INSERT INTO `UserHomeMappings`
+  (`UserID`, `HomeID`)
+VALUES
+  (1, 1),
+  (2, 1),
+  (3, 1),
+  (1, 2),
+  (2, 2);

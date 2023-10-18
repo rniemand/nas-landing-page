@@ -1,5 +1,6 @@
+using NasLandingPage.Enums;
 using NasLandingPage.Exceptions;
-using NasLandingPage.Plugins.Chores;
+using NasLandingPage.Models.Misc;
 
 namespace NasLandingPage.Tests.Plugins.Chores;
 

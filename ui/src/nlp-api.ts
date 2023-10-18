@@ -1685,8 +1685,8 @@ export interface ICompleteChoreRequest {
 export class HomeFloorDto implements IHomeFloorDto {
     floorId!: number;
     homeId!: number;
-    dateAddedUtc!: Date;
-    dateDeletedUtc?: Date | null;
+    dateAdded!: Date;
+    dateDeleted?: Date | null;
     floorName!: string;
 
     constructor(data?: IHomeFloorDto) {
@@ -1702,8 +1702,8 @@ export class HomeFloorDto implements IHomeFloorDto {
         if (_data) {
             this.floorId = _data["floorId"] !== undefined ? _data["floorId"] : <any>null;
             this.homeId = _data["homeId"] !== undefined ? _data["homeId"] : <any>null;
-            this.dateAddedUtc = _data["dateAddedUtc"] ? new Date(_data["dateAddedUtc"].toString()) : <any>null;
-            this.dateDeletedUtc = _data["dateDeletedUtc"] ? new Date(_data["dateDeletedUtc"].toString()) : <any>null;
+            this.dateAdded = _data["dateAdded"] ? new Date(_data["dateAdded"].toString()) : <any>null;
+            this.dateDeleted = _data["dateDeleted"] ? new Date(_data["dateDeleted"].toString()) : <any>null;
             this.floorName = _data["floorName"] !== undefined ? _data["floorName"] : <any>null;
         }
     }
@@ -1719,8 +1719,8 @@ export class HomeFloorDto implements IHomeFloorDto {
         data = typeof data === 'object' ? data : {};
         data["floorId"] = this.floorId !== undefined ? this.floorId : <any>null;
         data["homeId"] = this.homeId !== undefined ? this.homeId : <any>null;
-        data["dateAddedUtc"] = this.dateAddedUtc ? this.dateAddedUtc.toISOString() : <any>null;
-        data["dateDeletedUtc"] = this.dateDeletedUtc ? this.dateDeletedUtc.toISOString() : <any>null;
+        data["dateAdded"] = this.dateAdded ? this.dateAdded.toISOString() : <any>null;
+        data["dateDeleted"] = this.dateDeleted ? this.dateDeleted.toISOString() : <any>null;
         data["floorName"] = this.floorName !== undefined ? this.floorName : <any>null;
         return data;
     }
@@ -1729,16 +1729,16 @@ export class HomeFloorDto implements IHomeFloorDto {
 export interface IHomeFloorDto {
     floorId: number;
     homeId: number;
-    dateAddedUtc: Date;
-    dateDeletedUtc?: Date | null;
+    dateAdded: Date;
+    dateDeleted?: Date | null;
     floorName: string;
 }
 
 export class HomeRoomDto implements IHomeRoomDto {
     roomId!: number;
     floorId!: number;
-    dateAddedUtc!: Date;
-    dateDeletedUtc?: Date | null;
+    dateAdded!: Date;
+    dateDeleted?: Date | null;
     roomName!: string;
 
     constructor(data?: IHomeRoomDto) {
@@ -1754,8 +1754,8 @@ export class HomeRoomDto implements IHomeRoomDto {
         if (_data) {
             this.roomId = _data["roomId"] !== undefined ? _data["roomId"] : <any>null;
             this.floorId = _data["floorId"] !== undefined ? _data["floorId"] : <any>null;
-            this.dateAddedUtc = _data["dateAddedUtc"] ? new Date(_data["dateAddedUtc"].toString()) : <any>null;
-            this.dateDeletedUtc = _data["dateDeletedUtc"] ? new Date(_data["dateDeletedUtc"].toString()) : <any>null;
+            this.dateAdded = _data["dateAdded"] ? new Date(_data["dateAdded"].toString()) : <any>null;
+            this.dateDeleted = _data["dateDeleted"] ? new Date(_data["dateDeleted"].toString()) : <any>null;
             this.roomName = _data["roomName"] !== undefined ? _data["roomName"] : <any>null;
         }
     }
@@ -1771,8 +1771,8 @@ export class HomeRoomDto implements IHomeRoomDto {
         data = typeof data === 'object' ? data : {};
         data["roomId"] = this.roomId !== undefined ? this.roomId : <any>null;
         data["floorId"] = this.floorId !== undefined ? this.floorId : <any>null;
-        data["dateAddedUtc"] = this.dateAddedUtc ? this.dateAddedUtc.toISOString() : <any>null;
-        data["dateDeletedUtc"] = this.dateDeletedUtc ? this.dateDeletedUtc.toISOString() : <any>null;
+        data["dateAdded"] = this.dateAdded ? this.dateAdded.toISOString() : <any>null;
+        data["dateDeleted"] = this.dateDeleted ? this.dateDeleted.toISOString() : <any>null;
         data["roomName"] = this.roomName !== undefined ? this.roomName : <any>null;
         return data;
     }
@@ -1781,13 +1781,14 @@ export class HomeRoomDto implements IHomeRoomDto {
 export interface IHomeRoomDto {
     roomId: number;
     floorId: number;
-    dateAddedUtc: Date;
-    dateDeletedUtc?: Date | null;
+    dateAdded: Date;
+    dateDeleted?: Date | null;
     roomName: string;
 }
 
 export class UserDto implements IUserDto {
     userID!: number;
+    currentHomeID!: number;
     email!: string;
     firstName!: string;
     surname!: string;
@@ -1805,6 +1806,7 @@ export class UserDto implements IUserDto {
     init(_data?: any) {
         if (_data) {
             this.userID = _data["userID"] !== undefined ? _data["userID"] : <any>null;
+            this.currentHomeID = _data["currentHomeID"] !== undefined ? _data["currentHomeID"] : <any>null;
             this.email = _data["email"] !== undefined ? _data["email"] : <any>null;
             this.firstName = _data["firstName"] !== undefined ? _data["firstName"] : <any>null;
             this.surname = _data["surname"] !== undefined ? _data["surname"] : <any>null;
@@ -1822,6 +1824,7 @@ export class UserDto implements IUserDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["userID"] = this.userID !== undefined ? this.userID : <any>null;
+        data["currentHomeID"] = this.currentHomeID !== undefined ? this.currentHomeID : <any>null;
         data["email"] = this.email !== undefined ? this.email : <any>null;
         data["firstName"] = this.firstName !== undefined ? this.firstName : <any>null;
         data["surname"] = this.surname !== undefined ? this.surname : <any>null;
@@ -1832,6 +1835,7 @@ export class UserDto implements IUserDto {
 
 export interface IUserDto {
     userID: number;
+    currentHomeID: number;
     email: string;
     firstName: string;
     surname: string;
@@ -1968,9 +1972,9 @@ export class UserLinkDto implements IUserLinkDto {
     deleted!: boolean;
     linkOrder!: number;
     followCount!: number;
-    dateAddedUtc!: Date;
-    dateUpdatedUtc!: Date;
-    dateLastFollowedUtc!: Date;
+    dateAdded!: Date;
+    dateUpdated!: Date;
+    dateLastFollowed!: Date;
     linkName!: string;
     linkCategory!: string;
     linkUrl!: string;
@@ -1992,9 +1996,9 @@ export class UserLinkDto implements IUserLinkDto {
             this.deleted = _data["deleted"] !== undefined ? _data["deleted"] : <any>null;
             this.linkOrder = _data["linkOrder"] !== undefined ? _data["linkOrder"] : <any>null;
             this.followCount = _data["followCount"] !== undefined ? _data["followCount"] : <any>null;
-            this.dateAddedUtc = _data["dateAddedUtc"] ? new Date(_data["dateAddedUtc"].toString()) : <any>null;
-            this.dateUpdatedUtc = _data["dateUpdatedUtc"] ? new Date(_data["dateUpdatedUtc"].toString()) : <any>null;
-            this.dateLastFollowedUtc = _data["dateLastFollowedUtc"] ? new Date(_data["dateLastFollowedUtc"].toString()) : <any>null;
+            this.dateAdded = _data["dateAdded"] ? new Date(_data["dateAdded"].toString()) : <any>null;
+            this.dateUpdated = _data["dateUpdated"] ? new Date(_data["dateUpdated"].toString()) : <any>null;
+            this.dateLastFollowed = _data["dateLastFollowed"] ? new Date(_data["dateLastFollowed"].toString()) : <any>null;
             this.linkName = _data["linkName"] !== undefined ? _data["linkName"] : <any>null;
             this.linkCategory = _data["linkCategory"] !== undefined ? _data["linkCategory"] : <any>null;
             this.linkUrl = _data["linkUrl"] !== undefined ? _data["linkUrl"] : <any>null;
@@ -2016,9 +2020,9 @@ export class UserLinkDto implements IUserLinkDto {
         data["deleted"] = this.deleted !== undefined ? this.deleted : <any>null;
         data["linkOrder"] = this.linkOrder !== undefined ? this.linkOrder : <any>null;
         data["followCount"] = this.followCount !== undefined ? this.followCount : <any>null;
-        data["dateAddedUtc"] = this.dateAddedUtc ? this.dateAddedUtc.toISOString() : <any>null;
-        data["dateUpdatedUtc"] = this.dateUpdatedUtc ? this.dateUpdatedUtc.toISOString() : <any>null;
-        data["dateLastFollowedUtc"] = this.dateLastFollowedUtc ? this.dateLastFollowedUtc.toISOString() : <any>null;
+        data["dateAdded"] = this.dateAdded ? this.dateAdded.toISOString() : <any>null;
+        data["dateUpdated"] = this.dateUpdated ? this.dateUpdated.toISOString() : <any>null;
+        data["dateLastFollowed"] = this.dateLastFollowed ? this.dateLastFollowed.toISOString() : <any>null;
         data["linkName"] = this.linkName !== undefined ? this.linkName : <any>null;
         data["linkCategory"] = this.linkCategory !== undefined ? this.linkCategory : <any>null;
         data["linkUrl"] = this.linkUrl !== undefined ? this.linkUrl : <any>null;
@@ -2033,9 +2037,9 @@ export interface IUserLinkDto {
     deleted: boolean;
     linkOrder: number;
     followCount: number;
-    dateAddedUtc: Date;
-    dateUpdatedUtc: Date;
-    dateLastFollowedUtc: Date;
+    dateAdded: Date;
+    dateUpdated: Date;
+    dateLastFollowed: Date;
     linkName: string;
     linkCategory: string;
     linkUrl: string;
@@ -2046,9 +2050,9 @@ export class UserTaskDto implements IUserTaskDto {
     taskID!: number;
     userID!: number;
     taskPriority!: number;
-    dateAddedUtc!: Date;
-    dateCompletedUtc?: Date | null;
-    dateDeletedUtc?: Date | null;
+    dateAdded!: Date;
+    dateCompleted?: Date | null;
+    dateDeleted?: Date | null;
     taskName!: string;
     taskCategory!: string;
     taskSubCategory!: string;
@@ -2068,9 +2072,9 @@ export class UserTaskDto implements IUserTaskDto {
             this.taskID = _data["taskID"] !== undefined ? _data["taskID"] : <any>null;
             this.userID = _data["userID"] !== undefined ? _data["userID"] : <any>null;
             this.taskPriority = _data["taskPriority"] !== undefined ? _data["taskPriority"] : <any>null;
-            this.dateAddedUtc = _data["dateAddedUtc"] ? new Date(_data["dateAddedUtc"].toString()) : <any>null;
-            this.dateCompletedUtc = _data["dateCompletedUtc"] ? new Date(_data["dateCompletedUtc"].toString()) : <any>null;
-            this.dateDeletedUtc = _data["dateDeletedUtc"] ? new Date(_data["dateDeletedUtc"].toString()) : <any>null;
+            this.dateAdded = _data["dateAdded"] ? new Date(_data["dateAdded"].toString()) : <any>null;
+            this.dateCompleted = _data["dateCompleted"] ? new Date(_data["dateCompleted"].toString()) : <any>null;
+            this.dateDeleted = _data["dateDeleted"] ? new Date(_data["dateDeleted"].toString()) : <any>null;
             this.taskName = _data["taskName"] !== undefined ? _data["taskName"] : <any>null;
             this.taskCategory = _data["taskCategory"] !== undefined ? _data["taskCategory"] : <any>null;
             this.taskSubCategory = _data["taskSubCategory"] !== undefined ? _data["taskSubCategory"] : <any>null;
@@ -2090,9 +2094,9 @@ export class UserTaskDto implements IUserTaskDto {
         data["taskID"] = this.taskID !== undefined ? this.taskID : <any>null;
         data["userID"] = this.userID !== undefined ? this.userID : <any>null;
         data["taskPriority"] = this.taskPriority !== undefined ? this.taskPriority : <any>null;
-        data["dateAddedUtc"] = this.dateAddedUtc ? this.dateAddedUtc.toISOString() : <any>null;
-        data["dateCompletedUtc"] = this.dateCompletedUtc ? this.dateCompletedUtc.toISOString() : <any>null;
-        data["dateDeletedUtc"] = this.dateDeletedUtc ? this.dateDeletedUtc.toISOString() : <any>null;
+        data["dateAdded"] = this.dateAdded ? this.dateAdded.toISOString() : <any>null;
+        data["dateCompleted"] = this.dateCompleted ? this.dateCompleted.toISOString() : <any>null;
+        data["dateDeleted"] = this.dateDeleted ? this.dateDeleted.toISOString() : <any>null;
         data["taskName"] = this.taskName !== undefined ? this.taskName : <any>null;
         data["taskCategory"] = this.taskCategory !== undefined ? this.taskCategory : <any>null;
         data["taskSubCategory"] = this.taskSubCategory !== undefined ? this.taskSubCategory : <any>null;
@@ -2105,9 +2109,9 @@ export interface IUserTaskDto {
     taskID: number;
     userID: number;
     taskPriority: number;
-    dateAddedUtc: Date;
-    dateCompletedUtc?: Date | null;
-    dateDeletedUtc?: Date | null;
+    dateAdded: Date;
+    dateCompleted?: Date | null;
+    dateDeleted?: Date | null;
     taskName: string;
     taskCategory: string;
     taskSubCategory: string;

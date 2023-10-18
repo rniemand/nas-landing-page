@@ -38,7 +38,7 @@ internal class UserTasksRepo : IUserTasksRepo
     var query = @$"SELECT DISTINCT ut.TaskCategory
     FROM `UserTasks` ut
     WHERE ut.UserID = @UserID
-	    AND ut.DateDeletedUtc IS NULL
+	    AND ut.DateDeleted IS NULL
       AND ut.TaskCategory LIKE '%{filter}%'
     ORDER BY ut.TaskCategory";
     await using var connection = _connectionHelper.GetCoreConnection();
@@ -53,7 +53,7 @@ internal class UserTasksRepo : IUserTasksRepo
     var query = @$"SELECT DISTINCT ut.TaskSubCategory
     FROM `UserTasks` ut
     WHERE ut.UserID = @UserID
-	    AND ut.DateDeletedUtc IS NULL
+	    AND ut.DateDeleted IS NULL
 	    AND ut.TaskCategory = @TaskCategory
       AND ut.TaskSubCategory LIKE '%{filter}%'
     ORDER BY ut.TaskSubCategory";
@@ -71,8 +71,8 @@ internal class UserTasksRepo : IUserTasksRepo
     FROM `UserTasks` ut
     WHERE
 	    ut.UserID = @UserID
-	    AND ut.DateDeletedUtc IS NULL
-	    AND ut.DateCompletedUtc IS NULL
+	    AND ut.DateDeleted IS NULL
+	    AND ut.DateCompleted IS NULL
     ORDER BY ut.TaskPriority";
     await using var connection = _connectionHelper.GetCoreConnection();
     return await connection.QueryAsync<UserTaskEntity>(query, new { UserID = userContext.UserId });
@@ -82,7 +82,7 @@ internal class UserTasksRepo : IUserTasksRepo
   {
     const string query = @"UPDATE `UserTasks`
     SET
-      `DateCompletedUtc` = utc_timestamp(6)
+      `DateCompleted` = utc_timestamp(6)
     WHERE
       `TaskID` = @TaskID
       AND `UserID` = @UserID";

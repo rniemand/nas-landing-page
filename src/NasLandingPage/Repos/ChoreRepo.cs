@@ -1,7 +1,7 @@
 using Dapper;
-using NasLandingPage.Repos;
+using NasLandingPage.Models.Dto;
 
-namespace NasLandingPage.Plugins.Chores;
+namespace NasLandingPage.Repos;
 
 internal interface IChoreRepo
 {
@@ -104,8 +104,8 @@ internal class ChoreRepo : IChoreRepo
 	    ON hf.`FloorId` = hr.`FloorId`
     WHERE
       hc.`DateDeleted` IS NULL
-	    AND hr.`DateDeletedUtc` IS NULL
-	    AND hf.`DateDeletedUtc` IS NULL
+	    AND hr.`DateDeleted` IS NULL
+	    AND hf.`DateDeleted` IS NULL
       AND hc.`DateScheduled` <= curdate()
     ORDER BY hc.`DateScheduled` ASC";
     await using var connection = _connectionHelper.GetCoreConnection();

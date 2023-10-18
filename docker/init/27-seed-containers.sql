@@ -1,4 +1,4 @@
-INSERT INTO `ContainerItems` (`ContainerId`, `Quantity`, `OrderMoreMinQty`, `Deleted`, `OrderMore`, `OrderPlaced`, `AutoFlagOrderMore`, `DateAddedUtc`, `DateUpdatedUtc`, `Category`, `SubCategory`, `InventoryName`, `OrderUrl`) VALUES
+INSERT INTO `ContainerItems` (`ContainerId`, `Quantity`, `OrderMoreMinQty`, `Deleted`, `OrderMore`, `OrderPlaced`, `AutoFlagOrderMore`, `DateAdded`, `DateUpdated`, `Category`, `SubCategory`, `InventoryName`, `OrderUrl`) VALUES
 	(1, 100, 10, b'0', b'0', b'0', b'1', '2023-08-24 17:30:53', '2023-08-24 17:30:53', 'Resistors (THC)', 'Ohms', '750 ohms', ''),
 	(2, 100, 10, b'0', b'0', b'0', b'1', '2023-08-24 17:31:22', '2023-08-24 17:31:29', 'Resistors (THC)', 'K-Ohms', '47 k-ohms', ''),
 	(1, 100, 10, b'0', b'0', b'0', b'1', '2023-08-24 17:31:56', '2023-08-24 17:31:56', 'Resistors (THC)', 'Ohms', '560 ohms', ''),
@@ -167,7 +167,7 @@ INSERT INTO `ContainerItems` (`ContainerId`, `Quantity`, `OrderMoreMinQty`, `Del
 	(10, 1, 0, b'0', b'0', b'0', b'0', '2023-08-25 14:19:57', '2023-08-25 14:19:57', 'Display Adapters', 'HDMI', 'Raspberry Pi Screen HDMI connector', ''),
 	(11, 2000, 100, b'0', b'0', b'0', b'1', '2023-08-25 14:26:22', '2023-08-25 14:26:27', 'Consumables', 'Wire', 'Heat Shrink Various Sizes', '');
 
-INSERT INTO `Containers` (`Deleted`, `ShelfNumber`, `ShelfLevel`, `ShelfRow`, `ShelfRowPosition`, `ItemCount`, `DateAddedUtc`, `DateUpdatedUtc`, `ContainerLabel`, `ContainerName`, `Notes`) VALUES
+INSERT INTO `Containers` (`Deleted`, `ShelfNumber`, `ShelfLevel`, `ShelfRow`, `ShelfRowPosition`, `ItemCount`, `DateAdded`, `DateUpdated`, `ContainerLabel`, `ContainerName`, `Notes`) VALUES
 	(b'0', 1, 1, 1, 1, 3970, '2023-08-23 23:59:31', '2023-08-24 17:54:08', '1A:1-1', 'Resistors (Ohms)', ''),
 	(b'0', 1, 1, 1, 2, 3790, '2023-08-23 23:59:55', '2023-08-24 17:54:20', '1A:1-2', 'Resistors (K-Ohms)', ''),
 	(b'0', 1, 1, 1, 3, 300, '2023-08-24 00:00:00', '2023-08-24 18:10:33', '1A:1-3', 'Resistors (M-Ohms)', ''),

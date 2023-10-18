@@ -5,6 +5,7 @@ namespace NasLandingPage.Models.Dto;
 public class UserDto
 {
   public int UserID { get; set; }
+  public int CurrentHomeID { get; set; }
   public string Email { get; set; } = null!;
   public string FirstName { get; set; } = null!;
   public string Surname { get; set; } = null!;
@@ -16,5 +17,6 @@ public class UserDto
     FirstName = entity.FirstName,
     Surname = entity.Surname,
     UserID = entity.UserID,
+    CurrentHomeID = entity.CurrentHomeID,
   };
 }
