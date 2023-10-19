@@ -776,6 +776,150 @@ export class GamesClient extends NlpBaseClient implements IGamesClient {
     }
 }
 
+export interface IHomeClient {
+
+    listHomes(): Promise<HomeDto[]>;
+
+    addHome(home: HomeDto): Promise<BoolResponse>;
+
+    updateHome(home: HomeDto): Promise<BoolResponse>;
+}
+
+export class HomeClient extends NlpBaseClient implements IHomeClient {
+    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+        super();
+        this.http = http ? http : window as any;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    listHomes(): Promise<HomeDto[]> {
+        let url_ = this.baseUrl + "/api/Home/list";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processListHomes(_response));
+        });
+    }
+
+    protected processListHomes(response: Response): Promise<HomeDto[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(HomeDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<HomeDto[]>(null as any);
+    }
+
+    addHome(home: HomeDto): Promise<BoolResponse> {
+        let url_ = this.baseUrl + "/api/Home/add-home";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(home);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processAddHome(_response));
+        });
+    }
+
+    protected processAddHome(response: Response): Promise<BoolResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = BoolResponse.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<BoolResponse>(null as any);
+    }
+
+    updateHome(home: HomeDto): Promise<BoolResponse> {
+        let url_ = this.baseUrl + "/api/Home/update-home";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(home);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processUpdateHome(_response));
+        });
+    }
+
+    protected processUpdateHome(response: Response): Promise<BoolResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = BoolResponse.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<BoolResponse>(null as any);
+    }
+}
+
 export interface IImageClient {
 
     getUserLinkImage(linkId: number): Promise<FileResponse | null>;
@@ -1883,6 +2027,86 @@ export interface IGameDto {
     locationName?: string | null;
     imagePath?: string | null;
     searchTerm?: string | null;
+}
+
+export class HomeDto implements IHomeDto {
+    homeId!: number;
+    longitude!: number;
+    latitude!: number;
+    dateAdded!: Date;
+    dateDeleted?: Date | null;
+    country?: string | null;
+    postalCode?: string | null;
+    city?: string | null;
+    province?: string | null;
+    homeName!: string;
+    addressLine1?: string | null;
+    addressLine2?: string | null;
+
+    constructor(data?: IHomeDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.homeId = _data["homeId"] !== undefined ? _data["homeId"] : <any>null;
+            this.longitude = _data["longitude"] !== undefined ? _data["longitude"] : <any>null;
+            this.latitude = _data["latitude"] !== undefined ? _data["latitude"] : <any>null;
+            this.dateAdded = _data["dateAdded"] ? new Date(_data["dateAdded"].toString()) : <any>null;
+            this.dateDeleted = _data["dateDeleted"] ? new Date(_data["dateDeleted"].toString()) : <any>null;
+            this.country = _data["country"] !== undefined ? _data["country"] : <any>null;
+            this.postalCode = _data["postalCode"] !== undefined ? _data["postalCode"] : <any>null;
+            this.city = _data["city"] !== undefined ? _data["city"] : <any>null;
+            this.province = _data["province"] !== undefined ? _data["province"] : <any>null;
+            this.homeName = _data["homeName"] !== undefined ? _data["homeName"] : <any>null;
+            this.addressLine1 = _data["addressLine1"] !== undefined ? _data["addressLine1"] : <any>null;
+            this.addressLine2 = _data["addressLine2"] !== undefined ? _data["addressLine2"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): HomeDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new HomeDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["homeId"] = this.homeId !== undefined ? this.homeId : <any>null;
+        data["longitude"] = this.longitude !== undefined ? this.longitude : <any>null;
+        data["latitude"] = this.latitude !== undefined ? this.latitude : <any>null;
+        data["dateAdded"] = this.dateAdded ? this.dateAdded.toISOString() : <any>null;
+        data["dateDeleted"] = this.dateDeleted ? this.dateDeleted.toISOString() : <any>null;
+        data["country"] = this.country !== undefined ? this.country : <any>null;
+        data["postalCode"] = this.postalCode !== undefined ? this.postalCode : <any>null;
+        data["city"] = this.city !== undefined ? this.city : <any>null;
+        data["province"] = this.province !== undefined ? this.province : <any>null;
+        data["homeName"] = this.homeName !== undefined ? this.homeName : <any>null;
+        data["addressLine1"] = this.addressLine1 !== undefined ? this.addressLine1 : <any>null;
+        data["addressLine2"] = this.addressLine2 !== undefined ? this.addressLine2 : <any>null;
+        return data;
+    }
+}
+
+export interface IHomeDto {
+    homeId: number;
+    longitude: number;
+    latitude: number;
+    dateAdded: Date;
+    dateDeleted?: Date | null;
+    country?: string | null;
+    postalCode?: string | null;
+    city?: string | null;
+    province?: string | null;
+    homeName: string;
+    addressLine1?: string | null;
+    addressLine2?: string | null;
 }
 
 export class HomeRoomDto implements IHomeRoomDto {

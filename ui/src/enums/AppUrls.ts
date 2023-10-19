@@ -11,6 +11,7 @@ export class ConfigUrls {
 	public static readonly Root = '/config';
 	public static readonly Floors = `${ConfigUrls.Root}/floors`;
 	public static readonly Rooms = `${ConfigUrls.Root}/rooms`;
+	public static readonly Homes = `${ConfigUrls.Root}/homes`;
 	public static FloorRooms = (floorID: number) => `${ConfigUrls.Rooms}?floorId=${floorID}`;
 }
 

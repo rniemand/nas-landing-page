@@ -39,6 +39,7 @@ public static class ServiceCollectionExtensions
       .AddSingleton<IFloorService, FloorService>()
       .AddSingleton<IRoomService, RoomService>()
       .AddSingleton<IUserService, UserService>()
+      .AddSingleton<IHomeService, HomeService>()
       // Plugins
       .AddHomeChores();
   }

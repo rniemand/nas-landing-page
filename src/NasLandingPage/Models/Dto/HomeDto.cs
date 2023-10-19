@@ -13,5 +13,5 @@ public class HomeDto
   public string? Province { get; set; }
   public string HomeName { get; set; } = null!;
   public string? AddressLine1 { get; set; }
-  public string? AddressLine { get; set; }
+  public string? AddressLine2 { get; set; }
 }

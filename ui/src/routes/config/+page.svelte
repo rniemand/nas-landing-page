@@ -14,6 +14,7 @@
 
 <Row>
 	<ItemButtons>
+		<ItemButton small icon="bi-house-gear-fill" name="Homes" url={ConfigUrls.Homes} />
 		<ItemButton small icon="bi-building-fill-up" name="Floors" url={ConfigUrls.Floors} />
 		<ItemButton small icon="bi-sort-numeric-up" name="Rooms" url={ConfigUrls.Rooms} />
 	</ItemButtons>
