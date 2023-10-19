@@ -1,8 +1,7 @@
 <script lang="ts">
-	import { CoreClient, HomeFloorDto } from '../../nlp-api';
+	import { FloorClient, HomeFloorDto } from '../../nlp-api';
 	import { Input } from 'sveltestrap';
 
-	export let homeId: number;
 	export let value: number = -1;
 	export let className: string = '';
 
@@ -11,7 +10,7 @@
 
 	const refreshFloors = async () => {
 		loading = true;
-		floors = (await new CoreClient().getFloors(homeId)) || [];
+		floors = (await new FloorClient().listFloors()) || [];
 		if (floors.length > 0 && value <= 0) value = floors[0].floorId;
 		loading = false;
 	};
@@ -19,7 +18,7 @@
 	refreshFloors();
 </script>
 
-<Input type="select" disabled={loading} bind:value class={className}>
+<Input type="select" disabled={loading} bind:value class={className} on:change>
 	{#each floors as floor}
 		<option value={floor.floorId} selected={value === floor.floorId}>{floor.floorName}</option>
 	{/each}

@@ -12,7 +12,7 @@
 		Row
 	} from 'sveltestrap';
 	import Spinner from '../../../components/common/Spinner.svelte';
-	import { CoreClient, type HomeFloorDto } from '../../../nlp-api';
+	import { FloorClient, type HomeFloorDto } from '../../../nlp-api';
 	import { createBlankFloorDto, validateAddFloor } from './floors';
 	import { toastError, toastSuccess } from '../../../components/ToastManager';
 
@@ -32,7 +32,7 @@
 
 	const saveChanges = async () => {
 		submitting = true;
-		const response = await new CoreClient().updateFloor(floor);
+		const response = await new FloorClient().updateFloor(floor);
 		if (response.success) {
 			toastSuccess('Floor Updated', `Floor "${floor.floorName}" has been added`);
 			open = false;

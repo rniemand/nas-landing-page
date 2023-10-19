@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Accordion, AccordionItem, Button, Col, Row } from 'sveltestrap';
 	import { AppUrls, ConfigUrls } from '../../../enums/AppUrls';
-	import { CoreClient, type HomeFloorDto } from '../../../nlp-api';
+	import { FloorClient, type HomeFloorDto } from '../../../nlp-api';
 	import Spinner from '../../../components/common/Spinner.svelte';
 	import AddFloorModal from './AddFloorModal.svelte';
 	import { goto } from '$app/navigation';
@@ -15,8 +15,7 @@
 
 	const refreshFloors = async () => {
 		loading = true;
-		// TODO: work in the users home id
-		floors = (await new CoreClient().getFloors(1)) || [];
+		floors = (await new FloorClient().listFloors()) || [];
 		loading = false;
 	};
 

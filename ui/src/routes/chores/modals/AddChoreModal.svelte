@@ -66,7 +66,7 @@
 					<Col>
 						<FormGroup>
 							<Label>Floor</Label>
-							<HomeFloorSelector homeId={1} bind:value={floorId} />
+							<HomeFloorSelector bind:value={floorId} />
 						</FormGroup>
 					</Col>
 					<Col>

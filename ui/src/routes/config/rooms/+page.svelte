@@ -2,7 +2,7 @@
 	import { Accordion, AccordionItem, Button, Col, Row } from 'sveltestrap';
 	import { AppUrls, ConfigUrls } from '../../../enums/AppUrls';
 	import HomeFloorSelector from '../../../components/core/HomeFloorSelector.svelte';
-	import { CoreClient, type HomeRoomDto } from '../../../nlp-api';
+	import { RoomClient, type HomeRoomDto } from '../../../nlp-api';
 	import AddRoomModal from './AddRoomModal.svelte';
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
@@ -10,24 +10,33 @@
 	import NavigationCrumbs from '../../../components/core/NavigationCrumbs.svelte';
 	import NavigationCrumb from '../../../components/core/NavigationCrumb.svelte';
 
-	// TODO: [COMPLETE] make use of the correct home id here
-	const homeID: number = 1;
 	let floorId: number = 0;
 	let loading: boolean = true;
 	let rooms: HomeRoomDto[] = [];
 	let editModal: EditRoomModal;
 
 	const refreshRooms = async (_floorID: number) => {
-		loading = true;
-		rooms = (await new CoreClient().getFloorRooms(_floorID)) || [];
-		loading = false;
+		if (_floorID <= 0) {
+			rooms = [];
+		} else {
+			loading = true;
+			rooms = (await new RoomClient().getFloorRooms(_floorID)) || [];
+			loading = false;
+		}
+	};
+
+	const floorSelected = (a: any) => {
+		let floorId = parseInt(a?.target?.value || '0');
+		if (floorId === 0) return;
+		goto(ConfigUrls.FloorRooms(floorId));
 	};
 
 	const onRoomAdded = () => refreshRooms(floorId);
 	const onRoomUpdated = () => refreshRooms(floorId);
 
+	$: if ($page.url?.searchParams?.has('floorId'))
+		floorId = parseInt($page.url?.searchParams.get('floorId') || '0');
 	$: refreshRooms(floorId);
-	$: floorId = parseInt($page.url?.searchParams.get('floorId') || '0');
 </script>
 
 <NavigationCrumbs>
@@ -38,7 +47,7 @@
 
 <Row>
 	<Col>
-		<HomeFloorSelector className="mt-3" homeId={homeID} bind:value={floorId} />
+		<HomeFloorSelector className="mt-3" bind:value={floorId} on:change={floorSelected} />
 		<div class="text-end mt-3">
 			<Button color="primary" on:click={() => goto(ConfigUrls.Floors)}>Floors</Button>
 			<AddRoomModal disabled={loading} {floorId} {onRoomAdded} />

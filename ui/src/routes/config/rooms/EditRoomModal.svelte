@@ -12,7 +12,7 @@
 		Row
 	} from 'sveltestrap';
 	import Spinner from '../../../components/common/Spinner.svelte';
-	import { CoreClient, type HomeRoomDto } from '../../../nlp-api';
+	import { RoomClient, type HomeRoomDto } from '../../../nlp-api';
 	import { createBlankRoom, validateAddRoom } from './rooms';
 	import HomeFloorSelector from '../../../components/core/HomeFloorSelector.svelte';
 	import { toastError, toastSuccess } from '../../../components/ToastManager';
@@ -20,8 +20,6 @@
 	export let disabled: boolean = false;
 	export let floorId: number = 0;
 	export let onRoomUpdated: () => void = () => {};
-	// TODO: [COMPLETE] make use of correct home id here
-	const homeID: number = 1;
 	let open = false;
 	let submitting: boolean = false;
 	let isValid: boolean = false;
@@ -36,7 +34,7 @@
 
 	const saveChanges = async () => {
 		submitting = true;
-		const response = await new CoreClient().updateRoom(room);
+		const response = await new RoomClient().updateRoom(room);
 		if (response.success) {
 			toastSuccess('Update Room', `Room "${room.roomName}" has been added`);
 			open = false;
@@ -59,7 +57,7 @@
 				<Row>
 					<FormGroup>
 						<Label>Room Name</Label>
-						<HomeFloorSelector homeId={homeID} bind:value={room.floorId} />
+						<HomeFloorSelector bind:value={room.floorId} />
 					</FormGroup>
 				</Row>
 				<Row>
