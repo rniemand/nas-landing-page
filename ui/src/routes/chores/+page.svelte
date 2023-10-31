@@ -9,26 +9,30 @@
 	import NavigationCrumbs from '../../components/core/NavigationCrumbs.svelte';
 	import NavigationCrumb from '../../components/core/NavigationCrumb.svelte';
 	import { AppUrls } from '../../enums/AppUrls';
+	import HomeFloorSelector from '../../components/core/HomeFloorSelector.svelte';
+	import HomeRoomSelector from '../../components/core/HomeRoomSelector.svelte';
 
 	let loading: boolean = true;
 	let chores: HomeChoreDto[] = [];
 	let editModal: EditChoreModal;
 	let completeModal: CompleteChoreModal;
+	let floorId: number = 0;
+	let roomId: number = 0;
 
-	const refreshChores = async () => {
+	const refreshChores = async (_floorId: number, _roomId: number) => {
 		loading = true;
-		chores = await new ChoreClient().getChores();
+		chores = await new ChoreClient().getChores(_floorId, _roomId);
 		loading = false;
 	};
 
-	const onChoreAdded = () => refreshChores();
-	const onChoreUpdated = () => refreshChores();
-	const onChoreCompleted = () => refreshChores();
+	const onChoreAdded = () => refreshChores(floorId, roomId);
+	const onChoreUpdated = () => refreshChores(floorId, roomId);
+	const onChoreCompleted = () => refreshChores(floorId, roomId);
 
 	const onEditChore = (chore: HomeChoreDto) => editModal?.editChore(chore);
 	const onCompleteChore = (chore: HomeChoreDto) => completeModal?.completeChore(chore);
 
-	refreshChores();
+	$: refreshChores(floorId, roomId);
 </script>
 
 <NavigationCrumbs>
@@ -41,6 +45,13 @@
 		<AddChoreModal {onChoreAdded} />
 		<EditChoreModal bind:this={editModal} {onChoreUpdated} />
 		<CompleteChoreModal bind:this={completeModal} {onChoreCompleted} />
+	</Col>
+</Row>
+
+<Row class="mt-3">
+	<Col class="d-flex">
+		<HomeFloorSelector className="me-2" allOption bind:value={floorId} />
+		<HomeRoomSelector allOption {floorId} bind:value={roomId} />
 	</Col>
 </Row>
 
