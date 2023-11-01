@@ -1,76 +1,85 @@
+-- =============================================================================
+-- Homes
+-- =============================================================================
 INSERT INTO `Homes`
   (`Longitude`,`Latitude`,`Country`,`PostalCode`,`City`,`Province`,`HomeName`,`AddressLine1`,`AddressLine2`)
 VALUES
-  (12, 21,'ca','xxx','city','province','Home (Default)','address 1','address 2'),
-  (12, 21,'ca','xxx','city','province','Home 2','address 1','address 2');
+  (12, 21,'ca','xxx','city','province','Home (Default)','address 1','address 2'), -- 1
+  (12, 21,'ca','xxx','city','province','Home 2','address 1','address 2');         -- 2
 
+-- =============================================================================
+-- Users
+-- =============================================================================
 INSERT INTO `Users`
 	(`CurrentHomeID`, `Email`, `FirstName`, `Surname`, `PasswordHash`)
 VALUES
-	(1, 'niemand.richard@gmail.com', 'Richard', 'Niemand', ''),
-  (2, '1@2.com', 'Kelsie', 'Mackie', ''),
-  (1, '2@2.com', 'Sam', 'Niemand', '');
+	(1, 'niemand.richard@gmail.com', 'Richard', 'Niemand', ''),  -- 1
+  (1, '1@2.com', 'Kelsie', 'Mackie', ''),                      -- 2
+  (1, '2@2.com', 'Sam', 'Niemand', '');                        -- 3
 
-INSERT INTO `HomeFloors`
-	(`HomeId`,`FloorName`)
-SELECT
-	h.HomeId,
-	floors.*
-FROM `Homes` h
-INNER JOIN (VALUES ('Floor 1'),('Floor 2'),('Floor 3')) floors ON 1=1
-WHERE h.DefaultHome = 1;
-
-INSERT INTO `HomeRooms`
-	(`FloorId`,`RoomName`)
-SELECT
-	hf.FloorId,
-	rooms.`Name`
-FROM `Homes` h
- INNER JOIN (with t(`Name`) as (VALUES ('Floor 1'),('Floor 2'),('Floor 3')) SELECT `Name` FROM t) floorNames ON 1=1
-INNER JOIN `HomeFloors` hf ON hf.HomeId = h.HomeId AND hf.FloorName = floorNames.Name
-INNER JOIN (WITH t(`Name`) AS (VALUES ('Room 1'),('Room 2'),('Room 3')) SELECT `Name` FROM t) rooms ON 1=1
-WHERE h.DefaultHome = 1;
-
-
-INSERT INTO `HomeChores`
-	(`RoomId`,`ChorePoints`,`DateScheduled`,`Priority`,`IntervalModifier`,`Interval`,`ChoreName`,`ChoreDescription`)
-VALUES
-	(1,1,'2023-10-17 00:00:00','low','Weeks','1','Weekly Chore 1','Occurs once a week on Mondays'),
-	(2,1,'2023-10-17 00:00:00','med','DaysOfMonth','1','Monthly Chore 1','Occurs on the first of every month'),
-	(3,1,'2023-10-17 00:00:00','high','DaysOfWeek','mon,wed,fri','3 Times a week every week','Occurs on every Monday, Wednesday and Friday'),
-	(4,1,'2023-10-17 00:00:00','med','Weeks','2','Every 2nd week from completion date','Occurs exactly 2 weeks after the last completion date'),
-  (5,1,'2023-10-17 00:00:00','low','DaysOfMonth','15','Every 15th of a month','Occurs on the 15th of every month'),
-  (1,1,'2023-10-17 00:00:00','low','Weeks','1','Weekly Chore 1','Occurs once a week on Mondays'),
-	(2,1,'2023-10-17 00:00:00','med','DaysOfMonth','1','Monthly Chore 1','Occurs on the first of every month'),
-	(3,1,'2023-10-17 00:00:00','high','DaysOfWeek','mon,wed,fri','3 Times a week every week','Occurs on every Monday, Wednesday and Friday'),
-	(4,1,'2023-10-17 00:00:00','med','Weeks','2','Every 2nd week from completion date','Occurs exactly 2 weeks after the last completion date'),
-  (5,1,'2023-10-17 00:00:00','low','DaysOfMonth','15','Every 15th of a month','Occurs on the 15th of every month'),
-  (1,1,'2023-10-17 00:00:00','low','Weeks','1','Weekly Chore 1','Occurs once a week on Mondays'),
-	(2,1,'2023-10-17 00:00:00','med','DaysOfMonth','1','Monthly Chore 1','Occurs on the first of every month'),
-	(3,1,'2023-10-17 00:00:00','high','DaysOfWeek','mon,wed,fri','3 Times a week every week','Occurs on every Monday, Wednesday and Friday'),
-	(4,1,'2023-10-17 00:00:00','med','Weeks','2','Every 2nd week from completion date','Occurs exactly 2 weeks after the last completion date'),
-  (5,1,'2023-10-17 00:00:00','low','DaysOfMonth','15','Every 15th of a month','Occurs on the 15th of every month'),
-  (1,1,'2023-10-17 00:00:00','low','Weeks','1','Weekly Chore 1','Occurs once a week on Mondays'),
-	(2,1,'2023-10-17 00:00:00','med','DaysOfMonth','1','Monthly Chore 1','Occurs on the first of every month'),
-	(3,1,'2023-10-17 00:00:00','high','DaysOfWeek','mon,wed,fri','3 Times a week every week','Occurs on every Monday, Wednesday and Friday'),
-	(4,1,'2023-10-17 00:00:00','med','Weeks','2','Every 2nd week from completion date','Occurs exactly 2 weeks after the last completion date'),
-  (5,1,'2023-10-17 00:00:00','low','DaysOfMonth','15','Every 15th of a month','Occurs on the 15th of every month'),
-  (1,1,'2023-10-17 00:00:00','low','Weeks','1','Weekly Chore 1','Occurs once a week on Mondays'),
-	(2,1,'2023-10-17 00:00:00','med','DaysOfMonth','1','Monthly Chore 1','Occurs on the first of every month'),
-	(3,1,'2023-10-17 00:00:00','high','DaysOfWeek','mon,wed,fri','3 Times a week every week','Occurs on every Monday, Wednesday and Friday'),
-	(4,1,'2023-10-17 00:00:00','med','Weeks','2','Every 2nd week from completion date','Occurs exactly 2 weeks after the last completion date'),
-  (5,1,'2023-10-17 00:00:00','low','DaysOfMonth','15','Every 15th of a month','Occurs on the 15th of every month'),
-  (1,1,'2023-10-17 00:00:00','low','Weeks','1','Weekly Chore 1','Occurs once a week on Mondays'),
-	(2,1,'2023-10-17 00:00:00','med','DaysOfMonth','1','Monthly Chore 1','Occurs on the first of every month'),
-	(3,1,'2023-10-17 00:00:00','high','DaysOfWeek','mon,wed,fri','3 Times a week every week','Occurs on every Monday, Wednesday and Friday'),
-	(4,1,'2023-10-17 00:00:00','med','Weeks','2','Every 2nd week from completion date','Occurs exactly 2 weeks after the last completion date'),
-  (5,1,'2023-10-17 00:00:00','low','DaysOfMonth','15','Every 15th of a month','Occurs on the 15th of every month');
-
+-- =============================================================================
+-- User Home Mappings
+-- =============================================================================
 INSERT INTO `UserHomeMappings`
   (`UserID`, `HomeID`)
 VALUES
   (1, 1),
-  (2, 1),
-  (3, 1),
   (1, 2),
-  (2, 2);
+  (2, 1),
+  (2, 2),
+  (3, 1);
+
+-- =============================================================================
+-- Home Floors
+-- =============================================================================
+INSERT INTO `HomeFloors`
+  (`HomeId`, `FloorName`)
+VALUES
+  (1, 'Basement'),   -- 1
+  (1, 'Main Floor'), -- 2
+  (1, 'Upstairs'),   -- 3
+  (2, 'Basement'),   -- 4
+  (2, 'Main Floor'), -- 5
+  (2, 'Upstairs');   -- 6
+
+-- =============================================================================
+-- Home Rooms
+-- =============================================================================
+INSERT INTO `HomeRooms`
+  (`FloorId`, `RoomName`)
+VALUES
+  (1, 'Richard Office'),    -- 1
+  (1, 'Server Room'),       -- 2
+  (1, 'Store Room'),        -- 3
+  (2, 'Lounge'),            -- 4
+  (2, 'Dining Room'),       -- 5
+  (2, 'Kitchen'),           -- 6
+  (2, 'Entryway'),          -- 7
+  (3, 'Master Bedroom'),    -- 8
+  (3, 'Master Washroom'),   -- 9
+  (3, 'Office'),            -- 10
+  (3, 'Sam Room'),          -- 11
+  (4, 'Basement Room 1'),   -- 12
+  (4, 'Basement Room 2'),   -- 13
+  (5, 'Mian Floor Room 1'), -- 14
+  (5, 'Mian Floor Room 2'), -- 15
+  (6, 'Upstairs Room 1'),   -- 16
+  (6, 'Upstairs Room 2');   -- 17
+
+-- =============================================================================
+-- Home Chores
+-- =============================================================================
+INSERT INTO `HomeChores`
+  (`RoomId`, `ChorePoints`, `Priority`, `IntervalModifier`, `Interval`, `ChoreName`, `ChoreDescription`)
+VALUES
+  -- Main Home | Basement | Richard Office
+  (1, 1, 'low',   'Weeks',        '1',        'Weekly Chore 1',       'Occurs every week'),
+  -- Main Home | Basement | Server Room
+  (2, 1, 'low',   'DaysOfWeek',   'Mon,Fri',  'Server Room Chore 1',  'Occurs every Monday and Friday'),
+  -- Main Home | Basement | Store Room
+  (3, 1, 'med',   'DaysOfMonth',  '1,15',     'Store Room Chore 1',   'Occurs on the 1st and 15th of every month'),
+  -- Main Home | Main Floor | Dining Room
+  (4, 1, 'high',  'Days',         '2',        'Clean Dining Room',    'Occurs every second day'),
+  -- Main Home | Main Floor | Entryway
+  (7, 1, 'med',   'Weeks',        '2',        'Clean Door Glass',     'Occurs every 2 weeks')
+;

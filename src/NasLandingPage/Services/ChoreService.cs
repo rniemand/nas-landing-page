@@ -12,7 +12,7 @@ public interface IChoreService
   Task<BoolResponse> AddChoreAsync(NlpUserContext userContext, HomeChoreDto chore);
   Task<BoolResponse> UpdateChoreAsync(NlpUserContext userContext, HomeChoreDto chore);
   Task<BoolResponse> CompleteChoreAsync(NlpUserContext userContext, CompleteChoreRequest request);
-  Task<HomeChoreDto[]> GetChoresAsync(NlpUserContext userContext);
+  Task<HomeChoreDto[]> GetChoresAsync(NlpUserContext userContext, int floorId, int roomId);
 }
 
 internal class ChoreService : IChoreService
@@ -67,5 +67,5 @@ internal class ChoreService : IChoreService
     return rowCount == 0 ? response.AsError("Chore rescheduled, failed to insert history record") : response;
   }
 
-  public async Task<HomeChoreDto[]> GetChoresAsync(NlpUserContext userContext) => (await _choreRepo.GetChoresAsync()).ToArray();
+  public async Task<HomeChoreDto[]> GetChoresAsync(NlpUserContext userContext, int floorId, int roomId) => (await _choreRepo.GetChoresAsync(floorId, roomId)).ToArray();
 }

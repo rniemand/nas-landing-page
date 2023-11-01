@@ -18,9 +18,9 @@ public class ChoreController : ControllerBase
     _choreService = choreService;
   }
 
-  [HttpGet("chores")]
-  public async Task<HomeChoreDto[]> GetChores() =>
-    await _choreService.GetChoresAsync(User.GetNlpUserContext());
+  [HttpGet("chores/floor-id/{floorId:int}room-id/{roomId:int}")]
+  public async Task<HomeChoreDto[]> GetChores([FromRoute] int floorId, [FromRoute] int roomId) =>
+    await _choreService.GetChoresAsync(User.GetNlpUserContext(), floorId, roomId);
 
   [HttpPost("add-chore")]
   public async Task<BoolResponse> AddChore([FromBody] HomeChoreDto chore) =>

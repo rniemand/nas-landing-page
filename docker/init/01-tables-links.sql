@@ -1,7 +1,7 @@
 CREATE TABLE `UserLinks` (
   `LinkId` INT(11) NOT NULL AUTO_INCREMENT,
   `UserID` INT(11) NOT NULL DEFAULT '0',
-  `Deleted` BIT(1) NOT NULL DEFAULT b '0',
+  `Deleted` BIT(1) NOT NULL DEFAULT b'0',
   `LinkOrder` SMALLINT(6) NOT NULL DEFAULT '1024',
   `FollowCount` INT(11) NOT NULL DEFAULT '0',
   `DateAdded` DATETIME NOT NULL DEFAULT utc_timestamp(6),

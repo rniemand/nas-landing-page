@@ -250,7 +250,7 @@ export class AuthClient extends NlpBaseClient implements IAuthClient {
 
 export interface IChoreClient {
 
-    getChores(): Promise<HomeChoreDto[]>;
+    getChores(floorId: number, roomId: number): Promise<HomeChoreDto[]>;
 
     addChore(chore: HomeChoreDto): Promise<BoolResponse>;
 
@@ -270,8 +270,14 @@ export class ChoreClient extends NlpBaseClient implements IChoreClient {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
-    getChores(): Promise<HomeChoreDto[]> {
-        let url_ = this.baseUrl + "/api/Chore/chores";
+    getChores(floorId: number, roomId: number): Promise<HomeChoreDto[]> {
+        let url_ = this.baseUrl + "/api/Chore/chores/floor-id/{floorId}room-id/{roomId}";
+        if (floorId === undefined || floorId === null)
+            throw new Error("The parameter 'floorId' must be defined.");
+        url_ = url_.replace("{floorId}", encodeURIComponent("" + floorId));
+        if (roomId === undefined || roomId === null)
+            throw new Error("The parameter 'roomId' must be defined.");
+        url_ = url_.replace("{roomId}", encodeURIComponent("" + roomId));
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: RequestInit = {
