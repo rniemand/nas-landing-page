@@ -13,6 +13,7 @@ public interface IChoreService
   Task<BoolResponse> UpdateChoreAsync(NlpUserContext userContext, HomeChoreDto chore);
   Task<BoolResponse> CompleteChoreAsync(NlpUserContext userContext, CompleteChoreRequest request);
   Task<HomeChoreDto[]> GetChoresAsync(NlpUserContext userContext, int floorId, int roomId);
+  Task<BoolResponse> DeleteChoreAsync(NlpUserContext userContext, HomeChoreDto chore);
 }
 
 internal class ChoreService : IChoreService
@@ -68,4 +69,11 @@ internal class ChoreService : IChoreService
   }
 
   public async Task<HomeChoreDto[]> GetChoresAsync(NlpUserContext userContext, int floorId, int roomId) => (await _choreRepo.GetChoresAsync(floorId, roomId)).ToArray();
+
+  public async Task<BoolResponse> DeleteChoreAsync(NlpUserContext userContext, HomeChoreDto chore)
+  {
+    var response = new BoolResponse();
+    var rowCount = await _choreRepo.DeleteChoreAsync(chore);
+    return rowCount == 0 ? response.AsError("Failed to update chore") : response;
+  }
 }

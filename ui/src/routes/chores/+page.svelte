@@ -11,6 +11,8 @@
 	import { AppUrls } from '../../enums/AppUrls';
 	import HomeFloorSelector from '../../components/core/HomeFloorSelector.svelte';
 	import HomeRoomSelector from '../../components/core/HomeRoomSelector.svelte';
+	import { toastError, toastSuccess } from '../../components/ToastManager';
+	import { error } from '@sveltejs/kit';
 
 	let loading: boolean = true;
 	let chores: HomeChoreDto[] = [];
@@ -31,6 +33,20 @@
 
 	const onEditChore = (chore: HomeChoreDto) => editModal?.editChore(chore);
 	const onCompleteChore = (chore: HomeChoreDto) => completeModal?.completeChore(chore);
+
+	const onDeleteChore = async (chore: HomeChoreDto) => {
+		var msg = `Are you sure you want to delete this chore "${chore.choreName}" - this cannot be undone`;
+		if (!confirm(msg)) return;
+		const response = await new ChoreClient().deleteChore(chore);
+
+		if (!response.success) {
+			toastError('Delete Chore', response.error || 'Failed to delete chore');
+			return;
+		}
+
+		toastSuccess('Chore Deleted', `Deleted "${chore.choreName}"`);
+		refreshChores(floorId, roomId);
+	};
 
 	$: refreshChores(floorId, roomId);
 </script>
@@ -63,7 +79,7 @@
 					<ChorePriorityIcon priority={chore.priority} />
 					{chore.choreName}
 				</span>
-				<ChoreInfoDisplay {chore} {onEditChore} {onCompleteChore} />
+				<ChoreInfoDisplay {chore} {onEditChore} {onCompleteChore} {onDeleteChore} />
 			</AccordionItem>
 		{/each}
 	</Accordion>
