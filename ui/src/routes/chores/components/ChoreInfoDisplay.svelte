@@ -56,7 +56,7 @@
 </div>
 
 <div class="d-flex d-sm-block text-sm-end mt-2">
-	<Button color="danger" on:click={() => onDeleteChore(chore)}>
+	<Button color="danger" class="flex-fill me-1" on:click={() => onDeleteChore(chore)}>
 		<i class="bi bi-trash3" />
 		<span class="d-none d-sm-inline">Delete</span>
 	</Button>
