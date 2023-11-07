@@ -72,6 +72,11 @@
 </Row>
 
 <Row class="mt-3">
+	{#if chores.length > 0}
+		<h2 class="text-center">{chores.length} Chore(s)</h2>
+	{:else}
+		<h2 class="text-center">No Chores</h2>
+	{/if}
 	<Accordion class="rn-accordian">
 		{#each chores as chore (chore.choreId)}
 			<AccordionItem>

@@ -76,6 +76,7 @@ VALUES
   (1, 1, 'low',   'Weeks',        '1',        'Weekly Chore 1',       'Occurs every week'),
   -- Main Home | Basement | Server Room
   (2, 1, 'low',   'DaysOfWeek',   'Mon,Fri',  'Server Room Chore 1',  'Occurs every Monday and Friday'),
+  (2, 1, 'low',   'DaysOfMonth',  '1,15',     'Clean server fans',    'Ensure that there is no dust'),
   -- Main Home | Basement | Store Room
   (3, 1, 'med',   'DaysOfMonth',  '1,15',     'Store Room Chore 1',   'Occurs on the 1st and 15th of every month'),
   -- Main Home | Main Floor | Dining Room
