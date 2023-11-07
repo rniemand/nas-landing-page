@@ -28,7 +28,9 @@
 	export let onDeleteChore: (chore: HomeChoreDto) => void;
 </script>
 
-<div class="description p-2">{chore.choreDescription}</div>
+{#if chore.choreDescription.length > 0}
+	<div class="description p-2">{chore.choreDescription}</div>
+{/if}
 
 <div class="details mt-2">
 	<div class="entry">
