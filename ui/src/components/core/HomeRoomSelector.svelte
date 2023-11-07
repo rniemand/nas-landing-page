@@ -5,6 +5,7 @@
 	export let floorId: number = -1;
 	export let value: number = -1;
 	export let allOption: boolean = false;
+	export let className: string = '';
 
 	let loading: boolean = true;
 	let rooms: HomeRoomDto[] = [];
@@ -27,7 +28,7 @@
 	$: refreshRooms(floorId);
 </script>
 
-<Input type="select" disabled={loading} bind:value>
+<Input type="select" disabled={loading} bind:value class={className}>
 	{#if allOption}<option value={0}>All Rooms</option>{/if}
 	{#each rooms as room}
 		<option value={room.roomId} selected={value === room.roomId}>{room.roomName}</option>

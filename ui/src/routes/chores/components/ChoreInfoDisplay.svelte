@@ -25,9 +25,12 @@
 	export let chore: HomeChoreDto;
 	export let onEditChore: (chore: HomeChoreDto) => void;
 	export let onCompleteChore: (chore: HomeChoreDto) => void;
+	export let onDeleteChore: (chore: HomeChoreDto) => void;
 </script>
 
-<div class="description p-2">{chore.choreDescription}</div>
+{#if chore.choreDescription.length > 0}
+	<div class="description p-2">{chore.choreDescription}</div>
+{/if}
 
 <div class="details mt-2">
 	<div class="entry">
@@ -53,6 +56,10 @@
 </div>
 
 <div class="d-flex d-sm-block text-sm-end mt-2">
+	<Button color="danger" class="flex-fill me-1" on:click={() => onDeleteChore(chore)}>
+		<i class="bi bi-trash3" />
+		<span class="d-none d-sm-inline">Delete</span>
+	</Button>
 	<Button color="primary" class="flex-fill me-1" on:click={() => onEditChore(chore)}>
 		<i class="bi bi-pencil-square" />
 		<span class="d-none d-sm-inline">Edit</span>

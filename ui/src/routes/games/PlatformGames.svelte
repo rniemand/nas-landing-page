@@ -43,8 +43,8 @@
 	$: searchTermChanged(searchTerm);
 </script>
 
+<PlatformGamesSearch bind:value={searchTerm} />
 {#if displayGames.length > 0}
-	<PlatformGamesSearch bind:value={searchTerm} />
 	<PlatformGamesPagination {games} pageSize={20} {onPageChanged} />
 {/if}
 <Row class="games-list d-flex flex-wrap justify-content-between">

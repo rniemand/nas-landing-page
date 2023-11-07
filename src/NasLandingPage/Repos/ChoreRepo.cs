@@ -8,6 +8,7 @@ internal interface IChoreRepo
   Task<int> AddChoreAsync(HomeChoreDto chore);
   Task<int> UpdateChoreAsync(HomeChoreDto chore);
   Task<int> RescheduleChoreAsync(HomeChoreDto chore);
+  Task<int> DeleteChoreAsync(HomeChoreDto chore);
   Task<HomeChoreDto?> GetChoreByIdAsync(int choreId);
   Task<int> AddChoreCompletedEntryAsync(HomeChoreHistoryDto entry);
   Task<IEnumerable<HomeChoreDto>> GetChoresAsync(int floorId, int roomId);
@@ -58,6 +59,18 @@ internal class ChoreRepo : IChoreRepo
     SET
       `CompletedCount` = `CompletedCount` + 1,
       `DateScheduled` = @DateScheduled
+    WHERE
+      `ChoreId` = @ChoreId";
+    await using var connection = _connectionHelper.GetCoreConnection();
+    return await connection.ExecuteAsync(query, chore);
+  }
+
+  public async Task<int> DeleteChoreAsync(HomeChoreDto chore)
+  {
+    const string query = @"
+    UPDATE `HomeChores`
+    SET
+      `DateDeleted` = curdate()
     WHERE
       `ChoreId` = @ChoreId";
     await using var connection = _connectionHelper.GetCoreConnection();

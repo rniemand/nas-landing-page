@@ -33,4 +33,8 @@ public class ChoreController : ControllerBase
   [HttpPatch("complete-chore")]
   public async Task<BoolResponse> CompleteChore([FromBody] CompleteChoreRequest request) =>
     await _choreService.CompleteChoreAsync(User.GetNlpUserContext(), request);
+
+  [HttpDelete("delete-chore")]
+  public async Task<BoolResponse> DeleteChore([FromBody] HomeChoreDto chore) =>
+    await _choreService.DeleteChoreAsync(User.GetNlpUserContext(), chore);
 }

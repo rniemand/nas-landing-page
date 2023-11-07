@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Accordion, AccordionItem, Col, Row } from 'sveltestrap';
+	import { Accordion, AccordionItem, Button, Col, Row } from 'sveltestrap';
 	import AddChoreModal from './modals/AddChoreModal.svelte';
 	import { ChoreClient, type HomeChoreDto } from '../../nlp-api';
 	import ChoreInfoDisplay from './components/ChoreInfoDisplay.svelte';
@@ -11,6 +11,8 @@
 	import { AppUrls } from '../../enums/AppUrls';
 	import HomeFloorSelector from '../../components/core/HomeFloorSelector.svelte';
 	import HomeRoomSelector from '../../components/core/HomeRoomSelector.svelte';
+	import { toastError, toastSuccess } from '../../components/ToastManager';
+	import { error } from '@sveltejs/kit';
 
 	let loading: boolean = true;
 	let chores: HomeChoreDto[] = [];
@@ -18,6 +20,7 @@
 	let completeModal: CompleteChoreModal;
 	let floorId: number = 0;
 	let roomId: number = 0;
+	let hasFilter: boolean = false;
 
 	const refreshChores = async (_floorId: number, _roomId: number) => {
 		loading = true;
@@ -32,7 +35,27 @@
 	const onEditChore = (chore: HomeChoreDto) => editModal?.editChore(chore);
 	const onCompleteChore = (chore: HomeChoreDto) => completeModal?.completeChore(chore);
 
+	const clearFilters = () => {
+		floorId = 0;
+		roomId = 0;
+	};
+
+	const onDeleteChore = async (chore: HomeChoreDto) => {
+		var msg = `Are you sure you want to delete this chore "${chore.choreName}" - this cannot be undone`;
+		if (!confirm(msg)) return;
+		const response = await new ChoreClient().deleteChore(chore);
+
+		if (!response.success) {
+			toastError('Delete Chore', response.error || 'Failed to delete chore');
+			return;
+		}
+
+		toastSuccess('Chore Deleted', `Deleted "${chore.choreName}"`);
+		refreshChores(floorId, roomId);
+	};
+
 	$: refreshChores(floorId, roomId);
+	$: hasFilter = floorId > 0 || roomId > 0;
 </script>
 
 <NavigationCrumbs>
@@ -51,11 +74,19 @@
 <Row class="mt-3">
 	<Col class="d-flex">
 		<HomeFloorSelector className="me-2" allOption bind:value={floorId} />
-		<HomeRoomSelector allOption {floorId} bind:value={roomId} />
+		<HomeRoomSelector className="me-2" allOption {floorId} bind:value={roomId} />
+		<Button color="warning" disabled={!hasFilter} on:click={clearFilters}>
+			<i class="bi bi-trash3" />
+		</Button>
 	</Col>
 </Row>
 
 <Row class="mt-3">
+	{#if chores.length > 0}
+		<h2 class="text-center">{chores.length} Chore(s)</h2>
+	{:else}
+		<h2 class="text-center">No Chores</h2>
+	{/if}
 	<Accordion class="rn-accordian">
 		{#each chores as chore (chore.choreId)}
 			<AccordionItem>
@@ -63,7 +94,7 @@
 					<ChorePriorityIcon priority={chore.priority} />
 					{chore.choreName}
 				</span>
-				<ChoreInfoDisplay {chore} {onEditChore} {onCompleteChore} />
+				<ChoreInfoDisplay {chore} {onEditChore} {onCompleteChore} {onDeleteChore} />
 			</AccordionItem>
 		{/each}
 	</Accordion>
