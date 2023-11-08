@@ -12,12 +12,12 @@
 		Button,
 		Input
 	} from 'sveltestrap';
-	import TaskCategorySelector from './TaskCategorySelector.svelte';
-	import TaskPriority from './TaskPriority.svelte';
-	import TaskSubCategorySelector from './TaskSubCategorySelector.svelte';
-	import { UserTasksClient, type UserTaskDto } from '../../nlp-api';
-	import { createNewTask, validateTaskForAdding } from './Tasks';
-	import { toastError, toastSuccess } from '../../components/ToastManager';
+	import TaskCategorySelector from '../components/TaskCategorySelector.svelte';
+	import TaskPriority from '../components/TaskPriority.svelte';
+	import TaskSubCategorySelector from '../components/TaskSubCategorySelector.svelte';
+	import { UserTasksClient, type UserTaskDto } from '../../../nlp-api';
+	import { createNewTask, validateTaskForAdding } from '../Tasks';
+	import { toastError, toastSuccess } from '../../../components/ToastManager';
 
 	let _open = false;
 	let userTask: UserTaskDto = createNewTask();

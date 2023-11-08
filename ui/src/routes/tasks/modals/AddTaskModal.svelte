@@ -12,12 +12,12 @@
 		Col,
 		Row
 	} from 'sveltestrap';
-	import TaskPriority from './TaskPriority.svelte';
-	import { createNewTask, validateTaskForAdding } from './Tasks';
-	import TaskCategorySelector from './TaskCategorySelector.svelte';
-	import { UserTasksClient, type UserTaskDto } from '../../nlp-api';
-	import { toastError, toastSuccess } from '../../components/ToastManager';
-	import TaskSubCategorySelector from './TaskSubCategorySelector.svelte';
+	import TaskPriority from '../components/TaskPriority.svelte';
+	import { createNewTask, validateTaskForAdding } from '../Tasks';
+	import TaskCategorySelector from '../components/TaskCategorySelector.svelte';
+	import { UserTasksClient, type UserTaskDto } from '../../../nlp-api';
+	import { toastError, toastSuccess } from '../../../components/ToastManager';
+	import TaskSubCategorySelector from '../components/TaskSubCategorySelector.svelte';
 
 	export let onTaskAdded: () => void = () => {};
 	let open = false;
