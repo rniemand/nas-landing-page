@@ -27,3 +27,7 @@ export class LinkUrls {
 export class TasksUrls {
 	public static readonly Root = '/tasks';
 }
+
+export class ShoppingUrls {
+	public static readonly Root = '/shopping';
+}
