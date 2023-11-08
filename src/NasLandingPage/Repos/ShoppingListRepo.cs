@@ -44,9 +44,9 @@ public class ShoppingListRepo : IShoppingListRepo
   {
     const string query = @"
     INSERT INTO `ShoppingList`
-      (`HomeId`, `AddedByUserId`, `StoreName`, `Category`, `ItemName`)
+      (`HomeId`, `AddedByUserId`, `StoreName`, `Category`, `ItemName`, `Quantity`)
     VALUES
-      (@HomeId, @AddedByUserId, @StoreName, @Category, @ItemName)";
+      (@HomeId, @AddedByUserId, @StoreName, @Category, @ItemName, @Quantity)";
     await using var connection = _connectionHelper.GetCoreConnection();
     return await connection.ExecuteAsync(query, item);
   }

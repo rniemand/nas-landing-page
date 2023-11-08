@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using NasLandingPage.Extensions;
 using NasLandingPage.Models.Dto;
+using NasLandingPage.Models.Requests;
 using NasLandingPage.Models.Responses;
 using NasLandingPage.Services;
 
@@ -25,15 +26,15 @@ public class ShoppingListController : ControllerBase
   public async Task<BoolResponse> AddShoppingListItem([FromBody] ShoppingListItemDto item) =>
     await _shoppingListService.AddShoppingListItemAsync(User.GetNlpUserContext(), item);
 
-  [HttpGet("store-name-suggestions/{filter}")]
-  public async Task<string[]> GetStoreNameSuggestions([FromRoute] string? filter) =>
-    await _shoppingListService.GetStoreNameSuggestionsAsync(User.GetNlpUserContext(), filter);
+  [HttpPost("store-name-suggestions")]
+  public async Task<string[]> GetStoreNameSuggestions([FromBody] BasicSearchRequest request) =>
+    await _shoppingListService.GetStoreNameSuggestionsAsync(User.GetNlpUserContext(), request);
 
-  [HttpGet("category-suggestions/{filter}")]
-  public async Task<string[]> GetCategorySuggestions([FromRoute] string? filter) =>
-    await _shoppingListService.GetCategorySuggestionsAsync(User.GetNlpUserContext(), filter);
+  [HttpPost("category-suggestions")]
+  public async Task<string[]> GetCategorySuggestions([FromBody] BasicSearchRequest request) =>
+    await _shoppingListService.GetCategorySuggestionsAsync(User.GetNlpUserContext(), request);
 
-  [HttpGet("item-name-suggestions/{filter}")]
-  public async Task<string[]> GetItemNameSuggestions([FromRoute] string? filter) =>
-    await _shoppingListService.GetItemNameSuggestionsAsync(User.GetNlpUserContext(), filter);
+  [HttpPost("item-name-suggestions")]
+  public async Task<string[]> GetItemNameSuggestions([FromBody] BasicSearchRequest request) =>
+    await _shoppingListService.GetItemNameSuggestionsAsync(User.GetNlpUserContext(), request);
 }
