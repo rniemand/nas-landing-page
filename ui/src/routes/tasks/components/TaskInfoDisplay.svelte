@@ -32,7 +32,7 @@
 		<Icon name="pencil-square" />
 		<span class="d-none d-sm-inline">Edit</span>
 	</Button>
-	<Button color="success" class="flex-fill me-1" on:click={() => onCompleteTask(task)}>
+	<Button color="success" class="flex-fill" on:click={() => onCompleteTask(task)}>
 		<Icon name="clipboard-check" />
 		<span class="d-none d-sm-inline">Complete</span>
 	</Button>

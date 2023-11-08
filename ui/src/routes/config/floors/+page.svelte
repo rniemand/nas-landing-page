@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Accordion, AccordionItem, Button, Col, Row } from 'sveltestrap';
+	import { Accordion, AccordionItem, Col, Row } from 'sveltestrap';
 	import { AppUrls, ConfigUrls } from '../../../enums/AppUrls';
 	import { FloorClient, type HomeFloorDto } from '../../../nlp-api';
 	import Spinner from '../../../components/common/Spinner.svelte';
@@ -8,6 +8,7 @@
 	import EditFloorModal from './EditFloorModal.svelte';
 	import NavigationCrumbs from '../../../components/core/NavigationCrumbs.svelte';
 	import NavigationCrumb from '../../../components/core/NavigationCrumb.svelte';
+	import FloorInfoDisplay from './FloorInfoDisplay.svelte';
 
 	let floors: HomeFloorDto[] = [];
 	let loading: boolean = true;
@@ -21,6 +22,8 @@
 
 	const onFloorAdded = () => refreshFloors();
 	const onFloorUpdated = () => refreshFloors();
+	const onEdit = (floor: HomeFloorDto) => editModal.editFloor(floor);
+	const onViewRooms = (floor: HomeFloorDto) => goto(ConfigUrls.FloorRooms(floor.floorId));
 
 	refreshFloors();
 </script>
@@ -43,13 +46,7 @@
 			<Accordion class="mt-3">
 				{#each floors as floor}
 					<AccordionItem header={floor.floorName}>
-						{floor.floorName}
-						<div class="text-end">
-							<Button color="success" on:click={() => editModal.editFloor(floor)}>Edit</Button>
-							<Button color="primary" on:click={() => goto(ConfigUrls.FloorRooms(floor.floorId))}>
-								Rooms
-							</Button>
-						</div>
+						<FloorInfoDisplay {floor} {onEdit} {onViewRooms} />
 					</AccordionItem>
 				{/each}
 			</Accordion>
