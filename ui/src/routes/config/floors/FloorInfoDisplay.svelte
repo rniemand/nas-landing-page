@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Button, Icon } from 'sveltestrap';
+	import { Button } from 'sveltestrap';
 	import type { HomeFloorDto } from '../../../nlp-api';
 
 	export let floor: HomeFloorDto;
@@ -9,7 +9,7 @@
 
 <div class="d-flex d-sm-block text-sm-end mt-2">
 	<Button color="warning" class="flex-fill me-1" on:click={() => onEdit(floor)}>
-		<Icon name="pencil-square" />
+		<i class="bi bi-pencil-square" />
 		<span class="d-none d-sm-inline">Edit</span>
 	</Button>
 	<Button color="success" class="flex-fill" on:click={() => onViewRooms(floor)}>
