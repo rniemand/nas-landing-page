@@ -9,10 +9,12 @@
 	import NavigationCrumbs from '../../../components/core/NavigationCrumbs.svelte';
 	import NavigationCrumb from '../../../components/core/NavigationCrumb.svelte';
 	import FloorInfoDisplay from './FloorInfoDisplay.svelte';
+	import { page } from '$app/stores';
 
 	let floors: HomeFloorDto[] = [];
 	let loading: boolean = true;
 	let editModal: EditFloorModal;
+	let floorId: number = parseInt($page.url.searchParams.get('floorId') || '0');
 
 	const refreshFloors = async () => {
 		loading = true;
@@ -26,6 +28,8 @@
 	const onViewRooms = (floor: HomeFloorDto) => goto(ConfigUrls.FloorRooms(floor.floorId));
 
 	refreshFloors();
+
+	$: floorId = parseInt($page.url.searchParams.get('floorId') || '0');
 </script>
 
 <NavigationCrumbs>
@@ -45,7 +49,7 @@
 		{#if floors.length > 0}
 			<Accordion class="mt-3">
 				{#each floors as floor}
-					<AccordionItem header={floor.floorName}>
+					<AccordionItem header={floor.floorName} active={floorId === floor.floorId}>
 						<FloorInfoDisplay {floor} {onEdit} {onViewRooms} />
 					</AccordionItem>
 				{/each}

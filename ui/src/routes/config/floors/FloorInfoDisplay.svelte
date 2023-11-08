@@ -7,15 +7,13 @@
 	export let onViewRooms: (floor: HomeFloorDto) => void;
 </script>
 
-{floor.floorName}
-
 <div class="d-flex d-sm-block text-sm-end mt-2">
 	<Button color="warning" class="flex-fill me-1" on:click={() => onEdit(floor)}>
 		<Icon name="pencil-square" />
-		Edit
+		<span class="d-none d-sm-inline">Edit</span>
 	</Button>
 	<Button color="success" class="flex-fill" on:click={() => onViewRooms(floor)}>
 		<i class="bi bi-search" />
-		Rooms
+		<span class="d-none d-sm-inline">Rooms</span>
 	</Button>
 </div>
