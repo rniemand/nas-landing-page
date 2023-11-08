@@ -13,6 +13,7 @@ export class ConfigUrls {
 	public static readonly Rooms = `${ConfigUrls.Root}/rooms`;
 	public static readonly Homes = `${ConfigUrls.Root}/homes`;
 	public static FloorRooms = (floorID: number) => `${ConfigUrls.Rooms}?floorId=${floorID}`;
+	public static Floor = (floorID: number) => `${ConfigUrls.Floors}?floorId=${floorID}`;
 }
 
 export class GamesUrls {

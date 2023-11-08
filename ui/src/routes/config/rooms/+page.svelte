@@ -9,6 +9,7 @@
 	import EditRoomModal from './EditRoomModal.svelte';
 	import NavigationCrumbs from '../../../components/core/NavigationCrumbs.svelte';
 	import NavigationCrumb from '../../../components/core/NavigationCrumb.svelte';
+	import RoomInfoDisplay from './RoomInfoDisplay.svelte';
 
 	let floorId: number = 0;
 	let loading: boolean = true;
@@ -33,6 +34,8 @@
 
 	const onRoomAdded = () => refreshRooms(floorId);
 	const onRoomUpdated = () => refreshRooms(floorId);
+	const onEditRoom = (room: HomeRoomDto) => editModal.editRoom(room);
+	const onViewFloor = (room: HomeRoomDto) => goto(ConfigUrls.Floor(room.floorId));
 
 	$: if ($page.url?.searchParams?.has('floorId'))
 		floorId = parseInt($page.url?.searchParams.get('floorId') || '0');
@@ -57,10 +60,7 @@
 			<Accordion class="mt-3">
 				{#each rooms as room}
 					<AccordionItem header={room.roomName}>
-						{room.roomName}
-						<div class="text-end">
-							<Button color="success" on:click={() => editModal.editRoom(room)}>Edit</Button>
-						</div>
+						<RoomInfoDisplay {room} {onEditRoom} {onViewFloor} />
 					</AccordionItem>
 				{/each}
 			</Accordion>

@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { AutoCompleteSuggestion } from '../../components/common/AutoComplete';
-	import AutoCompleteBase from '../../components/common/AutoCompleteBase.svelte';
-	import { BasicSearchRequest, UserTasksClient } from '../../nlp-api';
+	import { AutoCompleteSuggestion } from '../../../components/common/AutoComplete';
+	import AutoCompleteBase from '../../../components/common/AutoCompleteBase.svelte';
+	import { BasicSearchRequest, UserTasksClient } from '../../../nlp-api';
 
 	export let value: string | undefined = undefined;
 	export let placeholder: string | undefined = undefined;

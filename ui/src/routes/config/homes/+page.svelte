@@ -6,10 +6,15 @@
 	import { Accordion, AccordionItem, Button, Col, Row } from 'sveltestrap';
 	import AddHomeModal from './AddHomeModal.svelte';
 	import UpdateHomeModal from './UpdateHomeModal.svelte';
+	import HomeInfoDisplay from './HomeInfoDisplay.svelte';
+	import { goto } from '$app/navigation';
 
 	let homes: HomeDto[] = [];
 	let loading: boolean = true;
 	let updateModal: UpdateHomeModal;
+
+	const onEdit = (home: HomeDto) => updateModal.editHome(home);
+	const showFloors = () => goto(ConfigUrls.Floors);
 
 	const refreshHomes = async () => {
 		loading = true;
@@ -38,10 +43,7 @@
 		<Accordion>
 			{#each homes as home}
 				<AccordionItem header={home.homeName}>
-					{home.homeName}
-					<div class="text-end">
-						<Button color="success" on:click={() => updateModal.editHome(home)}>Edit</Button>
-					</div>
+					<HomeInfoDisplay {home} {onEdit} {showFloors} />
 				</AccordionItem>
 			{/each}
 		</Accordion>
