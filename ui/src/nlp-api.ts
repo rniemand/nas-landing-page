@@ -1866,6 +1866,7 @@ export class UserTasksClient extends NlpBaseClient implements IUserTasksClient {
 
 export class WhoAmIResponse implements IWhoAmIResponse {
     userId!: number;
+    homeId!: number;
     name?: string | null;
     email?: string | null;
     signedIn!: boolean;
@@ -1883,6 +1884,7 @@ export class WhoAmIResponse implements IWhoAmIResponse {
     init(_data?: any) {
         if (_data) {
             this.userId = _data["userId"] !== undefined ? _data["userId"] : <any>null;
+            this.homeId = _data["homeId"] !== undefined ? _data["homeId"] : <any>null;
             this.name = _data["name"] !== undefined ? _data["name"] : <any>null;
             this.email = _data["email"] !== undefined ? _data["email"] : <any>null;
             this.signedIn = _data["signedIn"] !== undefined ? _data["signedIn"] : <any>null;
@@ -1909,6 +1911,7 @@ export class WhoAmIResponse implements IWhoAmIResponse {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["userId"] = this.userId !== undefined ? this.userId : <any>null;
+        data["homeId"] = this.homeId !== undefined ? this.homeId : <any>null;
         data["name"] = this.name !== undefined ? this.name : <any>null;
         data["email"] = this.email !== undefined ? this.email : <any>null;
         data["signedIn"] = this.signedIn !== undefined ? this.signedIn : <any>null;
@@ -1925,6 +1928,7 @@ export class WhoAmIResponse implements IWhoAmIResponse {
 
 export interface IWhoAmIResponse {
     userId: number;
+    homeId: number;
     name?: string | null;
     email?: string | null;
     signedIn: boolean;

@@ -66,7 +66,7 @@
 	import { Icon, Input } from 'sveltestrap';
 	import type { AutoCompleteSuggestion } from './AutoComplete';
 
-	export let value: string | undefined = undefined;
+	export let value: string | null | undefined = undefined;
 	export let placeholder: string | undefined = undefined;
 	export let debounceDelayMs: number = 500;
 	export let showClear: boolean = false;
@@ -102,7 +102,7 @@
 	const onInputFocus = () => (canRunSearch = true);
 	const onInputBlur = () => (canRunSearch = false);
 
-	const valueChanged = (_value: string | undefined) => {
+	const valueChanged = (_value: string | null | undefined) => {
 		if (!canRunSearch) return;
 		if (runSearchTimeout) clearTimeout(runSearchTimeout);
 		runSearchTimeout = setTimeout(runSearch, debounceDelayMs);

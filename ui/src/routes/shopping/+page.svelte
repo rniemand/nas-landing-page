@@ -1,9 +1,23 @@
 <script lang="ts">
-	import { Row, Col } from 'sveltestrap';
+	import { Row, Col, Accordion, AccordionItem } from 'sveltestrap';
 	import NavigationCrumb from '../../components/core/NavigationCrumb.svelte';
 	import NavigationCrumbs from '../../components/core/NavigationCrumbs.svelte';
 	import { AppUrls } from '../../enums/AppUrls';
 	import AddShoppingListItemModal from './components/AddShoppingListItemModal.svelte';
+	import { ShoppingListClient, ShoppingListItemDto } from '../../nlp-api';
+	import ShoppingListItemInfo from './components/ShoppingListItemInfo.svelte';
+
+	let items: ShoppingListItemDto[] = [];
+	let loading: boolean = false;
+
+	const refreshShoppingList = async () => {
+		console.log('refreshShoppingList()');
+		loading = true;
+		items = await new ShoppingListClient().getShoppingList();
+		loading = false;
+	};
+
+	refreshShoppingList();
 </script>
 
 <NavigationCrumbs>
@@ -14,8 +28,24 @@
 <Row>
 	<Col>
 		<div class="text-end">
-			<AddShoppingListItemModal />
+			<AddShoppingListItemModal onItemAdded={refreshShoppingList} />
 		</div>
-		<div class="tasks mt-2">Something</div>
+
+		{#if !loading && items.length > 0}
+			<div class="mt-2">
+				<Accordion>
+					{#each items as item}
+						<AccordionItem>
+							<span class="m-0" slot="header">
+								{item.itemName}
+							</span>
+							<ShoppingListItemInfo {item} />
+						</AccordionItem>
+					{/each}
+				</Accordion>
+			</div>
+		{:else}
+			<div>You have no shopping list items</div>
+		{/if}
 	</Col>
 </Row>

@@ -34,8 +34,9 @@ public class AuthController : ControllerBase
   {
     var whoAmIResponse = new WhoAmIResponse(HttpContext.User, includeClaims);
     if (string.IsNullOrWhiteSpace(whoAmIResponse.Email)) return whoAmIResponse;
-    var user = await EnsureUserIdAsync(User.GetNlpUserContext());
+    var user = await EnsureUserIdAndHomeIdAsync(User.GetNlpUserContext());
     whoAmIResponse.UserId = user.UserId;
+    whoAmIResponse.HomeId = user.HomeId;
     return whoAmIResponse;
   }
 
@@ -107,9 +108,9 @@ public class AuthController : ControllerBase
       : Ok(await _authService.SetNewPasswordAsync(request, email));
   }
 
-  private async Task<NlpUserContext> EnsureUserIdAsync(NlpUserContext user)
+  private async Task<NlpUserContext> EnsureUserIdAndHomeIdAsync(NlpUserContext user)
   {
-    if (user.UserId > 0) return user;
+    if (user is { UserId: > 0, HomeId: > 0 }) return user;
 
     if (string.IsNullOrWhiteSpace(user.Email))
       throw new NlpException("Unable to resolve userId - no email provided");
@@ -119,6 +120,7 @@ public class AuthController : ControllerBase
       throw new NlpException($"Unable to resolve an RPP user with an email of: {user.Email}");
 
     user.UserId = dbUser.UserID;
+    user.HomeId = dbUser.CurrentHomeID;
     return user;
   }
 }

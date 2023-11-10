@@ -3,7 +3,7 @@
 	import AutoCompleteBase from '../../../components/common/AutoCompleteBase.svelte';
 	import { BasicSearchRequest, ShoppingListClient } from '../../../nlp-api';
 
-	export let value: string | undefined = undefined;
+	export let value: string | null | undefined = undefined;
 	export let placeholder: string | undefined = undefined;
 	export let showClear: boolean = false;
 
