@@ -1175,6 +1175,428 @@ export class RoomClient extends NlpBaseClient implements IRoomClient {
     }
 }
 
+export interface IShoppingListClient {
+
+    getShoppingList(request: BasicSearchRequest): Promise<ShoppingListItemDto[]>;
+
+    addShoppingListItem(item: ShoppingListItemDto): Promise<BoolResponse>;
+
+    updateShoppingListItem(item: ShoppingListItemDto): Promise<BoolResponse>;
+
+    markItemBought(item: ShoppingListItemDto): Promise<BoolResponse>;
+
+    deleteItem(item: ShoppingListItemDto): Promise<BoolResponse>;
+
+    getLastKnownPrice(item: ShoppingListItemDto): Promise<number>;
+
+    getStoreNameSuggestions(request: BasicSearchRequest): Promise<string[]>;
+
+    getCategorySuggestions(request: BasicSearchRequest): Promise<string[]>;
+
+    getItemNameSuggestions(request: BasicSearchRequest): Promise<string[]>;
+}
+
+export class ShoppingListClient extends NlpBaseClient implements IShoppingListClient {
+    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+        super();
+        this.http = http ? http : window as any;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    getShoppingList(request: BasicSearchRequest): Promise<ShoppingListItemDto[]> {
+        let url_ = this.baseUrl + "/api/ShoppingList";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(request);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processGetShoppingList(_response));
+        });
+    }
+
+    protected processGetShoppingList(response: Response): Promise<ShoppingListItemDto[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(ShoppingListItemDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<ShoppingListItemDto[]>(null as any);
+    }
+
+    addShoppingListItem(item: ShoppingListItemDto): Promise<BoolResponse> {
+        let url_ = this.baseUrl + "/api/ShoppingList/add-item";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(item);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processAddShoppingListItem(_response));
+        });
+    }
+
+    protected processAddShoppingListItem(response: Response): Promise<BoolResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = BoolResponse.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<BoolResponse>(null as any);
+    }
+
+    updateShoppingListItem(item: ShoppingListItemDto): Promise<BoolResponse> {
+        let url_ = this.baseUrl + "/api/ShoppingList/update-item";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(item);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processUpdateShoppingListItem(_response));
+        });
+    }
+
+    protected processUpdateShoppingListItem(response: Response): Promise<BoolResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = BoolResponse.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<BoolResponse>(null as any);
+    }
+
+    markItemBought(item: ShoppingListItemDto): Promise<BoolResponse> {
+        let url_ = this.baseUrl + "/api/ShoppingList/mark-bought";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(item);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processMarkItemBought(_response));
+        });
+    }
+
+    protected processMarkItemBought(response: Response): Promise<BoolResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = BoolResponse.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<BoolResponse>(null as any);
+    }
+
+    deleteItem(item: ShoppingListItemDto): Promise<BoolResponse> {
+        let url_ = this.baseUrl + "/api/ShoppingList/delete-item";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(item);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processDeleteItem(_response));
+        });
+    }
+
+    protected processDeleteItem(response: Response): Promise<BoolResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = BoolResponse.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<BoolResponse>(null as any);
+    }
+
+    getLastKnownPrice(item: ShoppingListItemDto): Promise<number> {
+        let url_ = this.baseUrl + "/api/ShoppingList/last-known-price";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(item);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processGetLastKnownPrice(_response));
+        });
+    }
+
+    protected processGetLastKnownPrice(response: Response): Promise<number> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<number>(null as any);
+    }
+
+    getStoreNameSuggestions(request: BasicSearchRequest): Promise<string[]> {
+        let url_ = this.baseUrl + "/api/ShoppingList/store-name-suggestions";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(request);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processGetStoreNameSuggestions(_response));
+        });
+    }
+
+    protected processGetStoreNameSuggestions(response: Response): Promise<string[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(item);
+            }
+            else {
+                result200 = <any>null;
+            }
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<string[]>(null as any);
+    }
+
+    getCategorySuggestions(request: BasicSearchRequest): Promise<string[]> {
+        let url_ = this.baseUrl + "/api/ShoppingList/category-suggestions";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(request);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processGetCategorySuggestions(_response));
+        });
+    }
+
+    protected processGetCategorySuggestions(response: Response): Promise<string[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(item);
+            }
+            else {
+                result200 = <any>null;
+            }
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<string[]>(null as any);
+    }
+
+    getItemNameSuggestions(request: BasicSearchRequest): Promise<string[]> {
+        let url_ = this.baseUrl + "/api/ShoppingList/item-name-suggestions";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(request);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processGetItemNameSuggestions(_response));
+        });
+    }
+
+    protected processGetItemNameSuggestions(response: Response): Promise<string[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(item);
+            }
+            else {
+                result200 = <any>null;
+            }
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<string[]>(null as any);
+    }
+}
+
 export interface IUserClient {
 
     getAllUsers(): Promise<UserDto[]>;
@@ -1617,6 +2039,7 @@ export class UserTasksClient extends NlpBaseClient implements IUserTasksClient {
 
 export class WhoAmIResponse implements IWhoAmIResponse {
     userId!: number;
+    homeId!: number;
     name?: string | null;
     email?: string | null;
     signedIn!: boolean;
@@ -1634,6 +2057,7 @@ export class WhoAmIResponse implements IWhoAmIResponse {
     init(_data?: any) {
         if (_data) {
             this.userId = _data["userId"] !== undefined ? _data["userId"] : <any>null;
+            this.homeId = _data["homeId"] !== undefined ? _data["homeId"] : <any>null;
             this.name = _data["name"] !== undefined ? _data["name"] : <any>null;
             this.email = _data["email"] !== undefined ? _data["email"] : <any>null;
             this.signedIn = _data["signedIn"] !== undefined ? _data["signedIn"] : <any>null;
@@ -1660,6 +2084,7 @@ export class WhoAmIResponse implements IWhoAmIResponse {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["userId"] = this.userId !== undefined ? this.userId : <any>null;
+        data["homeId"] = this.homeId !== undefined ? this.homeId : <any>null;
         data["name"] = this.name !== undefined ? this.name : <any>null;
         data["email"] = this.email !== undefined ? this.email : <any>null;
         data["signedIn"] = this.signedIn !== undefined ? this.signedIn : <any>null;
@@ -1676,6 +2101,7 @@ export class WhoAmIResponse implements IWhoAmIResponse {
 
 export interface IWhoAmIResponse {
     userId: number;
+    homeId: number;
     name?: string | null;
     email?: string | null;
     signedIn: boolean;
@@ -2209,6 +2635,122 @@ export interface IHomeRoomDto {
     roomName: string;
 }
 
+export class ShoppingListItemDto implements IShoppingListItemDto {
+    itemId!: number;
+    homeId!: number;
+    addedByUserId!: number;
+    quantity!: number;
+    dateAdded!: Date;
+    dateDeleted?: Date | null;
+    datePurchased?: Date | null;
+    lastKnownPrice?: number | null;
+    storeName!: string;
+    category?: string | null;
+    itemName!: string;
+
+    constructor(data?: IShoppingListItemDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.itemId = _data["itemId"] !== undefined ? _data["itemId"] : <any>null;
+            this.homeId = _data["homeId"] !== undefined ? _data["homeId"] : <any>null;
+            this.addedByUserId = _data["addedByUserId"] !== undefined ? _data["addedByUserId"] : <any>null;
+            this.quantity = _data["quantity"] !== undefined ? _data["quantity"] : <any>null;
+            this.dateAdded = _data["dateAdded"] ? new Date(_data["dateAdded"].toString()) : <any>null;
+            this.dateDeleted = _data["dateDeleted"] ? new Date(_data["dateDeleted"].toString()) : <any>null;
+            this.datePurchased = _data["datePurchased"] ? new Date(_data["datePurchased"].toString()) : <any>null;
+            this.lastKnownPrice = _data["lastKnownPrice"] !== undefined ? _data["lastKnownPrice"] : <any>null;
+            this.storeName = _data["storeName"] !== undefined ? _data["storeName"] : <any>null;
+            this.category = _data["category"] !== undefined ? _data["category"] : <any>null;
+            this.itemName = _data["itemName"] !== undefined ? _data["itemName"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): ShoppingListItemDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ShoppingListItemDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["itemId"] = this.itemId !== undefined ? this.itemId : <any>null;
+        data["homeId"] = this.homeId !== undefined ? this.homeId : <any>null;
+        data["addedByUserId"] = this.addedByUserId !== undefined ? this.addedByUserId : <any>null;
+        data["quantity"] = this.quantity !== undefined ? this.quantity : <any>null;
+        data["dateAdded"] = this.dateAdded ? formatDate(this.dateAdded) : <any>null;
+        data["dateDeleted"] = this.dateDeleted ? formatDate(this.dateDeleted) : <any>null;
+        data["datePurchased"] = this.datePurchased ? formatDate(this.datePurchased) : <any>null;
+        data["lastKnownPrice"] = this.lastKnownPrice !== undefined ? this.lastKnownPrice : <any>null;
+        data["storeName"] = this.storeName !== undefined ? this.storeName : <any>null;
+        data["category"] = this.category !== undefined ? this.category : <any>null;
+        data["itemName"] = this.itemName !== undefined ? this.itemName : <any>null;
+        return data;
+    }
+}
+
+export interface IShoppingListItemDto {
+    itemId: number;
+    homeId: number;
+    addedByUserId: number;
+    quantity: number;
+    dateAdded: Date;
+    dateDeleted?: Date | null;
+    datePurchased?: Date | null;
+    lastKnownPrice?: number | null;
+    storeName: string;
+    category?: string | null;
+    itemName: string;
+}
+
+export class BasicSearchRequest implements IBasicSearchRequest {
+    filter?: string | null;
+    subFilter?: string | null;
+
+    constructor(data?: IBasicSearchRequest) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.filter = _data["filter"] !== undefined ? _data["filter"] : <any>null;
+            this.subFilter = _data["subFilter"] !== undefined ? _data["subFilter"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): BasicSearchRequest {
+        data = typeof data === 'object' ? data : {};
+        let result = new BasicSearchRequest();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["filter"] = this.filter !== undefined ? this.filter : <any>null;
+        data["subFilter"] = this.subFilter !== undefined ? this.subFilter : <any>null;
+        return data;
+    }
+}
+
+export interface IBasicSearchRequest {
+    filter?: string | null;
+    subFilter?: string | null;
+}
+
 export class UserDto implements IUserDto {
     userID!: number;
     currentHomeID!: number;
@@ -2415,46 +2957,6 @@ export interface IUserTaskDto {
     taskCategory: string;
     taskSubCategory: string;
     taskDescription: string;
-}
-
-export class BasicSearchRequest implements IBasicSearchRequest {
-    filter?: string | null;
-    subFilter?: string | null;
-
-    constructor(data?: IBasicSearchRequest) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.filter = _data["filter"] !== undefined ? _data["filter"] : <any>null;
-            this.subFilter = _data["subFilter"] !== undefined ? _data["subFilter"] : <any>null;
-        }
-    }
-
-    static fromJS(data: any): BasicSearchRequest {
-        data = typeof data === 'object' ? data : {};
-        let result = new BasicSearchRequest();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["filter"] = this.filter !== undefined ? this.filter : <any>null;
-        data["subFilter"] = this.subFilter !== undefined ? this.subFilter : <any>null;
-        return data;
-    }
-}
-
-export interface IBasicSearchRequest {
-    filter?: string | null;
-    subFilter?: string | null;
 }
 
 function formatDate(d: Date) {

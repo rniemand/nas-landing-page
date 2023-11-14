@@ -6,7 +6,14 @@
 	import { goto } from '$app/navigation';
 	import ItemButtons from '../components/core/ItemButtons.svelte';
 	import ItemButton from '../components/core/ItemButton.svelte';
-	import { ChoreUrls, ConfigUrls, GamesUrls, LinkUrls, TasksUrls } from '../enums/AppUrls';
+	import {
+		ChoreUrls,
+		ConfigUrls,
+		GamesUrls,
+		LinkUrls,
+		ShoppingUrls,
+		TasksUrls
+	} from '../enums/AppUrls';
 	import NavigationCrumbs from '../components/core/NavigationCrumbs.svelte';
 	import NavigationCrumb from '../components/core/NavigationCrumb.svelte';
 	let user: WhoAmIResponse | undefined;
@@ -31,6 +38,7 @@
 				<ItemButton small icon="bi-gear-fill" name="Config" url={ConfigUrls.Root} />
 				<ItemButton small icon="bi-controller" name="Games" url={GamesUrls.Root} />
 				<ItemButton small icon="bi-link-45deg" name="Links" url={LinkUrls.Root} />
+				<ItemButton small icon="bi-cart" name="Shopping" url={ShoppingUrls.Root} />
 				<ItemButton small icon="bi-check-all" name="Tasks" url={TasksUrls.Root} />
 			</ItemButtons>
 		</Col>

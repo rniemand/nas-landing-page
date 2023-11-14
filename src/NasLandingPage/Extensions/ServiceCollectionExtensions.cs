@@ -29,6 +29,7 @@ public static class ServiceCollectionExtensions
       .AddSingleton<IHomeRepo, HomeRepo>()
       .AddSingleton<IFloorRepo, FloorRepo>()
       .AddSingleton<IRoomRepo, RoomRepo>()
+      .AddSingleton<IShoppingListRepo, ShoppingListRepo>()
       // Helpers
       .AddSingleton<IJsonHelper, JsonHelper>()
       // Services
@@ -40,6 +41,7 @@ public static class ServiceCollectionExtensions
       .AddSingleton<IRoomService, RoomService>()
       .AddSingleton<IUserService, UserService>()
       .AddSingleton<IHomeService, HomeService>()
+      .AddSingleton<IShoppingListService, ShoppingListService>()
       // Plugins
       .AddHomeChores();
   }
