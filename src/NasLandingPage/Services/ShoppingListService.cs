@@ -8,7 +8,7 @@ namespace NasLandingPage.Services;
 
 public interface IShoppingListService
 {
-  Task<ShoppingListItemDto[]> GetShoppingListAsync(NlpUserContext userContext);
+  Task<ShoppingListItemDto[]> GetShoppingListAsync(NlpUserContext userContext, BasicSearchRequest request);
   Task<BoolResponse> AddShoppingListItemAsync(NlpUserContext userContext, ShoppingListItemDto item);
   Task<BoolResponse> UpdateShoppingListItemAsync(NlpUserContext userContext, ShoppingListItemDto item);
   Task<string[]> GetStoreNameSuggestionsAsync(NlpUserContext userContext, BasicSearchRequest request);
@@ -25,8 +25,8 @@ public class ShoppingListService : IShoppingListService
     _shoppingListRepo = shoppingListRepo;
   }
 
-  public async Task<ShoppingListItemDto[]> GetShoppingListAsync(NlpUserContext userContext) =>
-    (await _shoppingListRepo.GetShoppingListItemsAsync(userContext)).ToArray();
+  public async Task<ShoppingListItemDto[]> GetShoppingListAsync(NlpUserContext userContext, BasicSearchRequest request) =>
+    (await _shoppingListRepo.GetShoppingListItemsAsync(userContext, request)).ToArray();
 
   public async Task<BoolResponse> AddShoppingListItemAsync(NlpUserContext userContext, ShoppingListItemDto item)
   {

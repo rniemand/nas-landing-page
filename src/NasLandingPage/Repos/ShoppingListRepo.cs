@@ -1,12 +1,13 @@
 using Dapper;
 using NasLandingPage.Models;
 using NasLandingPage.Models.Dto;
+using NasLandingPage.Models.Requests;
 
 namespace NasLandingPage.Repos;
 
 public interface IShoppingListRepo
 {
-  Task<IEnumerable<ShoppingListItemDto>> GetShoppingListItemsAsync(NlpUserContext userContext);
+  Task<IEnumerable<ShoppingListItemDto>> GetShoppingListItemsAsync(NlpUserContext userContext, BasicSearchRequest request);
   Task<int> AddItemAsync(ShoppingListItemDto item);
   Task<int> UpdateItemAsync(ShoppingListItemDto item);
   Task<IEnumerable<string>> GetStoreNameSuggestionsAsync(NlpUserContext userContext, string? filter);
@@ -23,9 +24,9 @@ public class ShoppingListRepo : IShoppingListRepo
     _connectionHelper = connectionHelper;
   }
 
-  public async Task<IEnumerable<ShoppingListItemDto>> GetShoppingListItemsAsync(NlpUserContext userContext)
+  public async Task<IEnumerable<ShoppingListItemDto>> GetShoppingListItemsAsync(NlpUserContext userContext, BasicSearchRequest request)
   {
-    const string query = @"
+    var query = @$"
       SELECT shop.*
       FROM `ShoppingList` shop
       INNER JOIN `Users` u
@@ -33,6 +34,8 @@ public class ShoppingListRepo : IShoppingListRepo
 	      AND shop.DateDeleted IS NULL
 	      AND shop.DatePurchased IS NULL
 	      AND u.UserID = @UserID
+        {(string.IsNullOrWhiteSpace(request.Filter) ? "" : $"AND shop.StoreName = '{request.Filter}'")}
+        {(string.IsNullOrWhiteSpace(request.SubFilter) ? "" : $"AND shop.Category = '{request.SubFilter}'")}
       ORDER BY shop.StoreName, shop.Category, shop.ItemName
     ";
     await using var connection = _connectionHelper.GetCoreConnection();

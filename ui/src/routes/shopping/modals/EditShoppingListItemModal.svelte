@@ -12,43 +12,34 @@
 		Label,
 		Input
 	} from 'sveltestrap';
-	import StoreNameAutoComplete from './StoreNameAutoComplete.svelte';
-	import CategoryAutoComplete from './CategoryAutoComplete.svelte';
-	import ShoppingListItemAutoComplete from './ShoppingListItemAutoComplete.svelte';
-	import {
-		ShoppingListClient,
-		type ShoppingListItemDto,
-		type WhoAmIResponse
-	} from '../../../nlp-api';
-	import { createNewShoppingListItem, validateAddShoppingListItem } from '../shopping';
+	import StoreNameAutoComplete from '../components/StoreNameAutoComplete.svelte';
+	import CategoryAutoComplete from '../components/CategoryAutoComplete.svelte';
+	import ShoppingListItemAutoComplete from '../components/ShoppingListItemAutoComplete.svelte';
+	import { createNewShoppingListItem, validateEditShoppingListItem } from '../shopping';
 	import { authContext } from '../../../utils/AppStore';
 	import { onMount } from 'svelte';
+	import { type WhoAmIResponse, type ShoppingListItemDto, ShoppingListClient } from '../../../nlp-api';
 	import { toastError, toastSuccess } from '../../../components/ToastManager';
 
 	let open = false;
-	let canAdd: boolean = false;
+	let canSave: boolean = false;
 	let userContext: WhoAmIResponse;
 	let item: ShoppingListItemDto = createNewShoppingListItem(0);
-	export let onItemAdded: () => void;
+	export let onEdited: () => void;
 
 	const toggle = () => {
 		open = !open;
-		if (open) item = createNewShoppingListItem(userContext.homeId);
 	};
 
-	const addShoppingListItem = async () => {
-		item.addedByUserId = userContext.userId;
-		const response = await new ShoppingListClient().addShoppingListItem(item);
-
-		if (!response.success) {
-			toastError('Error Adding Item', response.error || 'Something went wrong!');
+	const saveItemChanges = async () => {
+		const response = await new ShoppingListClient().updateShoppingListItem(item);
+		if(!response.success) {
+			toastError('Update Failed', response.error || 'Failed to update item');
 			return;
 		}
-
-		toastSuccess('Item Added', `Added '${item.itemName}' to your shopping list`);
-		item = createNewShoppingListItem(userContext.homeId);
-		onItemAdded();
+		toastSuccess('Item Updated', `Updated ${item.itemName}`);
 		toggle();
+		onEdited();
 	};
 
 	onMount(() => {
@@ -58,13 +49,18 @@
 		});
 	});
 
-	$: canAdd = validateAddShoppingListItem(item);
+	export const edit = (_item: ShoppingListItemDto) => {
+		item = _item;
+		item.lastKnownPrice = item.lastKnownPrice||0;
+		toggle();
+	};
+
+	$: canSave = validateEditShoppingListItem(item);
 </script>
 
 <div>
-	<Button color="success" on:click={toggle}>Add Item</Button>
 	<Modal isOpen={open} {toggle}>
-		<ModalHeader {toggle}>Add Shopping List Item</ModalHeader>
+		<ModalHeader {toggle}>Edit Shopping List Item</ModalHeader>
 		<ModalBody>
 			<Form>
 				<Row>
@@ -104,7 +100,7 @@
 			</Form>
 		</ModalBody>
 		<ModalFooter>
-			<Button color="primary" disabled={!canAdd} on:click={addShoppingListItem}>Add Item</Button>
+			<Button color="primary" disabled={!canSave} on:click={saveItemChanges}>Save Changes</Button>
 		</ModalFooter>
 	</Modal>
 </div>

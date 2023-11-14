@@ -1177,7 +1177,7 @@ export class RoomClient extends NlpBaseClient implements IRoomClient {
 
 export interface IShoppingListClient {
 
-    getShoppingList(): Promise<ShoppingListItemDto[]>;
+    getShoppingList(request: BasicSearchRequest): Promise<ShoppingListItemDto[]>;
 
     addShoppingListItem(item: ShoppingListItemDto): Promise<BoolResponse>;
 
@@ -1201,13 +1201,17 @@ export class ShoppingListClient extends NlpBaseClient implements IShoppingListCl
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
-    getShoppingList(): Promise<ShoppingListItemDto[]> {
+    getShoppingList(request: BasicSearchRequest): Promise<ShoppingListItemDto[]> {
         let url_ = this.baseUrl + "/api/ShoppingList";
         url_ = url_.replace(/[?&]$/, "");
 
+        const content_ = JSON.stringify(request);
+
         let options_: RequestInit = {
-            method: "GET",
+            body: content_,
+            method: "POST",
             headers: {
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };

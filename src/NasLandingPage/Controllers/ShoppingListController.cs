@@ -18,9 +18,9 @@ public class ShoppingListController : ControllerBase
     _shoppingListService = shoppingListService;
   }
 
-  [HttpGet("")]
-  public async Task<ShoppingListItemDto[]> GetShoppingList() =>
-    await _shoppingListService.GetShoppingListAsync(User.GetNlpUserContext());
+  [HttpPost("")]
+  public async Task<ShoppingListItemDto[]> GetShoppingList([FromBody] BasicSearchRequest request) =>
+    await _shoppingListService.GetShoppingListAsync(User.GetNlpUserContext(), request);
 
   [HttpPost("add-item")]
   public async Task<BoolResponse> AddShoppingListItem([FromBody] ShoppingListItemDto item) =>

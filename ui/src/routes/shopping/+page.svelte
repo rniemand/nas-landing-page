@@ -3,18 +3,29 @@
 	import NavigationCrumb from '../../components/core/NavigationCrumb.svelte';
 	import NavigationCrumbs from '../../components/core/NavigationCrumbs.svelte';
 	import { AppUrls } from '../../enums/AppUrls';
-	import AddShoppingListItemModal from './components/AddShoppingListItemModal.svelte';
-	import { ShoppingListClient, ShoppingListItemDto } from '../../nlp-api';
+	import AddShoppingListItemModal from './modals/AddShoppingListItemModal.svelte';
+	import { BasicSearchRequest, ShoppingListClient, ShoppingListItemDto } from '../../nlp-api';
 	import ShoppingListItemInfo from './components/ShoppingListItemInfo.svelte';
-	import EditShoppingListItemModal from './components/EditShoppingListItemModal.svelte';
+	import EditShoppingListItemModal from './modals/EditShoppingListItemModal.svelte';
+	import StoreNameDropdown from './components/StoreNameDropdown.svelte';
+	import CategoryDropdown from './components/CategoryDropdown.svelte';
 
 	let items: ShoppingListItemDto[] = [];
 	let loading: boolean = false;
 	let editModal: EditShoppingListItemModal;
+	let store: string = '';
+	let category: string = '';
+	let storeList: StoreNameDropdown;
+	let categoryList: CategoryDropdown;
 
-	const refreshShoppingList = async () => {
+	const refreshShoppingList = async (_store: string, _category: string) => {
 		loading = true;
-		items = await new ShoppingListClient().getShoppingList();
+		items = await new ShoppingListClient().getShoppingList(
+			new BasicSearchRequest({
+				filter: _store,
+				subFilter: _category
+			})
+		);
 		loading = false;
 	};
 
@@ -22,7 +33,13 @@
 		editModal.edit(item);
 	};
 
-	refreshShoppingList();
+	const handleChange = () => {
+		storeList.refreshStoreNames();
+		categoryList.refreshCategories();
+		refreshShoppingList(store, category);
+	};
+
+	$: refreshShoppingList(store, category);
 </script>
 
 <NavigationCrumbs>
@@ -33,8 +50,18 @@
 <Row>
 	<Col>
 		<div class="text-end">
-			<AddShoppingListItemModal onItemAdded={refreshShoppingList} />
-			<EditShoppingListItemModal bind:this={editModal} onEdited={refreshShoppingList} />
+			<AddShoppingListItemModal onItemAdded={handleChange} />
+			<EditShoppingListItemModal bind:this={editModal} onEdited={handleChange} />
+		</div>
+
+		<div class="my-3 d-flex">
+			<StoreNameDropdown
+				clearButton
+				bind:this={storeList}
+				allowAllOption
+				bind:value={store}
+				className="me-2" />
+			<CategoryDropdown clearButton bind:this={categoryList} allowAllOption bind:value={category} />
 		</div>
 
 		{#if !loading && items.length > 0}
