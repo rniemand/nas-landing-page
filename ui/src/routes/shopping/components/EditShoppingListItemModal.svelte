@@ -18,19 +18,28 @@
 	import { createNewShoppingListItem, validateEditShoppingListItem } from '../shopping';
 	import { authContext } from '../../../utils/AppStore';
 	import { onMount } from 'svelte';
-	import type { WhoAmIResponse, ShoppingListItemDto } from '../../../nlp-api';
+	import { type WhoAmIResponse, type ShoppingListItemDto, ShoppingListClient } from '../../../nlp-api';
+	import { toastError, toastSuccess } from '../../../components/ToastManager';
 
 	let open = false;
-	let canAdd: boolean = false;
+	let canSave: boolean = false;
 	let userContext: WhoAmIResponse;
 	let item: ShoppingListItemDto = createNewShoppingListItem(0);
+	export let onEdited: () => void;
 
 	const toggle = () => {
 		open = !open;
 	};
 
-	const editItem = async () => {
-		console.log('editItem()');
+	const saveItemChanges = async () => {
+		const response = await new ShoppingListClient().updateShoppingListItem(item);
+		if(!response.success) {
+			toastError('Update Failed', response.error || 'Failed to update item');
+			return;
+		}
+		toastSuccess('Item Updated', `Updated ${item.itemName}`);
+		toggle();
+		onEdited();
 	};
 
 	onMount(() => {
@@ -42,10 +51,11 @@
 
 	export const edit = (_item: ShoppingListItemDto) => {
 		item = _item;
+		item.lastKnownPrice = item.lastKnownPrice||0;
 		toggle();
 	};
 
-	$: canAdd = validateEditShoppingListItem(item);
+	$: canSave = validateEditShoppingListItem(item);
 </script>
 
 <div>
@@ -90,7 +100,7 @@
 			</Form>
 		</ModalBody>
 		<ModalFooter>
-			<Button color="primary" disabled={!canAdd} on:click={editItem}>Save Changes</Button>
+			<Button color="primary" disabled={!canSave} on:click={saveItemChanges}>Save Changes</Button>
 		</ModalFooter>
 	</Modal>
 </div>

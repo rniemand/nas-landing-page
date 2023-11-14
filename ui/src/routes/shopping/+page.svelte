@@ -13,14 +13,12 @@
 	let editModal: EditShoppingListItemModal;
 
 	const refreshShoppingList = async () => {
-		console.log('refreshShoppingList()');
 		loading = true;
 		items = await new ShoppingListClient().getShoppingList();
 		loading = false;
 	};
 
 	const onEditItem = (item: ShoppingListItemDto) => {
-		console.log('onEditItem', item);
 		editModal.edit(item);
 	};
 
@@ -36,7 +34,7 @@
 	<Col>
 		<div class="text-end">
 			<AddShoppingListItemModal onItemAdded={refreshShoppingList} />
-			<EditShoppingListItemModal bind:this={editModal} />
+			<EditShoppingListItemModal bind:this={editModal} onEdited={refreshShoppingList} />
 		</div>
 
 		{#if !loading && items.length > 0}
@@ -45,7 +43,7 @@
 					{#each items as item}
 						<AccordionItem>
 							<span class="m-0" slot="header">
-								{item.itemName}
+								({item.quantity}x) {item.itemName}
 							</span>
 							<ShoppingListItemInfo {item} {onEditItem} />
 						</AccordionItem>

@@ -10,6 +10,7 @@ public interface IShoppingListService
 {
   Task<ShoppingListItemDto[]> GetShoppingListAsync(NlpUserContext userContext);
   Task<BoolResponse> AddShoppingListItemAsync(NlpUserContext userContext, ShoppingListItemDto item);
+  Task<BoolResponse> UpdateShoppingListItemAsync(NlpUserContext userContext, ShoppingListItemDto item);
   Task<string[]> GetStoreNameSuggestionsAsync(NlpUserContext userContext, BasicSearchRequest request);
   Task<string[]> GetCategorySuggestionsAsync(NlpUserContext userContext, BasicSearchRequest request);
   Task<string[]> GetItemNameSuggestionsAsync(NlpUserContext userContext, BasicSearchRequest request);
@@ -33,6 +34,14 @@ public class ShoppingListService : IShoppingListService
     item.AddedByUserId = userContext.UserId;
     var rowCount = await _shoppingListRepo.AddItemAsync(item);
     return rowCount == 1 ? response : response.AsError("Failed to add shopping list item");
+  }
+
+  public async Task<BoolResponse> UpdateShoppingListItemAsync(NlpUserContext userContext, ShoppingListItemDto item)
+  {
+    // TODO: [ACCESS] (ShoppingListService.UpdateShoppingListItemAsync) Check user has access to this item
+    var response = new BoolResponse();
+    var rowCount = await _shoppingListRepo.UpdateItemAsync(item);
+    return rowCount == 1 ? response : response.AsError("Failed to update item");
   }
 
   public async Task<string[]> GetStoreNameSuggestionsAsync(NlpUserContext userContext, BasicSearchRequest request) =>

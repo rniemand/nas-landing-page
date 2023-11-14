@@ -8,6 +8,7 @@ public interface IShoppingListRepo
 {
   Task<IEnumerable<ShoppingListItemDto>> GetShoppingListItemsAsync(NlpUserContext userContext);
   Task<int> AddItemAsync(ShoppingListItemDto item);
+  Task<int> UpdateItemAsync(ShoppingListItemDto item);
   Task<IEnumerable<string>> GetStoreNameSuggestionsAsync(NlpUserContext userContext, string? filter);
   Task<IEnumerable<string>> GetCategorySuggestionsAsync(NlpUserContext userContext, string? filter);
   Task<IEnumerable<string>> GetItemNameSuggestionsAsync(NlpUserContext userContext, string? filter);
@@ -25,14 +26,15 @@ public class ShoppingListRepo : IShoppingListRepo
   public async Task<IEnumerable<ShoppingListItemDto>> GetShoppingListItemsAsync(NlpUserContext userContext)
   {
     const string query = @"
-    SELECT shop.*
-    FROM `ShoppingList` shop
-    INNER JOIN `Users` u
-	    ON u.CurrentHomeID = shop.HomeId
-	    AND shop.DateDeleted IS NULL
-	    AND shop.DatePurchased IS NULL
-	    AND u.UserID = @UserID
-    ORDER BY shop.StoreName, shop.Category, shop.ItemName";
+      SELECT shop.*
+      FROM `ShoppingList` shop
+      INNER JOIN `Users` u
+	      ON u.CurrentHomeID = shop.HomeId
+	      AND shop.DateDeleted IS NULL
+	      AND shop.DatePurchased IS NULL
+	      AND u.UserID = @UserID
+      ORDER BY shop.StoreName, shop.Category, shop.ItemName
+    ";
     await using var connection = _connectionHelper.GetCoreConnection();
     return await connection.QueryAsync<ShoppingListItemDto>(query, new
     {
@@ -47,6 +49,23 @@ public class ShoppingListRepo : IShoppingListRepo
       (`HomeId`, `AddedByUserId`, `StoreName`, `Category`, `ItemName`, `Quantity`)
     VALUES
       (@HomeId, @AddedByUserId, @StoreName, @Category, @ItemName, @Quantity)";
+    await using var connection = _connectionHelper.GetCoreConnection();
+    return await connection.ExecuteAsync(query, item);
+  }
+
+  public async Task<int> UpdateItemAsync(ShoppingListItemDto item)
+  {
+    const string query = @"
+      UPDATE `ShoppingList`
+      SET
+        `LastKnownPrice` = @LastKnownPrice,
+        `Quantity` = @Quantity,
+        `StoreName` = @StoreName,
+        `Category` = @Category,
+        `ItemName` = @ItemName
+      WHERE
+        `ItemId` = @ItemId
+    ";
     await using var connection = _connectionHelper.GetCoreConnection();
     return await connection.ExecuteAsync(query, item);
   }

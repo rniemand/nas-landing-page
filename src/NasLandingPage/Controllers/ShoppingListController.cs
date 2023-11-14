@@ -26,6 +26,10 @@ public class ShoppingListController : ControllerBase
   public async Task<BoolResponse> AddShoppingListItem([FromBody] ShoppingListItemDto item) =>
     await _shoppingListService.AddShoppingListItemAsync(User.GetNlpUserContext(), item);
 
+  [HttpPatch("update-item")]
+  public async Task<BoolResponse> UpdateShoppingListItem([FromBody] ShoppingListItemDto item) =>
+    await _shoppingListService.UpdateShoppingListItemAsync(User.GetNlpUserContext(), item);
+
   [HttpPost("store-name-suggestions")]
   public async Task<string[]> GetStoreNameSuggestions([FromBody] BasicSearchRequest request) =>
     await _shoppingListService.GetStoreNameSuggestionsAsync(User.GetNlpUserContext(), request);
