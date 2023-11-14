@@ -10,6 +10,9 @@ public interface IShoppingListRepo
   Task<IEnumerable<ShoppingListItemDto>> GetShoppingListItemsAsync(NlpUserContext userContext, BasicSearchRequest request);
   Task<int> AddItemAsync(ShoppingListItemDto item);
   Task<int> UpdateItemAsync(ShoppingListItemDto item);
+  Task<int> MarkBoughtAsync(ShoppingListItemDto item);
+  Task<int> DeleteItemAsync(ShoppingListItemDto item);
+  Task<decimal> GetItemLastKnownPriceAsync(ShoppingListItemDto item);
   Task<IEnumerable<string>> GetStoreNameSuggestionsAsync(NlpUserContext userContext, string? filter);
   Task<IEnumerable<string>> GetCategorySuggestionsAsync(NlpUserContext userContext, string? filter);
   Task<IEnumerable<string>> GetItemNameSuggestionsAsync(NlpUserContext userContext, string? filter);
@@ -49,9 +52,9 @@ public class ShoppingListRepo : IShoppingListRepo
   {
     const string query = @"
     INSERT INTO `ShoppingList`
-      (`HomeId`, `AddedByUserId`, `StoreName`, `Category`, `ItemName`, `Quantity`)
+      (`HomeId`, `AddedByUserId`, `StoreName`, `Category`, `ItemName`, `Quantity`, `LastKnownPrice`)
     VALUES
-      (@HomeId, @AddedByUserId, @StoreName, @Category, @ItemName, @Quantity)";
+      (@HomeId, @AddedByUserId, @StoreName, @Category, @ItemName, @Quantity, @LastKnownPrice)";
     await using var connection = _connectionHelper.GetCoreConnection();
     return await connection.ExecuteAsync(query, item);
   }
@@ -71,6 +74,53 @@ public class ShoppingListRepo : IShoppingListRepo
     ";
     await using var connection = _connectionHelper.GetCoreConnection();
     return await connection.ExecuteAsync(query, item);
+  }
+
+  public async Task<int> MarkBoughtAsync(ShoppingListItemDto item)
+  {
+    const string query = @"
+      UPDATE `ShoppingList`
+      SET
+        `LastKnownPrice` = @LastKnownPrice,
+        `Quantity` = @Quantity,
+        `DatePurchased` = curdate()
+      WHERE
+        `ItemId` = @ItemId
+    ";
+    await using var connection = _connectionHelper.GetCoreConnection();
+    return await connection.ExecuteAsync(query, item);
+  }
+
+  public async Task<int> DeleteItemAsync(ShoppingListItemDto item)
+  {
+    const string query = @"
+      UPDATE `ShoppingList`
+      SET
+        `DateDeleted` = curdate()
+      WHERE
+        `ItemId` = @ItemId
+    ";
+    await using var connection = _connectionHelper.GetCoreConnection();
+    return await connection.ExecuteAsync(query, item);
+  }
+
+  public async Task<decimal> GetItemLastKnownPriceAsync(ShoppingListItemDto item)
+  {
+    const string query = @"
+      SELECT `LastKnownPrice`
+      FROM `ShoppingList`
+      WHERE
+        `HomeId` = @HomeId
+        AND `DateDeleted` IS NULL
+        AND `DatePurchased` IS NOT NULL
+        AND `StoreName` = @StoreName
+        AND `ItemName` = @ItemName
+        AND `Category` = @Category
+      ORDER BY `DatePurchased` DESC
+      LIMIT 1
+    ";
+    await using var connection = _connectionHelper.GetCoreConnection();
+    return await connection.QueryFirstOrDefaultAsync<decimal>(query, item);
   }
 
   public async Task<IEnumerable<string>> GetStoreNameSuggestionsAsync(NlpUserContext userContext, string? filter)

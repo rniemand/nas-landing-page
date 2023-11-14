@@ -12,6 +12,10 @@ export const validateEditShoppingListItem = (item: ShoppingListItemDto) => {
 	return validateAddShoppingListItem(item);
 };
 
+export const validateBoughtShoppingListItem = (item: ShoppingListItemDto) => {
+	return validateAddShoppingListItem(item);
+};
+
 export const createNewShoppingListItem = (homeId: number) => {
 	return new ShoppingListItemDto({
 		addedByUserId: 0,

@@ -51,6 +51,13 @@
 		toggle();
 	};
 
+	const getLastKnownPrice = async (_item: ShoppingListItemDto) => {
+		if ((_item.lastKnownPrice || 0) > 0) return;
+		const response = await new ShoppingListClient().getLastKnownPrice(_item);
+		item.lastKnownPrice = response;
+		item = item;
+	};
+
 	onMount(() => {
 		return authContext.subscribe((_whoAmI) => {
 			if (!_whoAmI) return;
@@ -59,6 +66,7 @@
 	});
 
 	$: canAdd = validateAddShoppingListItem(item);
+	$: canAdd && getLastKnownPrice(item);
 </script>
 
 <div>

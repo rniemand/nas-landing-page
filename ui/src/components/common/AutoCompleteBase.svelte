@@ -26,6 +26,7 @@
 	}
 	.results.visible {
 		display: block;
+		z-index: 10;
 	}
 	.result {
 		cursor: pointer;

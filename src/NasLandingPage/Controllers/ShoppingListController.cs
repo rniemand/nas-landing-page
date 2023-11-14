@@ -30,6 +30,18 @@ public class ShoppingListController : ControllerBase
   public async Task<BoolResponse> UpdateShoppingListItem([FromBody] ShoppingListItemDto item) =>
     await _shoppingListService.UpdateShoppingListItemAsync(User.GetNlpUserContext(), item);
 
+  [HttpPost("mark-bought")]
+  public async Task<BoolResponse> MarkItemBought([FromBody] ShoppingListItemDto item) =>
+    await _shoppingListService.MarkItemBoughtAsync(User.GetNlpUserContext(), item);
+
+  [HttpDelete("delete-item")]
+  public async Task<BoolResponse> DeleteItem([FromBody] ShoppingListItemDto item) =>
+    await _shoppingListService.DeleteItemAsync(User.GetNlpUserContext(), item);
+
+  [HttpPost("last-known-price")]
+  public async Task<decimal> GetLastKnownPrice([FromBody] ShoppingListItemDto item) =>
+    await _shoppingListService.GetItemLastKnownPriceAsync(User.GetNlpUserContext(), item);
+
   [HttpPost("store-name-suggestions")]
   public async Task<string[]> GetStoreNameSuggestions([FromBody] BasicSearchRequest request) =>
     await _shoppingListService.GetStoreNameSuggestionsAsync(User.GetNlpUserContext(), request);

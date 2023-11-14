@@ -11,6 +11,9 @@ public interface IShoppingListService
   Task<ShoppingListItemDto[]> GetShoppingListAsync(NlpUserContext userContext, BasicSearchRequest request);
   Task<BoolResponse> AddShoppingListItemAsync(NlpUserContext userContext, ShoppingListItemDto item);
   Task<BoolResponse> UpdateShoppingListItemAsync(NlpUserContext userContext, ShoppingListItemDto item);
+  Task<BoolResponse> MarkItemBoughtAsync(NlpUserContext userContext, ShoppingListItemDto item);
+  Task<BoolResponse> DeleteItemAsync(NlpUserContext userContext, ShoppingListItemDto item);
+  Task<decimal> GetItemLastKnownPriceAsync(NlpUserContext userContext, ShoppingListItemDto item);
   Task<string[]> GetStoreNameSuggestionsAsync(NlpUserContext userContext, BasicSearchRequest request);
   Task<string[]> GetCategorySuggestionsAsync(NlpUserContext userContext, BasicSearchRequest request);
   Task<string[]> GetItemNameSuggestionsAsync(NlpUserContext userContext, BasicSearchRequest request);
@@ -42,6 +45,27 @@ public class ShoppingListService : IShoppingListService
     var response = new BoolResponse();
     var rowCount = await _shoppingListRepo.UpdateItemAsync(item);
     return rowCount == 1 ? response : response.AsError("Failed to update item");
+  }
+
+  public async Task<BoolResponse> MarkItemBoughtAsync(NlpUserContext userContext, ShoppingListItemDto item)
+  {
+    // TODO: [VALIDATION] (ShoppingListService.MarkItemBoughtAsync) Ensure user has access to this item
+    var response = new BoolResponse();
+    var rowCount = await _shoppingListRepo.MarkBoughtAsync(item);
+    return rowCount == 1 ? response : response.AsError("Failed to mark item bought");
+  }
+
+  public async Task<BoolResponse> DeleteItemAsync(NlpUserContext userContext, ShoppingListItemDto item)
+  {
+    // TODO: [VALIDATION] (ShoppingListService.DeleteItemAsync) Ensure user has access
+    var response = new BoolResponse();
+    var rowCount = await _shoppingListRepo.DeleteItemAsync(item);
+    return rowCount == 1 ? response : response.AsError("Failed to delete item");
+  }
+
+  public async Task<decimal> GetItemLastKnownPriceAsync(NlpUserContext userContext, ShoppingListItemDto item)
+  {
+    return await _shoppingListRepo.GetItemLastKnownPriceAsync(item);
   }
 
   public async Task<string[]> GetStoreNameSuggestionsAsync(NlpUserContext userContext, BasicSearchRequest request) =>
