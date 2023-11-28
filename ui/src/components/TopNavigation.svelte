@@ -1,3 +1,9 @@
+<style>
+	:global(.active .nav-link i) {
+		color: rgb(202 254 139) !important;
+	}
+</style>
+
 <script lang="ts">
 	import { getContext, onMount } from 'svelte';
 	import {
@@ -17,15 +23,7 @@
 	import { AuthClient, type WhoAmIResponse } from '../nlp-api';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
-	import {
-		AppUrls,
-		ChoreUrls,
-		ConfigUrls,
-		GamesUrls,
-		LinkUrls,
-		ShoppingUrls,
-		TasksUrls
-	} from '../enums/AppUrls';
+	import { AppUrls } from '../enums/AppUrls';
 	import { AppContext } from '../enums/AppContext';
 	import type { NlpPlugin } from '../modals/NlpPlugin';
 
@@ -57,7 +55,10 @@
 	<Collapse {isOpen} navbar expand="md" on:update={handleUpdate}>
 		<Nav navbar class="w-100">
 			{#each plugins as plugin, i}
-				<NavItem class="d-none d-md-block {i === 0 ? 'ms-auto' : ''}">
+				<NavItem
+					class="d-none d-md-block {i === 0 ? 'ms-auto' : ''} {pageId === plugin.url
+						? 'active'
+						: ''}">
 					<NavLink href={plugin.url}>
 						<i class="bi {plugin.icon}" />
 					</NavLink>
