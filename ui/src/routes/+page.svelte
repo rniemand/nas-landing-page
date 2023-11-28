@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { getContext, onMount } from 'svelte';
 	import type { WhoAmIResponse } from '../nlp-api';
 	import { authContext } from '../utils/AppStore';
 	import { Button, Col, Row } from 'sveltestrap';
@@ -16,7 +16,10 @@
 	} from '../enums/AppUrls';
 	import NavigationCrumbs from '../components/core/NavigationCrumbs.svelte';
 	import NavigationCrumb from '../components/core/NavigationCrumb.svelte';
+	import type { NlpPlugin } from '../modals/NlpPlugin';
+	import { AppContext } from '../enums/AppContext';
 	let user: WhoAmIResponse | undefined;
+	let plugins = getContext<NlpPlugin[]>(AppContext.Plugins);
 
 	onMount(() => {
 		return authContext.subscribe((_whoAmI: WhoAmIResponse | undefined) => {
@@ -34,12 +37,9 @@
 	{#if user?.signedIn}
 		<Col>
 			<ItemButtons>
-				<ItemButton small icon="bi-check2-circle" name="Chores" url={ChoreUrls.Root} />
-				<ItemButton small icon="bi-gear-fill" name="Config" url={ConfigUrls.Root} />
-				<ItemButton small icon="bi-controller" name="Games" url={GamesUrls.Root} />
-				<ItemButton small icon="bi-link-45deg" name="Links" url={LinkUrls.Root} />
-				<ItemButton small icon="bi-cart" name="Shopping" url={ShoppingUrls.Root} />
-				<ItemButton small icon="bi-check-all" name="Tasks" url={TasksUrls.Root} />
+				{#each plugins as plugin}
+					<ItemButton small icon={plugin.icon} name={plugin.name} url={plugin.url} />
+				{/each}
 			</ItemButtons>
 		</Col>
 	{:else}

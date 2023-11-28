@@ -8,6 +8,11 @@
 	import { Container } from 'sveltestrap';
 	import ToastManager from '../components/ToastManager.svelte';
 	import 'bootstrap-icons/font/bootstrap-icons.css';
+	import { setContext } from 'svelte';
+	import { AppContext } from '../enums/AppContext';
+	import { AppPlugins } from '../AppConstants';
+
+	setContext(AppContext.Plugins, AppPlugins);
 
 	(async () => {
 		const authResponse = await new AuthClient().challenge(false);
