@@ -8,12 +8,14 @@
 	} from '../../../nlp-api';
 	import { createBlankChore } from '../chores';
 	import UserSelector from '../../../components/core/UserSelector.svelte';
-	import { onMount } from 'svelte';
-	import { authContext } from '../../../utils/AppStore';
+	import { getContext } from 'svelte';
 	import Spinner from '../../../components/common/Spinner.svelte';
 	import { toastError, toastSuccess } from '../../../components/ToastManager';
+	import type { Writable } from 'svelte/store';
+	import { AppContext } from '../../../enums/AppContext';
 
 	export let onChoreCompleted: () => void = () => {};
+	const user = getContext<Writable<WhoAmIResponse | undefined>>(AppContext.User);
 	let open = false;
 	let chore: HomeChoreDto = createBlankChore();
 	let userId: number = 0;
@@ -46,11 +48,7 @@
 		submitting = false;
 	};
 
-	onMount(() => {
-		return authContext.subscribe((_whoAmI: WhoAmIResponse | undefined) => {
-			userId = _whoAmI?.userId || 0;
-		});
-	});
+	$: userId = $user?.userId || 0;
 </script>
 
 <Modal isOpen={open} {toggle}>

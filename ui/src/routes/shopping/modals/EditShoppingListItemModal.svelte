@@ -16,14 +16,11 @@
 	import CategoryAutoComplete from '../components/CategoryAutoComplete.svelte';
 	import ShoppingListItemAutoComplete from '../components/ShoppingListItemAutoComplete.svelte';
 	import { createNewShoppingListItem, validateEditShoppingListItem } from '../shopping';
-	import { authContext } from '../../../utils/AppStore';
-	import { onMount } from 'svelte';
-	import { type WhoAmIResponse, type ShoppingListItemDto, ShoppingListClient } from '../../../nlp-api';
+	import { type ShoppingListItemDto, ShoppingListClient } from '../../../nlp-api';
 	import { toastError, toastSuccess } from '../../../components/ToastManager';
 
 	let open = false;
 	let canSave: boolean = false;
-	let userContext: WhoAmIResponse;
 	let item: ShoppingListItemDto = createNewShoppingListItem(0);
 	export let onEdited: () => void;
 
@@ -33,7 +30,7 @@
 
 	const saveItemChanges = async () => {
 		const response = await new ShoppingListClient().updateShoppingListItem(item);
-		if(!response.success) {
+		if (!response.success) {
 			toastError('Update Failed', response.error || 'Failed to update item');
 			return;
 		}
@@ -42,16 +39,9 @@
 		onEdited();
 	};
 
-	onMount(() => {
-		return authContext.subscribe((_whoAmI) => {
-			if (!_whoAmI) return;
-			userContext = _whoAmI;
-		});
-	});
-
 	export const edit = (_item: ShoppingListItemDto) => {
 		item = _item;
-		item.lastKnownPrice = item.lastKnownPrice||0;
+		item.lastKnownPrice = item.lastKnownPrice || 0;
 		toggle();
 	};
 

@@ -45,24 +45,28 @@ public class AuthController : ControllerBase
   public async Task<ActionResult?> Challenge(bool requestGoogleSelectAccount = false)
   {
     if (requestGoogleSelectAccount)
-      await HttpContext.ChallengeAsync(new GoogleChallengeProperties()
+      await HttpContext.ChallengeAsync(new GoogleChallengeProperties
       {
         Prompt = "select_account"
       });
+
     else if (HttpContext.User.Identity is null || !HttpContext.User.Identity.IsAuthenticated)
       await HttpContext.ChallengeAsync();
+
     else
       return Ok(await WhoAmI());
+
     return new EmptyResult();
   }
 
   [HttpPost("login")]
-  public async Task Login(string password, [FromServices] IUserRepo userRepo)
+  public async Task<WhoAmIResponse?> Login(string password, [FromServices] IUserRepo userRepo)
   {
     if (User.Identity is null || !User.Identity.IsAuthenticated)
     {
-      await Challenge();
-      return;
+      var response = await Challenge();
+      if (response is EmptyResult) return null;
+      return (response as OkObjectResult)?.Value as WhoAmIResponse;
     }
 
     var email = User.FindFirstValue(ClaimTypes.Email);
@@ -73,14 +77,14 @@ public class AuthController : ControllerBase
     if (entity is null)
     {
       HttpContext.Response.StatusCode = 401;
-      return;
+      return null;
     }
 
     var pvr = entity.VerifyPassword(password);
     if (pvr == PasswordVerificationResult.Failed)
     {
       HttpContext.Response.StatusCode = 401;
-      return;
+      return null;
     }
 
     if (pvr == PasswordVerificationResult.SuccessRehashNeeded)
@@ -89,6 +93,7 @@ public class AuthController : ControllerBase
     (HttpContext.User.Identity as ClaimsIdentity)!.AddClaim(new Claim("NlpPass", "1"));
     (HttpContext.User.Identity as ClaimsIdentity)!.AddClaim(new Claim("NlpUser", $"{entity.UserID}:{entity.Email}"));
     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, User);
+    return await WhoAmI();
   }
 
   [HttpPost("logout")]

@@ -21,23 +21,24 @@
 		type WhoAmIResponse
 	} from '../../../nlp-api';
 	import { createNewShoppingListItem, validateAddShoppingListItem } from '../shopping';
-	import { authContext } from '../../../utils/AppStore';
-	import { onMount } from 'svelte';
+	import { getContext } from 'svelte';
 	import { toastError, toastSuccess } from '../../../components/ToastManager';
+	import type { Writable } from 'svelte/store';
+	import { AppContext } from '../../../enums/AppContext';
 
+	const user = getContext<Writable<WhoAmIResponse | undefined>>(AppContext.User);
 	let open = false;
 	let canAdd: boolean = false;
-	let userContext: WhoAmIResponse;
 	let item: ShoppingListItemDto = createNewShoppingListItem(0);
 	export let onItemAdded: () => void;
 
 	const toggle = () => {
 		open = !open;
-		if (open) item = createNewShoppingListItem(userContext.homeId);
+		if (open) item = createNewShoppingListItem($user?.homeId || 0);
 	};
 
 	const addShoppingListItem = async () => {
-		item.addedByUserId = userContext.userId;
+		item.addedByUserId = $user?.userId || 0;
 		const response = await new ShoppingListClient().addShoppingListItem(item);
 
 		if (!response.success) {
@@ -46,7 +47,7 @@
 		}
 
 		toastSuccess('Item Added', `Added '${item.itemName}' to your shopping list`);
-		item = createNewShoppingListItem(userContext.homeId);
+		item = createNewShoppingListItem($user?.homeId || 0);
 		onItemAdded();
 		toggle();
 	};
@@ -57,13 +58,6 @@
 		item.lastKnownPrice = response;
 		item = item;
 	};
-
-	onMount(() => {
-		return authContext.subscribe((_whoAmI) => {
-			if (!_whoAmI) return;
-			userContext = _whoAmI;
-		});
-	});
 
 	$: canAdd = validateAddShoppingListItem(item);
 	$: canAdd && getLastKnownPrice(item);

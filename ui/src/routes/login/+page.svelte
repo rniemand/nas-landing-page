@@ -1,27 +1,13 @@
-<style>
-	.form-signin {
-		max-width: 450px;
-		padding: 15px;
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		-ms-transform: translate(-50%, -50%);
-		transform: translate(-50%, -50%);
-		border: 1px solid #858484;
-		border-radius: 10px;
-	}
-	a {
-		display: block;
-		text-align: center;
-		text-decoration: none;
-		margin-bottom: 0.4em;
-	}
-</style>
-
 <script lang="ts">
 	import { Input, Alert, Button, Form } from 'sveltestrap';
 	import { AuthClient, WhoAmIResponse } from '../../nlp-api';
+	import { goto } from '$app/navigation';
+	import { AppUrls } from '../../enums/AppUrls';
+	import { getContext } from 'svelte';
+	import type { Writable } from 'svelte/store';
+	import { AppContext } from '../../enums/AppContext';
 
+	const user = getContext<Writable<WhoAmIResponse | undefined>>(AppContext.User);
 	let passInput: HTMLInputElement | null = null;
 	let whoAmI: WhoAmIResponse | undefined = undefined;
 	let password = '';
@@ -54,8 +40,10 @@
 		status = 'Validating credentials...';
 		try {
 			status = 'Logging in...';
-			await new AuthClient().login(password);
-			setTimeout(() => location.reload(), 100);
+			const response = await new AuthClient().login(password);
+			$user = response;
+			if (!response) return;
+			goto(AppUrls.Home);
 		} catch (ex) {
 			triggerWrongCredentialsMessage();
 			status = '';
@@ -96,3 +84,23 @@
 {:else}
 	<h3 class="text-center mb-3">Please wait...</h3>
 {/if}
+
+<style>
+	.form-signin {
+		max-width: 450px;
+		padding: 15px;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		-ms-transform: translate(-50%, -50%);
+		transform: translate(-50%, -50%);
+		border: 1px solid #858484;
+		border-radius: 10px;
+	}
+	a {
+		display: block;
+		text-align: center;
+		text-decoration: none;
+		margin-bottom: 0.4em;
+	}
+</style>
