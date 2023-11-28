@@ -12,7 +12,6 @@
 	import HomeFloorSelector from '../../components/core/HomeFloorSelector.svelte';
 	import HomeRoomSelector from '../../components/core/HomeRoomSelector.svelte';
 	import { toastError, toastSuccess } from '../../components/ToastManager';
-	import { error } from '@sveltejs/kit';
 
 	let loading: boolean = true;
 	let chores: HomeChoreDto[] = [];
