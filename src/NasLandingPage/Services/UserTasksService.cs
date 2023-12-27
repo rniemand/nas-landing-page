@@ -9,9 +9,10 @@ namespace NasLandingPage.Services;
 public interface IUserTasksService
 {
   Task<BoolResponse> AddUserTaskAsync(NlpUserContext userContext, UserTaskDto taskDto);
-  Task<UserTaskDto[]> GetUserTasksAsync(NlpUserContext userContext);
-  Task<string[]> GetTaskCategoriesAsync(NlpUserContext userContext, BasicSearchRequest request);
-  Task<string[]> GetTaskSubCategoriesAsync(NlpUserContext userContext, BasicSearchRequest request);
+  Task<IEnumerable<UserTaskDto>> GetUserTasksAsync(NlpUserContext userContext, BasicSearchRequest request);
+  Task<IEnumerable<string>> GetTaskCategoriesAsync(NlpUserContext userContext, BasicSearchRequest request);
+  Task<IEnumerable<string>> GetAllTaskCategoriesAsync(NlpUserContext userContext);
+  Task<IEnumerable<string>> GetTaskSubCategoriesAsync(NlpUserContext userContext, BasicSearchRequest request);
   Task<BoolResponse> CompleteUserTaskAsync(NlpUserContext userContext, int taskId);
   Task<BoolResponse> UpdateUserTaskAsync(NlpUserContext userContext, UserTaskDto taskDto);
 }
@@ -34,14 +35,17 @@ internal class UserTasksService : IUserTasksService
     return rowCount == 0 ? response.AsError("Failed to add user task") : response;
   }
 
-  public async Task<UserTaskDto[]> GetUserTasksAsync(NlpUserContext userContext) =>
-    (await _userTasksRepo.GetUserTasksAsync(userContext)).Select(UserTaskDto.FromEntity).ToArray();
+  public async Task<IEnumerable<UserTaskDto>> GetUserTasksAsync(NlpUserContext userContext, BasicSearchRequest request) =>
+    (await _userTasksRepo.GetUserTasksAsync(userContext, request)).Select(UserTaskDto.FromEntity);
 
-  public async Task<string[]> GetTaskCategoriesAsync(NlpUserContext userContext, BasicSearchRequest request) =>
-    (await _userTasksRepo.GetTaskCategoriesAsync(userContext, request.Filter ?? "")).ToArray();
+  public async Task<IEnumerable<string>> GetTaskCategoriesAsync(NlpUserContext userContext, BasicSearchRequest request) =>
+    await _userTasksRepo.GetTaskCategoriesAsync(userContext, request.Filter ?? "");
 
-  public async Task<string[]> GetTaskSubCategoriesAsync(NlpUserContext userContext, BasicSearchRequest request) =>
-    (await _userTasksRepo.GetTaskSubCategoriesAsync(userContext, request.Filter ?? "", request.SubFilter ?? "")).ToArray();
+  public async Task<IEnumerable<string>> GetAllTaskCategoriesAsync(NlpUserContext userContext) =>
+    await _userTasksRepo.GetAllTaskCategoriesAsync(userContext);
+
+  public async Task<IEnumerable<string>> GetTaskSubCategoriesAsync(NlpUserContext userContext, BasicSearchRequest request) =>
+    await _userTasksRepo.GetTaskSubCategoriesAsync(userContext, request.Filter ?? "", request.SubFilter ?? "");
 
   public async Task<BoolResponse> CompleteUserTaskAsync(NlpUserContext userContext, int taskId)
   {

@@ -1760,13 +1760,15 @@ export class UserLinksClient extends NlpBaseClient implements IUserLinksClient {
 
 export interface IUserTasksClient {
 
-    getUserTasks(): Promise<UserTaskDto[]>;
-
-    addTask(task: UserTaskDto): Promise<BoolResponse>;
+    getUserTasks(request: BasicSearchRequest): Promise<UserTaskDto[]>;
 
     getTaskCategories(request: BasicSearchRequest): Promise<string[]>;
 
+    getAllCategories(): Promise<string[]>;
+
     getTaskSubCategories(request: BasicSearchRequest): Promise<string[]>;
+
+    addTask(task: UserTaskDto): Promise<BoolResponse>;
 
     completeTask(taskId: number): Promise<BoolResponse>;
 
@@ -1784,13 +1786,17 @@ export class UserTasksClient extends NlpBaseClient implements IUserTasksClient {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
-    getUserTasks(): Promise<UserTaskDto[]> {
-        let url_ = this.baseUrl + "/api/UserTasks";
+    getUserTasks(request: BasicSearchRequest): Promise<UserTaskDto[]> {
+        let url_ = this.baseUrl + "/api/UserTasks/tasks";
         url_ = url_.replace(/[?&]$/, "");
 
+        const content_ = JSON.stringify(request);
+
         let options_: RequestInit = {
-            method: "GET",
+            body: content_,
+            method: "POST",
             headers: {
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
@@ -1827,46 +1833,6 @@ export class UserTasksClient extends NlpBaseClient implements IUserTasksClient {
         return Promise.resolve<UserTaskDto[]>(null as any);
     }
 
-    addTask(task: UserTaskDto): Promise<BoolResponse> {
-        let url_ = this.baseUrl + "/api/UserTasks";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(task);
-
-        let options_: RequestInit = {
-            body: content_,
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            }
-        };
-
-        return this.transformOptions(options_).then(transformedOptions_ => {
-            return this.http.fetch(url_, transformedOptions_);
-        }).then((_response: Response) => {
-            return this.transformResult(url_, _response, (_response: Response) => this.processAddTask(_response));
-        });
-    }
-
-    protected processAddTask(response: Response): Promise<BoolResponse> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = BoolResponse.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<BoolResponse>(null as any);
-    }
-
     getTaskCategories(request: BasicSearchRequest): Promise<string[]> {
         let url_ = this.baseUrl + "/api/UserTasks/categories";
         url_ = url_.replace(/[?&]$/, "");
@@ -1890,6 +1856,49 @@ export class UserTasksClient extends NlpBaseClient implements IUserTasksClient {
     }
 
     protected processGetTaskCategories(response: Response): Promise<string[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(item);
+            }
+            else {
+                result200 = <any>null;
+            }
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<string[]>(null as any);
+    }
+
+    getAllCategories(): Promise<string[]> {
+        let url_ = this.baseUrl + "/api/UserTasks/all-categories";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processGetAllCategories(_response));
+        });
+    }
+
+    protected processGetAllCategories(response: Response): Promise<string[]> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
@@ -1959,6 +1968,46 @@ export class UserTasksClient extends NlpBaseClient implements IUserTasksClient {
             });
         }
         return Promise.resolve<string[]>(null as any);
+    }
+
+    addTask(task: UserTaskDto): Promise<BoolResponse> {
+        let url_ = this.baseUrl + "/api/UserTasks";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(task);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processAddTask(_response));
+        });
+    }
+
+    protected processAddTask(response: Response): Promise<BoolResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = BoolResponse.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<BoolResponse>(null as any);
     }
 
     completeTask(taskId: number): Promise<BoolResponse> {
