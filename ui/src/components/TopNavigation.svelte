@@ -44,9 +44,8 @@
 			{#if $user?.signedIn}
 				{#each plugins as plugin, i}
 					<NavItem
-						class="d-none d-md-block {i === 0 ? 'ms-auto' : ''} {pageId === plugin.url
-							? 'active'
-							: ''}">
+						class="d-none d-md-block {i === 0 ? 'ms-auto' : ''}"
+						active={pageId === plugin.url}>
 						<NavLink href={plugin.url}>
 							<i class="bi {plugin.icon}" />
 						</NavLink>
