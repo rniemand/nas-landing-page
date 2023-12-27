@@ -1,6 +1,8 @@
 using Dapper;
 using NasLandingPage.Models;
 using NasLandingPage.Models.Entities;
+using NasLandingPage.Models.Requests;
+using NLog.Filters;
 
 namespace NasLandingPage.Repos;
 
@@ -8,8 +10,9 @@ public interface IUserTasksRepo
 {
   Task<int> AddTaskAsync(UserTaskEntity task);
   Task<IEnumerable<string>> GetTaskCategoriesAsync(NlpUserContext userContext, string filter);
+  Task<IEnumerable<string>> GetAllTaskCategoriesAsync(NlpUserContext userContext);
   Task<IEnumerable<string>> GetTaskSubCategoriesAsync(NlpUserContext userContext, string category, string filter);
-  Task<IEnumerable<UserTaskEntity>> GetUserTasksAsync(NlpUserContext userContext);
+  Task<IEnumerable<UserTaskEntity>> GetUserTasksAsync(NlpUserContext userContext, BasicSearchRequest request);
   Task<int> CompleteUserTaskAsync(NlpUserContext userContext, int taskId);
   Task<int> UpdateUserTaskAsync(UserTaskEntity task);
 }
@@ -35,12 +38,30 @@ internal class UserTasksRepo : IUserTasksRepo
 
   public async Task<IEnumerable<string>> GetTaskCategoriesAsync(NlpUserContext userContext, string filter)
   {
-    var query = @$"SELECT DISTINCT ut.TaskCategory
+    var query = @$"
+    SELECT DISTINCT ut.TaskCategory
     FROM `UserTasks` ut
     WHERE ut.UserID = @UserID
 	    AND ut.DateDeleted IS NULL
       AND ut.TaskCategory LIKE '%{filter}%'
-    ORDER BY ut.TaskCategory";
+    ORDER BY ut.TaskCategory
+    ";
+    await using var connection = _connectionHelper.GetCoreConnection();
+    return await connection.QueryAsync<string>(query, new
+    {
+      UserID = userContext.UserId
+    });
+  }
+
+  public async Task<IEnumerable<string>> GetAllTaskCategoriesAsync(NlpUserContext userContext)
+  {
+    var query = @$"
+    SELECT DISTINCT ut.TaskCategory
+    FROM `UserTasks` ut
+    WHERE ut.UserID = @UserID
+	    AND ut.DateDeleted IS NULL
+    ORDER BY ut.TaskCategory
+    ";
     await using var connection = _connectionHelper.GetCoreConnection();
     return await connection.QueryAsync<string>(query, new
     {
@@ -65,17 +86,26 @@ internal class UserTasksRepo : IUserTasksRepo
     });
   }
 
-  public async Task<IEnumerable<UserTaskEntity>> GetUserTasksAsync(NlpUserContext userContext)
+  public async Task<IEnumerable<UserTaskEntity>> GetUserTasksAsync(NlpUserContext userContext, BasicSearchRequest request)
   {
-    const string query = @"SELECT *
+    var query = @$"
+    SELECT *
     FROM `UserTasks` ut
     WHERE
 	    ut.UserID = @UserID
 	    AND ut.DateDeleted IS NULL
 	    AND ut.DateCompleted IS NULL
-    ORDER BY ut.TaskPriority";
+      {(string.IsNullOrWhiteSpace(request.Filter) ? "" : "AND ut.TaskCategory = @TaskCategory")}
+      {(string.IsNullOrWhiteSpace(request.SubFilter) ? "" : "AND ut.TaskSubCategory = @TaskSubCategory")}
+    ORDER BY ut.TaskPriority
+    ";
     await using var connection = _connectionHelper.GetCoreConnection();
-    return await connection.QueryAsync<UserTaskEntity>(query, new { UserID = userContext.UserId });
+    return await connection.QueryAsync<UserTaskEntity>(query, new
+    {
+      UserID = userContext.UserId,
+      TaskCategory = request.Filter,
+      TaskSubCategory = request.SubFilter
+    });
   }
 
   public async Task<int> CompleteUserTaskAsync(NlpUserContext userContext, int taskId)

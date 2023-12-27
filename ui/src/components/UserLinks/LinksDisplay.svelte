@@ -1,3 +1,22 @@
+<script lang="ts">
+	import type { UserLinkDto } from '../../nlp-api';
+	export let links: UserLinkDto[] = [];
+	export let onLinkSelected: (link: UserLinkDto) => void;
+</script>
+
+<div class="links mt-2">
+	{#each links as link}
+		<!-- svelte-ignore a11y-click-events-have-key-events -->
+		<div class="link shadow" on:click={() => onLinkSelected(link)}>
+			<div class="image">
+				<img src={`/api/image/user-link/${link.linkId}`} alt={link.linkName} />
+				<span class="follow">{link.followCount}</span>
+			</div>
+			<p class="text-center text-truncate my-1">{link.linkName}</p>
+		</div>
+	{/each}
+</div>
+
 <style>
 	.links {
 		display: flex;
@@ -42,22 +61,3 @@
 		font-weight: 600;
 	}
 </style>
-
-<script lang="ts">
-	import type { UserLinkDto } from '../../nlp-api';
-	export let links: UserLinkDto[] = [];
-	export let onLinkSelected: (link: UserLinkDto) => void;
-</script>
-
-<div class="links mt-2">
-	{#each links as link}
-		<!-- svelte-ignore a11y-click-events-have-key-events -->
-		<div class="link shadow" on:click={() => onLinkSelected(link)}>
-			<div class="image">
-				<img src={`/api/image/user-link/${link.linkId}`} alt={link.linkName} />
-				<span class="follow">{link.followCount}</span>
-			</div>
-			<p class="text-center text-truncate my-1">{link.linkName}</p>
-		</div>
-	{/each}
-</div>

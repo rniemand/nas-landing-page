@@ -1,9 +1,10 @@
-FROM mcr.microsoft.com/dotnet/aspnet:7.0-bullseye-slim AS base
+# https://mcr.microsoft.com/en-us/product/dotnet/aspnet/tags
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
-FROM mcr.microsoft.com/dotnet/sdk:7.0-bullseye-slim AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 
 # Setup NPM
 # SEE: https://github.com/nodesource/distributions

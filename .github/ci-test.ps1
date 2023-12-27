@@ -9,7 +9,7 @@ param (
   [string] $configuration = "Release",
 
   [Parameter(Mandatory=$false)]
-  [string] $frameworkVersion = "net7.0"
+  [string] $frameworkVersion = "net8.0"
 )
 
 $rootDir               = [IO.Path]::GetFullPath((Join-Path $rootDir "\..\"));

@@ -10,7 +10,8 @@
 		ModalHeader,
 		Label,
 		Col,
-		Row
+		Row,
+		Icon
 	} from 'sveltestrap';
 	import TaskPriority from '../components/TaskPriority.svelte';
 	import { createNewTask, validateTaskForAdding } from '../Tasks';
@@ -47,7 +48,9 @@
 </script>
 
 <div>
-	<Button color="success" on:click={toggle}>Add Task</Button>
+	<Button color="success" on:click={toggle}>
+		<Icon name="plus-square" />
+	</Button>
 	<Modal isOpen={open} {toggle}>
 		<ModalHeader {toggle}>Add Task</ModalHeader>
 		<ModalBody>

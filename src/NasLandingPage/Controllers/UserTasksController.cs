@@ -18,16 +18,20 @@ public class UserTasksController : ControllerBase
     _userTasksService = userTasksService;
   }
 
-  [HttpGet]
-  public async Task<UserTaskDto[]> GetUserTasks() =>
-    await _userTasksService.GetUserTasksAsync(User.GetNlpUserContext());
+  [HttpPost("tasks")]
+  public async Task<IEnumerable<UserTaskDto>> GetUserTasks([FromBody] BasicSearchRequest request) =>
+    await _userTasksService.GetUserTasksAsync(User.GetNlpUserContext(), request);
 
   [HttpPost("categories")]
-  public async Task<string[]> GetTaskCategories([FromBody] BasicSearchRequest request) =>
+  public async Task<IEnumerable<string>> GetTaskCategories([FromBody] BasicSearchRequest request) =>
     await _userTasksService.GetTaskCategoriesAsync(User.GetNlpUserContext(), request);
 
+  [HttpGet("all-categories")]
+  public async Task<IEnumerable<string>> GetAllCategories() =>
+    await _userTasksService.GetAllTaskCategoriesAsync(User.GetNlpUserContext());
+
   [HttpPost("sub-categories")]
-  public async Task<string[]> GetTaskSubCategories([FromBody] BasicSearchRequest request) =>
+  public async Task<IEnumerable<string>> GetTaskSubCategories([FromBody] BasicSearchRequest request) =>
     await _userTasksService.GetTaskSubCategoriesAsync(User.GetNlpUserContext(), request);
 
   [HttpPost]
