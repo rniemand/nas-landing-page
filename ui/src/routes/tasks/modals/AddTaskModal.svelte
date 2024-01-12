@@ -56,18 +56,18 @@
 		<ModalBody>
 			<Form>
 				<Row>
-					<Col xs="9">
+					<Col xs="12" md="8">
 						<FormGroup>
 							<Label for="name">Task Name</Label>
 							<Input type="text" id="name" bind:value={userTask.taskName} />
 						</FormGroup>
 					</Col>
-					<Col>
+					<Col xs="12" md="4" class="mb-3 mb-md-0">
 						<TaskPriority bind:value={userTask.taskPriority} />
 					</Col>
 				</Row>
 				<Row>
-					<Col>
+					<Col xs="12" md="6">
 						<FormGroup>
 							<Label for="category">Category</Label>
 							<TaskCategorySelector
@@ -76,7 +76,7 @@
 								includeCompletedEntries />
 						</FormGroup>
 					</Col>
-					<Col>
+					<Col xs="12" md="6">
 						<FormGroup>
 							<Label for="subCategory">Sub Category</Label>
 							<TaskSubCategorySelector
