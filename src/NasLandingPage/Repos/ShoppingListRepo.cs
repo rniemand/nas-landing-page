@@ -13,9 +13,9 @@ public interface IShoppingListRepo
   Task<int> MarkBoughtAsync(ShoppingListItemDto item);
   Task<int> DeleteItemAsync(ShoppingListItemDto item);
   Task<decimal> GetItemLastKnownPriceAsync(ShoppingListItemDto item);
-  Task<IEnumerable<string>> GetStoreNameSuggestionsAsync(NlpUserContext userContext, string? filter);
-  Task<IEnumerable<string>> GetCategorySuggestionsAsync(NlpUserContext userContext, string? filter);
-  Task<IEnumerable<string>> GetItemNameSuggestionsAsync(NlpUserContext userContext, string? filter);
+  Task<IEnumerable<string>> GetStoreNameSuggestionsAsync(NlpUserContext userContext, string? filter, bool includeBoughtEntries);
+  Task<IEnumerable<string>> GetCategorySuggestionsAsync(NlpUserContext userContext, string? filter, bool includeBoughtEntries);
+  Task<IEnumerable<string>> GetItemNameSuggestionsAsync(NlpUserContext userContext, string? filter, bool includeBoughtEntries);
 }
 
 public class ShoppingListRepo : IShoppingListRepo
@@ -123,7 +123,7 @@ public class ShoppingListRepo : IShoppingListRepo
     return await connection.QueryFirstOrDefaultAsync<decimal>(query, item);
   }
 
-  public async Task<IEnumerable<string>> GetStoreNameSuggestionsAsync(NlpUserContext userContext, string? filter)
+  public async Task<IEnumerable<string>> GetStoreNameSuggestionsAsync(NlpUserContext userContext, string? filter, bool includeBoughtEntries)
   {
     var query = @$"
     SELECT DISTINCT shop.StoreName
@@ -132,6 +132,7 @@ public class ShoppingListRepo : IShoppingListRepo
 	    ON u.CurrentHomeID = shop.HomeId
 	    AND shop.DateDeleted IS NULL
 	    AND u.UserID = @UserID
+      {(includeBoughtEntries ? "" : "AND shop.`DatePurchased` IS NULL")}
       {(filter is null ? "" : $"AND shop.StoreName LIKE '%{filter}%'")}
     ORDER BY shop.StoreName";
     await using var connection = _connectionHelper.GetCoreConnection();
@@ -141,7 +142,7 @@ public class ShoppingListRepo : IShoppingListRepo
     });
   }
 
-  public async Task<IEnumerable<string>> GetCategorySuggestionsAsync(NlpUserContext userContext, string? filter)
+  public async Task<IEnumerable<string>> GetCategorySuggestionsAsync(NlpUserContext userContext, string? filter, bool includeBoughtEntries)
   {
     var query = @$"
     SELECT DISTINCT shop.Category
@@ -149,6 +150,7 @@ public class ShoppingListRepo : IShoppingListRepo
     INNER JOIN `Users` u
 	    ON u.CurrentHomeID = shop.HomeId
 	    AND shop.DateDeleted IS NULL
+      {(includeBoughtEntries ? "" : "AND shop.`DatePurchased` IS NULL")}
 	    AND u.UserID = @UserID
       {(filter is null ? "" : $"AND shop.Category LIKE '%{filter}%'")}
     ORDER BY shop.Category";
@@ -159,7 +161,7 @@ public class ShoppingListRepo : IShoppingListRepo
     });
   }
 
-  public async Task<IEnumerable<string>> GetItemNameSuggestionsAsync(NlpUserContext userContext, string? filter)
+  public async Task<IEnumerable<string>> GetItemNameSuggestionsAsync(NlpUserContext userContext, string? filter, bool includeBoughtEntries)
   {
     var query = @$"
     SELECT DISTINCT shop.ItemName
@@ -167,6 +169,7 @@ public class ShoppingListRepo : IShoppingListRepo
     INNER JOIN `Users` u
 	    ON u.CurrentHomeID = shop.HomeId
 	    AND shop.DateDeleted IS NULL
+      {(includeBoughtEntries ? "" : "AND shop.`DatePurchased` IS NULL")}
 	    AND u.UserID = @UserID
       {(filter is null ? "" : $"AND shop.ItemName LIKE '%{filter}%'")}
     ORDER BY shop.ItemName";

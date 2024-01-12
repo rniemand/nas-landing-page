@@ -6,12 +6,14 @@
 	export let allowAllOption: boolean = false;
 	export let className: string = '';
 	export let clearButton: boolean = false;
+	export let includeBoughtEntries: boolean = false;
 	let options: string[] = [];
 
 	export const refreshCategories = async () => {
 		options = await new ShoppingListClient().getCategorySuggestions(
 			new BasicSearchRequest({
-				filter: ''
+				filter: '',
+				includeCompletedEntries: includeBoughtEntries
 			})
 		);
 	};

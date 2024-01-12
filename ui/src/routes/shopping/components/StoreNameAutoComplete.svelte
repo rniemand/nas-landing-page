@@ -10,7 +10,8 @@
 	const getSuggestions = async (term: string) => {
 		const results = await new ShoppingListClient().getStoreNameSuggestions(
 			new BasicSearchRequest({
-				filter: term
+				filter: term,
+				includeCompletedEntries: true
 			})
 		);
 		return results.map((e: string) => new AutoCompleteSuggestion(e, e));

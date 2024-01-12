@@ -27,7 +27,8 @@
 		items = await new ShoppingListClient().getShoppingList(
 			new BasicSearchRequest({
 				filter: _store,
-				subFilter: _category
+				subFilter: _category,
+				includeCompletedEntries: false
 			})
 		);
 		for (const item of items) {
@@ -72,20 +73,16 @@
 
 <Row>
 	<Col>
-		<div class="text-end">
+		<div class="my-3 d-flex">
+			<StoreNameDropdown bind:this={storeList} allowAllOption bind:value={store} className="me-2" />
+			<CategoryDropdown
+				bind:this={categoryList}
+				allowAllOption
+				bind:value={category}
+				className="me-2" />
 			<AddShoppingListItemModal onItemAdded={handleChange} />
 			<EditShoppingListItemModal bind:this={editModal} onEdited={handleChange} />
 			<ItemBoughtModal bind:this={boughtModal} onItemBought={handleChange} />
-		</div>
-
-		<div class="my-3 d-flex">
-			<StoreNameDropdown
-				clearButton
-				bind:this={storeList}
-				allowAllOption
-				bind:value={store}
-				className="me-2" />
-			<CategoryDropdown clearButton bind:this={categoryList} allowAllOption bind:value={category} />
 		</div>
 
 		{#if !loading && items.length > 0}

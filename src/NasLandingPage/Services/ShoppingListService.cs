@@ -69,11 +69,11 @@ public class ShoppingListService : IShoppingListService
   }
 
   public async Task<string[]> GetStoreNameSuggestionsAsync(NlpUserContext userContext, BasicSearchRequest request) =>
-    (await _shoppingListRepo.GetStoreNameSuggestionsAsync(userContext, request.Filter)).ToArray();
+    (await _shoppingListRepo.GetStoreNameSuggestionsAsync(userContext, request.Filter, request.IncludeCompletedEntries)).ToArray();
 
   public async Task<string[]> GetCategorySuggestionsAsync(NlpUserContext userContext, BasicSearchRequest request) =>
-    (await _shoppingListRepo.GetCategorySuggestionsAsync(userContext, request.Filter)).ToArray();
+    (await _shoppingListRepo.GetCategorySuggestionsAsync(userContext, request.Filter, request.IncludeCompletedEntries)).ToArray();
 
   public async Task<string[]> GetItemNameSuggestionsAsync(NlpUserContext userContext, BasicSearchRequest request) =>
-    (await _shoppingListRepo.GetItemNameSuggestionsAsync(userContext, request.Filter)).ToArray();
+    (await _shoppingListRepo.GetItemNameSuggestionsAsync(userContext, request.Filter, request.IncludeCompletedEntries)).ToArray();
 }

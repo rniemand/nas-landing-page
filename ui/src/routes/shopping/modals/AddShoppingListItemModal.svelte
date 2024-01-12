@@ -64,7 +64,10 @@
 </script>
 
 <div>
-	<Button color="success" on:click={toggle}>Add Item</Button>
+	<Button color="success" on:click={toggle}>
+		<i class="bi bi-plus" />
+	</Button>
+
 	<Modal isOpen={open} {toggle}>
 		<ModalHeader {toggle}>Add Shopping List Item</ModalHeader>
 		<ModalBody>

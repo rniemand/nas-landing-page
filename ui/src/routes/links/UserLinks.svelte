@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { Col, Row } from 'sveltestrap';
 	import { UserLinkDto, UserLinksClient } from '../../nlp-api';
-	import HorizontalList from '../common/HorizontalList.svelte';
-	import HorizontalListEntry from '../common/HorizontalListEntry.svelte';
 	import LinksDisplay from './LinksDisplay.svelte';
 	import LinkSearch from './LinkSearch.svelte';
+	import HorizontalList from '../../components/common/HorizontalList.svelte';
+	import HorizontalListEntry from '../../components/common/HorizontalListEntry.svelte';
 
 	let categories: string[] = [];
 	let links: UserLinkDto[] = [];
