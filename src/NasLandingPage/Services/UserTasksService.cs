@@ -11,7 +11,7 @@ public interface IUserTasksService
   Task<BoolResponse> AddUserTaskAsync(NlpUserContext userContext, UserTaskDto taskDto);
   Task<IEnumerable<UserTaskDto>> GetUserTasksAsync(NlpUserContext userContext, BasicSearchRequest request);
   Task<IEnumerable<string>> GetTaskCategoriesAsync(NlpUserContext userContext, BasicSearchRequest request);
-  Task<IEnumerable<string>> GetAllTaskCategoriesAsync(NlpUserContext userContext);
+  Task<IEnumerable<string>> GetAllTaskCategoriesAsync(NlpUserContext userContext, BasicSearchRequest request);
   Task<IEnumerable<string>> GetTaskSubCategoriesAsync(NlpUserContext userContext, BasicSearchRequest request);
   Task<BoolResponse> CompleteUserTaskAsync(NlpUserContext userContext, int taskId);
   Task<BoolResponse> UpdateUserTaskAsync(NlpUserContext userContext, UserTaskDto taskDto);
@@ -39,13 +39,13 @@ internal class UserTasksService : IUserTasksService
     (await _userTasksRepo.GetUserTasksAsync(userContext, request)).Select(UserTaskDto.FromEntity);
 
   public async Task<IEnumerable<string>> GetTaskCategoriesAsync(NlpUserContext userContext, BasicSearchRequest request) =>
-    await _userTasksRepo.GetTaskCategoriesAsync(userContext, request.Filter ?? "");
+    await _userTasksRepo.GetTaskCategoriesAsync(userContext, request.Filter ?? "", request.IncludeCompletedEntries);
 
-  public async Task<IEnumerable<string>> GetAllTaskCategoriesAsync(NlpUserContext userContext) =>
-    await _userTasksRepo.GetAllTaskCategoriesAsync(userContext);
+  public async Task<IEnumerable<string>> GetAllTaskCategoriesAsync(NlpUserContext userContext, BasicSearchRequest request) =>
+    await _userTasksRepo.GetAllTaskCategoriesAsync(userContext, request.IncludeCompletedEntries);
 
   public async Task<IEnumerable<string>> GetTaskSubCategoriesAsync(NlpUserContext userContext, BasicSearchRequest request) =>
-    await _userTasksRepo.GetTaskSubCategoriesAsync(userContext, request.Filter ?? "", request.SubFilter ?? "");
+    await _userTasksRepo.GetTaskSubCategoriesAsync(userContext, request.Filter ?? "", request.SubFilter ?? "", request.IncludeCompletedEntries);
 
   public async Task<BoolResponse> CompleteUserTaskAsync(NlpUserContext userContext, int taskId)
   {

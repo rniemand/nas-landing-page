@@ -5,6 +5,7 @@
 	export let category: string | undefined = undefined;
 	export let value: string | undefined = undefined;
 	export let allowAllOption: boolean = false;
+	export let includeCompletedEntries: boolean = false;
 	let subCategories: string[] = [];
 
 	const refreshSubCategories = async (_category: string | undefined) => {
@@ -13,11 +14,12 @@
 
 		subCategories = await new UserTasksClient().getTaskSubCategories(
 			new BasicSearchRequest({
-				filter: _category
+				filter: _category,
+				includeCompletedEntries: includeCompletedEntries
 			})
 		);
 		if (value) return;
-		value = subCategories[0];
+		value = allowAllOption ? undefined : subCategories[0];
 	};
 
 	$: refreshSubCategories(category);

@@ -70,7 +70,10 @@
 					<Col>
 						<FormGroup>
 							<Label for="category">Category</Label>
-							<TaskCategorySelector bind:value={userTask.taskCategory} showClear />
+							<TaskCategorySelector
+								bind:value={userTask.taskCategory}
+								showClear
+								includeCompletedEntries />
 						</FormGroup>
 					</Col>
 					<Col>
@@ -79,7 +82,8 @@
 							<TaskSubCategorySelector
 								category={userTask.taskCategory}
 								bind:value={userTask.taskSubCategory}
-								showClear />
+								showClear
+								includeCompletedEntries />
 						</FormGroup>
 					</Col>
 				</Row>

@@ -1764,7 +1764,7 @@ export interface IUserTasksClient {
 
     getTaskCategories(request: BasicSearchRequest): Promise<string[]>;
 
-    getAllCategories(): Promise<string[]>;
+    getAllCategories(request: BasicSearchRequest): Promise<string[]>;
 
     getTaskSubCategories(request: BasicSearchRequest): Promise<string[]>;
 
@@ -1880,13 +1880,17 @@ export class UserTasksClient extends NlpBaseClient implements IUserTasksClient {
         return Promise.resolve<string[]>(null as any);
     }
 
-    getAllCategories(): Promise<string[]> {
+    getAllCategories(request: BasicSearchRequest): Promise<string[]> {
         let url_ = this.baseUrl + "/api/UserTasks/all-categories";
         url_ = url_.replace(/[?&]$/, "");
 
+        const content_ = JSON.stringify(request);
+
         let options_: RequestInit = {
-            method: "GET",
+            body: content_,
+            method: "POST",
             headers: {
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
@@ -2767,6 +2771,7 @@ export interface IShoppingListItemDto {
 export class BasicSearchRequest implements IBasicSearchRequest {
     filter?: string | null;
     subFilter?: string | null;
+    includeCompletedEntries!: boolean;
 
     constructor(data?: IBasicSearchRequest) {
         if (data) {
@@ -2781,6 +2786,7 @@ export class BasicSearchRequest implements IBasicSearchRequest {
         if (_data) {
             this.filter = _data["filter"] !== undefined ? _data["filter"] : <any>null;
             this.subFilter = _data["subFilter"] !== undefined ? _data["subFilter"] : <any>null;
+            this.includeCompletedEntries = _data["includeCompletedEntries"] !== undefined ? _data["includeCompletedEntries"] : <any>null;
         }
     }
 
@@ -2795,6 +2801,7 @@ export class BasicSearchRequest implements IBasicSearchRequest {
         data = typeof data === 'object' ? data : {};
         data["filter"] = this.filter !== undefined ? this.filter : <any>null;
         data["subFilter"] = this.subFilter !== undefined ? this.subFilter : <any>null;
+        data["includeCompletedEntries"] = this.includeCompletedEntries !== undefined ? this.includeCompletedEntries : <any>null;
         return data;
     }
 }
@@ -2802,6 +2809,7 @@ export class BasicSearchRequest implements IBasicSearchRequest {
 export interface IBasicSearchRequest {
     filter?: string | null;
     subFilter?: string | null;
+    includeCompletedEntries: boolean;
 }
 
 export class UserDto implements IUserDto {

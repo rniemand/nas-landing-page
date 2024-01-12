@@ -9,9 +9,9 @@ namespace NasLandingPage.Repos;
 public interface IUserTasksRepo
 {
   Task<int> AddTaskAsync(UserTaskEntity task);
-  Task<IEnumerable<string>> GetTaskCategoriesAsync(NlpUserContext userContext, string filter);
-  Task<IEnumerable<string>> GetAllTaskCategoriesAsync(NlpUserContext userContext);
-  Task<IEnumerable<string>> GetTaskSubCategoriesAsync(NlpUserContext userContext, string category, string filter);
+  Task<IEnumerable<string>> GetTaskCategoriesAsync(NlpUserContext userContext, string filter, bool includeCompletedEntries);
+  Task<IEnumerable<string>> GetAllTaskCategoriesAsync(NlpUserContext userContext, bool includeCompletedEntries);
+  Task<IEnumerable<string>> GetTaskSubCategoriesAsync(NlpUserContext userContext, string category, string filter, bool includeCompletedEntries);
   Task<IEnumerable<UserTaskEntity>> GetUserTasksAsync(NlpUserContext userContext, BasicSearchRequest request);
   Task<int> CompleteUserTaskAsync(NlpUserContext userContext, int taskId);
   Task<int> UpdateUserTaskAsync(UserTaskEntity task);
@@ -36,13 +36,14 @@ internal class UserTasksRepo : IUserTasksRepo
     return await connection.ExecuteAsync(query, task);
   }
 
-  public async Task<IEnumerable<string>> GetTaskCategoriesAsync(NlpUserContext userContext, string filter)
+  public async Task<IEnumerable<string>> GetTaskCategoriesAsync(NlpUserContext userContext, string filter, bool includeCompletedEntries)
   {
     var query = @$"
     SELECT DISTINCT ut.TaskCategory
     FROM `UserTasks` ut
     WHERE ut.UserID = @UserID
 	    AND ut.DateDeleted IS NULL
+      {(includeCompletedEntries ? "" : "AND ut.DateCompleted IS NULL")}
       AND ut.TaskCategory LIKE '%{filter}%'
     ORDER BY ut.TaskCategory
     ";
@@ -53,13 +54,14 @@ internal class UserTasksRepo : IUserTasksRepo
     });
   }
 
-  public async Task<IEnumerable<string>> GetAllTaskCategoriesAsync(NlpUserContext userContext)
+  public async Task<IEnumerable<string>> GetAllTaskCategoriesAsync(NlpUserContext userContext, bool includeCompletedEntries)
   {
     var query = @$"
     SELECT DISTINCT ut.TaskCategory
     FROM `UserTasks` ut
     WHERE ut.UserID = @UserID
 	    AND ut.DateDeleted IS NULL
+      {(includeCompletedEntries ? "" : "AND ut.DateCompleted IS NULL")}
     ORDER BY ut.TaskCategory
     ";
     await using var connection = _connectionHelper.GetCoreConnection();
@@ -69,7 +71,7 @@ internal class UserTasksRepo : IUserTasksRepo
     });
   }
 
-  public async Task<IEnumerable<string>> GetTaskSubCategoriesAsync(NlpUserContext userContext, string category, string filter)
+  public async Task<IEnumerable<string>> GetTaskSubCategoriesAsync(NlpUserContext userContext, string category, string filter, bool includeCompletedEntries)
   {
     var query = @$"SELECT DISTINCT ut.TaskSubCategory
     FROM `UserTasks` ut
@@ -77,6 +79,7 @@ internal class UserTasksRepo : IUserTasksRepo
 	    AND ut.DateDeleted IS NULL
 	    AND ut.TaskCategory = @TaskCategory
       AND ut.TaskSubCategory LIKE '%{filter}%'
+      {(includeCompletedEntries ? "" : "AND ut.DateCompleted IS NULL")}
     ORDER BY ut.TaskSubCategory";
     await using var connection = _connectionHelper.GetCoreConnection();
     return await connection.QueryAsync<string>(query, new

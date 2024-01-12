@@ -21,18 +21,17 @@
 	let roomId: number = 0;
 	let hasFilter: boolean = false;
 
+	const onChoreAdded = () => refreshChores(floorId, roomId);
+	const onChoreUpdated = () => refreshChores(floorId, roomId);
+	const onChoreCompleted = () => refreshChores(floorId, roomId);
+	const onEditChore = (chore: HomeChoreDto) => editModal?.editChore(chore);
+	const onCompleteChore = (chore: HomeChoreDto) => completeModal?.completeChore(chore);
+
 	const refreshChores = async (_floorId: number, _roomId: number) => {
 		loading = true;
 		chores = await new ChoreClient().getChores(_floorId, _roomId);
 		loading = false;
 	};
-
-	const onChoreAdded = () => refreshChores(floorId, roomId);
-	const onChoreUpdated = () => refreshChores(floorId, roomId);
-	const onChoreCompleted = () => refreshChores(floorId, roomId);
-
-	const onEditChore = (chore: HomeChoreDto) => editModal?.editChore(chore);
-	const onCompleteChore = (chore: HomeChoreDto) => completeModal?.completeChore(chore);
 
 	const clearFilters = () => {
 		floorId = 0;

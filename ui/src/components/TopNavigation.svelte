@@ -12,7 +12,7 @@
 	const runLogout = async () => {
 		await new AuthClient().logout();
 		$user = undefined;
-		goto('/');
+		goto(AppUrls.Home);
 	};
 </script>
 

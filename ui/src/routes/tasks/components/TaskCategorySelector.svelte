@@ -6,12 +6,14 @@
 	export let value: string | undefined = undefined;
 	export let placeholder: string | undefined = undefined;
 	export let showClear: boolean = false;
+	export let includeCompletedEntries: boolean = false;
 	const tasksClient = new UserTasksClient();
 
 	const getSuggestions = async (term: string) => {
 		const results = await tasksClient.getTaskCategories(
 			new BasicSearchRequest({
-				filter: term
+				filter: term,
+				includeCompletedEntries: includeCompletedEntries
 			})
 		);
 		return results.map((e: string) => new AutoCompleteSuggestion(e, e));

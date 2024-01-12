@@ -1,15 +1,20 @@
 <script lang="ts">
 	import { Input } from 'sveltestrap';
-	import { UserTasksClient } from '../../../nlp-api';
+	import { BasicSearchRequest, UserTasksClient } from '../../../nlp-api';
 
 	export let value: string | undefined = undefined;
 	export let allowAllOption: boolean = false;
+	export let includeCompletedEntries: boolean = false;
 	let categories: string[] = [];
 
 	const refreshOptions = async () => {
-		categories = await new UserTasksClient().getAllCategories();
+		categories = await new UserTasksClient().getAllCategories(
+			new BasicSearchRequest({
+				includeCompletedEntries: includeCompletedEntries
+			})
+		);
 		if (value) return;
-		value = categories[0];
+		value = allowAllOption ? undefined : categories[0];
 	};
 
 	refreshOptions();

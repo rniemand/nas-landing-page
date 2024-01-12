@@ -8,6 +8,7 @@
 	export let placeholder: string | undefined = undefined;
 	export let category: string = '';
 	export let showClear: boolean = false;
+	export let includeCompletedEntries: boolean = false;
 	let lastCategory: string = '';
 
 	const onCategoryChanged = (_cat: string) => {
@@ -21,7 +22,8 @@
 		const results = await tasksClient.getTaskSubCategories(
 			new BasicSearchRequest({
 				filter: category,
-				subFilter: term
+				subFilter: term,
+				includeCompletedEntries: includeCompletedEntries
 			})
 		);
 		return results.map((e: string) => new AutoCompleteSuggestion(e, e));
