@@ -1,3 +1,7 @@
+<div class="items">
+	<slot />
+</div>
+
 <style>
 	.items {
 		display: flex;
@@ -5,5 +9,3 @@
 		justify-content: center;
 	}
 </style>
-
-<div class="items"><slot /></div>

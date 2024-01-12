@@ -41,7 +41,7 @@ public class Program
     var app = builder.Build();
 
     app.UseOpenApi();
-    app.UseSwaggerUi3();
+    app.UseSwaggerUi();
     app.UseHttpsRedirection();
     app.UseRouting();
     app.UseAuthentication();

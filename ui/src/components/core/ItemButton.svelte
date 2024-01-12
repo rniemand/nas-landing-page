@@ -1,3 +1,15 @@
+<script lang="ts">
+	export let small: boolean = false;
+	export let icon: string;
+	export let name: string;
+	export let url: string;
+</script>
+
+<a class="item" href={url} class:small>
+	<i class="bi {icon}" />
+	{name}
+</a>
+
 <style>
 	.item {
 		border: 1px solid #6f6f6f;
@@ -24,15 +36,3 @@
 		font-size: 3em;
 	}
 </style>
-
-<script lang="ts">
-	export let small: boolean = false;
-	export let icon: string;
-	export let name: string;
-	export let url: string;
-</script>
-
-<a class="item" href={url} class:small>
-	<i class="bi {icon}" />
-	{name}
-</a>

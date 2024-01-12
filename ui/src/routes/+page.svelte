@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getContext, onMount } from 'svelte';
+	import { getContext } from 'svelte';
 	import type { WhoAmIResponse } from '../nlp-api';
 	import { Alert, Button, Col, Row } from 'sveltestrap';
 	import { goto } from '$app/navigation';
