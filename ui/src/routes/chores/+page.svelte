@@ -80,7 +80,7 @@
 	{:else}
 		<h2 class="text-center">No Chores</h2>
 	{/if}
-	<Accordion class="rn-accordian">
+	<Accordion>
 		{#each chores as chore (chore.choreId)}
 			<AccordionItem>
 				<span class="m-0" slot="header">
