@@ -16,7 +16,6 @@
 
 <NavigationCrumbs>
 	<NavigationCrumb icon="bi-house-fill" />
-	<NavigationCrumb title="Home" />
 </NavigationCrumbs>
 
 <Row>

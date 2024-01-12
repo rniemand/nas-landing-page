@@ -9,7 +9,6 @@
 
 	let loading: boolean = true;
 	let rooms: HomeRoomDto[] = [];
-	value = allOption ? (value === -1 ? 0 : value) : value;
 
 	const isExistingRoom = (value: number) => {
 		if (value <= 0) return false;
@@ -19,6 +18,7 @@
 
 	const refreshRooms = async (_floorId: number) => {
 		loading = true;
+		value = allOption ? 0 : -1;
 		rooms = (await new RoomClient().getFloorRooms(_floorId)) || [];
 		// Ensure that there is always a vaild default room selected
 		if (rooms.length > 0 && !isExistingRoom(value)) value = allOption ? 0 : rooms[0].roomId;

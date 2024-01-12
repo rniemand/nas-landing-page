@@ -62,20 +62,15 @@
 </NavigationCrumbs>
 
 <Row class="mt-3">
-	<Col class="text-end">
+	<Col class="d-flex">
+		<HomeFloorSelector className="me-2" bind:value={floorId} allOption />
+		<HomeRoomSelector className="me-2" {floorId} bind:value={roomId} allOption />
+		<Button color="warning" disabled={!hasFilter} on:click={clearFilters} class="me-2">
+			<i class="bi bi-trash3" />
+		</Button>
 		<AddChoreModal {onChoreAdded} />
 		<EditChoreModal bind:this={editModal} {onChoreUpdated} />
 		<CompleteChoreModal bind:this={completeModal} {onChoreCompleted} />
-	</Col>
-</Row>
-
-<Row class="mt-3">
-	<Col class="d-flex">
-		<HomeFloorSelector className="me-2" allOption bind:value={floorId} />
-		<HomeRoomSelector className="me-2" allOption {floorId} bind:value={roomId} />
-		<Button color="warning" disabled={!hasFilter} on:click={clearFilters}>
-			<i class="bi bi-trash3" />
-		</Button>
 	</Col>
 </Row>
 
@@ -89,7 +84,8 @@
 		{#each chores as chore (chore.choreId)}
 			<AccordionItem>
 				<span class="m-0" slot="header">
-					<ChorePriorityIcon priority={chore.priority} />
+					<ChorePriorityIcon priority={chore.priority} useShorthand />
+					<span class="room">{chore.roomName}</span>
 					{chore.choreName}
 				</span>
 				<ChoreInfoDisplay {chore} {onEditChore} {onCompleteChore} {onDeleteChore} />
@@ -97,3 +93,13 @@
 		{/each}
 	</Accordion>
 </Row>
+
+<style>
+	.room {
+		background-color: #033a29;
+		padding: 0.2rem;
+		font-size: 0.8rem;
+		border: 1px solid #065202;
+		border-radius: 0.5rem;
+	}
+</style>

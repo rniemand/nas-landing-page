@@ -49,7 +49,10 @@
 	$: isValid = validateAddChore(chore);
 </script>
 
-<Button color="success" on:click={toggle}>Add Chore</Button>
+<Button color="success" on:click={toggle}>
+	<i class="bi bi-plus" />
+</Button>
+
 <Modal isOpen={open} {toggle}>
 	<ModalHeader>Add Chore</ModalHeader>
 	<ModalBody>
@@ -79,13 +82,13 @@
 				<Row>
 					<Col>
 						<FormGroup>
-							<Label>Chore Points</Label>
+							<Label>Points</Label>
 							<Input type="number" min={0} max={10} bind:value={chore.chorePoints} />
 						</FormGroup>
 					</Col>
 					<Col>
 						<FormGroup>
-							<Label>Chore Priority</Label>
+							<Label>Priority</Label>
 							<ChorePriority bind:value={chore.priority} />
 						</FormGroup>
 					</Col>
@@ -93,7 +96,7 @@
 				<Row>
 					<Col>
 						<FormGroup>
-							<Label>Chore Frequency</Label>
+							<Label>Frequency</Label>
 							<ChoreFrequency
 								bind:modifier={chore.intervalModifier}
 								bind:interval={chore.interval} />

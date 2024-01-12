@@ -106,23 +106,33 @@ internal class ChoreRepo : IChoreRepo
   public async Task<IEnumerable<HomeChoreDto>> GetChoresAsync(int floorId, int roomId)
   {
     var query = @$"
-    SELECT
-	    hc.*,
-	    hr.`RoomName`,
-	    hf.`FloorName`
-    FROM `HomeChores` hc
-    INNER JOIN `HomeRooms` hr
-	    ON hr.`RoomId` = hc.`RoomId`
-    INNER JOIN `HomeFloors` hf
-	    ON hf.`FloorId` = hr.`FloorId`
-    WHERE
-      hc.`DateDeleted` IS NULL
-	    AND hr.`DateDeleted` IS NULL
-	    AND hf.`DateDeleted` IS NULL
-      AND hc.`DateScheduled` <= curdate()
-      {(floorId > 0 ? $"AND hf.`FloorId` = {floorId}" : "")}
-      {(roomId > 0 ? $"AND hr.`RoomId` = {roomId}" : "")}
-    ORDER BY hc.`DateScheduled` ASC";
+      SELECT *
+      FROM (
+        SELECT
+	        hc.*,
+          CASE
+            WHEN hc.`Priority` = 'low' THEN 3
+            WHEN hc.`Priority` = 'med' THEN 2
+            WHEN hc.`Priority` = 'high' THEN 1
+            ELSE 4
+          END AS `NumPriority`,
+	        hr.`RoomName`,
+	        hf.`FloorName`
+        FROM `HomeChores` hc
+        INNER JOIN `HomeRooms` hr
+	        ON hr.`RoomId` = hc.`RoomId`
+        INNER JOIN `HomeFloors` hf
+	        ON hf.`FloorId` = hr.`FloorId`
+        WHERE
+          hc.`DateDeleted` IS NULL
+	        AND hr.`DateDeleted` IS NULL
+	        AND hf.`DateDeleted` IS NULL
+          AND hc.`DateScheduled` <= curdate()
+          {(floorId > 0 ? $"AND hf.`FloorId` = {floorId}" : "")}
+          {(roomId > 0 ? $"AND hr.`RoomId` = {roomId}" : "")}
+      ) d
+      ORDER BY d.`DateScheduled` ASC, d.`NumPriority` ASC
+    ";
     await using var connection = _connectionHelper.GetCoreConnection();
     return await connection.QueryAsync<HomeChoreDto>(query);
   }
